@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atom Counter — Year 7 Science</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,900&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0E1B3D;
+    --ink-soft: #2A3760;
+    --paper: #F5F0E4;
+    --paper-warm: #EAE2CE;
+    --rule: #C9BFA4;
+    --amber: #C8843C;
+    --amber-soft: #E9B97A;
+    --crimson: #A8362B;
+    --moss: #4F6B3A;
+
+    /* CPK-ish, tuned for cream background */
+    --el-H: #E8E4D6;     --el-H-line: #6B6555;
+    --el-C: #2A2A2A;     --el-C-text: #FFFFFF;
+    --el-N: #2746A8;     --el-N-text: #FFFFFF;
+    --el-O: #B8362B;     --el-O-text: #FFFFFF;
+    --el-Na: #8E54A3;    --el-Na-text: #FFFFFF;
+    --el-Mg: #4A7A3E;    --el-Mg-text: #FFFFFF;
+    --el-Cl: #5C8A2E;    --el-Cl-text: #FFFFFF;
+    --el-Ca: #6B8A8A;    --el-Ca-text: #FFFFFF;
+    --el-S:  #D4A017;    --el-S-text: #1A1A1A;
+    --el-K:  #B85C9E;    --el-K-text: #FFFFFF;
+    --el-Fe: #8B4513;    --el-Fe-text: #FFFFFF;
+    --el-default: #5A5A5A; --el-default-text: #FFFFFF;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', system-ui, sans-serif;
+    font-size: 18px;
+    overflow: hidden;
+  }
+
+  /* Paper texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(200,132,60,0.04) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(14,27,61,0.04) 0%, transparent 50%);
+    z-index: 0;
+  }
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.05 0 0 0 0 0.1 0 0 0 0 0.2 0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.4;
+    z-index: 0;
+  }
+
+  .app {
+    position: relative;
+    z-index: 1;
+    height: 100vh;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+  }
+
+  /* Header */
+  header {
+    padding: 1.2rem 2.5rem 0.8rem;
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 2rem;
+    background: linear-gradient(180deg, rgba(234,226,206,0.5), transparent);
+  }
+  .brand {
+    display: flex;
+    align-items: baseline;
+    gap: 0.9rem;
+  }
+  .brand-mark {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: 2rem;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .brand-mark em {
+    font-style: italic;
+    color: var(--amber);
+  }
+  .brand-sub {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    border-left: 1px solid var(--rule);
+    padding-left: 0.9rem;
+  }
+
+  nav {
+    display: flex;
+    gap: 0.4rem;
+  }
+  nav button {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 500;
+    font-size: 0.9rem;
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--ink-soft);
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.02em;
+  }
+  nav button:hover { color: var(--ink); background: rgba(14,27,61,0.06); }
+  nav button.active {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+  nav button .num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    margin-right: 0.4rem;
+    opacity: 0.6;
+  }
+
+  /* Main stage */
+  main {
+    overflow: hidden;
+    position: relative;
+    padding: 2rem 2.5rem;
+  }
+
+  .mode { display: none; height: 100%; }
+  .mode.active { display: flex; flex-direction: column; }
+
+  .stage-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 1.2rem;
+  }
+  .stage-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 1.4rem;
+    font-style: italic;
+    color: var(--ink-soft);
+  }
+  .stage-meta {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .stage-meta strong {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-style: italic;
+    font-size: 1.4rem;
+    margin: 0 0.2rem;
+    color: var(--amber);
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  /* ───────── WARM-UP MODE ───────── */
+  .warmup-stage {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 2rem;
+    align-items: stretch;
+  }
+  .particle-box {
+    background: #FFFCF4;
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 1rem;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.02), 0 12px 30px -20px rgba(14,27,61,0.2);
+  }
+  .particle-box svg { width: 100%; height: 100%; max-height: 100%; }
+  .particle-corner {
+    position: absolute;
+    top: 0.9rem;
+    left: 1rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    color: var(--ink-soft);
+  }
+
+  .classify-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+  .classify-prompt {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: 1.6rem;
+    line-height: 1.25;
+    color: var(--ink);
+  }
+  .classify-prompt em {
+    font-style: italic;
+    color: var(--amber);
+  }
+  .classify-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0.6rem;
+  }
+  .classify-btn {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 1rem 0.8rem;
+    background: var(--paper);
+    border: 1.5px solid var(--ink);
+    color: var(--ink);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .classify-btn:hover { background: var(--ink); color: var(--paper); }
+  .classify-btn.correct {
+    background: var(--moss);
+    color: white;
+    border-color: var(--moss);
+  }
+  .classify-btn.wrong {
+    background: var(--crimson);
+    color: white;
+    border-color: var(--crimson);
+    opacity: 0.5;
+  }
+  .explainer {
+    background: var(--paper-warm);
+    border-left: 3px solid var(--amber);
+    padding: 1rem 1.2rem;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    min-height: 5rem;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .explainer.visible { opacity: 1; }
+  .explainer strong {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-style: italic;
+    color: var(--ink);
+  }
+
+  /* ───────── PRACTICE MODE ───────── */
+  .practice-stage {
+    flex: 1;
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    gap: 1.5rem;
+  }
+  .formula-display {
+    text-align: center;
+    padding: 1.5rem 1rem;
+    background: #FFFCF4;
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    position: relative;
+    box-shadow: 0 12px 40px -25px rgba(14,27,61,0.3);
+  }
+  .formula-text {
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 700;
+    font-size: clamp(4rem, 11vw, 9rem);
+    line-height: 1;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .formula-text .coef { color: var(--amber); }
+  .formula-text .sub { font-size: 0.6em; vertical-align: sub; }
+  .formula-name {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 1.2rem;
+    color: var(--ink-soft);
+    margin-top: 0.4rem;
+  }
+
+  .breakdown {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    min-height: 7rem;
+    padding: 0.5rem;
+  }
+  .step {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: all 0.4s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .step.visible { opacity: 1; transform: none; }
+  .step-atoms {
+    display: flex;
+    gap: 0.3rem;
+  }
+  .atom {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    box-shadow: 0 4px 12px -4px rgba(0,0,0,0.2), inset 0 -3px 6px rgba(0,0,0,0.15), inset 0 3px 6px rgba(255,255,255,0.25);
+  }
+  .step-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.05em;
+  }
+  .step-label strong {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 1.2rem;
+    color: var(--ink);
+  }
+  .plus {
+    font-family: 'Fraunces', serif;
+    font-size: 2rem;
+    color: var(--rule);
+    align-self: center;
+    opacity: 0;
+    transition: opacity 0.4s 0.2s;
+  }
+  .plus.visible { opacity: 1; }
+
+  .total-line {
+    border-top: 2px solid var(--ink);
+    border-bottom: 2px solid var(--ink);
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.4s;
+    margin-top: auto;
+  }
+  .total-line.visible { opacity: 1; }
+  .total-label {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 600;
+    font-size: 1.3rem;
+  }
+  .total-value {
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 700;
+    font-size: 2.5rem;
+    color: var(--amber);
+  }
+
+  /* ───────── CUSTOM MODE ───────── */
+  .custom-stage {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .custom-input-row {
+    display: flex;
+    gap: 0.8rem;
+    align-items: stretch;
+  }
+  .custom-input {
+    flex: 1;
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 700;
+    font-size: 2.5rem;
+    padding: 1rem 1.4rem;
+    background: #FFFCF4;
+    border: 1.5px solid var(--rule);
+    border-radius: 8px;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .custom-input:focus { border-color: var(--ink); }
+  .custom-input::placeholder { color: var(--rule); font-weight: 500; }
+  .custom-go {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 600;
+    font-size: 1.1rem;
+    padding: 0 2rem;
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .custom-go:hover { background: var(--amber); color: var(--ink); }
+  .custom-hint {
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+  .custom-error {
+    color: var(--crimson);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.9rem;
+    margin-top: 0.3rem;
+    min-height: 1.2rem;
+  }
+  .custom-result {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    overflow: auto;
+  }
+  .quick-fills {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+  .quick-fill {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.85rem;
+    padding: 0.3rem 0.7rem;
+    background: var(--paper-warm);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    cursor: pointer;
+    color: var(--ink);
+  }
+  .quick-fill:hover { background: var(--amber-soft); }
+
+  /* ───────── Footer ───────── */
+  footer {
+    padding: 1rem 2.5rem;
+    border-top: 1px solid var(--rule);
+    background: linear-gradient(0deg, rgba(234,226,206,0.5), transparent);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+  .controls {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  .btn {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 0.7rem 1.4rem;
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.01em;
+  }
+  .btn:hover { background: var(--amber); color: var(--ink); }
+  .btn:disabled { opacity: 0.3; cursor: not-allowed; }
+  .btn.secondary {
+    background: transparent;
+    color: var(--ink);
+    border: 1.5px solid var(--ink);
+  }
+  .btn.secondary:hover { background: var(--ink); color: var(--paper); }
+  .btn .kbd {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    opacity: 0.6;
+    margin-left: 0.5rem;
+    padding: 0.1rem 0.35rem;
+    border: 1px solid currentColor;
+    border-radius: 3px;
+  }
+
+  .progress {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.1em;
+  }
+  .progress strong {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    color: var(--amber);
+    font-size: 1.2rem;
+    margin-right: 0.2rem;
+  }
+
+  /* Hide footer in custom mode */
+  body.custom-active footer .controls,
+  body.custom-active footer .progress {
+    visibility: hidden;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header>
+    <div class="brand">
+      <div class="brand-mark">Atom <em>Counter</em></div>
+      <div class="brand-sub">Year 7 · Particles</div>
+    </div>
+    <nav>
+      <button data-mode="warmup" class="active"><span class="num">01</span>Warm-up</button>
+      <button data-mode="practice"><span class="num">02</span>Counting</button>
+      <button data-mode="custom"><span class="num">03</span>Your Turn</button>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- ───────── WARM-UP ───────── -->
+    <section class="mode active" id="mode-warmup">
+      <div class="stage-header">
+        <div class="stage-title">Element, compound, or mixture?</div>
+        <div class="stage-meta">Card <strong id="warm-n">1</strong>of<strong id="warm-total">6</strong></div>
+      </div>
+      <div class="warmup-stage">
+        <div class="particle-box">
+          <div class="particle-corner" id="warm-corner">SAMPLE 01</div>
+          <svg id="warm-svg" viewBox="0 0 400 300"></svg>
+        </div>
+        <div class="classify-panel">
+          <div class="classify-prompt" id="warm-prompt">Look closely at the particles. Are they all the same? Are they joined?</div>
+          <div class="classify-buttons">
+            <button class="classify-btn" data-answer="element-atom">Element<br><span style="font-size:0.75rem;font-weight:400;opacity:0.7;">single atoms</span></button>
+            <button class="classify-btn" data-answer="element-molecule">Element<br><span style="font-size:0.75rem;font-weight:400;opacity:0.7;">molecule</span></button>
+            <button class="classify-btn" data-answer="compound-molecule">Compound<br><span style="font-size:0.75rem;font-weight:400;opacity:0.7;">molecule</span></button>
+          </div>
+          <div class="explainer" id="warm-explainer"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────── PRACTICE ───────── -->
+    <section class="mode" id="mode-practice">
+      <div class="stage-header">
+        <div class="stage-title" id="prac-tier">Level 1 · No coefficients</div>
+        <div class="stage-meta">Formula <strong id="prac-n">1</strong>of<strong id="prac-total">17</strong></div>
+      </div>
+      <div class="practice-stage">
+        <div class="formula-display">
+          <div class="formula-text" id="prac-formula"></div>
+          <div class="formula-name" id="prac-name"></div>
+        </div>
+        <div class="breakdown" id="prac-breakdown"></div>
+        <div class="total-line" id="prac-total-line">
+          <div class="total-label">Total atoms</div>
+          <div class="total-value" id="prac-total">—</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────── CUSTOM ───────── -->
+    <section class="mode" id="mode-custom">
+      <div class="stage-header">
+        <div class="stage-title">Type any Year 7 formula — let's break it down</div>
+        <div class="stage-meta">Live parser</div>
+      </div>
+      <div class="custom-stage">
+        <div class="custom-input-row">
+          <input class="custom-input" id="cust-input" placeholder="e.g. 3H₂O  or  type 3H2O" autocomplete="off">
+          <button class="custom-go" id="cust-go">Break it down</button>
+        </div>
+        <div class="custom-hint">Type subscripts as normal digits — 3H2O, 2CO2, NaCl. No brackets in Year 7.</div>
+        <div class="custom-error" id="cust-error"></div>
+        <div class="quick-fills">
+          <span class="custom-hint" style="margin-right:0.5rem;">Quick examples:</span>
+          <button class="quick-fill" data-f="H2O">H₂O</button>
+          <button class="quick-fill" data-f="CO2">CO₂</button>
+          <button class="quick-fill" data-f="2H2O">2H₂O</button>
+          <button class="quick-fill" data-f="3CO2">3CO₂</button>
+          <button class="quick-fill" data-f="NH3">NH₃</button>
+          <button class="quick-fill" data-f="C6H12O6">C₆H₁₂O₆</button>
+          <button class="quick-fill" data-f="2NaCl">2NaCl</button>
+          <button class="quick-fill" data-f="4CH4">4CH₄</button>
+        </div>
+        <div class="custom-result" id="cust-result"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="progress" id="footer-progress"></div>
+    <div class="controls" id="footer-controls"></div>
+  </footer>
+
+</div>
+
+<script>
+/* ─────────────────────────────────────────────────────────
+   DATA
+   ───────────────────────────────────────────────────────── */
+
+const ELEMENT_COLOURS = {
+  H:  ['var(--el-H)', 'var(--el-H-line)'],
+  C:  ['var(--el-C)', 'var(--el-C-text)'],
+  N:  ['var(--el-N)', 'var(--el-N-text)'],
+  O:  ['var(--el-O)', 'var(--el-O-text)'],
+  Na: ['var(--el-Na)','var(--el-Na-text)'],
+  Mg: ['var(--el-Mg)','var(--el-Mg-text)'],
+  Cl: ['var(--el-Cl)','var(--el-Cl-text)'],
+  Ca: ['var(--el-Ca)','var(--el-Ca-text)'],
+  S:  ['var(--el-S)', 'var(--el-S-text)'],
+  K:  ['var(--el-K)', 'var(--el-K-text)'],
+  Fe: ['var(--el-Fe)','var(--el-Fe-text)'],
+};
+function atomColours(sym) {
+  return ELEMENT_COLOURS[sym] || ['var(--el-default)', 'var(--el-default-text)'];
+}
+
+// Known Year-7-friendly element symbols (validated against typos)
+const VALID_ELEMENTS = new Set([
+  'H','He','Li','Be','B','C','N','O','F','Ne',
+  'Na','Mg','Al','Si','P','S','Cl','Ar',
+  'K','Ca','Fe','Cu','Zn','Br','Ag','I','Au','Hg','Pb','Sn'
+]);
+
+/* ───── Warm-up cards ─────
+   Ladder is deliberate: establish "element (single atoms)" → introduce
+   "element molecule" (the misconception trap) → contrast with "compound
+   molecule" → reinforce element molecule with a different element →
+   reinforce compound molecule with a different shape → finish with NH₃.
+*/
+const WARMUP = [
+  {
+    diagram: 'monoatomic-He',
+    answer: 'element-atom',
+    prompt: 'A sample of helium gas. Each particle is one single atom, floating on its own.',
+    explain: '<strong>Element (single atoms).</strong> Only one type of atom is present, and the atoms are <em>not joined</em>. Helium is a noble gas — its atoms don\'t bond to anything, not even each other.'
+  },
+  {
+    diagram: 'diatomic-O2',
+    answer: 'element-molecule',
+    prompt: 'A sample of oxygen gas. Atoms are joined in pairs — but look carefully at the colours.',
+    explain: '<strong>Element molecule.</strong> The atoms are joined into molecules — but every atom is the <em>same colour</em>. A molecule made of one type of atom is still an element. This is O₂.'
+  },
+  {
+    diagram: 'compound-h2o',
+    answer: 'compound-molecule',
+    prompt: 'Water particles. Atoms joined together — but are they all the same?',
+    explain: '<strong>Compound molecule.</strong> Two or more <em>different</em> types of atom, chemically joined in the same arrangement every time. Every particle here is H₂O.'
+  },
+  {
+    diagram: 'diatomic-Cl2',
+    answer: 'element-molecule',
+    prompt: 'A sample of chlorine gas. Again, atoms joined in pairs.',
+    explain: '<strong>Element molecule.</strong> Same idea as oxygen — atoms joined, but all the same. Chlorine exists as Cl₂. Many non-metals are like this: H₂, N₂, O₂, F₂, Cl₂, Br₂, I₂.'
+  },
+  {
+    diagram: 'compound-co2',
+    answer: 'compound-molecule',
+    prompt: 'Carbon dioxide particles. Look at how each particle is built.',
+    explain: '<strong>Compound molecule.</strong> Each particle has one black atom (carbon) joined to two red atoms (oxygen). Different atoms, joined — that\'s CO₂.'
+  },
+  {
+    diagram: 'compound-nh3',
+    answer: 'compound-molecule',
+    prompt: 'Ammonia particles — four atoms in each molecule. Are they all the same type?',
+    explain: '<strong>Compound molecule.</strong> One nitrogen (blue) joined to three hydrogens (pale). Bigger than the others, but still the same rule: different atoms joined = compound. This is NH₃.'
+  }
+];
+
+/* ───── Practice ladder ───── */
+const PRACTICE = [
+  // Level 1: No coefficients, simple
+  { tier: 'Level 1 · No coefficients',         formula: 'H2O',     name: 'water' },
+  { tier: 'Level 1 · No coefficients',         formula: 'CO2',     name: 'carbon dioxide' },
+  { tier: 'Level 1 · No coefficients',         formula: 'O2',      name: 'oxygen (an element!)' },
+  { tier: 'Level 1 · No coefficients',         formula: 'NaCl',    name: 'sodium chloride' },
+  { tier: 'Level 1 · No coefficients',         formula: 'MgO',     name: 'magnesium oxide' },
+  { tier: 'Level 1 · No coefficients',         formula: 'HCl',     name: 'hydrogen chloride' },
+
+  // Level 2: bigger compounds
+  { tier: 'Level 2 · Bigger compounds',        formula: 'NH3',     name: 'ammonia' },
+  { tier: 'Level 2 · Bigger compounds',        formula: 'CH4',     name: 'methane' },
+  { tier: 'Level 2 · Bigger compounds',        formula: 'H2SO4',   name: 'sulfuric acid' },
+  { tier: 'Level 2 · Bigger compounds',        formula: 'CaCO3',   name: 'calcium carbonate' },
+  { tier: 'Level 2 · Bigger compounds',        formula: 'C6H12O6', name: 'glucose' },
+
+  // Level 3: coefficients
+  { tier: 'Level 3 · Coefficients (the new bit)', formula: '2H2O',  name: 'two water molecules' },
+  { tier: 'Level 3 · Coefficients (the new bit)', formula: '3CO2',  name: 'three CO₂ molecules' },
+  { tier: 'Level 3 · Coefficients (the new bit)', formula: '4O2',   name: 'four oxygen molecules' },
+  { tier: 'Level 3 · Coefficients (the new bit)', formula: '2NaCl', name: 'two NaCl units' },
+  { tier: 'Level 3 · Coefficients (the new bit)', formula: '3CH4',  name: 'three methane molecules' },
+  { tier: 'Level 3 · Coefficients (the new bit)', formula: '2H2SO4',name: 'two sulfuric acid molecules' },
+];
+
+/* ─────────────────────────────────────────────────────────
+   FORMULA PARSER
+   Returns { coef, atoms: [{sym, count}], totalAtoms, totalUnits, valid, error }
+   ───────────────────────────────────────────────────────── */
+function parseFormula(raw) {
+  if (!raw || !raw.trim()) return { valid: false, error: 'Type a formula first.' };
+  // Allow unicode subscripts by normalising them to digits
+  const subMap = {'₀':'0','₁':'1','₂':'2','₃':'3','₄':'4','₅':'5','₆':'6','₇':'7','₈':'8','₉':'9'};
+  let s = raw.trim().replace(/[₀₁₂₃₄₅₆₇₈₉]/g, c => subMap[c]);
+
+  // Reject brackets
+  if (/[\(\)\[\]]/.test(s)) return { valid: false, error: 'No brackets in Year 7 formulas. Try something like 2H2O.' };
+  // Reject anything weird
+  if (!/^[0-9A-Za-z]+$/.test(s)) return { valid: false, error: 'Use letters and numbers only.' };
+
+  // Coefficient
+  const coefMatch = s.match(/^(\d+)/);
+  let coef = 1;
+  if (coefMatch) {
+    coef = parseInt(coefMatch[1], 10);
+    s = s.slice(coefMatch[1].length);
+  }
+  if (!s) return { valid: false, error: 'Need a chemical formula, not just a number.' };
+
+  // Element + subscript pairs
+  const tokenRe = /([A-Z][a-z]?)(\d*)/g;
+  const atoms = [];
+  let lastIndex = 0;
+  let m;
+  while ((m = tokenRe.exec(s)) !== null) {
+    if (m.index !== lastIndex) {
+      return { valid: false, error: `Unexpected character near "${s.slice(lastIndex, m.index)}".` };
+    }
+    const sym = m[1];
+    const count = m[2] ? parseInt(m[2], 10) : 1;
+    if (!VALID_ELEMENTS.has(sym)) {
+      return { valid: false, error: `"${sym}" isn't a real element symbol. Check the capitals — Co (cobalt) is not CO (carbon + oxygen).` };
+    }
+    atoms.push({ sym, count });
+    lastIndex = tokenRe.lastIndex;
+  }
+  if (lastIndex !== s.length || atoms.length === 0) {
+    return { valid: false, error: 'Could not read the formula.' };
+  }
+
+  const totalUnits = atoms.reduce((t, a) => t + a.count, 0);
+  const totalAtoms = totalUnits * coef;
+
+  // Determine element vs compound
+  const isElement = atoms.length === 1;
+
+  return { valid: true, coef, atoms, totalUnits, totalAtoms, isElement, raw: raw.trim(), normalised: s };
+}
+
+function formatFormulaHTML(parsed) {
+  // Render coefficient and subscripts properly
+  let html = '';
+  if (parsed.coef > 1) html += `<span class="coef">${parsed.coef}</span>`;
+  for (const a of parsed.atoms) {
+    html += a.sym;
+    if (a.count > 1) html += `<span class="sub">${a.count}</span>`;
+  }
+  return html;
+}
+
+/* ─────────────────────────────────────────────────────────
+   ATOM BUBBLE renderer
+   ───────────────────────────────────────────────────────── */
+function atomBubble(sym, size = 3.5) {
+  const [bg, fg] = atomColours(sym);
+  const showBorder = sym === 'H' ? 'border:1.5px solid var(--el-H-line);' : '';
+  return `<div class="atom" style="background:${bg};color:${fg};width:${size}rem;height:${size}rem;${showBorder}font-size:${size*0.34}rem;">${sym}</div>`;
+}
+
+/* ─────────────────────────────────────────────────────────
+   WARM-UP MODE
+   ───────────────────────────────────────────────────────── */
+let warmIndex = 0;
+let warmAnswered = false;
+
+function renderWarmup() {
+  const card = WARMUP[warmIndex];
+  document.getElementById('warm-n').textContent = warmIndex + 1;
+  document.getElementById('warm-total').textContent = WARMUP.length;
+  document.getElementById('warm-corner').textContent = `SAMPLE ${String(warmIndex+1).padStart(2,'0')}`;
+  document.getElementById('warm-prompt').innerHTML = card.prompt;
+  document.getElementById('warm-explainer').classList.remove('visible');
+  document.getElementById('warm-explainer').innerHTML = card.explain;
+  document.querySelectorAll('.classify-btn').forEach(b => {
+    b.classList.remove('correct','wrong');
+    b.disabled = false;
+  });
+  renderDiagram(card.diagram);
+  warmAnswered = false;
+
+  document.getElementById('footer-progress').innerHTML = `<strong>${warmIndex+1}</strong>/${WARMUP.length} · Click an answer button when class has decided`;
+  document.getElementById('footer-controls').innerHTML = `
+    <button class="btn secondary" id="warm-prev" ${warmIndex===0?'disabled':''}>← Previous</button>
+    <button class="btn" id="warm-next" ${warmIndex===WARMUP.length-1?'disabled':''}>Next card →</button>
+  `;
+  document.getElementById('warm-prev').onclick = () => { warmIndex = Math.max(0, warmIndex-1); renderWarmup(); };
+  document.getElementById('warm-next').onclick = () => { warmIndex = Math.min(WARMUP.length-1, warmIndex+1); renderWarmup(); };
+}
+
+function renderDiagram(type) {
+  const svg = document.getElementById('warm-svg');
+  // Particle drawing helpers
+  const drawAtom = (cx, cy, r, sym) => {
+    const [bg, fg] = atomColours(sym);
+    const showOutline = sym === 'H';
+    return `
+      <circle cx="${cx}" cy="${cy}" r="${r}" fill="${bg}" ${showOutline?'stroke="#6B6555" stroke-width="2"':''}/>
+      <text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="central"
+            fill="${fg}" font-family="IBM Plex Sans" font-weight="700" font-size="${r*0.85}">${sym}</text>
+    `;
+  };
+  const bond = (x1,y1,x2,y2) => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#3A3A3A" stroke-width="3" stroke-linecap="round"/>`;
+
+  let body = '';
+
+  if (type === 'monoatomic-He') {
+    // 7 isolated helium atoms — single atoms, not joined
+    const positions = [[80,80],[200,60],[320,90],[120,170],[240,180],[340,220],[80,240]];
+    body = positions.map(([x,y]) => drawAtom(x,y,28,'He')).join('');
+  }
+  else if (type === 'diatomic-O2') {
+    // 4 O2 pairs
+    const pairs = [
+      [80,70,140,70], [240,80,300,80],
+      [100,180,160,180], [260,200,320,200]
+    ];
+    body = pairs.map(([x1,y1,x2,y2]) =>
+      bond(x1,y1,x2,y2) + drawAtom(x1,y1,28,'O') + drawAtom(x2,y2,28,'O')
+    ).join('');
+  }
+  else if (type === 'diatomic-Cl2') {
+    // 4 Cl2 pairs
+    const pairs = [
+      [80,75,150,75], [250,90,320,90],
+      [110,190,180,190], [260,215,330,215]
+    ];
+    body = pairs.map(([x1,y1,x2,y2]) =>
+      bond(x1,y1,x2,y2) + drawAtom(x1,y1,28,'Cl') + drawAtom(x2,y2,28,'Cl')
+    ).join('');
+  }
+  else if (type === 'compound-h2o') {
+    // 3 H2O molecules
+    const mols = [
+      [120, 90], [280, 100], [200, 220]
+    ];
+    body = mols.map(([cx,cy]) => {
+      const hx1 = cx - 38, hy1 = cy - 28;
+      const hx2 = cx + 38, hy2 = cy - 28;
+      return bond(cx,cy,hx1,hy1) + bond(cx,cy,hx2,hy2)
+        + drawAtom(cx,cy,28,'O')
+        + drawAtom(hx1,hy1,20,'H')
+        + drawAtom(hx2,hy2,20,'H');
+    }).join('');
+  }
+  else if (type === 'compound-co2') {
+    // 3 CO2 molecules
+    const mols = [[120,110],[280,90],[200,220]];
+    body = mols.map(([cx,cy]) => {
+      const lx = cx - 48, rx = cx + 48;
+      return bond(lx,cy,cx,cy) + bond(cx,cy,rx,cy)
+        + drawAtom(lx,cy,26,'O') + drawAtom(cx,cy,28,'C') + drawAtom(rx,cy,26,'O');
+    }).join('');
+  }
+  else if (type === 'compound-nh3') {
+    // 3 NH3 molecules — N at centre, three H around (trigonal-ish)
+    const mols = [[120,110],[290,90],[200,225]];
+    body = mols.map(([cx,cy]) => {
+      // Three Hs at 120° apart-ish around the N
+      const h1x = cx, h1y = cy - 42;
+      const h2x = cx - 38, h2y = cy + 28;
+      const h3x = cx + 38, h3y = cy + 28;
+      return bond(cx,cy,h1x,h1y) + bond(cx,cy,h2x,h2y) + bond(cx,cy,h3x,h3y)
+        + drawAtom(cx,cy,28,'N')
+        + drawAtom(h1x,h1y,18,'H')
+        + drawAtom(h2x,h2y,18,'H')
+        + drawAtom(h3x,h3y,18,'H');
+    }).join('');
+  }
+
+  svg.innerHTML = body;
+}
+
+document.querySelectorAll('.classify-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (warmAnswered) return;
+    const card = WARMUP[warmIndex];
+    const ans = btn.dataset.answer;
+    document.querySelectorAll('.classify-btn').forEach(b => {
+      if (b.dataset.answer === card.answer) b.classList.add('correct');
+      else b.classList.add('wrong');
+      b.disabled = true;
+    });
+    document.getElementById('warm-explainer').classList.add('visible');
+    warmAnswered = true;
+  });
+});
+
+/* ─────────────────────────────────────────────────────────
+   PRACTICE MODE
+   ───────────────────────────────────────────────────────── */
+let pracIndex = 0;
+let pracRevealStep = 0; // 0 = nothing, 1 = breakdown, 2 = total
+
+function renderPractice() {
+  const item = PRACTICE[pracIndex];
+  const parsed = parseFormula(item.formula);
+
+  document.getElementById('prac-tier').textContent = item.tier;
+  document.getElementById('prac-n').textContent = pracIndex + 1;
+  document.getElementById('prac-total').textContent = PRACTICE.length;
+  document.getElementById('prac-formula').innerHTML = formatFormulaHTML(parsed);
+  document.getElementById('prac-name').textContent = item.name;
+  document.getElementById('prac-total').textContent = '—';
+
+  pracRevealStep = 0;
+  renderBreakdown(parsed, 0);
+  document.getElementById('prac-total-line').classList.remove('visible');
+
+  updateFooterPractice();
+}
+
+function renderBreakdown(parsed, level) {
+  const container = document.getElementById('prac-breakdown');
+  container.innerHTML = '';
+
+  // Always render the structure; visibility controlled by .visible
+  parsed.atoms.forEach((atom, i) => {
+    const stepEl = document.createElement('div');
+    stepEl.className = 'step';
+    const atomsHTML = Array.from({length: atom.count}).map(() => atomBubble(atom.sym, 3.2)).join('');
+    let label;
+    if (parsed.coef > 1) {
+      label = `${atom.count} × ${parsed.coef} = <strong>${atom.count * parsed.coef}</strong>`;
+    } else {
+      label = `<strong>${atom.count}</strong> ${atom.sym}`;
+    }
+    stepEl.innerHTML = `<div class="step-atoms">${atomsHTML}</div><div class="step-label">${label}</div>`;
+    container.appendChild(stepEl);
+
+    if (i < parsed.atoms.length - 1) {
+      const plus = document.createElement('div');
+      plus.className = 'plus';
+      plus.textContent = '+';
+      container.appendChild(plus);
+    }
+  });
+
+  if (level >= 1) {
+    requestAnimationFrame(() => {
+      container.querySelectorAll('.step, .plus').forEach((el, i) => {
+        setTimeout(() => el.classList.add('visible'), i * 180);
+      });
+    });
+  }
+}
+
+function revealTotal() {
+  const parsed = parseFormula(PRACTICE[pracIndex].formula);
+  document.getElementById('prac-total').textContent = parsed.totalAtoms;
+  document.getElementById('prac-total-line').classList.add('visible');
+}
+
+function updateFooterPractice() {
+  const item = PRACTICE[pracIndex];
+  document.getElementById('footer-progress').innerHTML =
+    `<strong>${pracIndex+1}</strong>/${PRACTICE.length} · Pupils answer on whiteboards, <em>then</em> reveal`;
+
+  let revealBtnHTML = '';
+  if (pracRevealStep === 0) {
+    revealBtnHTML = `<button class="btn" id="prac-reveal">Show breakdown</button>`;
+  } else if (pracRevealStep === 1) {
+    revealBtnHTML = `<button class="btn" id="prac-reveal">Show total</button>`;
+  } else {
+    revealBtnHTML = `<button class="btn" id="prac-reveal" disabled>Revealed ✓</button>`;
+  }
+
+  document.getElementById('footer-controls').innerHTML = `
+    <button class="btn secondary" id="prac-prev" ${pracIndex===0?'disabled':''}>← Previous</button>
+    ${revealBtnHTML}
+    <button class="btn secondary" id="prac-next" ${pracIndex===PRACTICE.length-1?'disabled':''}>Next →</button>
+  `;
+  document.getElementById('prac-prev').onclick = () => { pracIndex = Math.max(0, pracIndex-1); renderPractice(); };
+  document.getElementById('prac-next').onclick = () => { pracIndex = Math.min(PRACTICE.length-1, pracIndex+1); renderPractice(); };
+  const revealBtn = document.getElementById('prac-reveal');
+  if (revealBtn) revealBtn.onclick = () => {
+    if (pracRevealStep === 0) {
+      pracRevealStep = 1;
+      const parsed = parseFormula(PRACTICE[pracIndex].formula);
+      renderBreakdown(parsed, 1);
+    } else if (pracRevealStep === 1) {
+      pracRevealStep = 2;
+      revealTotal();
+    }
+    updateFooterPractice();
+  };
+}
+
+/* ─────────────────────────────────────────────────────────
+   CUSTOM MODE
+   ───────────────────────────────────────────────────────── */
+function renderCustom(formulaStr) {
+  const parsed = parseFormula(formulaStr);
+  const errorEl = document.getElementById('cust-error');
+  const resultEl = document.getElementById('cust-result');
+
+  if (!parsed.valid) {
+    errorEl.textContent = parsed.error;
+    resultEl.innerHTML = '';
+    return;
+  }
+  errorEl.textContent = '';
+
+  // Build a display block similar to practice mode but inline
+  const formulaHTML = formatFormulaHTML(parsed);
+  const elementCompound = parsed.isElement
+    ? `<span style="color:var(--moss);font-weight:700;">Element</span> — only one type of atom`
+    : `<span style="color:var(--amber);font-weight:700;">Compound</span> — ${parsed.atoms.length} different elements joined`;
+
+  const breakdownHTML = parsed.atoms.map((atom, i) => {
+    const atomsHTML = Array.from({length: atom.count}).map(() => atomBubble(atom.sym, 2.6)).join('');
+    let label;
+    if (parsed.coef > 1) {
+      label = `${atom.count} × ${parsed.coef} = <strong>${atom.count * parsed.coef}</strong> ${atom.sym}`;
+    } else {
+      label = `<strong>${atom.count}</strong> ${atom.sym}`;
+    }
+    const plus = i < parsed.atoms.length - 1 ? '<div class="plus visible">+</div>' : '';
+    return `<div class="step visible"><div class="step-atoms">${atomsHTML}</div><div class="step-label">${label}</div></div>${plus}`;
+  }).join('');
+
+  resultEl.innerHTML = `
+    <div class="formula-display" style="padding:1rem;">
+      <div class="formula-text" style="font-size:clamp(3rem,8vw,6rem);">${formulaHTML}</div>
+      <div class="formula-name">${elementCompound}</div>
+    </div>
+    <div class="breakdown" style="min-height:auto;">${breakdownHTML}</div>
+    <div class="total-line visible">
+      <div class="total-label">Total atoms${parsed.coef>1?` (${parsed.coef} × ${parsed.totalUnits})`:''}</div>
+      <div class="total-value">${parsed.totalAtoms}</div>
+    </div>
+  `;
+}
+
+document.getElementById('cust-go').addEventListener('click', () => {
+  renderCustom(document.getElementById('cust-input').value);
+});
+document.getElementById('cust-input').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') renderCustom(document.getElementById('cust-input').value);
+});
+document.querySelectorAll('.quick-fill').forEach(b => {
+  b.addEventListener('click', () => {
+    const f = b.dataset.f;
+    document.getElementById('cust-input').value = f;
+    renderCustom(f);
+  });
+});
+
+/* ─────────────────────────────────────────────────────────
+   MODE SWITCHING
+   ───────────────────────────────────────────────────────── */
+function switchMode(mode) {
+  document.querySelectorAll('nav button').forEach(b => b.classList.toggle('active', b.dataset.mode === mode));
+  document.querySelectorAll('.mode').forEach(m => m.classList.toggle('active', m.id === `mode-${mode}`));
+  document.body.classList.toggle('custom-active', mode === 'custom');
+
+  if (mode === 'warmup') renderWarmup();
+  else if (mode === 'practice') renderPractice();
+  else if (mode === 'custom') {
+    document.getElementById('footer-progress').innerHTML = `Live parser · Type a formula and hit Enter`;
+    document.getElementById('footer-controls').innerHTML = '';
+  }
+}
+document.querySelectorAll('nav button').forEach(b => {
+  b.addEventListener('click', () => switchMode(b.dataset.mode));
+});
+
+/* Keyboard shortcuts */
+document.addEventListener('keydown', (e) => {
+  if (document.activeElement && document.activeElement.tagName === 'INPUT') return;
+  if (e.key === 'ArrowRight') {
+    const next = document.querySelector('#footer-controls button:last-child:not(:disabled)');
+    if (next && next.textContent.includes('Next')) next.click();
+  } else if (e.key === 'ArrowLeft') {
+    const prev = document.querySelector('#footer-controls button:first-child:not(:disabled)');
+    if (prev && prev.textContent.includes('Previous')) prev.click();
+  } else if (e.key === ' ') {
+    const reveal = document.getElementById('prac-reveal');
+    if (reveal && !reveal.disabled) { e.preventDefault(); reveal.click(); }
+  } else if (e.key === '1') switchMode('warmup');
+  else if (e.key === '2') switchMode('practice');
+  else if (e.key === '3') switchMode('custom');
+});
+
+/* ─────────────────────────────────────────────────────────
+   INIT
+   ───────────────────────────────────────────────────────── */
+renderWarmup();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Zoom into the Cell — KS3 & GCSE Biology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg-deep:#070a1a;--bg-mid:#0f1530;--bg-glow:#1a2050;--ink:#f2f4ff;--ink-dim:#9aa3cf;--rule:rgba(255,255,255,0.12);--cell-a:#ff6b9d;--cell-b:#ff3d7f;--plant-a:#7dbb3c;--plant-b:#4d7c2a;--bact-a:#ffb47a;--bact-b:#c77a3c;--nucleus-a:#4a9eff;--nucleus-b:#1b6bd6;--chromo-a:#c77dff;--chromo-b:#7b2cbf;--gene-a:#ffb84a;--gene-b:#ff8c2a;--base-a:#2ee6a8;--base-t:#ff5a7f;--base-c:#4ac5ff;--base-g:#ffd93d}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:var(--bg-deep);color:var(--ink);font-family:'IBM Plex Sans',sans-serif;user-select:none;-webkit-user-select:none}
+.starfield{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse at 20% 30%,rgba(75,30,160,0.35),transparent 50%),radial-gradient(ellipse at 80% 70%,rgba(180,40,110,0.25),transparent 50%),radial-gradient(ellipse at 50% 50%,var(--bg-glow),var(--bg-deep) 70%)}
+.stars{position:fixed;inset:0;z-index:0;opacity:0.6;background-image:radial-gradient(1px 1px at 20% 30%,rgba(255,255,255,0.8),transparent),radial-gradient(1px 1px at 60% 70%,rgba(255,255,255,0.5),transparent),radial-gradient(1px 1px at 80% 20%,rgba(255,255,255,0.7),transparent),radial-gradient(1px 1px at 30% 80%,rgba(255,255,255,0.4),transparent),radial-gradient(1px 1px at 90% 90%,rgba(255,255,255,0.6),transparent),radial-gradient(1px 1px at 10% 60%,rgba(255,255,255,0.3),transparent),radial-gradient(1px 1px at 70% 40%,rgba(255,255,255,0.5),transparent),radial-gradient(1px 1px at 45% 15%,rgba(255,255,255,0.7),transparent),radial-gradient(1px 1px at 15% 45%,rgba(255,255,255,0.4),transparent),radial-gradient(1px 1px at 85% 55%,rgba(255,255,255,0.6),transparent);background-size:800px 800px;animation:drift 120s linear infinite}
+@keyframes drift{from{transform:translate(0,0)}to{transform:translate(-800px,-800px)}}
+.stage{position:fixed;inset:0;z-index:1;display:flex;align-items:center;justify-content:center}
+.layer{position:absolute;width:min(78vh,82vw);height:min(78vh,82vw);max-width:820px;max-height:820px;opacity:0;transform:scale(0.35);transition:opacity 0.7s cubic-bezier(0.4,0,0.2,1),transform 0.9s cubic-bezier(0.4,0,0.2,1),filter 0.9s cubic-bezier(0.4,0,0.2,1);filter:blur(8px);pointer-events:none}
+.layer.active{opacity:1;transform:scale(1);filter:blur(0);pointer-events:auto}
+.layer.past{opacity:0;transform:scale(3.2);filter:blur(14px)}
+.layer svg{width:100%;height:100%;overflow:hidden}
+.cell-wrapper{position:absolute;inset:0;opacity:0;transform:scale(0.85);transition:opacity 0.5s ease,transform 0.5s ease;pointer-events:none}
+.cell-wrapper.active-cell{opacity:1;transform:scale(1);pointer-events:auto}
+[data-organelle]{cursor:pointer;transition:filter 0.2s ease,opacity 0.2s ease}
+[data-organelle]:hover{filter:brightness(1.25) drop-shadow(0 0 10px rgba(255,255,255,0.5))}
+.organelle-label{font-family:'IBM Plex Sans',sans-serif;font-size:18px;font-weight:500;fill:var(--ink);pointer-events:none;letter-spacing:0.02em}
+.hud{position:fixed;inset:0;z-index:10;pointer-events:none}
+.hud > *{pointer-events:auto}
+.scale-bar{position:absolute;top:32px;left:32px;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-dim)}
+.scale-bar .label{display:block;font-size:10px;opacity:0.6;margin-bottom:4px}
+.scale-bar .value{font-size:18px;color:var(--ink);font-weight:500;transition:color 0.5s}
+.level-name{position:absolute;top:32px;right:32px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.3em;text-transform:uppercase;color:var(--ink-dim);text-align:right}
+.level-name .num{display:block;font-size:10px;margin-bottom:4px;opacity:0.6}
+.level-name .current{font-size:22px;color:var(--ink);font-weight:500;font-family:'Instrument Serif',serif;letter-spacing:0.02em;text-transform:none}
+.cell-toggle{position:absolute;top:28px;left:50%;transform:translateX(-50%);display:flex;background:rgba(15,21,48,0.72);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--rule);border-radius:100px;padding:4px;opacity:0;pointer-events:none;transition:opacity 0.4s ease}
+.cell-toggle.visible{opacity:1;pointer-events:auto}
+.cell-btn{background:transparent;border:none;color:var(--ink-dim);font-family:'IBM Plex Sans',sans-serif;font-size:13px;font-weight:500;letter-spacing:0.04em;padding:9px 20px;border-radius:100px;cursor:pointer;transition:all 0.25s ease}
+.cell-btn:hover{color:var(--ink)}
+.cell-btn.active{background:var(--ink);color:var(--bg-deep)}
+.info-card{position:absolute;left:50%;bottom:28px;transform:translateX(-50%);width:min(560px,calc(100vw - 60px));background:rgba(15,21,48,0.78);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--rule);border-radius:2px;padding:16px 28px 18px;text-align:center}
+.info-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent,var(--ink)) 20%,var(--accent,var(--ink)) 80%,transparent);opacity:0.6;transition:background 0.5s}
+.info-card h1{font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(20px,2.6vw,28px);line-height:1.1;margin-bottom:6px;letter-spacing:-0.01em;color:var(--accent,var(--ink));transition:color 0.5s}
+.info-card h1 em{font-style:italic;opacity:0.85}
+.info-card p{font-size:clamp(13px,1.3vw,14.5px);line-height:1.45;color:var(--ink);max-width:56ch;margin:0 auto;font-weight:300}
+.info-card .hint-note{display:block;margin-top:10px;padding-top:10px;border-top:1px solid var(--rule);font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-dim)}
+.info-card.changing h1,.info-card.changing p{animation:fadeSwap 0.7s ease}
+@keyframes fadeSwap{0%{opacity:0;transform:translateY(8px)}40%{opacity:0;transform:translateY(8px)}100%{opacity:1;transform:translateY(0)}}
+.progress{position:absolute;bottom:40px;left:40px;display:flex;flex-direction:column;gap:14px;align-items:flex-start}
+.progress-dots{display:flex;gap:10px;align-items:center}
+.dot{width:10px;height:10px;border-radius:50%;border:1px solid var(--ink-dim);background:transparent;cursor:pointer;transition:all 0.3s;padding:0}
+.dot:hover{border-color:var(--ink);transform:scale(1.2)}
+.dot.active{background:var(--accent,var(--ink));border-color:var(--accent,var(--ink));transform:scale(1.3);box-shadow:0 0 12px var(--accent,var(--ink))}
+.dot.past-dot{background:var(--ink-dim);border-color:var(--ink-dim)}
+.progress-label{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink-dim)}
+.controls{position:absolute;bottom:40px;right:40px;display:flex;gap:10px;align-items:center}
+.btn{background:rgba(15,21,48,0.72);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--rule);color:var(--ink);font-family:'IBM Plex Sans',sans-serif;font-size:13px;font-weight:500;letter-spacing:0.05em;padding:12px 20px;cursor:pointer;transition:all 0.2s;display:inline-flex;align-items:center;gap:8px}
+.btn:hover:not(:disabled){background:rgba(30,40,90,0.9);border-color:var(--ink-dim);transform:translateY(-1px)}
+.btn:disabled{opacity:0.3;cursor:not-allowed}
+.btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2}
+.help-hint{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink-dim);opacity:0;pointer-events:none;animation:hintFade 5s ease-out forwards;animation-delay:1s;text-align:center}
+.help-hint span{display:block;margin-top:6px;opacity:0.7;font-size:10px}
+@keyframes hintFade{0%{opacity:0}20%{opacity:0.8}80%{opacity:0.8}100%{opacity:0}}
+.reticle{fill:none;stroke:#fff;stroke-width:1.5;opacity:0.9;animation:pulse 2s ease-in-out infinite}
+.reticle-group{transform-origin:center;transform-box:fill-box}
+@keyframes pulse{0%,100%{opacity:0.4;transform:scale(1)}50%{opacity:0.9;transform:scale(1.08)}}
+@keyframes softPulse{0%,100%{opacity:0.85}50%{opacity:1}}
+.mito{transform-origin:center;transform-box:fill-box;animation:softPulse 3s ease-in-out infinite}
+.mito:nth-child(odd){animation-delay:-1s}
+.mito:nth-child(3n){animation-delay:-2s}
+.chromatin,.helix-glow{animation:softPulse 4s ease-in-out infinite}
+.popup-backdrop{position:fixed;inset:0;background:rgba(7,10,26,0.55);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity 0.25s ease;z-index:20}
+.popup-backdrop.visible{opacity:1;pointer-events:auto}
+.organelle-popup{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.94);width:min(520px,calc(100vw - 48px));background:rgba(15,21,48,0.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--rule);border-radius:4px;padding:36px 40px 34px;opacity:0;pointer-events:none;transition:all 0.3s cubic-bezier(0.4,0,0.2,1);z-index:21}
+.organelle-popup.visible{opacity:1;transform:translate(-50%,-50%) scale(1);pointer-events:auto}
+.organelle-popup::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--popup-accent,var(--ink));opacity:0.9}
+.popup-kicker{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:10px}
+.popup-name{font-family:'Instrument Serif',serif;font-weight:400;font-size:38px;line-height:1.05;color:var(--popup-accent,var(--ink));margin-bottom:4px;letter-spacing:-0.01em}
+.popup-tagline{font-family:'Instrument Serif',serif;font-style:italic;font-size:18px;color:var(--ink-dim);margin-bottom:20px}
+.popup-function{font-size:16px;line-height:1.6;color:var(--ink);font-weight:300}
+.popup-badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:24px;padding-top:20px;border-top:1px solid var(--rule)}
+.badge{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;padding:5px 10px;border-radius:2px;border:1px solid}
+.badge-animal{color:var(--cell-a);border-color:rgba(255,107,157,0.4)}
+.badge-plant{color:var(--plant-a);border-color:rgba(125,187,60,0.4)}
+.badge-bacterial{color:var(--bact-a);border-color:rgba(255,180,122,0.4)}
+.popup-close{position:absolute;top:14px;right:14px;width:30px;height:30px;background:transparent;border:1px solid var(--rule);border-radius:50%;color:var(--ink-dim);font-size:18px;line-height:1;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center}
+.popup-close:hover{color:var(--ink);border-color:var(--ink)}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition-duration:0.3s !important}.layer{transition-duration:0.3s !important}}
+@media (max-width:720px){.scale-bar,.level-name{top:16px}.scale-bar{left:16px}.level-name{right:16px}.scale-bar .value,.level-name .current{font-size:16px}.info-card{bottom:16px;padding:18px 22px 22px;width:calc(100vw - 32px)}.progress{bottom:210px;left:16px}.controls{bottom:210px;right:16px}.cell-toggle{top:64px}.cell-btn{padding:7px 14px;font-size:12px}.organelle-popup{padding:28px 26px 26px}.popup-name{font-size:30px}}
+</style>
+</head>
+<body>
+<div class="starfield"></div>
+<div class="stars"></div>
+<div class="stage" id="stage">
+<div class="layer" data-level="0">
+<div class="cell-wrapper" data-cell-type="animal">
+<svg viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<radialGradient id="animalCyto" cx="50%" cy="50%">
+<stop offset="0%" stop-color="#ffb3cc" stop-opacity="0.45"/>
+<stop offset="70%" stop-color="#ff6b9d" stop-opacity="0.3"/>
+<stop offset="100%" stop-color="#ff3d7f" stop-opacity="0.55"/>
+</radialGradient>
+<radialGradient id="animalNucleus" cx="50%" cy="50%">
+<stop offset="0%" stop-color="#7bb8ff"/>
+<stop offset="60%" stop-color="#4a9eff"/>
+<stop offset="100%" stop-color="#1b6bd6"/>
+</radialGradient>
+<filter id="cellGlowA"><feGaussianBlur stdDeviation="8" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+<filter id="labelShadowA"><feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#000" flood-opacity="0.9"/></filter>
+<clipPath id="animalCellClip"><path d="M 500 80 C 700 80, 880 220, 900 430 C 920 620, 830 800, 640 900 C 460 980, 230 920, 130 750 C 40 580, 80 360, 220 210 C 320 110, 400 80, 500 80 Z"/></clipPath>
+</defs>
+<path data-organelle="cytoplasm" d="M 500 80 C 700 80, 880 220, 900 430 C 920 620, 830 800, 640 900 C 460 980, 230 920, 130 750 C 40 580, 80 360, 220 210 C 320 110, 400 80, 500 80 Z" fill="url(#animalCyto)" stroke="none"/>
+<path data-organelle="cell-membrane" d="M 500 80 C 700 80, 880 220, 900 430 C 920 620, 830 800, 640 900 C 460 980, 230 920, 130 750 C 40 580, 80 360, 220 210 C 320 110, 400 80, 500 80 Z" fill="none" stroke="var(--cell-a)" stroke-width="6" filter="url(#cellGlowA)"/>
+<path d="M 500 100 C 690 100, 860 230, 880 430 C 900 610, 820 790, 630 880 C 460 960, 240 900, 150 740 C 65 580, 100 370, 235 225 C 330 125, 405 100, 500 100 Z" fill="none" stroke="var(--cell-a)" stroke-width="1" opacity="0.3" pointer-events="none"/>
+<g data-organelle="mitochondria" clip-path="url(#animalCellClip)">
+<ellipse class="mito" cx="380" cy="230" rx="38" ry="15" fill="#ff9f7a" transform="rotate(-20 380 230)"/>
+<ellipse class="mito" cx="620" cy="230" rx="38" ry="15" fill="#ff9f7a" transform="rotate(30 620 230)"/>
+<ellipse class="mito" cx="400" cy="780" rx="38" ry="15" fill="#ff9f7a" transform="rotate(-15 400 780)"/>
+<ellipse class="mito" cx="620" cy="770" rx="38" ry="15" fill="#ff9f7a" transform="rotate(25 620 770)"/>
+<ellipse class="mito" cx="230" cy="500" rx="34" ry="13" fill="#ff9f7a" transform="rotate(90 230 500)"/>
+</g>
+<g data-organelle="ribosomes" fill="#ffd6e4" clip-path="url(#animalCellClip)">
+<circle cx="200" cy="500" r="5"/><circle cx="220" cy="540" r="4"/><circle cx="180" cy="580" r="5"/><circle cx="240" cy="460" r="4"/><circle cx="760" cy="420" r="5"/><circle cx="790" cy="450" r="4"/><circle cx="740" cy="390" r="4"/><circle cx="350" cy="230" r="4"/><circle cx="380" cy="260" r="5"/><circle cx="620" cy="800" r="4"/><circle cx="650" cy="830" r="5"/><circle cx="400" cy="820" r="4"/><circle cx="440" cy="840" r="5"/>
+</g>
+<g data-organelle="nucleus">
+<circle cx="500" cy="500" r="175" fill="url(#animalNucleus)" filter="url(#cellGlowA)" opacity="0.95"/>
+<circle cx="500" cy="500" r="175" fill="none" stroke="#7bb8ff" stroke-width="2" opacity="0.6"/>
+<circle cx="530" cy="470" r="30" fill="#1b4b9c" opacity="0.5"/>
+<g stroke="#1b4b9c" stroke-width="1.5" fill="none" opacity="0.45" pointer-events="none">
+<path d="M 420 460 Q 470 440, 510 490 T 580 530"/>
+<path d="M 450 540 Q 500 560, 540 520 T 600 480"/>
+<path d="M 430 510 Q 480 490, 520 540"/>
+</g>
+</g>
+<g class="reticle-group" transform="translate(500 500)" pointer-events="none">
+<circle class="reticle" r="210"/>
+<line class="reticle" x1="-230" y1="0" x2="-200" y2="0"/>
+<line class="reticle" x1="200" y1="0" x2="230" y2="0"/>
+<line class="reticle" x1="0" y1="-230" x2="0" y2="-200"/>
+<line class="reticle" x1="0" y1="200" x2="0" y2="230"/>
+</g>
+<g class="organelle-label" filter="url(#labelShadowA)" pointer-events="none">
+<text x="500" y="510" text-anchor="middle" font-weight="600" font-size="24">Nucleus</text>
+<text x="380" y="195" text-anchor="middle">Mitochondria</text>
+<text x="175" y="430" text-anchor="middle">Ribosomes</text>
+<text x="760" y="150" text-anchor="middle">Cell membrane</text>
+<text x="650" y="320" text-anchor="middle" opacity="0.9">Cytoplasm</text>
+</g>
+</svg>
+</div>
+<div class="cell-wrapper" data-cell-type="plant">
+<svg viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="plantCyto" x1="0%" y1="0%" x2="0%" y2="100%">
+<stop offset="0%" stop-color="#e8f5d4" stop-opacity="0.35"/>
+<stop offset="100%" stop-color="#b5d88a" stop-opacity="0.3"/>
+</linearGradient>
+<radialGradient id="plantNucleus" cx="50%" cy="50%">
+<stop offset="0%" stop-color="#7bb8ff"/>
+<stop offset="60%" stop-color="#4a9eff"/>
+<stop offset="100%" stop-color="#1b6bd6"/>
+</radialGradient>
+<radialGradient id="plantVacuole" cx="50%" cy="50%">
+<stop offset="0%" stop-color="#d4c0ef" stop-opacity="0.55"/>
+<stop offset="100%" stop-color="#9b7ec7" stop-opacity="0.3"/>
+</radialGradient>
+<linearGradient id="plantChloro" x1="0%" y1="0%" x2="0%" y2="100%">
+<stop offset="0%" stop-color="#a4d85a"/>
+<stop offset="100%" stop-color="#5d9c1e"/>
+</linearGradient>
+<filter id="cellGlowP"><feGaussianBlur stdDeviation="6" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+<filter id="labelShadowP"><feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#000" flood-opacity="0.9"/></filter>
+<clipPath id="plantCellClip"><rect x="151" y="151" width="698" height="698" rx="40" ry="40"/></clipPath>
+</defs>
+<rect data-organelle="cell-wall-plant" x="130" y="130" width="740" height="740" rx="50" ry="50" fill="none" stroke="var(--plant-b)" stroke-width="22" filter="url(#cellGlowP)"/>
+<rect data-organelle="cytoplasm" x="151" y="151" width="698" height="698" rx="40" ry="40" fill="url(#plantCyto)" stroke="none"/>
+<rect data-organelle="cell-membrane" x="155" y="155" width="690" height="690" rx="38" ry="38" fill="none" stroke="#7eb03a" stroke-width="3" opacity="0.85"/>
+<g data-organelle="vacuole">
+<ellipse cx="520" cy="560" rx="280" ry="210" fill="url(#plantVacuole)" stroke="#9b7ec7" stroke-width="2" opacity="0.85"/>
+<ellipse cx="520" cy="560" rx="260" ry="190" fill="none" stroke="#c0a3e0" stroke-width="1" opacity="0.4"/>
+</g>
+<g data-organelle="nucleus">
+<circle cx="300" cy="300" r="75" fill="url(#plantNucleus)" filter="url(#cellGlowP)"/>
+<circle cx="300" cy="300" r="75" fill="none" stroke="#7bb8ff" stroke-width="2" opacity="0.6"/>
+<circle cx="315" cy="285" r="14" fill="#1b4b9c" opacity="0.5"/>
+</g>
+<g data-organelle="chloroplast" clip-path="url(#plantCellClip)">
+<g transform="translate(720 280) rotate(30)"><ellipse cx="0" cy="0" rx="42" ry="22" fill="url(#plantChloro)" stroke="#3d6e1a" stroke-width="1.5"/><g stroke="#3d6e1a" stroke-width="1" opacity="0.6"><line x1="-25" y1="-6" x2="25" y2="-6"/><line x1="-25" y1="0" x2="25" y2="0"/><line x1="-25" y1="6" x2="25" y2="6"/></g></g>
+<g transform="translate(780 470) rotate(-20)"><ellipse cx="0" cy="0" rx="38" ry="20" fill="url(#plantChloro)" stroke="#3d6e1a" stroke-width="1.5"/><g stroke="#3d6e1a" stroke-width="1" opacity="0.6"><line x1="-22" y1="-5" x2="22" y2="-5"/><line x1="-22" y1="0" x2="22" y2="0"/><line x1="-22" y1="5" x2="22" y2="5"/></g></g>
+<g transform="translate(240 520) rotate(60)"><ellipse cx="0" cy="0" rx="40" ry="20" fill="url(#plantChloro)" stroke="#3d6e1a" stroke-width="1.5"/><g stroke="#3d6e1a" stroke-width="1" opacity="0.6"><line x1="-24" y1="-5" x2="24" y2="-5"/><line x1="-24" y1="0" x2="24" y2="0"/><line x1="-24" y1="5" x2="24" y2="5"/></g></g>
+<g transform="translate(290 780) rotate(-45)"><ellipse cx="0" cy="0" rx="40" ry="20" fill="url(#plantChloro)" stroke="#3d6e1a" stroke-width="1.5"/><g stroke="#3d6e1a" stroke-width="1" opacity="0.6"><line x1="-24" y1="-5" x2="24" y2="-5"/><line x1="-24" y1="0" x2="24" y2="0"/><line x1="-24" y1="5" x2="24" y2="5"/></g></g>
+<g transform="translate(700 790) rotate(25)"><ellipse cx="0" cy="0" rx="42" ry="22" fill="url(#plantChloro)" stroke="#3d6e1a" stroke-width="1.5"/><g stroke="#3d6e1a" stroke-width="1" opacity="0.6"><line x1="-25" y1="-6" x2="25" y2="-6"/><line x1="-25" y1="0" x2="25" y2="0"/><line x1="-25" y1="6" x2="25" y2="6"/></g></g>
+</g>
+<g data-organelle="mitochondria" clip-path="url(#plantCellClip)">
+<ellipse class="mito" cx="420" cy="245" rx="38" ry="16" fill="#ff9f7a" transform="rotate(-20 420 245)"/>
+<ellipse class="mito" cx="250" cy="420" rx="35" ry="15" fill="#ff9f7a" transform="rotate(60 250 420)"/>
+<ellipse class="mito" cx="750" cy="620" rx="40" ry="17" fill="#ff9f7a" transform="rotate(30 750 620)"/>
+</g>
+<g data-organelle="ribosomes" fill="#6d9c2c" clip-path="url(#plantCellClip)">
+<circle cx="200" cy="240" r="4"/><circle cx="220" cy="270" r="3"/><circle cx="180" cy="360" r="4"/><circle cx="800" cy="200" r="4"/><circle cx="830" cy="230" r="3"/><circle cx="240" cy="860" r="4"/><circle cx="800" cy="850" r="3"/><circle cx="380" cy="180" r="3"/>
+</g>
+<g class="reticle-group" transform="translate(300 300)" pointer-events="none">
+<circle class="reticle" r="95"/>
+<line class="reticle" x1="-105" y1="0" x2="-85" y2="0"/>
+<line class="reticle" x1="85" y1="0" x2="105" y2="0"/>
+<line class="reticle" x1="0" y1="-105" x2="0" y2="-85"/>
+<line class="reticle" x1="0" y1="85" x2="0" y2="105"/>
+</g>
+<g class="organelle-label" filter="url(#labelShadowP)" pointer-events="none">
+<text x="300" y="310" text-anchor="middle" font-weight="600" font-size="20">Nucleus</text>
+<text x="520" y="570" text-anchor="middle" font-weight="600" font-size="22" fill="#e8d8ff">Permanent vacuole</text>
+<text x="720" y="245" text-anchor="middle">Chloroplast</text>
+<text x="500" y="112" text-anchor="middle" font-weight="600">Cell wall</text>
+<text x="840" y="178" text-anchor="end">Cell membrane</text>
+<text x="420" y="215" text-anchor="middle">Mitochondria</text>
+<text x="175" y="215" text-anchor="start">Ribosomes</text>
+<text x="185" y="720" text-anchor="start" opacity="0.9">Cytoplasm</text>
+</g>
+</svg>
+</div>
+<div class="cell-wrapper" data-cell-type="bacterial">
+<svg viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="bactCyto" x1="0%" y1="0%" x2="0%" y2="100%">
+<stop offset="0%" stop-color="#ffe0c2" stop-opacity="0.5"/>
+<stop offset="100%" stop-color="#ffb47a" stop-opacity="0.4"/>
+</linearGradient>
+<filter id="cellGlowB"><feGaussianBlur stdDeviation="6" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+<filter id="labelShadowB"><feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#000" flood-opacity="0.9"/></filter>
+<clipPath id="bactCellClip"><path d="M 300 295 L 780 295 C 860 295, 885 340, 885 420 L 885 580 C 885 660, 860 705, 780 705 L 300 705 C 220 705, 195 660, 195 580 L 195 420 C 195 340, 220 295, 300 295 Z"/></clipPath>
+</defs>
+<g data-organelle="flagellum">
+<path d="M 190 500 Q 140 470, 110 500 T 40 490 T -20 505" stroke="var(--bact-b)" stroke-width="6" fill="none" stroke-linecap="round" filter="url(#cellGlowB)"/>
+<circle cx="190" cy="500" r="10" fill="var(--bact-b)"/>
+</g>
+<path data-organelle="cell-wall-bacterial" d="M 300 280 L 780 280 C 870 280, 900 330, 900 420 L 900 580 C 900 670, 870 720, 780 720 L 300 720 C 210 720, 180 670, 180 580 L 180 420 C 180 330, 210 280, 300 280 Z" fill="none" stroke="var(--bact-b)" stroke-width="14" filter="url(#cellGlowB)"/>
+<path data-organelle="cytoplasm" d="M 300 295 L 780 295 C 860 295, 885 340, 885 420 L 885 580 C 885 660, 860 705, 780 705 L 300 705 C 220 705, 195 660, 195 580 L 195 420 C 195 340, 220 295, 300 295 Z" fill="url(#bactCyto)" stroke="none"/>
+<path data-organelle="cell-membrane" d="M 300 300 L 780 300 C 855 300, 880 345, 880 420 L 880 580 C 880 655, 855 700, 780 700 L 300 700 C 225 700, 200 655, 200 580 L 200 420 C 200 345, 225 300, 300 300 Z" fill="none" stroke="#d99456" stroke-width="3" opacity="0.85"/>
+<g data-organelle="circular-dna" clip-path="url(#bactCellClip)">
+<path d="M 430 460 C 380 440, 360 490, 400 530 C 430 570, 520 580, 580 550 C 640 520, 650 460, 600 430 C 560 405, 490 420, 470 450 C 460 465, 450 470, 430 460 Z" fill="none" stroke="var(--chromo-b)" stroke-width="5" stroke-linecap="round" filter="url(#cellGlowB)"/>
+<path d="M 440 470 C 400 455, 390 495, 420 520 C 450 550, 510 560, 560 540 C 610 520, 620 475, 585 455 C 550 440, 495 445, 480 465 Z" fill="none" stroke="var(--chromo-a)" stroke-width="2.5" opacity="0.7"/>
+</g>
+<g data-organelle="plasmid" clip-path="url(#bactCellClip)">
+<circle cx="300" cy="620" r="20" fill="none" stroke="var(--chromo-b)" stroke-width="4"/>
+<circle cx="720" cy="380" r="16" fill="none" stroke="var(--chromo-b)" stroke-width="4"/>
+<circle cx="780" cy="620" r="18" fill="none" stroke="var(--chromo-b)" stroke-width="4"/>
+</g>
+<g data-organelle="ribosomes" fill="#c77a3c" clip-path="url(#bactCellClip)">
+<circle cx="260" cy="400" r="4"/><circle cx="280" cy="440" r="3"/><circle cx="240" cy="460" r="4"/><circle cx="260" cy="500" r="3"/><circle cx="280" cy="550" r="4"/><circle cx="820" cy="440" r="4"/><circle cx="800" cy="480" r="3"/><circle cx="840" cy="520" r="4"/><circle cx="820" cy="560" r="3"/><circle cx="380" cy="620" r="4"/><circle cx="420" cy="650" r="3"/><circle cx="600" cy="640" r="4"/><circle cx="640" cy="665" r="3"/><circle cx="450" cy="370" r="3"/><circle cx="550" cy="360" r="4"/>
+</g>
+<g class="organelle-label" filter="url(#labelShadowB)" pointer-events="none">
+<text x="500" y="505" text-anchor="middle" font-weight="600" font-size="22" fill="#e8d8ff">Circular DNA</text>
+<text x="500" y="262" text-anchor="middle" font-weight="600">Cell wall</text>
+<text x="845" y="330" text-anchor="end">Cell membrane</text>
+<text x="300" y="655" text-anchor="middle" font-weight="600" fill="#e8d8ff">Plasmid</text>
+<text x="260" y="375" text-anchor="middle">Ribosomes</text>
+<text x="95" y="478" text-anchor="middle">Flagellum</text>
+<text x="700" y="670" text-anchor="middle" opacity="0.9">Cytoplasm</text>
+</g>
+</svg>
+</div>
+<div class="cell-wrapper" data-cell-type="compare">
+<svg viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="compPlantCyto" x1="0%" y1="0%" x2="0%" y2="100%">
+<stop offset="0%" stop-color="#e8f5d4" stop-opacity="0.35"/>
+<stop offset="100%" stop-color="#b5d88a" stop-opacity="0.3"/>
+</linearGradient>
+<radialGradient id="compAnimalCyto" cx="50%" cy="50%">
+<stop offset="0%" stop-color="#ffb3cc" stop-opacity="0.45"/>
+<stop offset="100%" stop-color="#ff3d7f" stop-opacity="0.55"/>
+</radialGradient>
+<linearGradient id="compChloro" x1="0%" y1="0%" x2="0%" y2="100%">
+<stop offset="0%" stop-color="#a4d85a"/>
+<stop offset="100%" stop-color="#5d9c1e"/>
+</linearGradient>
+<filter id="compGlow"><feGaussianBlur stdDeviation="4" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+<filter id="compLabelShadow"><feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#000" flood-opacity="0.95"/></filter>
+</defs>
+<!-- Title -->
+<text x="500" y="72" text-anchor="middle" font-family="Instrument Serif, serif" font-size="34" fill="#f2f4ff" font-style="italic">Size Comparison</text>
+<text x="500" y="100" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="#9aa3cf" letter-spacing="3">SHOWN AT TRUE RELATIVE SIZE</text>
+<!-- PLANT CELL: 500 x 500 (represents ~50 micrometres) -->
+<g transform="translate(50, 200)">
+<rect x="0" y="0" width="500" height="500" rx="35" ry="35" fill="none" stroke="var(--plant-b)" stroke-width="18" filter="url(#compGlow)"/>
+<rect x="11" y="11" width="478" height="478" rx="28" ry="28" fill="url(#compPlantCyto)"/>
+<rect x="15" y="15" width="470" height="470" rx="24" ry="24" fill="none" stroke="#7eb03a" stroke-width="2" opacity="0.7"/>
+<ellipse cx="260" cy="280" rx="180" ry="130" fill="#d4c0ef" stroke="#9b7ec7" stroke-width="1.5" opacity="0.55"/>
+<circle cx="125" cy="130" r="45" fill="#4a9eff" opacity="0.9"/>
+<circle cx="125" cy="130" r="45" fill="none" stroke="#7bb8ff" stroke-width="1.5" opacity="0.6"/>
+<g stroke="#3d6e1a" stroke-width="1">
+<ellipse cx="400" cy="110" rx="25" ry="13" fill="url(#compChloro)" transform="rotate(30 400 110)"/>
+<ellipse cx="420" cy="270" rx="23" ry="12" fill="url(#compChloro)" transform="rotate(-20 420 270)"/>
+<ellipse cx="120" cy="395" rx="25" ry="13" fill="url(#compChloro)" transform="rotate(60 120 395)"/>
+<ellipse cx="380" cy="420" rx="24" ry="13" fill="url(#compChloro)" transform="rotate(-45 380 420)"/>
+<ellipse cx="230" cy="425" rx="22" ry="12" fill="url(#compChloro)" transform="rotate(15 230 425)"/>
+</g>
+</g>
+<!-- ANIMAL CELL: 200 x 200 (represents ~20 micrometres) -->
+<g transform="translate(600, 350)">
+<path d="M 100 5 C 140 5, 180 40, 195 90 C 200 130, 175 175, 135 195 C 95 210, 45 190, 20 150 C 0 115, 10 65, 40 30 C 60 15, 80 5, 100 5 Z" fill="url(#compAnimalCyto)" stroke="var(--cell-a)" stroke-width="3.5" filter="url(#compGlow)"/>
+<circle cx="100" cy="105" r="35" fill="#4a9eff" opacity="0.9"/>
+<circle cx="100" cy="105" r="35" fill="none" stroke="#7bb8ff" stroke-width="1.5" opacity="0.6"/>
+<ellipse cx="50" cy="55" rx="12" ry="5" fill="#ff9f7a" transform="rotate(-30 50 55)"/>
+<ellipse cx="150" cy="160" rx="13" ry="5" fill="#ff9f7a" transform="rotate(40 150 160)"/>
+<ellipse cx="50" cy="160" rx="11" ry="4" fill="#ff9f7a" transform="rotate(60 50 160)"/>
+<ellipse cx="160" cy="55" rx="11" ry="4" fill="#ff9f7a" transform="rotate(-20 160 55)"/>
+</g>
+<!-- BACTERIAL CELL: 20 x 18 (represents ~2 micrometres) — tiny by design -->
+<g transform="translate(830, 441)">
+<rect x="0" y="0" width="20" height="18" rx="4" ry="4" fill="#ffb47a" stroke="var(--bact-b)" stroke-width="1.5" filter="url(#compGlow)"/>
+<circle cx="10" cy="9" r="3" fill="none" stroke="var(--chromo-b)" stroke-width="0.8"/>
+</g>
+<!-- Pointer line from bacterial to its label -->
+<line x1="854" y1="450" x2="888" y2="450" stroke="#ffb47a" stroke-width="1.5" opacity="0.8"/>
+<circle cx="854" cy="450" r="2" fill="#ffb47a"/>
+<!-- LABELS -->
+<g font-family="IBM Plex Sans, sans-serif" filter="url(#compLabelShadow)">
+<text x="300" y="755" text-anchor="middle" font-size="26" font-weight="600" fill="#9ed060">Plant cell</text>
+<text x="300" y="784" text-anchor="middle" font-size="17" fill="#f2f4ff">~50 micrometres</text>
+<text x="700" y="755" text-anchor="middle" font-size="22" font-weight="600" fill="#ff89b4">Animal cell</text>
+<text x="700" y="782" text-anchor="middle" font-size="15" fill="#f2f4ff">~20 micrometres</text>
+<text x="893" y="446" text-anchor="start" font-size="14" font-weight="600" fill="#ffb47a">Bacterial cell</text>
+<text x="893" y="463" text-anchor="start" font-size="12" fill="#f2f4ff" opacity="0.85">~2 micrometres</text>
+</g>
+<!-- Fun fact at bottom -->
+<g font-family="Instrument Serif, serif" fill="#9aa3cf">
+<text x="500" y="880" text-anchor="middle" font-size="18" font-style="italic">~25 bacteria in a line could fit across one animal cell</text>
+<text x="500" y="908" text-anchor="middle" font-size="18" font-style="italic">and ~625 bacteria across one plant cell</text>
+</g>
+</svg>
+</div>
+</div>
+<div class="layer" data-level="1">
+<svg viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<radialGradient id="nucGrad" cx="50%" cy="50%">
+<stop offset="0%" stop-color="#a8d0ff" stop-opacity="0.3"/>
+<stop offset="60%" stop-color="#4a9eff" stop-opacity="0.25"/>
+<stop offset="100%" stop-color="#1b4b9c" stop-opacity="0.55"/>
+</radialGradient>
+<radialGradient id="nucleolusGrad" cx="40%" cy="40%">
+<stop offset="0%" stop-color="#5a8fd6"/>
+<stop offset="60%" stop-color="#2d5fa8"/>
+<stop offset="100%" stop-color="#0f2a5e"/>
+</radialGradient>
+<filter id="nucGlow"><feGaussianBlur stdDeviation="6" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+<filter id="nucLabelShadow"><feDropShadow dx="0" dy="0" stdDeviation="3" flood-color="#000" flood-opacity="0.95"/></filter>
+</defs>
+<!-- Nuclear envelope: outer double membrane -->
+<circle cx="500" cy="500" r="400" fill="url(#nucGrad)" stroke="#7bb8ff" stroke-width="6" filter="url(#nucGlow)"/>
+<circle cx="500" cy="500" r="388" fill="none" stroke="#7bb8ff" stroke-width="2" opacity="0.7"/>
+<!-- Nuclear pores (gaps in the membrane where molecules pass through) -->
+<g fill="#7bb8ff" opacity="0.9">
+<circle cx="500" cy="96" r="7"/><circle cx="700" cy="148" r="6"/><circle cx="850" cy="320" r="7"/><circle cx="902" cy="500" r="7"/><circle cx="850" cy="680" r="6"/><circle cx="700" cy="852" r="7"/><circle cx="500" cy="904" r="7"/><circle cx="300" cy="852" r="6"/><circle cx="150" cy="680" r="7"/><circle cx="98" cy="500" r="7"/><circle cx="150" cy="320" r="6"/><circle cx="300" cy="148" r="7"/>
+</g>
+<!-- Nucleolus: dense region where ribosomes are made -->
+<ellipse cx="340" cy="380" rx="95" ry="75" fill="url(#nucleolusGrad)" filter="url(#nucGlow)"/>
+<ellipse cx="340" cy="380" rx="95" ry="75" fill="none" stroke="#5a8fd6" stroke-width="2" opacity="0.7"/>
+<circle cx="320" cy="360" r="18" fill="#0f2a5e" opacity="0.55"/>
+<circle cx="370" cy="395" r="14" fill="#0f2a5e" opacity="0.55"/>
+<circle cx="380" cy="350" r="10" fill="#0f2a5e" opacity="0.5"/>
+<circle cx="335" cy="410" r="8" fill="#0f2a5e" opacity="0.5"/>
+<circle cx="300" cy="375" r="6" fill="#0f2a5e" opacity="0.4"/>
+<!-- Chromosomes scattered throughout (there are 46 in a human cell; showing a representative few) -->
+<g transform="translate(640 230) rotate(20)">
+<path d="M -32 -40 Q -24 -16, -6 -4 Q 8 4, 24 24 Q 32 36, 28 44 L 20 48 Q 6 36, -4 20 Q -16 6, -32 -4 L -40 -16 Q -44 -28, -36 -38 Z" fill="var(--chromo-a)" opacity="0.9"/>
+<path d="M 32 -40 Q 24 -16, 6 -4 Q -8 4, -24 24 Q -32 36, -28 44 L -20 48 Q -6 36, 4 20 Q 16 6, 32 -4 L 40 -16 Q 44 -28, 36 -38 Z" fill="var(--chromo-a)" opacity="0.9"/>
+<circle cx="0" cy="0" r="5" fill="#4a1575"/>
+</g>
+<g transform="translate(770 460) rotate(-35)">
+<path d="M -32 -40 Q -24 -16, -6 -4 Q 8 4, 24 24 Q 32 36, 28 44 L 20 48 Q 6 36, -4 20 Q -16 6, -32 -4 L -40 -16 Q -44 -28, -36 -38 Z" fill="var(--chromo-a)" opacity="0.9"/>
+<path d="M 32 -40 Q 24 -16, 6 -4 Q -8 4, -24 24 Q -32 36, -28 44 L -20 48 Q -6 36, 4 20 Q 16 6, 32 -4 L 40 -16 Q 44 -28, 36 -38 Z" fill="var(--chromo-a)" opacity="0.9"/>
+<circle cx="0" cy="0" r="5" fill="#4a1575"/>
+</g>
+<g transform="translate(260 640) rotate(60)">
+<path d="M -32 -40 Q -24 -16, -6 -4 Q 8 4, 24 24 Q 32 36, 28 44 L 20 48 Q 6 36, -4 20 Q -16 6, -32 -4 L -40 -16 Q -44 -28, -36 -38 Z" fill="var(--chromo-a)" opacity="0.9"/>
+<path d="M 32 -40 Q 24 -16, 6 -4 Q -8 4, -24 24 Q -32 36, -28 44 L -20 48 Q -6 36, 4 20 Q 16 6, 32 -4 L 40 -16 Q 44 -28, 36 -38 Z" fill="var(--chromo-a)" opacity="0.9"/>
+<circle cx="0" cy="0" r="5" fill="#4a1575"/>
+</g>
+<g transform="translate(520 770) rotate(-20)">
+<path d="M -32 -40 Q -24 -16, -6 -4 Q 8 4, 24 24 Q 32 36, 28 44 L 20 48 Q 6 36, -4 20 Q -16 6, -32 -4 L -40 -16 Q -44 -28, -36 -38 Z" fill="var(--chromo-a)" opacity="0.9"/>
+<path d="M 32 -40 Q 24 -16, 6 -4 Q -8 4, -24 24 Q -32 36, -28 44 L -20 48 Q -6 36, 4 20 Q 16 6, 32 -4 L 40 -16 Q 44 -28, 36 -38 Z" fill="var(--chromo-a)" opacity="0.9"/>
+<circle cx="0" cy="0" r="5" fill="#4a1575"/>
+</g>
+<g transform="translate(720 670) rotate(40)">
+<path d="M -32 -40 Q -24 -16, -6 -4 Q 8 4, 24 24 Q 32 36, 28 44 L 20 48 Q 6 36, -4 20 Q -16 6, -32 -4 L -40 -16 Q -44 -28, -36 -38 Z" fill="var(--chromo-a)" opacity="0.9"/>
+<path d="M 32 -40 Q 24 -16, 6 -4 Q -8 4, -24 24 Q -32 36, -28 44 L -20 48 Q -6 36, 4 20 Q 16 6, 32 -4 L 40 -16 Q 44 -28, 36 -38 Z" fill="var(--chromo-a)" opacity="0.9"/>
+<circle cx="0" cy="0" r="5" fill="#4a1575"/>
+</g>
+<g transform="translate(210 490) rotate(-75)">
+<path d="M -26 -32 Q -20 -12, -5 -3 Q 6 3, 20 20 Q 26 30, 22 36 L 16 40 Q 5 30, -3 16 Q -13 5, -26 -3 L -32 -12 Q -36 -22, -30 -30 Z" fill="var(--chromo-a)" opacity="0.8"/>
+<path d="M 26 -32 Q 20 -12, 5 -3 Q -6 3, -20 20 Q -26 30, -22 36 L -16 40 Q -5 30, 3 16 Q 13 5, 26 -3 L 32 -12 Q 36 -22, 30 -30 Z" fill="var(--chromo-a)" opacity="0.8"/>
+<circle cx="0" cy="0" r="4" fill="#4a1575"/>
+</g>
+<!-- HIGHLIGHTED chromosome — the one we're zooming into (brighter, with glow) -->
+<g transform="translate(560 540)" filter="url(#nucGlow)">
+<path d="M -40 -50 Q -30 -20, -8 -5 Q 10 5, 30 30 Q 40 45, 35 55 L 25 60 Q 8 45, -5 25 Q -20 10, -40 -5 L -50 -20 Q -55 -35, -45 -48 Z" fill="#e8c7ff"/>
+<path d="M 40 -50 Q 30 -20, 8 -5 Q -10 5, -30 30 Q -40 45, -35 55 L -25 60 Q -8 45, 5 25 Q 20 10, 40 -5 L 50 -20 Q 55 -35, 45 -48 Z" fill="#e8c7ff"/>
+<circle cx="0" cy="0" r="6" fill="#4a1575"/>
+</g>
+<!-- Labels -->
+<g filter="url(#nucLabelShadow)" pointer-events="none" font-family="IBM Plex Sans, sans-serif" fill="#f2f4ff">
+<text x="340" y="385" text-anchor="middle" font-weight="600" font-size="22">Nucleolus</text>
+<text x="560" y="455" text-anchor="middle" font-weight="600" font-size="22">Chromosome</text>
+<text x="500" y="78" text-anchor="middle" font-size="16" opacity="0.9">Nuclear envelope</text>
+<text x="850" y="310" text-anchor="middle" font-size="13" opacity="0.8" font-style="italic">Nuclear pore</text>
+</g>
+<!-- Target reticle around highlighted chromosome -->
+<g class="reticle-group" transform="translate(560 540)">
+<circle class="reticle" r="90"/>
+<line class="reticle" x1="-100" y1="0" x2="-80" y2="0"/>
+<line class="reticle" x1="80" y1="0" x2="100" y2="0"/>
+<line class="reticle" x1="0" y1="-100" x2="0" y2="-80"/>
+<line class="reticle" x1="0" y1="80" x2="0" y2="100"/>
+</g>
+</svg>
+</div>
+<div class="layer" data-level="2">
+<svg viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="chromoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+<stop offset="0%" stop-color="#e0aaff"/>
+<stop offset="50%" stop-color="#c77dff"/>
+<stop offset="100%" stop-color="#7b2cbf"/>
+</linearGradient>
+<filter id="chromoGlow"><feGaussianBlur stdDeviation="10" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+<pattern id="coilTexture" x="0" y="0" width="14" height="14" patternUnits="userSpaceOnUse">
+<circle cx="7" cy="7" r="2" fill="#4a1575" opacity="0.4"/>
+</pattern>
+</defs>
+<g transform="translate(500 500)">
+<path d="M -60 -320 Q -80 -200, -40 -80 Q -20 -30, 0 -20 L 20 0 L -10 10 Q -30 -20, -60 -60 Q -120 -150, -140 -280 Q -130 -340, -100 -340 Z" fill="url(#chromoGrad)" stroke="#4a1575" stroke-width="2" filter="url(#chromoGlow)"/>
+<path d="M -60 -320 Q -80 -200, -40 -80 Q -20 -30, 0 -20 L 20 0 L -10 10 Q -30 -20, -60 -60 Q -120 -150, -140 -280 Q -130 -340, -100 -340 Z" fill="url(#coilTexture)" opacity="0.5"/>
+<path d="M 60 -320 Q 80 -200, 40 -80 Q 20 -30, 0 -20 L -20 0 L 10 10 Q 30 -20, 60 -60 Q 120 -150, 140 -280 Q 130 -340, 100 -340 Z" fill="url(#chromoGrad)" stroke="#4a1575" stroke-width="2" filter="url(#chromoGlow)"/>
+<path d="M 60 -320 Q 80 -200, 40 -80 Q 20 -30, 0 -20 L -20 0 L 10 10 Q 30 -20, 60 -60 Q 120 -150, 140 -280 Q 130 -340, 100 -340 Z" fill="url(#coilTexture)" opacity="0.5"/>
+<path d="M -60 320 Q -80 200, -40 80 Q -20 30, 0 20 L 20 0 L -10 -10 Q -30 20, -60 60 Q -120 150, -140 280 Q -130 340, -100 340 Z" fill="url(#chromoGrad)" stroke="#4a1575" stroke-width="2" filter="url(#chromoGlow)"/>
+<path d="M -60 320 Q -80 200, -40 80 Q -20 30, 0 20 L 20 0 L -10 -10 Q -30 20, -60 60 Q -120 150, -140 280 Q -130 340, -100 340 Z" fill="url(#coilTexture)" opacity="0.5"/>
+<path d="M 60 320 Q 80 200, 40 80 Q 20 30, 0 20 L -20 0 L 10 -10 Q 30 20, 60 60 Q 120 150, 140 280 Q 130 340, 100 340 Z" fill="url(#chromoGrad)" stroke="#4a1575" stroke-width="2" filter="url(#chromoGlow)"/>
+<path d="M 60 320 Q 80 200, 40 80 Q 20 30, 0 20 L -20 0 L 10 -10 Q 30 20, 60 60 Q 120 150, 140 280 Q 130 340, 100 340 Z" fill="url(#coilTexture)" opacity="0.5"/>
+<ellipse cx="0" cy="0" rx="22" ry="12" fill="#3d0e63"/>
+<ellipse cx="0" cy="0" rx="18" ry="9" fill="#6a1e9a"/>
+<g stroke="#4a1575" stroke-width="1.2" opacity="0.4">
+<line x1="-45" y1="-260" x2="-100" y2="-260"/><line x1="-50" y1="-200" x2="-110" y2="-200"/><line x1="-42" y1="-140" x2="-90" y2="-140"/><line x1="45" y1="-260" x2="100" y2="-260"/><line x1="50" y1="-200" x2="110" y2="-200"/><line x1="42" y1="-140" x2="90" y2="-140"/><line x1="-45" y1="260" x2="-100" y2="260"/><line x1="-50" y1="200" x2="-110" y2="200"/><line x1="-42" y1="140" x2="-90" y2="140"/><line x1="45" y1="260" x2="100" y2="260"/><line x1="50" y1="200" x2="110" y2="200"/><line x1="42" y1="140" x2="90" y2="140"/>
+</g>
+<rect x="65" y="-220" width="55" height="28" fill="var(--gene-a)" opacity="0.9" rx="3" filter="url(#chromoGlow)"/>
+<rect x="65" y="-220" width="55" height="28" fill="none" stroke="#fff" stroke-width="1.5" rx="3"/>
+</g>
+<g class="reticle-group" transform="translate(593 294)">
+<circle class="reticle" r="50"/>
+<line class="reticle" x1="-60" y1="0" x2="-45" y2="0"/>
+<line class="reticle" x1="45" y1="0" x2="60" y2="0"/>
+<line class="reticle" x1="0" y1="-60" x2="0" y2="-45"/>
+<line class="reticle" x1="0" y1="45" x2="0" y2="60"/>
+</g>
+</svg>
+</div>
+<div class="layer" data-level="3">
+<svg viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<filter id="geneGlow"><feGaussianBlur stdDeviation="6" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<g opacity="0.65">
+<ellipse cx="500" cy="100" rx="110" ry="40" fill="var(--chromo-a)" filter="url(#geneGlow)"/>
+<g stroke="#4a1575" stroke-width="1.2" opacity="0.5">
+<line x1="395" y1="90" x2="605" y2="90"/>
+<line x1="400" y1="110" x2="600" y2="110"/>
+</g>
+</g>
+<g transform="translate(500 500)">
+<path d="M -220 -300 Q -180 -280, -170 -250 Q -160 -220, -200 -200 Q -240 -180, -200 -150 Q -160 -120, -190 -90 Q -220 -60, -180 -30 Q -140 0, -180 30 Q -220 60, -180 90 Q -140 120, -200 150 Q -260 180, -200 210 Q -140 240, -190 280 Q -220 300, -190 320" stroke="var(--gene-b)" stroke-width="8" fill="none" stroke-linecap="round" filter="url(#geneGlow)"/>
+<path d="M 220 -300 Q 180 -280, 170 -250 Q 160 -220, 200 -200 Q 240 -180, 200 -150 Q 160 -120, 190 -90 Q 220 -60, 180 -30 Q 140 0, 180 30 Q 220 60, 180 90 Q 140 120, 200 150 Q 260 180, 200 210 Q 140 240, 190 280 Q 220 300, 190 320" stroke="var(--gene-b)" stroke-width="8" fill="none" stroke-linecap="round" filter="url(#geneGlow)"/>
+<g stroke-width="6" stroke-linecap="round">
+<line x1="-170" y1="-250" x2="170" y2="-250" stroke="#d4a574" opacity="0.5"/>
+<line x1="-200" y1="-200" x2="200" y2="-200" stroke="#d4a574" opacity="0.5"/>
+<line x1="-200" y1="-150" x2="200" y2="-150" stroke="#d4a574" opacity="0.5"/>
+<line x1="-190" y1="-90" x2="190" y2="-90" stroke="#d4a574" opacity="0.5"/>
+<line x1="-180" y1="-30" x2="180" y2="-30" stroke="var(--gene-a)" opacity="1" stroke-width="8"/>
+<line x1="-180" y1="30" x2="180" y2="30" stroke="var(--gene-a)" opacity="1" stroke-width="8"/>
+<line x1="-180" y1="90" x2="180" y2="90" stroke="var(--gene-a)" opacity="1" stroke-width="8"/>
+<line x1="-200" y1="150" x2="200" y2="150" stroke="var(--gene-a)" opacity="1" stroke-width="8"/>
+<line x1="-200" y1="210" x2="200" y2="210" stroke="var(--gene-a)" opacity="1" stroke-width="8"/>
+<line x1="-190" y1="280" x2="190" y2="280" stroke="#d4a574" opacity="0.5"/>
+</g>
+<g stroke="#fff" stroke-width="2" fill="none" opacity="0.9">
+<path d="M -280 -50 L -300 -50 L -300 230 L -280 230"/>
+<path d="M 280 -50 L 300 -50 L 300 230 L 280 230"/>
+</g>
+<text x="0" y="-80" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="22" font-weight="500" fill="#fff" letter-spacing="4">GENE</text>
+</g>
+<g class="reticle-group" transform="translate(500 500)">
+<circle class="reticle" r="80"/>
+<line class="reticle" x1="-90" y1="0" x2="-75" y2="0"/>
+<line class="reticle" x1="75" y1="0" x2="90" y2="0"/>
+<line class="reticle" x1="0" y1="-90" x2="0" y2="-75"/>
+<line class="reticle" x1="0" y1="75" x2="0" y2="90"/>
+</g>
+</svg>
+</div>
+<div class="layer" data-level="4">
+<svg viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<filter id="dnaGlow"><feGaussianBlur stdDeviation="4" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+<linearGradient id="backbone1" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#7ad4ff"/><stop offset="100%" stop-color="#4a9eff"/></linearGradient>
+<linearGradient id="backbone2" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#ff9ec0"/><stop offset="100%" stop-color="#ff6b9d"/></linearGradient>
+</defs>
+<g class="helix-glow">
+<path d="M 350 80 C 450 140, 650 140, 650 200 C 650 260, 350 260, 350 320 C 350 380, 650 380, 650 440 C 650 500, 350 500, 350 560 C 350 620, 650 620, 650 680 C 650 740, 350 740, 350 800 C 350 860, 450 920, 500 920" stroke="url(#backbone1)" stroke-width="14" fill="none" stroke-linecap="round" filter="url(#dnaGlow)"/>
+<path d="M 650 80 C 550 140, 350 140, 350 200 C 350 260, 650 260, 650 320 C 650 380, 350 380, 350 440 C 350 500, 650 500, 650 560 C 650 620, 350 620, 350 680 C 350 740, 650 740, 650 800 C 650 860, 550 920, 500 920" stroke="url(#backbone2)" stroke-width="14" fill="none" stroke-linecap="round" filter="url(#dnaGlow)"/>
+</g>
+<g><line x1="380" y1="110" x2="500" y2="110" stroke="var(--base-a)" stroke-width="10" stroke-linecap="round"/><line x1="500" y1="110" x2="620" y2="110" stroke="var(--base-t)" stroke-width="10" stroke-linecap="round"/><text x="365" y="116" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="20" font-weight="600" fill="var(--base-a)">A</text><text x="635" y="116" text-anchor="start" font-family="IBM Plex Mono, monospace" font-size="20" font-weight="600" fill="var(--base-t)">T</text></g>
+<g><line x1="390" y1="200" x2="500" y2="200" stroke="var(--base-c)" stroke-width="10" stroke-linecap="round"/><line x1="500" y1="200" x2="610" y2="200" stroke="var(--base-g)" stroke-width="10" stroke-linecap="round"/><text x="375" y="206" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="20" font-weight="600" fill="var(--base-c)">C</text><text x="625" y="206" text-anchor="start" font-family="IBM Plex Mono, monospace" font-size="20" font-weight="600" fill="var(--base-g)">G</text></g>
+<g><line x1="390" y1="290" x2="500" y2="290" stroke="var(--base-t)" stroke-width="10" stroke-linecap="round"/><line x1="500" y1="290" x2="610" y2="290" stroke="var(--base-a)" stroke-width="10" stroke-linecap="round"/><text x="375" y="296" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="20" font-weight="600" fill="var(--base-t)">T</text><text x="625" y="296" text-anchor="start" font-family="IBM Plex Mono, monospace" font-size="20" font-weight="600" fill="var(--base-a)">A</text></g>
+<g><line x1="390" y1="380" x2="500" y2="380" stroke="var(--base-g)" stroke-width="10" stroke-linecap="round"/><line x1="500" y1="380" x2="610" y2="380" stroke="var(--base-c)" stroke-width="10" stroke-linecap="round"/><text x="375" y="386" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="20" font-weight="600" fill="var(--base-g)">G</text><text x="625" y="386" text-anchor="start" font-family="IBM Plex Mono, monospace" font-size="20" font-weight="600" fill="var(--base-c)">C</text></g>
+<g filter="url(#dnaGlow)"><line x1="380" y1="470" x2="500" y2="470" stroke="var(--base-a)" stroke-width="14" stroke-linecap="round"/><line x1="500" y1="470" x2="620" y2="470" stroke="var(--base-t)" stroke-width="14" stroke-linecap="round"/><text x="360" y="478" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="26" font-weight="700" fill="var(--base-a)">A</text><text x="640" y="478" text-anchor="start" font-family="IBM Plex Mono, monospace" font-size="26" font-weight="700" fill="var(--base-t)">T</text><rect x="340" y="455" width="320" height="30" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.5" rx="15"/></g>
+<g><line x1="390" y1="560" x2="500" y2="560" stroke="var(--base-c)" stroke-width="10" stroke-linecap="round"/><line x1="500" y1="560" x2="610" y2="560" stroke="var(--base-g)" stroke-width="10" stroke-linecap="round"/><text x="375" y="566" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="20" font-weight="600" fill="var(--base-c)">C</text><text x="625" y="566" text-anchor="start" font-family="IBM Plex Mono, monospace" font-size="20" font-weight="600" fill="var(--base-g)">G</text></g>
+<g><line x1="390" y1="650" x2="500" y2="650" stroke="var(--base-t)" stroke-width="10" stroke-linecap="round"/><line x1="500" y1="650" x2="610" y2="650" stroke="var(--base-a)" stroke-width="10" stroke-linecap="round"/><text x="375" y="656" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="20" font-weight="600" fill="var(--base-t)">T</text><text x="625" y="656" text-anchor="start" font-family="IBM Plex Mono, monospace" font-size="20" font-weight="600" fill="var(--base-a)">A</text></g>
+<g><line x1="390" y1="740" x2="500" y2="740" stroke="var(--base-g)" stroke-width="10" stroke-linecap="round"/><line x1="500" y1="740" x2="610" y2="740" stroke="var(--base-c)" stroke-width="10" stroke-linecap="round"/><text x="375" y="746" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="20" font-weight="600" fill="var(--base-g)">G</text><text x="625" y="746" text-anchor="start" font-family="IBM Plex Mono, monospace" font-size="20" font-weight="600" fill="var(--base-c)">C</text></g>
+<g><line x1="380" y1="830" x2="500" y2="830" stroke="var(--base-a)" stroke-width="10" stroke-linecap="round"/><line x1="500" y1="830" x2="620" y2="830" stroke="var(--base-t)" stroke-width="10" stroke-linecap="round"/><text x="365" y="836" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="20" font-weight="600" fill="var(--base-a)">A</text><text x="635" y="836" text-anchor="start" font-family="IBM Plex Mono, monospace" font-size="20" font-weight="600" fill="var(--base-t)">T</text></g>
+<g transform="translate(500 980)" text-anchor="middle"><text font-family="IBM Plex Mono, monospace" font-size="13" fill="#9aa3cf" letter-spacing="2"><tspan fill="var(--base-a)">A</tspan><tspan fill="#9aa3cf"> PAIRS WITH </tspan><tspan fill="var(--base-t)">T</tspan><tspan fill="#9aa3cf"> · </tspan><tspan fill="var(--base-c)">C</tspan><tspan fill="#9aa3cf"> PAIRS WITH </tspan><tspan fill="var(--base-g)">G</tspan></text></g>
+</svg>
+</div>
+</div>
+<div class="hud">
+<div class="scale-bar"><span class="label">Scale</span><span class="value" id="scaleValue">~20 micrometres</span></div>
+<div class="level-name"><span class="num" id="levelNum">01 / 05</span><span class="current" id="levelTitle">Animal Cell</span></div>
+<div class="cell-toggle visible" id="cellToggle">
+<button class="cell-btn active" data-cell="animal">Animal</button>
+<button class="cell-btn" data-cell="plant">Plant</button>
+<button class="cell-btn" data-cell="bacterial">Bacterial</button>
+<button class="cell-btn" data-cell="compare">Compare</button>
+</div>
+<div class="help-hint">Scroll · Buttons · Space to zoom<span>Click any labelled organelle for info</span></div>
+<div class="info-card" id="infoCard">
+<h1 id="infoTitle">The <em>Animal Cell</em></h1>
+<p id="infoText">All animals are made of cells. Cells contain tiny structures called organelles, each with a different job. Click any labelled organelle to learn more.</p>
+<span class="hint-note" id="infoHint" style="display:none"></span>
+</div>
+<div class="progress">
+<span class="progress-label">Zoom Journey</span>
+<div class="progress-dots" id="progressDots">
+<button class="dot active" data-level="0" aria-label="Cell"></button>
+<button class="dot" data-level="1" aria-label="Nucleus"></button>
+<button class="dot" data-level="2" aria-label="Chromosome"></button>
+<button class="dot" data-level="3" aria-label="Gene"></button>
+<button class="dot" data-level="4" aria-label="DNA"></button>
+</div>
+</div>
+<div class="controls">
+<button class="btn" id="zoomOutBtn" aria-label="Zoom out" disabled>
+<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/></svg>
+Zoom Out
+</button>
+<button class="btn" id="zoomInBtn" aria-label="Zoom in">
+Zoom In
+<svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+</button>
+</div>
+</div>
+<div class="popup-backdrop" id="popupBackdrop"></div>
+<div class="organelle-popup" id="organellePopup" role="dialog" aria-modal="true" aria-labelledby="popupName">
+<button class="popup-close" id="popupClose" aria-label="Close">×</button>
+<div class="popup-kicker" id="popupKicker">Organelle</div>
+<h2 class="popup-name" id="popupName">Nucleus</h2>
+<div class="popup-tagline" id="popupTagline">Control centre of the cell</div>
+<p class="popup-function" id="popupFunction"></p>
+<div class="popup-badges" id="popupBadges"></div>
+</div>
+<script>
+const levels=[
+{title:'The <em>Animal Cell</em>',levelName:'Animal Cell',text:'All animals are made of cells. Cells contain tiny structures called organelles, each with a different job. Click any labelled organelle to learn more.',accent:'var(--cell-a)',canZoom:true},
+{title:'The <em>Nucleus</em>',levelName:'Nucleus',scale:'~6 micrometres',text:'The nucleus controls the activity of the cell. It contains DNA \u2014 the genetic instructions \u2014 packaged into structures called chromosomes.',accent:'var(--nucleus-a)',canZoom:true},
+{title:'A <em>Chromosome</em>',levelName:'Chromosome',scale:'~5 micrometres',text:'A chromosome is a long strand of DNA, tightly coiled up so it fits inside the nucleus. Human body cells contain 46 chromosomes (23 pairs).',accent:'var(--chromo-a)',canZoom:true},
+{title:'A <em>Gene</em>',levelName:'Gene',scale:'~10,000 bases',text:'A gene is a short section of DNA that codes for a characteristic \u2014 like eye colour, blood group, or the shape of your earlobes. One chromosome contains thousands of genes.',accent:'var(--gene-a)',canZoom:true},
+{title:'<em>DNA</em> Bases',levelName:'DNA',scale:'~2 nanometres',text:'DNA has a double helix structure \u2014 two strands twisted around each other like a spiral staircase. The \u201Crungs\u201D are pairs of bases: A pairs with T, and C pairs with G. The order of these bases is the genetic code.',accent:'var(--base-a)',canZoom:false}
+];
+
+const cellTypes={
+animal:{title:'The <em>Animal Cell</em>',levelName:'Animal Cell',scale:'~20 micrometres',text:'All animals are made of cells. Cells contain tiny structures called organelles, each with a different job. Click any labelled organelle to learn more.',accent:'var(--cell-a)',canZoom:true},
+plant:{title:'The <em>Plant Cell</em>',levelName:'Plant Cell',scale:'~50 micrometres',text:'Plant cells have everything animal cells have, plus three extras: a cell wall, chloroplasts, and a permanent vacuole. Click any labelled organelle to learn more.',accent:'var(--plant-a)',canZoom:true},
+bacterial:{title:'A <em>Bacterial Cell</em>',levelName:'Bacterial Cell',scale:'~2 micrometres',text:'Bacteria are prokaryotes \u2014 much smaller and simpler than animal or plant cells. They have no nucleus. Their DNA floats free in the cytoplasm as a single loop.',accent:'var(--bact-a)',canZoom:false,hint:'No nucleus \u2014 switch to Animal or Plant to zoom further'},
+compare:{title:'Size <em>Comparison</em>',levelName:'Comparison',scale:'2\u201350 micrometres',text:'Cells vary hugely in size. Plant cells are the largest, animal cells are medium, and bacterial cells are tiny \u2014 roughly 10\u00D7 smaller than animal cells and 25\u00D7 smaller than plant cells.',accent:'#e0e5ff',canZoom:false,hint:'Comparison view \u2014 switch to Animal, Plant, or Bacterial to explore a single cell'}
+};
+
+const organelles={
+'nucleus':{name:'Nucleus',tagline:'Control centre of the cell',function:'Contains the DNA, which is organised into chromosomes. The nucleus controls all the activities of the cell by using the genetic information in the DNA to decide which proteins to make.',foundIn:['animal','plant'],accent:'var(--nucleus-a)'},
+'cytoplasm':{name:'Cytoplasm',tagline:'Jelly-like fluid filling the cell',function:'A watery, jelly-like substance where most of the cell\u2019s chemical reactions happen. It fills the space inside the cell membrane and holds all the other organelles in place.',foundIn:['animal','plant','bacterial'],accent:'var(--ink)'},
+'cell-membrane':{name:'Cell membrane',tagline:'Controls what enters and leaves',function:'A thin, flexible layer around the cell. It controls which substances can pass in and out \u2014 letting useful things (like oxygen and glucose) in, and letting waste (like carbon dioxide) out.',foundIn:['animal','plant','bacterial'],accent:'var(--cell-a)'},
+'mitochondria':{name:'Mitochondria',tagline:'Powerhouse of the cell',function:'Where aerobic respiration happens. Mitochondria release energy from glucose so the cell can use it for all its activities. Cells that need lots of energy (like muscle cells) have many more mitochondria than other cells.',foundIn:['animal','plant'],accent:'#ff9f7a'},
+'ribosomes':{name:'Ribosomes',tagline:'Protein factories',function:'Tiny structures where proteins are made (protein synthesis). They read the genetic instructions from the DNA and build proteins from amino acids. Bacterial ribosomes are smaller than those in animal or plant cells.',foundIn:['animal','plant','bacterial'],accent:'#ffd6e4'},
+'cell-wall-plant':{name:'Cell wall',tagline:'Rigid outer layer of cellulose',function:'A tough, rigid layer outside the cell membrane, made of cellulose. It gives the plant cell its box-like shape and supports the cell so it doesn\u2019t burst when it takes in water.',foundIn:['plant'],accent:'var(--plant-a)'},
+'chloroplast':{name:'Chloroplast',tagline:'Where photosynthesis happens',function:'Contains a green pigment called chlorophyll, which absorbs light energy. Chloroplasts use this energy to make glucose from carbon dioxide and water \u2014 this is photosynthesis.',foundIn:['plant'],accent:'var(--plant-a)'},
+'vacuole':{name:'Permanent vacuole',tagline:'Large sac filled with cell sap',function:'A large, permanent space inside plant cells, filled with a watery liquid called cell sap. When full, it pushes against the cell wall and keeps the cell firm (turgid) \u2014 this is what keeps plants upright.',foundIn:['plant'],accent:'#c0a3e0'},
+'cell-wall-bacterial':{name:'Cell wall',tagline:'Rigid outer layer',function:'Surrounds and protects the bacterial cell, giving it a fixed shape. Bacterial cell walls are made of a different substance to plant cell walls (not cellulose). Many antibiotics work by attacking the bacterial cell wall.',foundIn:['bacterial'],accent:'var(--bact-a)'},
+'circular-dna':{name:'Circular DNA',tagline:'A single loop of genetic material',function:'The main DNA of a bacterium, floating freely in the cytoplasm as one long loop. Bacteria have NO nucleus \u2014 this is the key difference between prokaryotes (bacteria) and eukaryotes (animals, plants).',foundIn:['bacterial'],accent:'var(--chromo-a)'},
+'plasmid':{name:'Plasmid',tagline:'Small ring of extra DNA',function:'Small, circular pieces of DNA separate from the main chromosome. Plasmids carry extra genes (for example, genes for antibiotic resistance) and can be swapped between bacteria.',foundIn:['bacterial'],accent:'var(--chromo-a)'},
+'flagellum':{name:'Flagellum',tagline:'Whip-like tail for movement',function:'A long, thin tail that spins like a propeller to move the bacterium through liquid. Not all bacteria have a flagellum, and some have several.',foundIn:['bacterial'],accent:'var(--bact-a)'}
+};
+
+let currentLevel=0;
+let currentCellType='animal';
+let isTransitioning=false;
+let isPopupOpen=false;
+const TRANSITION_LOCK=650;
+
+const layersEls=Array.from(document.querySelectorAll('.layer'));
+const cellWrappers=Array.from(document.querySelectorAll('.cell-wrapper'));
+const infoCard=document.getElementById('infoCard');
+const infoTitle=document.getElementById('infoTitle');
+const infoText=document.getElementById('infoText');
+const infoHint=document.getElementById('infoHint');
+const scaleValue=document.getElementById('scaleValue');
+const levelNum=document.getElementById('levelNum');
+const levelTitle=document.getElementById('levelTitle');
+const zoomInBtn=document.getElementById('zoomInBtn');
+const zoomOutBtn=document.getElementById('zoomOutBtn');
+const dots=Array.from(document.querySelectorAll('.dot'));
+const cellToggle=document.getElementById('cellToggle');
+const cellBtns=Array.from(document.querySelectorAll('.cell-btn'));
+const popup=document.getElementById('organellePopup');
+const popupBackdrop=document.getElementById('popupBackdrop');
+const popupClose=document.getElementById('popupClose');
+const popupKicker=document.getElementById('popupKicker');
+const popupName=document.getElementById('popupName');
+const popupTagline=document.getElementById('popupTagline');
+const popupFunction=document.getElementById('popupFunction');
+const popupBadges=document.getElementById('popupBadges');
+
+function render(direction){
+  layersEls.forEach((el,i)=>{
+    el.classList.remove('active','past');
+    if(i===currentLevel)el.classList.add('active');
+    else if(direction==='in'&&i<currentLevel)el.classList.add('past');
+  });
+  cellWrappers.forEach(w=>{
+    w.classList.toggle('active-cell',w.dataset.cellType===currentCellType);
+  });
+  let data;
+  if(currentLevel===0)data=cellTypes[currentCellType];
+  else data=levels[currentLevel];
+  infoCard.classList.remove('changing');
+  void infoCard.offsetWidth;
+  infoCard.classList.add('changing');
+  infoTitle.innerHTML=data.title;
+  infoText.textContent=data.text;
+  scaleValue.textContent=data.scale||(levels[currentLevel]&&levels[currentLevel].scale)||'';
+  levelNum.textContent='0'+(currentLevel+1)+' / 05';
+  levelTitle.textContent=data.levelName;
+  if(currentLevel===0&&data.hint){
+    infoHint.style.display='block';
+    infoHint.textContent='\u26A0 '+data.hint;
+  }else{
+    infoHint.style.display='none';
+  }
+  document.documentElement.style.setProperty('--accent',data.accent);
+  infoCard.style.setProperty('--accent',data.accent);
+  dots.forEach((dot,i)=>{
+    dot.classList.remove('active','past-dot');
+    if(i===currentLevel){
+      dot.classList.add('active');
+      dot.style.setProperty('--accent',data.accent);
+    }else if(i<currentLevel){
+      dot.classList.add('past-dot');
+    }
+  });
+  cellToggle.classList.toggle('visible',currentLevel===0);
+  cellBtns.forEach(btn=>{
+    btn.classList.toggle('active',btn.dataset.cell===currentCellType);
+  });
+  zoomOutBtn.disabled=currentLevel<=0;
+  const canZoomIn=currentLevel<levels.length-1&&(currentLevel!==0||cellTypes[currentCellType].canZoom);
+  zoomInBtn.disabled=!canZoomIn;
+}
+
+function goTo(level,direction){
+  if(isTransitioning)return;
+  if(level<0||level>=levels.length)return;
+  if(level===currentLevel)return;
+  if(currentLevel===0&&level>0&&!cellTypes[currentCellType].canZoom)return;
+  isTransitioning=true;
+  const dir=direction||(level>currentLevel?'in':'out');
+  currentLevel=level;
+  render(dir);
+  setTimeout(()=>{isTransitioning=false;},TRANSITION_LOCK);
+}
+
+function zoomIn(){
+  if(currentLevel===0&&!cellTypes[currentCellType].canZoom)return;
+  goTo(currentLevel+1,'in');
+}
+function zoomOut(){goTo(currentLevel-1,'out');}
+
+function setCellType(type){
+  if(!cellTypes[type]||type===currentCellType)return;
+  currentCellType=type;
+  render('in');
+}
+
+function openPopup(organelleId){
+  const org=organelles[organelleId];
+  if(!org)return;
+  popupKicker.textContent=org.foundIn.length===3?'Found in all cells':'Organelle';
+  popupName.textContent=org.name;
+  popupTagline.textContent=org.tagline;
+  popupFunction.textContent=org.function;
+  popupBadges.innerHTML='';
+  org.foundIn.forEach(type=>{
+    const b=document.createElement('span');
+    b.className='badge badge-'+type;
+    b.textContent=type.charAt(0).toUpperCase()+type.slice(1);
+    popupBadges.appendChild(b);
+  });
+  popup.style.setProperty('--popup-accent',org.accent);
+  popup.classList.add('visible');
+  popupBackdrop.classList.add('visible');
+  isPopupOpen=true;
+}
+
+function closePopup(){
+  popup.classList.remove('visible');
+  popupBackdrop.classList.remove('visible');
+  isPopupOpen=false;
+}
+
+zoomInBtn.addEventListener('click',zoomIn);
+zoomOutBtn.addEventListener('click',zoomOut);
+
+dots.forEach(dot=>{
+  dot.addEventListener('click',()=>{
+    goTo(parseInt(dot.dataset.level,10));
+  });
+});
+
+cellBtns.forEach(btn=>{
+  btn.addEventListener('click',()=>setCellType(btn.dataset.cell));
+});
+
+document.getElementById('stage').addEventListener('click',(e)=>{
+  let el=e.target;
+  while(el&&el!==document.getElementById('stage')){
+    if(el.dataset&&el.dataset.organelle){
+      openPopup(el.dataset.organelle);
+      return;
+    }
+    el=el.parentElement;
+  }
+});
+
+popupClose.addEventListener('click',closePopup);
+popupBackdrop.addEventListener('click',closePopup);
+
+let wheelLock=false;
+window.addEventListener('wheel',(e)=>{
+  if(isPopupOpen)return;
+  e.preventDefault();
+  if(wheelLock)return;
+  if(Math.abs(e.deltaY)<8)return;
+  wheelLock=true;
+  if(e.deltaY>0)zoomIn();else zoomOut();
+  setTimeout(()=>{wheelLock=false;},TRANSITION_LOCK);
+},{passive:false});
+
+window.addEventListener('keydown',(e)=>{
+  if(isPopupOpen){
+    if(e.key==='Escape'){closePopup();e.preventDefault();}
+    return;
+  }
+  if(e.key>='1'&&e.key<='5'){
+    goTo(parseInt(e.key,10)-1);
+    return;
+  }
+  if(currentLevel===0){
+    if(e.key.toLowerCase()==='a'){setCellType('animal');return;}
+    if(e.key.toLowerCase()==='p'){setCellType('plant');return;}
+    if(e.key.toLowerCase()==='b'){setCellType('bacterial');return;}
+    if(e.key.toLowerCase()==='c'){setCellType('compare');return;}
+  }
+  switch(e.key){
+    case 'ArrowRight':case 'ArrowDown':case ' ':case 'Enter':
+      e.preventDefault();zoomIn();break;
+    case 'ArrowLeft':case 'ArrowUp':case 'Backspace':
+      e.preventDefault();zoomOut();break;
+    case 'Home':case 'Escape':
+      e.preventDefault();goTo(0);break;
+    case 'End':
+      e.preventDefault();goTo(levels.length-1);break;
+  }
+});
+
+render('in');
+</script>
+</body>
+</html>

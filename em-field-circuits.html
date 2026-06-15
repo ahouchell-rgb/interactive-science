@@ -1,0 +1,1782 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Electricity, properly — what's actually happening</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Bricolage+Grotesque:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f1e7;
+    --paper-dark: #ebe3d2;
+    --ink: #1e1d1a;
+    --ink-soft: #555148;
+    --ink-faint: #a19b8c;
+    --rule: #c9c0ab;
+    --shadow: 0 1px 0 rgba(30,29,26,0.08), 0 4px 12px rgba(30,29,26,0.06);
+
+    --electron: #2c5f8d;
+    --electron-light: #5fb3d9;
+    --proton: #b54d28;
+    --proton-light: #d97a3c;
+    --pos-charge: #c23a2a;
+    --neg-charge: #1b3a63;
+    --efield: #c23a2a;
+    --bfield: #5b3a8c;
+    --poynting: #c9952a;
+    --poynting-glow: #f4c430;
+    --wire: #b08456;
+    --wire-dark: #7a5a38;
+    --bulb-on: #f4d04a;
+    --accent: #1b3a63;
+    --accent-soft: #dce5f0;
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    font-family: 'Bricolage Grotesque', system-ui, sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  body {
+    background-image:
+      linear-gradient(var(--paper-dark) 1px, transparent 1px),
+      linear-gradient(90deg, var(--paper-dark) 1px, transparent 1px);
+    background-size: 40px 40px;
+    background-position: -1px -1px;
+    min-height: 100vh;
+  }
+  .page { max-width: 1320px; margin: 0 auto; padding: 20px 24px 40px; }
+
+  header.masthead {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--ink);
+    margin-bottom: 18px;
+  }
+  .masthead h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(28px, 4vw, 40px);
+    letter-spacing: -0.02em;
+    margin: 0; line-height: 1;
+  }
+  .masthead h1 em { font-style: italic; font-weight: 400; color: var(--accent); }
+  .masthead .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-soft);
+    text-align: right; line-height: 1.6;
+  }
+
+  /* ===== WALKTHROUGH BANNER ===== */
+  .walkthrough {
+    background: var(--accent);
+    color: var(--paper);
+    padding: 14px 18px;
+    margin-bottom: 14px;
+    border: 1.5px solid var(--ink);
+    box-shadow: var(--shadow);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 16px;
+    align-items: center;
+  }
+  .walkthrough.hidden { display: none; }
+  .walk-stage-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--poynting-glow);
+    margin-bottom: 4px;
+  }
+  .walk-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 22px;
+    letter-spacing: -0.01em;
+    margin: 0 0 6px;
+    color: white;
+  }
+  .walk-title em { font-style: italic; font-weight: 400; color: var(--poynting-glow); }
+  .walk-narrative {
+    font-size: 13.5px;
+    line-height: 1.5;
+    margin: 0;
+    color: rgba(255,255,255,0.86);
+    max-width: 720px;
+  }
+  .walk-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: stretch;
+    min-width: 180px;
+  }
+  .walk-controls button {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    padding: 8px 14px;
+    border: 1.5px solid var(--paper);
+    background: transparent;
+    color: var(--paper);
+    cursor: pointer;
+    transition: all 0.12s;
+    letter-spacing: 0.01em;
+  }
+  .walk-controls button:hover { background: var(--paper); color: var(--ink); }
+  .walk-controls button.primary { background: var(--paper); color: var(--ink); }
+  .walk-controls button.primary:hover { background: var(--poynting-glow); border-color: var(--poynting-glow); }
+  .walk-controls button.skip { font-size: 11px; padding: 6px 10px; opacity: 0.85; }
+  .walk-controls button:disabled { opacity: 0.35; cursor: not-allowed; }
+
+  /* ===== CONTROL ROWS ===== */
+  .controls {
+    display: flex;
+    gap: 14px 18px;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 10px 14px;
+    background: white;
+    border: 1.5px solid var(--ink);
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+  }
+  .control-group { display: flex; align-items: center; gap: 10px; }
+  .control-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    font-weight: 700;
+  }
+  .seg-toggle {
+    display: flex;
+    border: 1.5px solid var(--ink);
+    background: var(--paper);
+  }
+  .seg-toggle button {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 12.5px;
+    font-weight: 500;
+    padding: 6px 11px;
+    background: transparent;
+    border: none;
+    border-right: 1px solid var(--rule);
+    color: var(--ink);
+    cursor: pointer;
+    transition: all 0.12s;
+    white-space: nowrap;
+  }
+  .seg-toggle button:last-child { border-right: none; }
+  .seg-toggle button:hover { background: var(--paper-dark); }
+  .seg-toggle button.active { background: var(--ink); color: var(--paper); }
+
+  .layer-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 11px;
+    border: 1.5px solid var(--ink);
+    background: var(--paper);
+    cursor: pointer;
+    user-select: none;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--ink);
+    transition: all 0.12s;
+  }
+  .layer-toggle:hover { background: var(--paper-dark); }
+  .layer-toggle input { display: none; }
+  .layer-toggle.active {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .layer-toggle .swatch {
+    width: 14px; height: 14px;
+    border: 1px solid currentColor;
+    flex-shrink: 0;
+  }
+  .layer-toggle.surface .swatch {
+    background: linear-gradient(90deg, var(--pos-charge) 50%, var(--neg-charge) 50%);
+    border: none;
+  }
+  .layer-toggle.efield .swatch { background: var(--efield); border: none; }
+  .layer-toggle.bfield .swatch { background: var(--bfield); border: none; }
+  .layer-toggle.poynting .swatch { background: var(--poynting-glow); border: none; }
+
+  .spacer { flex: 1; }
+
+  .switch-toggle, .replay-btn {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 7px 13px;
+    border: 1.5px solid var(--ink);
+    background: white;
+    color: var(--ink);
+    cursor: pointer;
+    transition: all 0.12s;
+    letter-spacing: 0.01em;
+  }
+  .switch-toggle:hover { background: var(--paper-dark); }
+  .switch-toggle.closed { background: var(--ink); color: var(--paper); }
+  .switch-toggle.closed:hover { background: #444240; }
+  .replay-btn {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+  .replay-btn:hover { background: var(--accent); color: white; }
+
+  .restart-walk-btn {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 7px 12px;
+    border: 1.5px solid var(--accent);
+    background: white;
+    color: var(--accent);
+    cursor: pointer;
+  }
+  .restart-walk-btn:hover { background: var(--accent-soft); }
+
+  /* ===== WORKSPACE ===== */
+  .workspace {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 16px;
+    align-items: start;
+  }
+  .stage-frame {
+    background: white;
+    border: 1.5px solid var(--ink);
+    box-shadow: var(--shadow);
+    position: relative;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+  }
+  canvas#stage { display: block; width: 100%; height: 100%; }
+
+  .scene-label {
+    position: absolute;
+    top: 12px; left: 14px;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--ink);
+    background: rgba(255,255,255,0.92);
+    padding: 4px 10px;
+    border: 1px solid var(--rule);
+    pointer-events: none;
+  }
+
+  /* ===== SIDE PANEL ===== */
+  .side {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .info-card {
+    background: white;
+    border: 1.5px solid var(--ink);
+    padding: 14px 16px;
+    box-shadow: var(--shadow);
+  }
+  .info-card.gold {
+    background: #fdf5dc;
+    border-color: var(--poynting);
+  }
+  .info-card.accent {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+  }
+  .info-card h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin: 0 0 8px;
+  }
+  .info-card p { margin: 0 0 8px; line-height: 1.5; font-size: 13px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card strong { color: var(--accent); }
+
+  .legend-list {
+    display: flex; flex-direction: column;
+    gap: 6px;
+    font-size: 12.5px;
+    line-height: 1.4;
+  }
+  .legend-list .row { display: flex; align-items: center; gap: 8px; }
+  .legend-list .swatch { width: 14px; height: 14px; flex-shrink: 0; }
+
+  @media (max-width: 1000px) {
+    .workspace { grid-template-columns: 1fr; }
+    .walkthrough { grid-template-columns: 1fr; }
+    .walk-controls { flex-direction: row; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="masthead">
+    <h1>Electricity, <em>properly</em></h1>
+    <div class="meta">
+      <div>What's actually happening: fields, energy, electrons</div>
+      <div id="metaScene">Standard circuit</div>
+    </div>
+  </header>
+
+  <!-- Walkthrough banner -->
+  <div class="walkthrough" id="walkthrough">
+    <div>
+      <div class="walk-stage-label" id="walkStageLabel">Stage 1 of 6</div>
+      <h2 class="walk-title" id="walkTitle">What's there before the switch closes</h2>
+      <p class="walk-narrative" id="walkNarrative">Loading…</p>
+    </div>
+    <div class="walk-controls">
+      <button class="primary" id="walkNext">Next →</button>
+      <button id="walkPrev">← Prev</button>
+      <button class="skip" id="walkSkip">Skip → free explore</button>
+    </div>
+  </div>
+
+  <!-- Layer toggles -->
+  <div class="controls" id="layerControls">
+    <span class="control-label">Show layers</span>
+    <label class="layer-toggle active" id="layerElectronsLbl">
+      <span class="swatch" style="background: var(--electron)"></span>
+      <input type="checkbox" id="layerElectrons" checked>Electrons
+    </label>
+    <label class="layer-toggle surface" id="layerSurfaceLbl">
+      <span class="swatch"></span>
+      <input type="checkbox" id="layerSurface">Surface charges
+    </label>
+    <label class="layer-toggle efield" id="layerEFieldLbl">
+      <span class="swatch"></span>
+      <input type="checkbox" id="layerEField">E&nbsp;field
+    </label>
+    <label class="layer-toggle bfield" id="layerBFieldLbl">
+      <span class="swatch"></span>
+      <input type="checkbox" id="layerBField">B&nbsp;field
+    </label>
+    <label class="layer-toggle poynting" id="layerPoyntingLbl">
+      <span class="swatch"></span>
+      <input type="checkbox" id="layerPoynting">Energy flow
+    </label>
+
+    <div class="spacer"></div>
+    <button class="restart-walk-btn" id="restartWalkBtn" style="display:none">↺ Restart walkthrough</button>
+  </div>
+
+  <!-- Scene + utility row -->
+  <div class="controls">
+    <div class="control-group">
+      <span class="control-label">Scene</span>
+      <div class="seg-toggle" id="sceneToggle">
+        <button data-val="standard" class="active">Standard circuit</button>
+        <button data-val="longwire">Long-wire demo</button>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <span class="control-label">Speed</span>
+      <div class="seg-toggle" id="speedToggle">
+        <button data-val="0.1">0.1×</button>
+        <button data-val="0.25">0.25×</button>
+        <button data-val="1" class="active">1×</button>
+        <button data-val="2">2×</button>
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+    <button class="replay-btn" id="replayBtn">↺ Replay switch close</button>
+    <button class="switch-toggle closed" id="switchBtn">Switch: closed</button>
+  </div>
+
+  <div class="workspace">
+    <div class="stage-frame">
+      <canvas id="stage"></canvas>
+      <div class="scene-label" id="sceneLabel">Standard circuit</div>
+    </div>
+
+    <aside class="side">
+
+      <div class="info-card gold" id="takeawayCard">
+        <h3 id="takeawayTitle">Key idea</h3>
+        <p id="takeawayBody">…</p>
+      </div>
+
+      <div class="info-card">
+        <h3>Layer legend</h3>
+        <div class="legend-list">
+          <div class="row"><span class="swatch" style="background: var(--electron); border-radius:50%"></span>electron (negative, free to move)</div>
+          <div class="row"><span class="swatch" style="background: var(--proton); border-radius:50%"></span>positive metal ion (lattice)</div>
+          <div class="row"><span class="swatch" style="background:linear-gradient(90deg,var(--pos-charge) 50%, var(--neg-charge) 50%)"></span>surface charge (+ / −) on wire</div>
+          <div class="row"><span class="swatch" style="background:var(--efield)"></span>E field (electric field — pushes charges)</div>
+          <div class="row"><span class="swatch" style="background:var(--bfield)"></span>B field (magnetic field — circles around wire)</div>
+          <div class="row"><span class="swatch" style="background:var(--poynting-glow)"></span>energy flow (Poynting vector)</div>
+        </div>
+      </div>
+
+      <div class="info-card accent">
+        <h3>Where this gets you</h3>
+        <p>This is genuinely undergraduate physics. The arrows are illustrative — they show direction and approximate strength, not Maxwell-precise vectors.</p>
+        <p>What's true: fields exist throughout space, the wire is full of electrons before you start, and energy travels through the field surrounding the wire — not through the wire itself.</p>
+      </div>
+
+    </aside>
+  </div>
+</div>
+
+<script>
+"use strict";
+
+/* ============================================================
+   STATE
+   ============================================================ */
+const state = {
+  mode: 'walkthrough',     // 'walkthrough' or 'free'
+  stage: 1,                 // 1..6
+  scene: 'standard',        // 'standard' or 'longwire'
+
+  showElectrons: true,
+  showSurfaceCharges: false,
+  showEField: false,
+  showBField: false,
+  showPoynting: false,
+
+  switchClosed: true,
+  simSpeed: 1.0,
+
+  time: 0,
+  W: 0, H: 0,
+
+  replayMessage: '',
+  replayMessageEndsAt: 0,
+
+  // Long-wire scene state
+  lwSwitchClosed: false,
+  lwTimeSinceClose: -1,    // -1 = switch not closed yet
+};
+
+/* ============================================================
+   WALKTHROUGH STAGES
+   ============================================================ */
+const STAGES = [
+  {
+    title: "What's there <em>before</em> the switch closes",
+    narrative: "The wire is already full of electrons, drifting in random thermal directions. Positive metal ions sit fixed in a lattice, vibrating gently. No net flow, no fields. This is a wire just sitting there.",
+    layers: { electrons: true, surface: false, e: false, b: false, poynting: false },
+    switchClosed: false,
+    takeaway: "<strong>Nothing magical needs to arrive.</strong> The wire is already loaded with the electrons that will become 'the current'."
+  },
+  {
+    title: "Surface charges form &amp; an <em>E field</em> appears",
+    narrative: "When the switch closes, charge redistributes onto the wire's surface — positive on one half, negative on the other. These surface charges set up an electric field inside the wire, throughout the loop, in nanoseconds. The field is what pushes the electrons.",
+    layers: { electrons: true, surface: true, e: true, b: false, poynting: false },
+    switchClosed: true,
+    takeaway: "Surface charges are the source of the field. The field appears <strong>everywhere along the wire at once</strong> — that's why all electrons start drifting simultaneously, even on the far side of the loop."
+  },
+  {
+    title: "Magnetic field <em>circles</em> the wire",
+    narrative: "Whenever charge moves, a magnetic field forms around its path. In this 2D slice, the field points OUT of the page inside the loop and INTO the page outside (the dots and crosses). Each wire is wrapped in a circular B field — right-hand rule applies.",
+    layers: { electrons: true, surface: true, e: true, b: true, poynting: false },
+    switchClosed: true,
+    takeaway: "The B field on its own isn't doing the energy delivery. But it's what we need next — combined with E, it tells us which way <em>energy</em> is flowing."
+  },
+  {
+    title: "Energy flows through the <em>space around</em> the wire",
+    narrative: "The Poynting vector S = (1/μ₀) E × B points along the direction energy travels. Look at where the gold arrows point: from the cell, through the space surrounding the wires, into the bulb. The energy never travels along the wire itself — it travels through the field outside it.",
+    layers: { electrons: true, surface: true, e: true, b: true, poynting: true },
+    switchClosed: true,
+    takeaway: "<strong>This is the moment.</strong> Energy enters the bulb from the surrounding space. Electrons drift slowly inside the wire — but the energy is delivered by the field, at light speed, through space."
+  },
+  {
+    title: "Inside the bulb: <em>scattering</em>",
+    narrative: "The Poynting flux pours into the bulb's filament from outside. Inside the resistive material, electrons get accelerated by the field, slam into vibrating ions, and lose their kinetic energy to the lattice. The ions vibrate harder — that's heat. Hot ions glow. That's the bulb's light.",
+    layers: { electrons: true, surface: true, e: true, b: true, poynting: true },
+    switchClosed: true,
+    takeaway: "Energy delivery: <strong>field → electron kinetic energy → ion vibration → heat → light</strong>. The electrons are the messengers between the field and the lattice."
+  },
+  {
+    title: "Proof: the <em>long-wire</em> demo",
+    narrative: "Cell + switch + bulb sit close together. The wire connecting them loops out to a light-second away and back. If energy travelled along the wire, the bulb would wait 2 seconds after closing the switch. It doesn't — it lights almost immediately, because energy travels through the field across the small space between cell and bulb.",
+    layers: { electrons: true, surface: true, e: true, b: true, poynting: true },
+    scene: 'longwire',
+    switchClosed: true,
+    takeaway: "<strong>The wire's length almost doesn't matter for when the bulb lights.</strong> What matters is the field geometry between the components."
+  }
+];
+
+const RESISTANCE = 4;       // simplification
+const ELECTRONS_PER_COULOMB = 6.242e18;
+const VOLTAGE = 6;          // fixed for this tool
+
+/* ============================================================
+   CANVAS / DPR
+   ============================================================ */
+const canvas = document.getElementById('stage');
+const ctx = canvas.getContext('2d');
+
+function fitCanvas() {
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  canvas.width  = Math.round(rect.width * dpr);
+  canvas.height = Math.round(rect.height * dpr);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  state.W = rect.width;
+  state.H = rect.height;
+}
+window.addEventListener('resize', () => {
+  fitCanvas();
+  rebuildParticles();
+});
+
+/* ============================================================
+   GEOMETRY (standard scene)
+   ============================================================ */
+function geom() {
+  const W = state.W, H = state.H;
+  // Margins large enough to draw fields outside the loop
+  return {
+    left: 180,
+    right: W - 180,
+    top: 110,
+    bottom: H - 100,
+    cellY: H / 2,
+    bulbY: H / 2,
+    switchX: function() { return (this.left + this.right) / 2 - 70; }
+  };
+}
+
+/* ============================================================
+   PARTICLES (standard scene)
+   ============================================================ */
+class CircuitElectron {
+  constructor(s, jx, jy) {
+    this.s = s;
+    this.jx = jx;          // perpendicular jitter offset
+    this.jy = jy;
+    this.tphase = Math.random() * Math.PI * 2;
+  }
+}
+class WireIon {
+  constructor(x, y) {
+    this.x0 = x; this.y0 = y;
+    this.phase = Math.random() * Math.PI * 2;
+  }
+}
+
+let circuitElectrons = [];
+let wireIons = [];
+
+function rebuildParticles() {
+  circuitElectrons = [];
+  const N_ELECTRONS = 70;
+  for (let i = 0; i < N_ELECTRONS; i++) {
+    circuitElectrons.push(new CircuitElectron(
+      i / N_ELECTRONS,
+      (Math.random() - 0.5) * 6,
+      (Math.random() - 0.5) * 6
+    ));
+  }
+
+  // Ions distributed along wire body
+  wireIons = [];
+  // along each side at intervals
+  const g = geom();
+  const ionStep = 28;
+  // top wire
+  for (let x = g.left + 14; x < g.right - 14; x += ionStep) {
+    wireIons.push(new WireIon(x, g.top));
+  }
+  // bottom wire
+  for (let x = g.left + 14; x < g.right - 14; x += ionStep) {
+    wireIons.push(new WireIon(x, g.bottom));
+  }
+  // left side (skip cell area)
+  for (let y = g.top + 14; y < g.bottom - 14; y += ionStep) {
+    if (Math.abs(y - g.cellY) < 30) continue;
+    wireIons.push(new WireIon(g.left, y));
+  }
+  // right side (skip bulb area)
+  for (let y = g.top + 14; y < g.bottom - 14; y += ionStep) {
+    if (Math.abs(y - g.bulbY) < 30) continue;
+    wireIons.push(new WireIon(g.right, y));
+  }
+}
+
+/* ============================================================
+   PATH for circuit electrons
+   ============================================================
+   s ∈ [0,1) clockwise around the loop.
+   0..0.25  top wire L→R
+   0.25..0.50 right side T→B (bulb at s≈0.375)
+   0.50..0.75 bottom wire R→L
+   0.75..1.00 left side B→T (cell at s≈0.875)
+*/
+function pathPoint(s) {
+  s = ((s % 1) + 1) % 1;
+  const g = geom();
+  let x, y, isBulb = false, isCell = false, dx = 0, dy = 0;
+
+  if (s < 0.25) {
+    const t = s / 0.25;
+    x = g.left + t * (g.right - g.left);
+    y = g.top;
+    dx = 1; dy = 0;
+  } else if (s < 0.50) {
+    const t = (s - 0.25) / 0.25;
+    x = g.right;
+    y = g.top + t * (g.bottom - g.top);
+    dx = 0; dy = 1;
+    if (t > 0.40 && t < 0.60) isBulb = true;
+  } else if (s < 0.75) {
+    const t = (s - 0.50) / 0.25;
+    x = g.right - t * (g.right - g.left);
+    y = g.bottom;
+    dx = -1; dy = 0;
+  } else {
+    const t = (s - 0.75) / 0.25;
+    x = g.left;
+    y = g.bottom - t * (g.bottom - g.top);
+    dx = 0; dy = -1;
+    if (t > 0.40 && t < 0.60) isCell = true;
+  }
+  return { x, y, dx, dy, isBulb, isCell };
+}
+
+/* ============================================================
+   FIELD HELPERS
+   ============================================================
+   Hand-crafted, illustrative — NOT solving Maxwell's eqs.
+   Coordinate convention: +y is DOWN (canvas).
+   For the standard circuit:
+     - Conventional current loops CLOCKWISE in s direction (path).
+     - Cell − terminal at TOP, + at BOTTOM. Electrons exit top, go CW around.
+     - Wait — re-read: electrons go in direction of increasing s (CW),
+       so electrons at left-side go from BOTTOM to TOP (s 0.75→1.0).
+       That means electrons exit at TOP of cell → top wire.
+       Therefore − terminal of cell is at TOP, + at BOTTOM.
+       Conventional current is opposite electron flow, so it's CCW.
+
+   Resulting surface-charge halves:
+     "+ half" = lower portion of loop, from + terminal of cell (bottom)
+                CCW (with conventional current) to the bulb's lower
+                terminal. That's the LEFT-LOWER and BOTTOM of the loop,
+                up to the BOTTOM of the right side (just below bulb).
+     "− half" = upper portion of the loop, from the bulb's upper
+                terminal up the right side, across the top wire,
+                down the upper-left side to the − terminal of cell.
+
+   E field inside wire follows conventional current direction (CCW):
+     - top wire: leftward
+     - left-upper: downward
+     - left-lower: downward
+     - bottom: rightward
+     - right-lower: upward
+     - right-upper: upward
+   In the loop interior (the hole), E points from + (lower portion)
+   to − (upper portion) — i.e., UPWARD (which in canvas coords
+   is in -y direction).
+*/
+
+function isPointNearLoop(x, y) {
+  const g = geom();
+  return x > g.left - 90 && x < g.right + 90 &&
+         y > g.top - 90  && y < g.bottom + 90;
+}
+function isInsideLoopHole(x, y) {
+  const g = geom();
+  const margin = 14;
+  return x > g.left + margin && x < g.right - margin &&
+         y > g.top + margin && y < g.bottom - margin;
+}
+function distToLoopRect(x, y) {
+  const g = geom();
+  // distance from point to the rectangular loop frame
+  // (the wire). For points outside loop, distance to nearest wire.
+  // For points inside hole, distance to nearest wall.
+  const dx = Math.max(g.left - x, 0, x - g.right);
+  const dy = Math.max(g.top - y, 0, y - g.bottom);
+  if (dx === 0 && dy === 0) {
+    // inside loop hole; distance to nearest wall
+    return Math.min(x - g.left, g.right - x, y - g.top, g.bottom - y);
+  }
+  return Math.sqrt(dx*dx + dy*dy);
+}
+
+/* E field: returns {x, y, mag} where (x,y) is unit-ish direction, mag in 0..1 */
+function eFieldAt(x, y) {
+  const g = geom();
+  // Inside the wire? Skip — we draw inside-wire arrows separately.
+  if (!isPointNearLoop(x, y)) return { x: 0, y: 0, mag: 0 };
+
+  // Are we inside the loop hole?
+  if (isInsideLoopHole(x, y)) {
+    // E points UP (canvas +y is down → up is -y). Magnitude
+    // strongest in middle of loop horizontally, falls off near walls.
+    const cx = (g.left + g.right) / 2;
+    const cy = (g.top + g.bottom) / 2;
+    // central magnitude
+    const horizontalProfile = 1 - Math.abs(x - cx) / ((g.right - g.left) / 2) * 0.4;
+    const verticalProfile = 1 - Math.abs(y - cy) / ((g.bottom - g.top) / 2) * 0.3;
+    const mag = 0.85 * horizontalProfile * verticalProfile;
+    return { x: 0, y: -1, mag: Math.max(0.2, mag) };
+  }
+
+  // Outside loop, near wire — small fringe field
+  // Above top wire: E points down (toward − charges on top wire)
+  // Below bottom wire: E points down (away from + charges)
+  // Left of left wire: E points down-ish (curl)
+  // Right of right wire: E points down-ish
+  const d = distToLoopRect(x, y);
+  if (d > 80) return { x: 0, y: 0, mag: 0 };
+  const fringeMag = 0.45 * Math.exp(-d / 40);
+
+  // Decide direction based on which side
+  if (y < g.top) {
+    // above top wire → field points TOWARD top wire = downward
+    return { x: 0, y: 1, mag: fringeMag };
+  } else if (y > g.bottom) {
+    // below bottom wire → field points AWAY from + bottom = downward (toward distant −)
+    return { x: 0, y: 1, mag: fringeMag * 0.6 };
+  } else if (x < g.left) {
+    // left of loop. Upper-left wire (above cell midline) is − half;
+    // lower-left wire (below cell midline) is + half. So field
+    // points from lower (+) to upper (−), i.e., upward (-y).
+    return { x: 0, y: -1, mag: fringeMag * 0.8 };
+  } else if (x > g.right) {
+    // right of loop. Upper-right wire (above bulb) is − half;
+    // lower-right wire (below bulb) is + half.
+    return { x: 0, y: -1, mag: fringeMag * 0.8 };
+  }
+  return { x: 0, y: 0, mag: 0 };
+}
+
+/* B field z-component (positive = out of page) */
+function bFieldAt(x, y) {
+  const g = geom();
+  if (!isPointNearLoop(x, y)) return 0;
+  if (isInsideLoopHole(x, y)) {
+    // out of page, magnitude varies with distance from edge
+    const cx = (g.left + g.right) / 2;
+    const cy = (g.top + g.bottom) / 2;
+    const dxN = Math.abs(x - cx) / ((g.right - g.left) / 2);
+    const dyN = Math.abs(y - cy) / ((g.bottom - g.top) / 2);
+    return 0.85 * (1 - 0.3 * Math.max(dxN, dyN));
+  }
+  // Outside loop: into page, weak
+  const d = distToLoopRect(x, y);
+  if (d > 50) return 0;
+  return -0.4 * Math.exp(-d / 25);
+}
+
+/* Poynting vector S = E × B (for E in xy plane, B along z): S = (E_y * B, -E_x * B) */
+function poyntingAt(x, y) {
+  const e = eFieldAt(x, y);
+  const b = bFieldAt(x, y);
+  if (e.mag === 0 || b === 0) return { x: 0, y: 0, mag: 0 };
+  const ex = e.x * e.mag, ey = e.y * e.mag;
+  const sx = ey * b;
+  const sy = -ex * b;
+  const mag = Math.sqrt(sx*sx + sy*sy);
+  if (mag < 0.001) return { x: 0, y: 0, mag: 0 };
+  return { x: sx / mag, y: sy / mag, mag };
+}
+
+/* ============================================================
+   UPDATE
+   ============================================================ */
+function update(dt) {
+  state.time += dt;
+
+  if (state.scene === 'standard') {
+    if (!state.switchClosed) {
+      // electrons jitter in place, no drift
+      for (const e of circuitElectrons) {
+        e.tphase += dt * 0.001;
+      }
+      return;
+    }
+    // drift electrons clockwise (increasing s)
+    const speed = 0.00008;  // s-units / ms (slow drift)
+    for (const e of circuitElectrons) {
+      e.s = (e.s + speed * dt) % 1;
+      e.tphase += dt * 0.001;
+    }
+  } else if (state.scene === 'longwire') {
+    if (state.lwTimeSinceClose >= 0) state.lwTimeSinceClose += dt;
+  }
+}
+
+/* ============================================================
+   DRAW (router)
+   ============================================================ */
+function draw() {
+  ctx.clearRect(0, 0, state.W, state.H);
+  ctx.fillStyle = '#fbf7ec';
+  ctx.fillRect(0, 0, state.W, state.H);
+
+  // dot grid
+  ctx.fillStyle = 'rgba(30,29,26,0.06)';
+  for (let x = 20; x < state.W; x += 22)
+    for (let y = 20; y < state.H; y += 22)
+      ctx.fillRect(x, y, 1, 1);
+
+  if (state.scene === 'standard') drawStandardScene();
+  else drawLongWireScene();
+
+  drawReplayOverlay();
+}
+
+/* ============================================================
+   STANDARD SCENE
+   ============================================================ */
+function drawStandardScene() {
+  const g = geom();
+
+  // Layers stack — order matters for visual hierarchy.
+  // 1. wire body (always)
+  drawWireBody(g);
+
+  // 2. surface charges (under fields)
+  if (state.showSurfaceCharges) drawSurfaceCharges(g);
+
+  // 3. B field (subtle dots/crosses, drawn before wires fully covered)
+  if (state.showBField) drawBField(g);
+
+  // 4. E field arrows (in space and inside wire)
+  if (state.showEField) drawEField(g);
+
+  // 5. Poynting vectors (energy flow)
+  if (state.showPoynting) drawPoynting(g);
+
+  // 6. Components (cell, bulb, switch)
+  drawCell(g);
+  drawBulb(g);
+  drawSwitch(g);
+
+  // 7. Ions (over wire)
+  drawIons();
+
+  // 8. Electrons (top of stack so they read clearly)
+  if (state.showElectrons) drawElectrons();
+
+  // 9. Static labels
+  drawLabels(g);
+}
+
+function drawWireBody(g) {
+  ctx.lineCap = 'butt';
+
+  const sideHeight = g.bottom - g.top;
+  const cellGapTop    = g.top + sideHeight * 0.42;
+  const cellGapBottom = g.top + sideHeight * 0.58;
+  const bulbGapTop    = g.top + sideHeight * 0.42;
+  const bulbGapBottom = g.top + sideHeight * 0.58;
+
+  // shadow
+  ctx.strokeStyle = 'rgba(122,90,56,0.20)';
+  ctx.lineWidth = 16;
+  drawWirePath(g, cellGapTop, cellGapBottom, bulbGapTop, bulbGapBottom);
+
+  // copper body
+  ctx.strokeStyle = '#b08456';
+  ctx.lineWidth = 11;
+  drawWirePath(g, cellGapTop, cellGapBottom, bulbGapTop, bulbGapBottom);
+
+  // highlight
+  ctx.strokeStyle = '#d8b388';
+  ctx.lineWidth = 4;
+  drawWirePath(g, cellGapTop, cellGapBottom, bulbGapTop, bulbGapBottom);
+}
+
+function drawWirePath(g, cellTop, cellBot, bulbTop, bulbBot) {
+  // top
+  ctx.beginPath(); ctx.moveTo(g.left, g.top); ctx.lineTo(g.right, g.top); ctx.stroke();
+  // right side (split for bulb)
+  ctx.beginPath(); ctx.moveTo(g.right, g.top); ctx.lineTo(g.right, bulbTop); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(g.right, bulbBot); ctx.lineTo(g.right, g.bottom); ctx.stroke();
+  // bottom (split for switch — drawn separately; here just full)
+  ctx.beginPath(); ctx.moveTo(g.right, g.bottom); ctx.lineTo(g.left, g.bottom); ctx.stroke();
+  // left side (split for cell)
+  ctx.beginPath(); ctx.moveTo(g.left, g.bottom); ctx.lineTo(g.left, cellBot); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(g.left, cellTop); ctx.lineTo(g.left, g.top); ctx.stroke();
+}
+
+/* ---------- Surface charges ---------- */
+function drawSurfaceCharges(g) {
+  // + on lower half of loop (left-lower + bottom + right-lower-below-bulb)
+  // − on upper half (left-upper + top + right-upper-above-bulb)
+  // Transitions at cell (left side, midpoint) and bulb (right side, midpoint)
+  const sideHeight = g.bottom - g.top;
+  const cellMidY = g.cellY;
+  const bulbMidY = g.bulbY;
+  const charges = [];
+
+  const step = 26;
+
+  // top wire — all − (above the cut between bulb and cell halves)
+  for (let x = g.left + 16; x < g.right - 16; x += step) {
+    charges.push({ x, y: g.top - 12, sign: -1 });
+  }
+  // bottom wire — all +
+  for (let x = g.left + 16; x < g.right - 16; x += step) {
+    charges.push({ x, y: g.bottom + 12, sign: +1 });
+  }
+  // left side: above cell = − (towards top), below cell = + (towards bottom)
+  for (let y = g.top + 16; y < g.bottom - 16; y += step) {
+    if (Math.abs(y - cellMidY) < 36) continue;
+    const sign = y < cellMidY ? -1 : +1;
+    charges.push({ x: g.left - 12, y, sign });
+  }
+  // right side: above bulb = − ; below bulb = +
+  for (let y = g.top + 16; y < g.bottom - 16; y += step) {
+    if (Math.abs(y - bulbMidY) < 36) continue;
+    const sign = y < bulbMidY ? -1 : +1;
+    charges.push({ x: g.right + 12, y, sign });
+  }
+
+  for (const c of charges) {
+    drawSurfaceCharge(c.x, c.y, c.sign);
+  }
+}
+
+function drawSurfaceCharge(x, y, sign) {
+  ctx.fillStyle = sign > 0 ? '#c23a2a' : '#1b3a63';
+  ctx.beginPath();
+  ctx.arc(x, y, 7, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = 'white';
+  ctx.font = "700 9px sans-serif";
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(sign > 0 ? '+' : '−', x, y);
+  ctx.textBaseline = 'alphabetic';
+}
+
+/* ---------- E field ---------- */
+function drawEField(g) {
+  // Inside-wire arrows (along wire, conventional current direction = CCW)
+  const insideArrowsPerSide = 5;
+  // top wire — leftward
+  for (let i = 0; i < insideArrowsPerSide; i++) {
+    const x = g.left + (i + 0.5) * (g.right - g.left) / insideArrowsPerSide;
+    drawArrow(x + 14, g.top, x - 14, g.top, '#c23a2a', 2.2, 7);
+  }
+  // bottom — rightward
+  for (let i = 0; i < insideArrowsPerSide; i++) {
+    const x = g.left + (i + 0.5) * (g.right - g.left) / insideArrowsPerSide;
+    drawArrow(x - 14, g.bottom, x + 14, g.bottom, '#c23a2a', 2.2, 7);
+  }
+  // left side — downward (above cell) and downward (below cell)
+  // (CCW means going down on the left)
+  for (let i = 0; i < 4; i++) {
+    const y = g.top + 30 + i * (g.bottom - g.top - 60) / 3;
+    if (Math.abs(y - g.cellY) < 40) continue;
+    drawArrow(g.left, y - 12, g.left, y + 12, '#c23a2a', 2.2, 7);
+  }
+  // right side — upward (above bulb) and upward (below bulb)
+  for (let i = 0; i < 4; i++) {
+    const y = g.top + 30 + i * (g.bottom - g.top - 60) / 3;
+    if (Math.abs(y - g.bulbY) < 40) continue;
+    drawArrow(g.right, y + 12, g.right, y - 12, '#c23a2a', 2.2, 7);
+  }
+
+  // External fringe field (in space around wire) — sample on a sparse grid
+  const gridStep = 60;
+  for (let x = gridStep / 2; x < state.W; x += gridStep) {
+    for (let y = gridStep / 2; y < state.H; y += gridStep) {
+      // skip if inside loop hole or too close to wire
+      if (isInsideLoopHole(x, y)) {
+        // draw E in loop interior here too (subtle)
+        const e = eFieldAt(x, y);
+        if (e.mag > 0.1) {
+          const len = e.mag * 22;
+          drawArrow(x, y - e.y * len/2 * -1 + e.y * 0,
+                    x + e.x * len, y + e.y * len, 'rgba(194, 58, 42, 0.55)', 1.5, 5);
+          // simpler: arrow centred at (x,y) pointing in field direction
+          // (rewriting below)
+        }
+        continue;
+      }
+      // outside loop, near wire
+      const e = eFieldAt(x, y);
+      if (e.mag > 0.05) {
+        const len = e.mag * 22;
+        drawArrow(x - e.x * len/2, y - e.y * len/2,
+                  x + e.x * len/2, y + e.y * len/2,
+                  'rgba(194, 58, 42, 0.55)', 1.5, 5);
+      }
+    }
+  }
+}
+
+/* ---------- B field (dots and crosses) ---------- */
+function drawBField(g) {
+  const gridStep = 50;
+  for (let x = gridStep / 2; x < state.W; x += gridStep) {
+    for (let y = gridStep / 2; y < state.H; y += gridStep) {
+      const b = bFieldAt(x, y);
+      if (Math.abs(b) < 0.05) continue;
+      drawBSymbol(x, y, b);
+    }
+  }
+}
+function drawBSymbol(x, y, b) {
+  const r = 5 + Math.abs(b) * 4;
+  ctx.lineWidth = 1.5;
+  if (b > 0) {
+    // out of page: dot in circle
+    ctx.strokeStyle = '#5b3a8c';
+    ctx.fillStyle = 'rgba(91, 58, 140, 0.10)';
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+    ctx.fillStyle = '#5b3a8c';
+    ctx.beginPath();
+    ctx.arc(x, y, 1.8, 0, Math.PI * 2);
+    ctx.fill();
+  } else {
+    // into page: cross in circle
+    ctx.strokeStyle = '#5b3a8c';
+    ctx.fillStyle = 'rgba(91, 58, 140, 0.08)';
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(x - r * 0.55, y - r * 0.55);
+    ctx.lineTo(x + r * 0.55, y + r * 0.55);
+    ctx.moveTo(x + r * 0.55, y - r * 0.55);
+    ctx.lineTo(x - r * 0.55, y + r * 0.55);
+    ctx.stroke();
+  }
+}
+
+/* ---------- Poynting vector ---------- */
+function drawPoynting(g) {
+  // Sample on a grid; draw chunky gold arrows where flux is non-trivial.
+  const gridStep = 70;
+  // animated dash offset to give "flowing" appearance
+  const dashOffset = -(state.time * 0.05) % 40;
+  for (let x = gridStep / 2; x < state.W; x += gridStep) {
+    for (let y = gridStep / 2; y < state.H; y += gridStep) {
+      const s = poyntingAt(x, y);
+      if (s.mag < 0.05) continue;
+      const len = Math.min(0.9, s.mag) * 56;
+      const x1 = x - s.x * len / 2;
+      const y1 = y - s.y * len / 2;
+      const x2 = x + s.x * len / 2;
+      const y2 = y + s.y * len / 2;
+      drawPoyntingArrow(x1, y1, x2, y2, s.mag, dashOffset);
+    }
+  }
+
+  // Special: arrows entering the bulb (energy absorption)
+  // Just to the left of the bulb — emphasised arrows pointing INTO bulb
+  drawPoyntingArrow(g.right - 80, g.bulbY, g.right - 12, g.bulbY, 1.2, dashOffset);
+  drawPoyntingArrow(g.right - 80, g.bulbY - 30, g.right - 12, g.bulbY - 30, 0.9, dashOffset);
+  drawPoyntingArrow(g.right - 80, g.bulbY + 30, g.right - 12, g.bulbY + 30, 0.9, dashOffset);
+}
+
+function drawPoyntingArrow(x1, y1, x2, y2, mag, dashOffset) {
+  // glow
+  ctx.strokeStyle = `rgba(244, 196, 48, ${0.45 * Math.min(1, mag)})`;
+  ctx.lineWidth = 8;
+  ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+  // main shaft (dashed for flow)
+  ctx.strokeStyle = '#b88018';
+  ctx.lineWidth = 2.4;
+  ctx.setLineDash([8, 6]);
+  ctx.lineDashOffset = dashOffset;
+  ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+  ctx.setLineDash([]);
+  // arrowhead
+  drawArrowhead(x1, y1, x2, y2, '#b88018', 9);
+}
+
+/* ---------- Generic arrow ---------- */
+function drawArrow(x1, y1, x2, y2, color, width, headSize) {
+  ctx.strokeStyle = color;
+  ctx.lineWidth = width;
+  ctx.beginPath();
+  ctx.moveTo(x1, y1);
+  ctx.lineTo(x2, y2);
+  ctx.stroke();
+  drawArrowhead(x1, y1, x2, y2, color, headSize || 6);
+}
+function drawArrowhead(x1, y1, x2, y2, color, size) {
+  const ang = Math.atan2(y2 - y1, x2 - x1);
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  ctx.moveTo(x2, y2);
+  ctx.lineTo(x2 - size * Math.cos(ang - 0.45), y2 - size * Math.sin(ang - 0.45));
+  ctx.lineTo(x2 - size * Math.cos(ang + 0.45), y2 - size * Math.sin(ang + 0.45));
+  ctx.closePath();
+  ctx.fill();
+}
+
+/* ---------- Components ---------- */
+function drawCell(g) {
+  const cx = g.left, cy = g.cellY;
+  ctx.strokeStyle = '#1e1d1a';
+
+  // negative (short bar) — top
+  ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  ctx.moveTo(cx - 14, cy - 12);
+  ctx.lineTo(cx + 14, cy - 12);
+  ctx.stroke();
+
+  // positive (long thick) — bottom
+  ctx.lineWidth = 4;
+  ctx.beginPath();
+  ctx.moveTo(cx - 22, cy + 12);
+  ctx.lineTo(cx + 22, cy + 12);
+  ctx.stroke();
+
+  ctx.fillStyle = '#1e1d1a';
+  ctx.font = "700 18px 'JetBrains Mono', monospace";
+  ctx.textAlign = 'left';
+  ctx.fillText('−', cx + 28, cy - 6);
+  ctx.fillText('+', cx + 28, cy + 22);
+
+  ctx.font = "700 13px 'JetBrains Mono', monospace";
+  ctx.fillStyle = '#1b3a63';
+  ctx.textAlign = 'right';
+  ctx.fillText(VOLTAGE.toFixed(0) + ' V', cx - 30, cy + 4);
+}
+
+function drawBulb(g) {
+  const cx = g.right, cy = g.bulbY;
+  const power = state.switchClosed ? 0.85 : 0;
+
+  if (power > 0.04) {
+    const r = 90;
+    const gr = ctx.createRadialGradient(cx, cy, 6, cx, cy, r);
+    gr.addColorStop(0, `rgba(244,208,74,${0.55 * power})`);
+    gr.addColorStop(1, 'rgba(244,208,74,0)');
+    ctx.fillStyle = gr;
+    ctx.fillRect(cx - r, cy - r, 2*r, 2*r);
+  }
+  ctx.fillStyle = power > 0.04
+    ? `rgba(255, 240, 130, ${0.55 + 0.45 * power})`
+    : '#ece4cd';
+  ctx.beginPath();
+  ctx.arc(cx, cy, 24, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.strokeStyle = '#1e1d1a';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+  // X filament
+  ctx.beginPath();
+  ctx.moveTo(cx - 14, cy - 14); ctx.lineTo(cx + 14, cy + 14);
+  ctx.moveTo(cx + 14, cy - 14); ctx.lineTo(cx - 14, cy + 14);
+  ctx.stroke();
+  // contact stubs
+  ctx.lineWidth = 8;
+  ctx.strokeStyle = '#b08456';
+  ctx.beginPath();
+  ctx.moveTo(cx, cy - 24); ctx.lineTo(cx, cy - 26);
+  ctx.moveTo(cx, cy + 24); ctx.lineTo(cx, cy + 26);
+  ctx.stroke();
+  ctx.lineWidth = 2;
+}
+
+function drawSwitch(g) {
+  const cx = g.switchX(), cy = g.bottom;
+
+  // contacts
+  ctx.fillStyle = '#1e1d1a';
+  ctx.beginPath();
+  ctx.arc(cx - 22, cy, 4, 0, Math.PI * 2);
+  ctx.arc(cx + 22, cy, 4, 0, Math.PI * 2);
+  ctx.fill();
+
+  // arm
+  ctx.strokeStyle = '#1e1d1a';
+  ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  ctx.moveTo(cx - 22, cy);
+  if (state.switchClosed) ctx.lineTo(cx + 22, cy);
+  else ctx.lineTo(cx + 14, cy - 22);
+  ctx.stroke();
+
+  ctx.fillStyle = '#555148';
+  ctx.font = "700 9px 'JetBrains Mono', monospace";
+  ctx.textAlign = 'center';
+  ctx.fillText(state.switchClosed ? 'CLOSED' : 'OPEN', cx, cy + 22);
+}
+
+/* ---------- Ions and electrons ---------- */
+function drawIons() {
+  for (const ion of wireIons) {
+    const t = state.time * 0.005;
+    const vx = Math.sin(t + ion.phase) * 1.2;
+    const vy = Math.cos(t + ion.phase * 1.3) * 1.2;
+    const x = ion.x0 + vx, y = ion.y0 + vy;
+    ctx.fillStyle = '#b54d28';
+    ctx.beginPath();
+    ctx.arc(x, y, 6, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(94,45,20,0.6)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  }
+}
+
+function drawElectrons() {
+  // When switch open: jitter only, no drift
+  if (!state.switchClosed) {
+    // before switch closes: scatter electrons in random thermal positions
+    // (use s as a base with jitter so they look "in" the wire)
+    for (const e of circuitElectrons) {
+      const p = pathPoint(e.s);
+      // perpendicular direction to path
+      const px = -p.dy, py = p.dx;
+      const j = 5 * Math.sin(e.tphase * 7);
+      const k = 5 * Math.cos(e.tphase * 5);
+      const x = p.x + px * j + p.dx * k;
+      const y = p.y + py * j + p.dy * k;
+      drawElectronDot(x, y);
+    }
+    return;
+  }
+  for (const e of circuitElectrons) {
+    const p = pathPoint(e.s);
+    // small perpendicular jitter so they don't all sit on the wire centre line
+    const px = -p.dy, py = p.dx;
+    const wob = Math.sin(state.time * 0.008 + e.tphase * 3) * 4;
+    const x = p.x + px * wob;
+    const y = p.y + py * wob;
+    drawElectronDot(x, y);
+  }
+}
+
+function drawElectronDot(x, y) {
+  ctx.fillStyle = '#2c5f8d';
+  ctx.beginPath();
+  ctx.arc(x, y, 4, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(95, 179, 217, 0.6)';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+}
+
+/* ---------- Labels ---------- */
+function drawLabels(g) {
+  ctx.fillStyle = '#555148';
+  ctx.font = "italic 11px 'Fraunces', serif";
+  ctx.textAlign = 'center';
+  if (state.showPoynting) {
+    ctx.fillStyle = '#b88018';
+    ctx.font = "italic 600 13px 'Fraunces', serif";
+    ctx.fillText('energy flows through space — not down the wire', (g.left + g.right) / 2, g.top - 28);
+  } else if (state.showEField) {
+    ctx.fillStyle = '#c23a2a';
+    ctx.font = "italic 600 12px 'Fraunces', serif";
+    ctx.fillText('E field arrows — pushes every electron', (g.left + g.right) / 2, g.top - 28);
+  }
+}
+
+/* ============================================================
+   LONG-WIRE SCENE (Veritasium demo)
+   ============================================================ */
+function drawLongWireScene() {
+  const W = state.W, H = state.H;
+
+  // Setup: cell, switch, bulb all close together on the LEFT.
+  // Wires extend far to the RIGHT (1 light-second), implied off-canvas.
+  const cellX  = 220, cellY  = 220;        // vertical cell
+  const switchX = 220, switchY = 360;      // below cell
+  const bulbX  = 400, bulbY  = 290;        // to the right of cell, between
+
+  // ---- Title overlay ----
+  ctx.fillStyle = '#555148';
+  ctx.font = "italic 13px 'Fraunces', serif";
+  ctx.textAlign = 'center';
+  ctx.fillText('Cell + switch + bulb close together. The two wires loop out 1 light-second and back.', W / 2, 30);
+
+  // ---- Wires ----
+  // We'll draw wires in a clear, axis-aligned style with two layers (body + highlight).
+
+  // Wire path definitions (axis-aligned segments):
+  //   A: cell + (bottom, cellY+12) → DOWN to switch top contact (cellX, switchY-22)
+  //   B: switch bottom (switchX, switchY+22) → DOWN+RIGHT (step) → out to far right at switchY+50
+  //   C: cell − (top, cellY-12) → UP+RIGHT (step) to bulb left contact (bulbX-22, bulbY)
+  //   D: bulb right contact (bulbX+22, bulbY) → RIGHT to far right at bulbY
+  //   E: a vertical "off-canvas" indicator strip at right edge
+
+  function strokeWith(color, w) {
+    ctx.strokeStyle = color; ctx.lineWidth = w; ctx.lineCap = 'butt';
+    // A
+    ctx.beginPath();
+    ctx.moveTo(cellX, cellY + 12); ctx.lineTo(cellX, switchY - 22); ctx.stroke();
+    // B (step: down then right to far edge)
+    ctx.beginPath();
+    ctx.moveTo(switchX, switchY + 22); ctx.lineTo(switchX, switchY + 60);
+    ctx.lineTo(W - 60, switchY + 60); ctx.stroke();
+    // C (step: cell − goes up then right to bulb left contact)
+    ctx.beginPath();
+    ctx.moveTo(cellX, cellY - 12); ctx.lineTo(cellX, bulbY);
+    ctx.lineTo(bulbX - 22, bulbY); ctx.stroke();
+    // D (bulb right contact goes right to far edge)
+    ctx.beginPath();
+    ctx.moveTo(bulbX + 22, bulbY); ctx.lineTo(W - 60, bulbY); ctx.stroke();
+  }
+
+  strokeWith('rgba(122,90,56,0.20)', 16);
+  strokeWith('#b08456', 11);
+  strokeWith('#d8b388', 4);
+
+  // ---- Off-canvas indicator (right edge) ----
+  ctx.fillStyle = 'rgba(27, 58, 99, 0.06)';
+  ctx.fillRect(W - 50, switchY - 10, 50, switchY + 60 - (switchY - 10) + 20);
+  ctx.fillStyle = 'rgba(27, 58, 99, 0.06)';
+  ctx.fillRect(W - 50, bulbY - 14, 50, 28);
+
+  ctx.fillStyle = '#1b3a63';
+  ctx.font = "italic 600 11px 'Fraunces', serif";
+  ctx.textAlign = 'left';
+  ctx.fillText('… 1 light-second', W - 130, switchY + 50);
+  ctx.fillText('of wire →', W - 130, switchY + 64);
+  ctx.fillText('… and back', W - 130, bulbY - 16);
+  ctx.fillText('this side ←', W - 130, bulbY - 2);
+
+  // small dashed lines indicating the wires continue off-screen
+  ctx.strokeStyle = '#7a5a38';
+  ctx.lineWidth = 2;
+  ctx.setLineDash([6, 5]);
+  ctx.beginPath();
+  ctx.moveTo(W - 60, switchY + 60); ctx.lineTo(W - 8, switchY + 60);
+  ctx.moveTo(W - 60, bulbY); ctx.lineTo(W - 8, bulbY);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // ---- Components ----
+  drawSimpleCell(cellX, cellY);
+  drawSimpleSwitch(switchX, switchY, state.lwSwitchClosed);
+  const bulbLit = state.lwSwitchClosed && state.lwTimeSinceClose >= 0;
+  drawSimpleBulb(bulbX, bulbY, bulbLit);
+
+  // ---- Distance annotations ----
+  ctx.fillStyle = '#1b3a63';
+  ctx.font = "700 11px 'JetBrains Mono', monospace";
+  ctx.textAlign = 'center';
+  ctx.fillText('~1 m', (cellX + bulbX) / 2 - 10, cellY - 30);
+
+  // ---- Direct energy-flux arrows ----
+  // Show energy flowing through the FIELD directly from cell to bulb,
+  // through the small space between them — not via the long wire.
+  if (state.lwSwitchClosed && state.lwTimeSinceClose >= 0) {
+    drawDirectEnergyFlux(cellX, cellY, bulbX, bulbY);
+  }
+
+  // ---- Status panel ----
+  drawLongWireStatus(state.lwSwitchClosed, state.lwTimeSinceClose);
+}
+
+function drawSimpleCell(cx, cy) {
+  ctx.strokeStyle = '#1e1d1a';
+  ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  ctx.moveTo(cx - 14, cy - 12); ctx.lineTo(cx + 14, cy - 12);
+  ctx.stroke();
+  ctx.lineWidth = 4;
+  ctx.beginPath();
+  ctx.moveTo(cx - 22, cy + 12); ctx.lineTo(cx + 22, cy + 12);
+  ctx.stroke();
+  ctx.fillStyle = '#1e1d1a';
+  ctx.font = "700 14px 'JetBrains Mono', monospace";
+  ctx.textAlign = 'left';
+  ctx.fillText('−', cx - 50, cy - 6);
+  ctx.fillText('+', cx - 50, cy + 18);
+}
+
+function drawSimpleSwitch(cx, cy, closed) {
+  ctx.fillStyle = '#1e1d1a';
+  ctx.beginPath();
+  ctx.arc(cx - 22, cy, 4, 0, Math.PI * 2);
+  ctx.arc(cx + 22, cy, 4, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.strokeStyle = '#1e1d1a';
+  ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  ctx.moveTo(cx - 22, cy);
+  if (closed) ctx.lineTo(cx + 22, cy);
+  else ctx.lineTo(cx + 14, cy - 22);
+  ctx.stroke();
+  ctx.fillStyle = '#555148';
+  ctx.font = "700 9px 'JetBrains Mono', monospace";
+  ctx.textAlign = 'center';
+  ctx.fillText('switch', cx, cy + 22);
+}
+
+function drawSimpleBulb(cx, cy, lit) {
+  if (lit) {
+    const r = 70;
+    const gr = ctx.createRadialGradient(cx, cy, 4, cx, cy, r);
+    gr.addColorStop(0, 'rgba(244,208,74,0.6)');
+    gr.addColorStop(1, 'rgba(244,208,74,0)');
+    ctx.fillStyle = gr;
+    ctx.fillRect(cx - r, cy - r, 2*r, 2*r);
+  }
+  ctx.fillStyle = lit ? 'rgba(255, 240, 130, 0.95)' : '#ece4cd';
+  ctx.beginPath();
+  ctx.arc(cx, cy, 22, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.strokeStyle = '#1e1d1a';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(cx - 13, cy - 13); ctx.lineTo(cx + 13, cy + 13);
+  ctx.moveTo(cx + 13, cy - 13); ctx.lineTo(cx - 13, cy + 13);
+  ctx.stroke();
+  ctx.lineWidth = 8;
+  ctx.strokeStyle = '#b08456';
+  ctx.beginPath();
+  ctx.moveTo(cx, cy - 22); ctx.lineTo(cx, cy - 30);
+  ctx.moveTo(cx, cy + 22); ctx.lineTo(cx, cy + 30);
+  ctx.stroke();
+  ctx.lineWidth = 2;
+}
+
+function drawDirectEnergyFlux(cellX, cellY, bulbX, bulbY) {
+  // Animated horizontal arrows showing energy travelling DIRECTLY from cell
+  // to bulb through the field — through the small space between them,
+  // NOT via the long wire that goes 1 light-second out and back.
+  const dashOffset = -(state.time * 0.08) % 30;
+  const startX = cellX + 30;
+  const endX   = bulbX - 26;
+  const ys = [cellY - 30, cellY, cellY + 30];
+
+  for (const y of ys) {
+    // glow
+    ctx.strokeStyle = 'rgba(244, 196, 48, 0.40)';
+    ctx.lineWidth = 8;
+    ctx.beginPath();
+    ctx.moveTo(startX, y); ctx.lineTo(endX, y); ctx.stroke();
+    // dashed shaft (animated flow)
+    ctx.strokeStyle = '#b88018';
+    ctx.lineWidth = 2.4;
+    ctx.setLineDash([7, 5]);
+    ctx.lineDashOffset = dashOffset;
+    ctx.beginPath();
+    ctx.moveTo(startX, y); ctx.lineTo(endX, y); ctx.stroke();
+    ctx.setLineDash([]);
+    drawArrowhead(startX, y, endX, y, '#b88018', 8);
+  }
+
+  // Label
+  ctx.fillStyle = '#b88018';
+  ctx.font = "italic 600 12px 'Fraunces', serif";
+  ctx.textAlign = 'center';
+  ctx.fillText('energy crosses the field directly:', (cellX + bulbX) / 2, cellY - 52);
+  ctx.fillText('cell → bulb in ~nanoseconds', (cellX + bulbX) / 2, cellY - 38);
+}
+
+function drawLongWireStatus(closed, timeSinceClose) {
+  const W = state.W, H = state.H;
+  ctx.font = "500 12.5px 'Bricolage Grotesque', sans-serif";
+  ctx.textAlign = 'left';
+
+  const x = 30, y = H - 100;
+  ctx.fillStyle = '#fdf5dc';
+  ctx.fillRect(x, y, 380, 80);
+  ctx.strokeStyle = '#b88018';
+  ctx.lineWidth = 1.5;
+  ctx.strokeRect(x, y, 380, 80);
+
+  ctx.fillStyle = '#1e1d1a';
+  ctx.font = "700 10px 'JetBrains Mono', monospace";
+  ctx.fillText('LONG-WIRE PREDICTION VS REALITY', x + 12, y + 18);
+
+  ctx.font = "500 12px 'Bricolage Grotesque', sans-serif";
+  if (!closed) {
+    ctx.fillStyle = '#555148';
+    ctx.fillText('Press ↺ Replay switch close to start.', x + 12, y + 38);
+    ctx.fillText('Naïve prediction: bulb waits 2 seconds (1s out + 1s back).', x + 12, y + 56);
+    ctx.fillText('Real prediction: bulb lights almost immediately. Watch.', x + 12, y + 72);
+  } else {
+    const t = Math.max(0, timeSinceClose) / 1000;
+    ctx.fillStyle = '#1e1d1a';
+    ctx.fillText(`Time since switch closed: ${t.toFixed(2)}s`, x + 12, y + 38);
+    if (t < 0.001) {
+      ctx.fillStyle = '#1b3a63';
+      ctx.fillText('Bulb is lit! (delay ≈ ns, not 2 s.)', x + 12, y + 56);
+    } else {
+      ctx.fillStyle = '#1b3a63';
+      ctx.fillText('Bulb lit at t ≈ 1 ns (just the field-cross time).', x + 12, y + 56);
+    }
+    ctx.fillStyle = '#555148';
+    ctx.fillText('Energy didn\'t travel along the wire — it went directly.', x + 12, y + 72);
+  }
+}
+
+/* ============================================================
+   REPLAY OVERLAY
+   ============================================================ */
+function drawReplayOverlay() {
+  if (!state.replayMessage) return;
+  if (performance.now() > state.replayMessageEndsAt) return;
+
+  const padding = 14;
+  ctx.font = "600 13px 'Bricolage Grotesque', sans-serif";
+  const text = state.replayMessage;
+  const textW = ctx.measureText(text).width;
+  const boxW = textW + padding * 2;
+  const boxH = 36;
+  const x = (state.W - boxW) / 2;
+  const y = state.H - boxH - 14;
+
+  ctx.fillStyle = 'rgba(30,29,26,0.18)';
+  ctx.fillRect(x + 2, y + 2, boxW, boxH);
+
+  ctx.fillStyle = 'rgba(27, 58, 99, 0.96)';
+  ctx.fillRect(x, y, boxW, boxH);
+  ctx.strokeStyle = '#0d2540';
+  ctx.lineWidth = 1.5;
+  ctx.strokeRect(x, y, boxW, boxH);
+
+  ctx.fillStyle = '#f4e7c8';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(text, state.W / 2, y + boxH / 2);
+  ctx.textBaseline = 'alphabetic';
+}
+
+/* ============================================================
+   WALKTHROUGH CONTROL
+   ============================================================ */
+function applyStage(idx) {
+  state.stage = idx;
+  const stg = STAGES[idx - 1];
+
+  state.showElectrons      = !!stg.layers.electrons;
+  state.showSurfaceCharges = !!stg.layers.surface;
+  state.showEField         = !!stg.layers.e;
+  state.showBField         = !!stg.layers.b;
+  state.showPoynting       = !!stg.layers.poynting;
+  state.switchClosed       = stg.switchClosed;
+  state.scene              = stg.scene || 'standard';
+
+  // For long-wire stage, reset the demo
+  if (state.scene === 'longwire') {
+    state.lwSwitchClosed = false;
+    state.lwTimeSinceClose = -1;
+  }
+
+  // Update DOM
+  document.getElementById('walkStageLabel').textContent = `Stage ${idx} of ${STAGES.length}`;
+  document.getElementById('walkTitle').innerHTML = stg.title;
+  document.getElementById('walkNarrative').textContent = stg.narrative;
+  document.getElementById('takeawayTitle').textContent = `Stage ${idx} — key idea`;
+  document.getElementById('takeawayBody').innerHTML = stg.takeaway;
+
+  document.getElementById('walkPrev').disabled = (idx === 1);
+  document.getElementById('walkNext').textContent = (idx === STAGES.length) ? 'Finish → free explore' : 'Next →';
+
+  syncLayerToggleUI();
+  syncSwitchUI();
+  syncSceneToggleUI();
+}
+
+function syncLayerToggleUI() {
+  const map = [
+    ['layerElectrons', 'showElectrons', 'layerElectronsLbl'],
+    ['layerSurface', 'showSurfaceCharges', 'layerSurfaceLbl'],
+    ['layerEField', 'showEField', 'layerEFieldLbl'],
+    ['layerBField', 'showBField', 'layerBFieldLbl'],
+    ['layerPoynting', 'showPoynting', 'layerPoyntingLbl']
+  ];
+  for (const [chkId, key, lblId] of map) {
+    document.getElementById(chkId).checked = state[key];
+    document.getElementById(lblId).classList.toggle('active', state[key]);
+  }
+}
+function syncSceneToggleUI() {
+  document.querySelectorAll('#sceneToggle button').forEach(b => {
+    b.classList.toggle('active', b.dataset.val === state.scene);
+  });
+  document.getElementById('sceneLabel').textContent =
+    state.scene === 'standard' ? 'Standard circuit' : 'Long-wire demo';
+  document.getElementById('metaScene').textContent =
+    state.scene === 'standard' ? 'Standard circuit' : 'Long-wire demo';
+}
+
+function exitWalkthrough() {
+  state.mode = 'free';
+  document.getElementById('walkthrough').classList.add('hidden');
+  document.getElementById('restartWalkBtn').style.display = 'inline-block';
+  // Turn ON all layers so user can see everything
+  state.showElectrons = true;
+  state.showSurfaceCharges = true;
+  state.showEField = true;
+  state.showBField = true;
+  state.showPoynting = true;
+  syncLayerToggleUI();
+  document.getElementById('takeawayTitle').textContent = 'Free exploration';
+  document.getElementById('takeawayBody').innerHTML = 'Toggle layers individually. Switch scene to see the long-wire demo. ↺ Replay switch close at any time.';
+}
+
+function restartWalkthrough() {
+  state.mode = 'walkthrough';
+  document.getElementById('walkthrough').classList.remove('hidden');
+  document.getElementById('restartWalkBtn').style.display = 'none';
+  applyStage(1);
+}
+
+/* ============================================================
+   EVENT WIRING
+   ============================================================ */
+function setupSegToggle(id, key, parser) {
+  parser = parser || ((v) => v);
+  const toggle = document.getElementById(id);
+  toggle.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      toggle.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      state[key] = parser(btn.dataset.val);
+      if (key === 'scene') {
+        document.getElementById('sceneLabel').textContent =
+          state.scene === 'standard' ? 'Standard circuit' : 'Long-wire demo';
+        document.getElementById('metaScene').textContent = state.scene === 'standard' ? 'Standard circuit' : 'Long-wire demo';
+        if (state.scene === 'longwire') {
+          state.lwSwitchClosed = false;
+          state.lwTimeSinceClose = -1;
+        }
+      }
+    });
+  });
+}
+setupSegToggle('sceneToggle', 'scene');
+setupSegToggle('speedToggle', 'simSpeed', parseFloat);
+
+// Layer checkboxes
+function bindLayer(chkId, lblId, key) {
+  const chk = document.getElementById(chkId);
+  const lbl = document.getElementById(lblId);
+  chk.addEventListener('change', () => {
+    state[key] = chk.checked;
+    lbl.classList.toggle('active', chk.checked);
+  });
+}
+bindLayer('layerElectrons', 'layerElectronsLbl', 'showElectrons');
+bindLayer('layerSurface',   'layerSurfaceLbl',   'showSurfaceCharges');
+bindLayer('layerEField',    'layerEFieldLbl',    'showEField');
+bindLayer('layerBField',    'layerBFieldLbl',    'showBField');
+bindLayer('layerPoynting',  'layerPoyntingLbl',  'showPoynting');
+
+// Walkthrough buttons
+document.getElementById('walkNext').addEventListener('click', () => {
+  if (state.stage < STAGES.length) applyStage(state.stage + 1);
+  else exitWalkthrough();
+});
+document.getElementById('walkPrev').addEventListener('click', () => {
+  if (state.stage > 1) applyStage(state.stage - 1);
+});
+document.getElementById('walkSkip').addEventListener('click', exitWalkthrough);
+document.getElementById('restartWalkBtn').addEventListener('click', restartWalkthrough);
+
+// Switch button
+let replayTimeout = null;
+document.getElementById('switchBtn').addEventListener('click', () => {
+  if (replayTimeout) { clearTimeout(replayTimeout); replayTimeout = null; }
+  state.replayMessage = '';
+  if (state.scene === 'standard') {
+    state.switchClosed = !state.switchClosed;
+  } else {
+    state.lwSwitchClosed = !state.lwSwitchClosed;
+    state.lwTimeSinceClose = state.lwSwitchClosed ? 0 : -1;
+  }
+  syncSwitchUI();
+});
+
+// Replay button — works for both scenes
+document.getElementById('replayBtn').addEventListener('click', () => {
+  if (replayTimeout) clearTimeout(replayTimeout);
+  // Force slow speed
+  if (state.simSpeed > 0.5) {
+    state.simSpeed = 0.25;
+    document.querySelectorAll('#speedToggle button').forEach(b => {
+      b.classList.toggle('active', parseFloat(b.dataset.val) === 0.25);
+    });
+  }
+
+  if (state.scene === 'standard') {
+    state.switchClosed = false;
+    syncSwitchUI();
+    state.replayMessage = 'Switch open — current zero, electrons frozen';
+    state.replayMessageEndsAt = performance.now() + 1400;
+    replayTimeout = setTimeout(() => {
+      state.switchClosed = true;
+      syncSwitchUI();
+      state.replayMessage = 'Switch closes — every electron starts at once · bulb lights instantly';
+      state.replayMessageEndsAt = performance.now() + 4500;
+      replayTimeout = null;
+    }, 1400);
+  } else {
+    // long-wire: reset and close
+    state.lwSwitchClosed = false;
+    state.lwTimeSinceClose = -1;
+    syncSwitchUI();
+    state.replayMessage = 'Switch open. Pressing… now.';
+    state.replayMessageEndsAt = performance.now() + 1200;
+    replayTimeout = setTimeout(() => {
+      state.lwSwitchClosed = true;
+      state.lwTimeSinceClose = 0;
+      syncSwitchUI();
+      state.replayMessage = 'Switch closed. Bulb lights ~immediately — energy crossed the field, not the wire.';
+      state.replayMessageEndsAt = performance.now() + 5000;
+      replayTimeout = null;
+    }, 1200);
+  }
+});
+
+function syncSwitchUI() {
+  const btn = document.getElementById('switchBtn');
+  const closed = state.scene === 'standard' ? state.switchClosed : state.lwSwitchClosed;
+  btn.classList.toggle('closed', closed);
+  btn.textContent = 'Switch: ' + (closed ? 'closed' : 'open');
+}
+
+/* ============================================================
+   MAIN LOOP
+   ============================================================ */
+let lastT = performance.now();
+function frame(now) {
+  const realDt = Math.min(50, now - lastT);
+  lastT = now;
+  const dt = realDt * state.simSpeed;
+  update(dt);
+  draw();
+  requestAnimationFrame(frame);
+}
+
+fitCanvas();
+rebuildParticles();
+applyStage(1);
+requestAnimationFrame(frame);
+
+</script>
+</body>
+</html>

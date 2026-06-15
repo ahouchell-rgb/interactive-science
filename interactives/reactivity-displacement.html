@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reactivity and displacement</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1E2761;--navy-soft:#2a3478;--warm:#F8F4EC;--warm-deep:#EFE8D6;--paper:#FCFAF4;
+  --soft-blue:#EDF2FA;--ink:#1A1A1A;--muted:#5C6370;--rule:#CFD8E3;--accent:#B85042;
+  --accent-soft:#F4DAD7;--success:#2C5F2D;--success-soft:#DDEBDD;--gold:#C8A24A;--gold-soft:#F2E6BD;
+  --display:'Instrument Serif',Georgia,serif;--body:'IBM Plex Sans',system-ui,sans-serif;--mono:'IBM Plex Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--body);background:var(--paper);color:var(--ink);padding:16px;font-weight:300}
+.wrap{max-width:700px;margin:0 auto}
+.instr{font-size:14px;color:var(--muted);margin-bottom:10px;line-height:1.4}
+.instr strong{color:var(--navy);font-weight:600}
+.grid{display:flex;gap:14px;flex-wrap:wrap}
+.col{flex:1;min-width:130px}
+.col h3{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.series{display:flex;flex-direction:column;gap:4px}
+.series button{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-align:left;display:flex;justify-content:space-between;align-items:center;
+  background:var(--paper);color:var(--navy);border:1px solid var(--rule);padding:7px 10px;border-radius:3px;cursor:pointer;transition:all .15s}
+.series button .rk{color:var(--muted);font-size:9px}
+.series button:hover{background:var(--soft-blue);border-color:var(--navy)}
+.series button.active{background:var(--gold-soft);border-color:var(--gold);font-weight:600}
+.salts{display:flex;flex-direction:column;gap:4px}
+.salts button{font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-align:left;
+  background:var(--paper);color:var(--navy);border:1px solid var(--rule);padding:7px 10px;border-radius:3px;cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:8px}
+.salts button .dot{width:11px;height:11px;border-radius:50%;flex:0 0 auto;border:1px solid rgba(0,0,0,.2)}
+.salts button:hover{background:var(--soft-blue);border-color:var(--navy)}
+.salts button.active{background:var(--gold-soft);border-color:var(--gold);font-weight:600}
+.series button:focus-visible,.salts button:focus-visible,.actions button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.viz{display:flex;gap:14px;align-items:center;margin:14px 0 0;flex-wrap:wrap}
+.beaker{width:96px;height:104px;border:3px solid var(--navy-soft);border-top:none;border-radius:0 0 16px 16px;position:relative;overflow:hidden;flex:0 0 auto;background:var(--paper)}
+.liquid{position:absolute;left:0;right:0;bottom:0;height:62%;transition:background 1.1s}
+.metal{position:absolute;left:50%;top:20px;transform:translateX(-50%);width:30px;height:46px;border-radius:4px;background:#9aa0aa;border:1px solid #6b7280;transition:background 1.1s,box-shadow 1.1s;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;font-weight:600;color:#fff}
+.outcome{flex:1;min-width:180px}
+.actions{margin-top:8px;display:flex;gap:8px}
+.actions button{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:500;
+  border-radius:3px;padding:9px 14px;cursor:pointer;transition:all .18s}
+#run{background:var(--navy);color:var(--warm);border:1px solid var(--navy)}
+#run:hover:not(:disabled){background:var(--accent);border-color:var(--accent)}
+#run:disabled{opacity:.45;cursor:default}
+#reset{background:var(--paper);color:var(--navy);border:1px solid var(--rule)}
+#reset:hover{background:var(--soft-blue);border-color:var(--navy)}
+.result{border-radius:4px;padding:12px 14px;font-size:14px;line-height:1.45;border:1px solid var(--rule);background:var(--soft-blue);color:var(--muted)}
+.result.yes{background:var(--success-soft);border-color:var(--success);color:var(--ink)}
+.result.no{background:var(--accent-soft);border-color:var(--accent);color:var(--ink)}
+.result .head{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;display:block;margin-bottom:4px}
+.yes .head{color:var(--success)} .no .head{color:var(--accent)}
+.result b{font-weight:600}
+.eqn{font-family:var(--mono);font-size:13px;color:var(--navy);margin-top:8px;display:block;line-height:1.4}
+.take{font-family:var(--display);font-style:italic;font-size:17px;color:var(--navy);line-height:1.35;margin-top:12px;padding-top:10px;border-top:1px solid var(--rule)}
+.pickline{font-family:var(--mono);font-size:11px;color:var(--navy);margin:12px 0 0;letter-spacing:.04em}
+.pickline span{color:var(--accent);font-weight:500}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="instr">Pick a <strong>metal</strong> and a <strong>salt solution</strong>, then press React. A more reactive metal pushes a less reactive one out of its compound.</p>
+  <div class="grid">
+    <div class="col">
+      <h3>Reactivity series (most → least)</h3>
+      <div class="series" id="series" role="group" aria-label="Choose a metal"></div>
+    </div>
+    <div class="col">
+      <h3>Metal-salt solution</h3>
+      <div class="salts" id="salts" role="group" aria-label="Choose a salt solution"></div>
+    </div>
+  </div>
+  <p class="pickline" id="pickline" aria-live="polite">Choose a metal and a solution.</p>
+  <div class="viz">
+    <div class="beaker" aria-hidden="true">
+      <div class="liquid" id="liquid"></div>
+      <div class="metal" id="metal">?</div>
+    </div>
+    <div class="outcome">
+      <div class="actions">
+        <button id="run" disabled>React ▸</button>
+        <button id="reset">Reset</button>
+      </div>
+      <div class="result" id="result" style="margin-top:10px">Make your choices, then press React.</div>
+    </div>
+  </div>
+  <p class="take">A more reactive metal displaces a less reactive one from its compound.</p>
+</div>
+<script>
+"use strict";
+// Reactivity series: index 0 = most reactive. (H) included as a reference point.
+const SERIES=[
+  {sym:'K',name:'Potassium'},{sym:'Na',name:'Sodium'},{sym:'Ca',name:'Calcium'},
+  {sym:'Mg',name:'Magnesium'},{sym:'Al',name:'Aluminium'},{sym:'Zn',name:'Zinc'},
+  {sym:'Fe',name:'Iron'},{sym:'(H)',name:'Hydrogen',ref:true},
+  {sym:'Cu',name:'Copper'},{sym:'Ag',name:'Silver'},{sym:'Au',name:'Gold'}
+];
+const rankOf=sym=>SERIES.findIndex(m=>m.sym===sym);
+// Salt solutions: the metal held in the compound + colours.
+const SALTS=[
+  {key:'CuSO4',label:'Copper sulfate',metal:'Cu',mName:'copper',saltCol:'#2f7fd6',prodCol:'#cfe0ee',coat:'#c0703a',coatName:'copper (reddish-brown)'},
+  {key:'FeSO4',label:'Iron(II) sulfate',metal:'Fe',mName:'iron',saltCol:'#7fae8a',prodCol:'#dfe9e0',coat:'#5a5f66',coatName:'iron (grey)'},
+  {key:'ZnSO4',label:'Zinc sulfate',metal:'Zn',mName:'zinc',saltCol:'#dfe6ee',prodCol:'#eef1f4',coat:'#a9b0ba',coatName:'zinc (silvery-grey)'},
+  {key:'AgNO3',label:'Silver nitrate',metal:'Ag',mName:'silver',saltCol:'#e6ecf2',prodCol:'#eef1f4',coat:'#cfd3d8',coatName:'silver crystals'}
+];
+const SALTANION={CuSO4:'sulfate',FeSO4:'sulfate',ZnSO4:'sulfate',AgNO3:'nitrate'};
+let chosenMetal=null, chosenSalt=null, reacted=false;
+const $=id=>document.getElementById(id);
+
+// Build series buttons (skip pure (H) as a selectable metal but show it as a marker)
+const seriesBox=$('series');
+SERIES.forEach((m,i)=>{
+  if(m.ref){
+    const d=document.createElement('div');
+    d.style.cssText='font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:var(--muted);text-align:center;padding:2px 0;border-top:1px dashed var(--rule);border-bottom:1px dashed var(--rule)';
+    d.textContent='— hydrogen —';
+    seriesBox.appendChild(d); return;
+  }
+  const b=document.createElement('button');
+  b.innerHTML='<span>'+m.name+' ('+m.sym+')</span><span class="rk">#'+(i+1)+'</span>';
+  b.setAttribute('aria-pressed','false');
+  b.addEventListener('click',()=>{
+    chosenMetal=m.sym;
+    [...seriesBox.querySelectorAll('button')].forEach(x=>{x.classList.remove('active');x.setAttribute('aria-pressed','false')});
+    b.classList.add('active'); b.setAttribute('aria-pressed','true');
+    afterPick();
+  });
+  seriesBox.appendChild(b);
+});
+const saltsBox=$('salts');
+SALTS.forEach(s=>{
+  const b=document.createElement('button');
+  b.innerHTML='<span class="dot" style="background:'+s.saltCol+'"></span>'+s.label;
+  b.setAttribute('aria-pressed','false');
+  b.addEventListener('click',()=>{
+    chosenSalt=s.key;
+    [...saltsBox.querySelectorAll('button')].forEach(x=>{x.classList.remove('active');x.setAttribute('aria-pressed','false')});
+    b.classList.add('active'); b.setAttribute('aria-pressed','true');
+    afterPick();
+  });
+  saltsBox.appendChild(b);
+});
+
+function metalName(sym){return SERIES.find(m=>m.sym===sym).name.toLowerCase();}
+function afterPick(){
+  reacted=false;
+  const salt=SALTS.find(s=>s.key===chosenSalt);
+  $('liquid').style.background=salt?salt.saltCol:'var(--soft-blue)';
+  $('metal').style.background='#9aa0aa'; $('metal').style.boxShadow='none';
+  $('metal').textContent=chosenMetal||'?';
+  if(chosenMetal&&chosenSalt){
+    $('run').disabled=false;
+    $('pickline').innerHTML='<span>'+metalName(chosenMetal)+'</span> + <span>'+salt.label.toLowerCase()+'</span> — press React';
+    $('result').className='result'; $('result').textContent='Ready — press React.';
+  }else{
+    $('run').disabled=true;
+    $('pickline').textContent='Choose a metal and a solution.';
+    $('result').className='result'; $('result').textContent='Make your choices, then press React.';
+  }
+}
+function react(){
+  if(!chosenMetal||!chosenSalt||reacted) return;
+  reacted=true; $('run').disabled=true;
+  const salt=SALTS.find(s=>s.key===chosenSalt);
+  const rMetal=rankOf(chosenMetal), rSalt=rankOf(salt.metal);
+  const res=$('result');
+  if(chosenMetal===salt.metal){
+    res.className='result no';
+    res.innerHTML='<span class="head">No reaction</span><b>'+metalName(chosenMetal)+'</b> is the same metal already in the solution, so nothing is displaced.';
+    return;
+  }
+  const more = rMetal < rSalt; // lower index = more reactive
+  if(more){
+    // displacement: liquid turns to product colour, metal gets coated
+    $('liquid').style.background=salt.prodCol;
+    $('metal').style.background=salt.coat;
+    $('metal').style.boxShadow='0 0 0 3px '+salt.coat+'66';
+    const anion=SALTANION[chosenSalt];
+    const newSalt=metalName(chosenMetal)+' '+anion;
+    res.className='result yes';
+    res.innerHTML='<span class="head">Displacement happens</span>'+
+      '<b>'+cap(metalName(chosenMetal))+'</b> is more reactive than <b>'+salt.mName+'</b>, so it takes its place. '+
+      'A coating of '+salt.coatName+' forms and the solution colour changes.'+
+      '<span class="eqn">'+metalName(chosenMetal)+' + '+salt.label.toLowerCase()+' &rarr; '+newSalt+' + '+salt.mName+'</span>';
+  }else{
+    res.className='result no';
+    res.innerHTML='<span class="head">No reaction</span>'+
+      '<b>'+cap(metalName(chosenMetal))+'</b> is less reactive than <b>'+salt.mName+'</b>, so it cannot push it out of its compound. Nothing happens.';
+  }
+}
+function cap(s){return s.charAt(0).toUpperCase()+s.slice(1);}
+function reset(){
+  chosenMetal=null; chosenSalt=null; reacted=false;
+  [...seriesBox.querySelectorAll('button'),...saltsBox.querySelectorAll('button')].forEach(b=>{b.classList.remove('active');b.setAttribute('aria-pressed','false')});
+  afterPick();
+}
+$('run').addEventListener('click',react);
+$('reset').addEventListener('click',reset);
+afterPick();
+</script>
+</body>
+</html>

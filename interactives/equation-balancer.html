@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Balancing symbol equations</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1E2761;--navy-soft:#2a3478;--warm:#F8F4EC;--warm-deep:#EFE8D6;--paper:#FCFAF4;
+  --soft-blue:#EDF2FA;--ink:#1A1A1A;--muted:#5C6370;--rule:#CFD8E3;--accent:#B85042;
+  --accent-soft:#F4DAD7;--success:#2C5F2D;--success-soft:#DDEBDD;--gold:#C8A24A;--gold-soft:#F2E6BD;
+  --display:'Instrument Serif',Georgia,serif;--body:'IBM Plex Sans',system-ui,sans-serif;--mono:'IBM Plex Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--body);background:var(--paper);color:var(--ink);padding:16px;font-weight:300}
+.wrap{max-width:700px;margin:0 auto}
+.instr{font-size:14px;color:var(--muted);margin-bottom:10px;line-height:1.4}
+.instr strong{color:var(--navy);font-weight:600}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
+.label{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.preset{font-family:var(--mono);font-size:11px;letter-spacing:.06em;background:var(--paper);color:var(--navy);border:1px solid var(--rule);padding:8px 11px;border-radius:3px;cursor:pointer;transition:all .15s}
+.preset:hover{background:var(--soft-blue);border-color:var(--navy)}
+.preset.active{background:var(--gold-soft);border-color:var(--gold);font-weight:600}
+.preset:focus-visible,.term button:focus-visible,.bar button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.eqbox{background:var(--warm);border:1px solid var(--rule);border-radius:5px;padding:18px 14px;margin-bottom:14px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px;min-height:96px}
+.term{display:flex;align-items:center;gap:6px}
+.stepper{display:flex;flex-direction:column;gap:2px}
+.stepper button{font-family:var(--mono);font-size:11px;width:26px;height:20px;line-height:1;background:var(--navy);color:var(--warm);border:1px solid var(--navy);border-radius:3px;cursor:pointer;padding:0;transition:all .15s}
+.stepper button:hover{background:var(--accent);border-color:var(--accent)}
+.coef{font-family:var(--mono);font-size:24px;font-weight:600;color:var(--accent);min-width:22px;text-align:center}
+.coef.one{color:var(--muted)}
+.formula{font-family:var(--mono);font-size:24px;font-weight:500;color:var(--navy);letter-spacing:.02em}
+.formula sub{font-size:.62em;font-weight:600}
+.op{font-family:var(--mono);font-size:22px;color:var(--muted);margin:0 2px}
+.arrow{font-family:var(--mono);font-size:24px;color:var(--navy);margin:0 4px}
+.tallies{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.tcol{background:var(--paper);border:1px solid var(--rule);border-radius:4px;padding:10px 12px}
+.tcol h4{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.tline{display:flex;justify-content:space-between;font-family:var(--mono);font-size:13px;padding:2px 0}
+.tline .el{color:var(--navy);font-weight:500}
+.tline .ct{font-weight:600}
+.tline.ok .ct{color:var(--success)}
+.tline.bad .ct{color:var(--accent)}
+.status{border-radius:4px;padding:12px 14px;font-size:14px;line-height:1.4;border:1px solid var(--rule);background:var(--soft-blue);color:var(--muted);text-align:center;margin-bottom:10px}
+.status.balanced{background:var(--success-soft);border-color:var(--success);color:var(--success);font-weight:600;font-size:16px}
+.status .head{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;display:block;margin-bottom:2px}
+.bar{display:flex;gap:8px;flex-wrap:wrap}
+.bar button{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:500;background:var(--paper);color:var(--navy);border:1px solid var(--rule);padding:9px 14px;border-radius:3px;cursor:pointer;transition:all .18s}
+.bar button:hover{background:var(--soft-blue);border-color:var(--navy)}
+.take{font-family:var(--display);font-style:italic;font-size:17px;color:var(--navy);line-height:1.35;margin-top:12px;padding-top:10px;border-top:1px solid var(--rule)}
+@media(max-width:420px){.formula,.coef{font-size:20px}.eqbox{padding:14px 8px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="instr">Change only the <strong>big numbers</strong> (coefficients) until both sides have the same number of each atom. The little subscripts are locked.</p>
+  <div class="row" role="group" aria-label="Choose an equation">
+    <span class="label">Equation</span>
+    <span id="presets" style="display:flex;flex-wrap:wrap;gap:6px"></span>
+  </div>
+  <div class="eqbox" id="eqbox"></div>
+  <div class="tallies">
+    <div class="tcol"><h4>Left (reactants)</h4><div id="tL"></div></div>
+    <div class="tcol"><h4>Right (products)</h4><div id="tR"></div></div>
+  </div>
+  <div class="status" id="status" aria-live="polite"></div>
+  <div class="bar">
+    <button id="reset">Reset coefficients</button>
+    <button id="next">Next equation ▸</button>
+  </div>
+  <p class="take">Balance by changing only the BIG numbers until both sides have the same atoms — never change a formula.</p>
+</div>
+<script>
+"use strict";
+// Each formula: display string + atom map (per single unit). Coefficient multiplies the map.
+function f(disp,atoms){return {disp,atoms};}
+const PRESETS=[
+  {tag:'H₂ + O₂ → H₂O', left:[f('H<sub>2</sub>',{H:2}), f('O<sub>2</sub>',{O:2})], right:[f('H<sub>2</sub>O',{H:2,O:1})]},
+  {tag:'Mg + O₂ → MgO', left:[f('Mg',{Mg:1}), f('O<sub>2</sub>',{O:2})], right:[f('MgO',{Mg:1,O:1})]},
+  {tag:'H₂ + Cl₂ → HCl', left:[f('H<sub>2</sub>',{H:2}), f('Cl<sub>2</sub>',{Cl:2})], right:[f('HCl',{H:1,Cl:1})]},
+  {tag:'Na + O₂ → Na₂O', left:[f('Na',{Na:1}), f('O<sub>2</sub>',{O:2})], right:[f('Na<sub>2</sub>O',{Na:2,O:1})]},
+  {tag:'Fe₂O₃ + Al → Fe + Al₂O₃', left:[f('Fe<sub>2</sub>O<sub>3</sub>',{Fe:2,O:3}), f('Al',{Al:1})], right:[f('Fe',{Fe:1}), f('Al<sub>2</sub>O<sub>3</sub>',{Al:2,O:3})]}
+];
+let cur=0, coefL=[], coefR=[];
+const $=id=>document.getElementById(id);
+function resetCoefs(){
+  coefL=PRESETS[cur].left.map(()=>1);
+  coefR=PRESETS[cur].right.map(()=>1);
+}
+function elements(){
+  const set=new Set();
+  PRESETS[cur].left.forEach(t=>Object.keys(t.atoms).forEach(e=>set.add(e)));
+  PRESETS[cur].right.forEach(t=>Object.keys(t.atoms).forEach(e=>set.add(e)));
+  return [...set];
+}
+function count(side,coefs){
+  const tot={};
+  side.forEach((t,i)=>{for(const e in t.atoms){tot[e]=(tot[e]||0)+t.atoms[e]*coefs[i];}});
+  return tot;
+}
+function buildPresets(){
+  const box=$('presets'); box.innerHTML='';
+  PRESETS.forEach((p,i)=>{
+    const b=document.createElement('button'); b.className='preset'+(i===cur?' active':'');
+    b.textContent=p.tag; b.setAttribute('aria-pressed',i===cur);
+    b.addEventListener('click',()=>{cur=i;resetCoefs();renderAll();});
+    box.appendChild(b);
+  });
+}
+function term(side,idx,coefs){
+  const t=side[idx];
+  const wrap=document.createElement('span'); wrap.className='term';
+  const step=document.createElement('span'); step.className='stepper';
+  const up=document.createElement('button'); up.textContent='+'; up.setAttribute('aria-label','Increase coefficient for '+t.disp.replace(/<[^>]+>/g,''));
+  const dn=document.createElement('button'); dn.textContent='−'; dn.setAttribute('aria-label','Decrease coefficient for '+t.disp.replace(/<[^>]+>/g,''));
+  up.addEventListener('click',()=>{coefs[idx]=Math.min(9,coefs[idx]+1);renderAll();});
+  dn.addEventListener('click',()=>{coefs[idx]=Math.max(1,coefs[idx]-1);renderAll();});
+  step.appendChild(up); step.appendChild(dn);
+  const c=document.createElement('span'); c.className='coef'+(coefs[idx]===1?' one':''); c.textContent=coefs[idx];
+  const fo=document.createElement('span'); fo.className='formula'; fo.innerHTML=t.disp;
+  wrap.appendChild(step); wrap.appendChild(c); wrap.appendChild(fo);
+  return wrap;
+}
+function renderEq(){
+  const box=$('eqbox'); box.innerHTML='';
+  const p=PRESETS[cur];
+  p.left.forEach((t,i)=>{
+    box.appendChild(term(p.left,i,coefL));
+    if(i<p.left.length-1){const o=document.createElement('span');o.className='op';o.textContent='+';box.appendChild(o);}
+  });
+  const ar=document.createElement('span'); ar.className='arrow'; ar.textContent='→'; box.appendChild(ar);
+  p.right.forEach((t,i)=>{
+    box.appendChild(term(p.right,i,coefR));
+    if(i<p.right.length-1){const o=document.createElement('span');o.className='op';o.textContent='+';box.appendChild(o);}
+  });
+}
+function renderTallies(){
+  const els=elements();
+  const L=count(PRESETS[cur].left,coefL), R=count(PRESETS[cur].right,coefR);
+  const tL=$('tL'), tR=$('tR'); tL.innerHTML=''; tR.innerHTML='';
+  let balanced=true;
+  els.forEach(e=>{
+    const lv=L[e]||0, rv=R[e]||0, ok=(lv===rv);
+    if(!ok) balanced=false;
+    const a=document.createElement('div'); a.className='tline '+(ok?'ok':'bad');
+    a.innerHTML='<span class="el">'+e+'</span><span class="ct">'+lv+'</span>'; tL.appendChild(a);
+    const b=document.createElement('div'); b.className='tline '+(ok?'ok':'bad');
+    b.innerHTML='<span class="el">'+e+'</span><span class="ct">'+rv+'</span>'; tR.appendChild(b);
+  });
+  const st=$('status');
+  if(balanced){
+    st.className='status balanced'; st.textContent='Balanced! ✓';
+  }else{
+    st.className='status';
+    st.innerHTML='<span class="head">Not balanced yet</span>Some elements have different counts on each side.';
+  }
+}
+function renderAll(){buildPresets();renderEq();renderTallies();}
+$('reset').addEventListener('click',()=>{resetCoefs();renderAll();});
+$('next').addEventListener('click',()=>{cur=(cur+1)%PRESETS.length;resetCoefs();renderAll();});
+resetCoefs(); renderAll();
+</script>
+</body>
+</html>

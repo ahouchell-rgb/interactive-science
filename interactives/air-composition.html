@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inhaled and exhaled air</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1E2761;--navy-soft:#2a3478;--warm:#F8F4EC;--warm-deep:#EFE8D6;
+  --paper:#FCFAF4;--soft-blue:#EDF2FA;--ink:#1A1A1A;--muted:#5C6370;
+  --rule:#CFD8E3;--accent:#B85042;--accent-soft:#F4DAD7;--success:#2C5F2D;
+  --success-soft:#DDEBDD;--gold:#C8A24A;--gold-soft:#F2E6BD;
+  --display:'Instrument Serif',Georgia,serif;
+  --body:'IBM Plex Sans',system-ui,sans-serif;
+  --mono:'IBM Plex Mono','Courier New',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{margin:0;background:var(--paper);font-family:var(--body);color:var(--ink);font-weight:300}
+.wrap{padding:16px;max-width:700px;margin:0 auto}
+.instruction{font-family:var(--mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.toprow{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.title{font-family:var(--display);font-style:italic;font-size:24px;color:var(--navy)}
+button{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:500;
+  background:var(--navy);color:var(--warm);border:0;padding:9px 14px;cursor:pointer;transition:background .2s;border-radius:2px}
+button:hover{background:var(--accent)}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.chart{display:flex;flex-direction:column;gap:12px}
+.bar-row{display:grid;grid-template-columns:96px 1fr 56px;align-items:center;gap:10px}
+.bar-name{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink)}
+.bar-track{background:var(--warm-deep);height:24px;border:1px solid var(--rule);position:relative;overflow:hidden}
+.bar-fill{height:100%;width:0;transition:width .8s cubic-bezier(.4,0,.2,1),background .4s}
+.bar-val{font-family:var(--display);font-size:20px;color:var(--navy);text-align:right;transition:color .4s}
+.chg{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-left:6px}
+.note{background:var(--soft-blue);border:1px solid #C9D7ED;border-left:3px solid var(--navy);padding:12px 14px;margin-top:16px;font-size:14px;line-height:1.5}
+.note b{color:var(--accent);font-weight:500}
+.takeaway{font-family:var(--display);font-style:italic;font-size:17px;color:var(--muted);margin-top:14px;line-height:1.35;border-top:1px solid var(--rule);padding-top:10px}
+.takeaway b{color:var(--accent);font-style:normal;font-weight:400}
+@media(max-width:420px){.bar-row{grid-template-columns:76px 1fr 50px;gap:6px}.bar-name{font-size:10px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="instruction">Toggle between the air you breathe in and out</p>
+  <div class="toprow">
+    <span class="title" id="title">Inhaled air</span>
+    <button id="toggle" aria-label="Switch between inhaled and exhaled air">Inhaled &#8646; Exhaled</button>
+  </div>
+  <div class="chart" id="chart"></div>
+  <div class="note" id="note">Only <b>oxygen</b> and <b>carbon dioxide</b> change much. Nitrogen passes straight through — it is not used.</div>
+  <p class="takeaway">Oxygen <b>decreases</b> (we use about 5%), carbon dioxide <b>rises ~1000&times;</b>, nitrogen is <b>unchanged</b>.</p>
+</div>
+<script>
+(function(){
+  // values as % (CO2 uses log-friendly small numbers; widths scaled for visibility)
+  var gases=[
+    {key:'N2', name:'Nitrogen',       inh:78,   exh:78,   col:'#9FB3D6'},
+    {key:'O2', name:'Oxygen',         inh:21,   exh:16,   col:'var(--gold)'},
+    {key:'CO2',name:'Carbon dioxide', inh:0.04, exh:4,    col:'var(--accent)'},
+    {key:'H2O',name:'Water vapour',   inh:1,    exh:6,    col:'var(--success)', txtInh:'a little', txtExh:'more', approx:true}
+  ];
+  var chart=document.getElementById('chart');
+  gases.forEach(function(g){
+    var row=document.createElement('div');row.className='bar-row';
+    row.innerHTML='<div class="bar-name">'+g.name+'</div>'+
+      '<div class="bar-track"><div class="bar-fill" id="fill-'+g.key+'" role="img" aria-label="'+g.name+' bar"></div></div>'+
+      '<div class="bar-val" id="val-'+g.key+'"></div>';
+    chart.appendChild(row);
+  });
+  var state='inh';
+  function fmt(g,which){
+    if(g.approx)return which==='inh'?g.txtInh:g.txtExh;
+    var v=which==='inh'?g.inh:g.exh;
+    return (v<1?v.toFixed(2):v)+'%';
+  }
+  // width: nitrogen 78 -> big; clamp CO2 so 0.04 is a sliver, 4 visible
+  function width(g,which){
+    var v=which==='inh'?g.inh:g.exh;
+    if(g.approx)return which==='inh'?12:34;     // water vapour qualitative
+    if(g.key==='CO2')return Math.max(1.5, v*7); // exaggerate so the change is visible
+    return v;                                    // N2,O2 use real %
+  }
+  function render(){
+    document.getElementById('title').textContent=state==='inh'?'Inhaled air':'Exhaled air';
+    gases.forEach(function(g){
+      var fill=document.getElementById('fill-'+g.key),val=document.getElementById('val-'+g.key);
+      fill.style.width=width(g,state)+'%';fill.style.background=g.col;
+      var changed=!g.approx && g.inh!==g.exh;
+      val.style.color=changed?'var(--accent)':'var(--navy)';
+      val.textContent=fmt(g,state);
+    });
+    var note=document.getElementById('note');
+    if(state==='exh'){
+      note.innerHTML='In exhaled air <b>oxygen has dropped</b> from 21% to 16% (we used about 5%) and <b>carbon dioxide has shot up</b> from 0.04% to ~4%. Nitrogen is unchanged.';
+    }else{
+      note.innerHTML='Only <b>oxygen</b> and <b>carbon dioxide</b> change much. Nitrogen passes straight through — it is not used.';
+    }
+  }
+  document.getElementById('toggle').addEventListener('click',function(){
+    state=state==='inh'?'exh':'inh';render();
+  });
+  render();
+})();
+</script>
+</body>
+</html>

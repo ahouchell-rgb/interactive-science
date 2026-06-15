@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Light Microscope — Year 7 Biology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Source+Serif+4:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #f3ead4;
+  --paper-shadow: #e6dcbe;
+  --paper-deep: #ddd0ad;
+  --ink: #1a2238;
+  --ink-soft: #2c364f;
+  --ink-light: #5d6680;
+  --rule: #c0b394;
+  --rule-soft: #d5cbb0;
+  --accent: #b04222;
+  --accent-soft: rgba(176, 66, 34, 0.08);
+  --brass: #b8945a;
+
+  /* microscope metal */
+  --metal-darkest: #14171c;
+  --metal-dark: #20252e;
+  --metal-mid: #313842;
+  --metal-light: #4d5663;
+  --metal-highlight: #7e8896;
+  --metal-shine: #b6bdc7;
+  --rubber: #18191c;
+
+  --led-core: #fffbe6;
+  --led-warm: #ffd97a;
+  --led-glow: rgba(255, 217, 122, 0.55);
+
+  --slide-glass: #d8e3ea;
+  --slide-edge: #94a3ad;
+  --specimen: #5d8240;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  font-family: 'Source Serif 4', Georgia, serif;
+  background: var(--paper);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  background:
+    radial-gradient(ellipse 80% 60% at 30% 20%, rgba(255,255,255,0.55), transparent 70%),
+    radial-gradient(ellipse 70% 60% at 80% 90%, rgba(0,0,0,0.05), transparent 70%),
+    var(--paper);
+  background-attachment: fixed;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* paper grain */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.45;
+  mix-blend-mode: multiply;
+  z-index: 1;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.12  0 0 0 0 0.10  0 0 0 0 0.18  0 0 0 0.05 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+.container {
+  position: relative;
+  z-index: 2;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 36px 56px 28px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ========== HEADER ========== */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 18px;
+  margin-bottom: 0;
+}
+
+header::after {
+  content: "";
+}
+
+.title-block .pretitle {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-light);
+  margin-bottom: 10px;
+}
+
+.title-block h1 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 600;
+  font-size: 56px;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variation-settings: "opsz" 144, "SOFT" 30;
+}
+
+.title-block h1 em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--accent);
+}
+
+.meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-align: right;
+  color: var(--ink-light);
+  line-height: 1.8;
+  text-transform: uppercase;
+}
+.meta strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.subhead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-light);
+  padding: 10px 0;
+  border-bottom: 1px solid var(--rule-soft);
+  margin-bottom: 24px;
+}
+.subhead .dot {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  background: var(--accent);
+  border-radius: 50%;
+  margin: 0 10px;
+  vertical-align: middle;
+}
+
+/* ========== MAIN ========== */
+main {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 40px;
+  flex: 1;
+  align-items: stretch;
+  min-height: 0;
+}
+
+/* SCOPE PANEL */
+.scope-panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.scope-frame {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(ellipse 60% 60% at 50% 55%, rgba(255,255,255,0.5), transparent 75%);
+  padding: 8px 0;
+}
+
+.scope-frame svg {
+  width: 100%;
+  height: 100%;
+  max-height: 78vh;
+  display: block;
+  overflow: visible;
+}
+
+.scope-caption {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-size: 14px;
+  text-align: center;
+  color: var(--ink-light);
+  padding-top: 8px;
+  border-top: 1px solid var(--rule-soft);
+  margin-top: 8px;
+}
+
+/* INFO PANEL */
+.info-panel {
+  background: rgba(255, 252, 244, 0.55);
+  border: 1px solid var(--rule);
+  padding: 36px 36px 32px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: 5px 5px 0 var(--paper-shadow);
+  min-height: 0;
+}
+
+.info-panel::before {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border: 1px solid var(--rule-soft);
+  pointer-events: none;
+}
+
+.info-empty {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex: 1;
+  padding: 48px 24px;
+  color: var(--ink-light);
+}
+.info-empty .symbol {
+  font-family: 'Fraunces', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 140px;
+  line-height: 0.85;
+  color: var(--rule);
+  margin-bottom: 20px;
+  font-variation-settings: "opsz" 144;
+}
+.info-empty p {
+  font-size: 18px;
+  font-style: italic;
+  font-family: 'Fraunces', serif;
+  color: var(--ink-soft);
+  max-width: 320px;
+  line-height: 1.4;
+}
+.info-empty .hint {
+  margin-top: 24px;
+  font-family: 'JetBrains Mono', monospace;
+  font-style: normal;
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-light);
+}
+
+.info-content {
+  display: none;
+  flex-direction: column;
+  flex: 1;
+  animation: fadeIn 0.3s ease;
+}
+.info-content.show {
+  display: flex;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.info-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 20px;
+  margin-bottom: 22px;
+}
+
+.info-number {
+  font-family: 'Fraunces', serif;
+  font-size: 76px;
+  line-height: 0.85;
+  font-weight: 600;
+  color: var(--accent);
+  font-variation-settings: "opsz" 144;
+  letter-spacing: -0.04em;
+  flex-shrink: 0;
+}
+
+.info-titles { flex: 1; padding-top: 4px; }
+
+.info-title {
+  font-family: 'Fraunces', serif;
+  font-size: 34px;
+  font-weight: 600;
+  line-height: 1.05;
+  margin-bottom: 6px;
+  letter-spacing: -0.01em;
+}
+
+.info-subtitle {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-light);
+  font-weight: 500;
+}
+
+.info-body {
+  font-size: 19px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  margin-bottom: 22px;
+  font-family: 'Source Serif 4', serif;
+}
+
+.info-tip {
+  border-left: 3px solid var(--accent);
+  padding: 12px 18px;
+  background: var(--accent-soft);
+  font-size: 16px;
+  line-height: 1.5;
+  font-style: italic;
+  font-family: 'Fraunces', serif;
+  color: var(--ink-soft);
+}
+
+.info-tip-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-style: normal;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  color: var(--accent);
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-right: 8px;
+}
+
+/* ========== SVG INTERACTIVE STYLING ========== */
+.part {
+  cursor: pointer;
+  transition: filter 0.25s ease;
+}
+.part:hover {
+  filter: brightness(1.1) saturate(1.1);
+}
+.part.active {
+  filter: drop-shadow(0 0 14px rgba(176, 66, 34, 0.6)) brightness(1.06);
+}
+
+.callout-line {
+  stroke: var(--ink);
+  stroke-width: 1;
+  fill: none;
+  opacity: 0.55;
+}
+.callout-anchor {
+  fill: var(--ink);
+}
+.callout-circle {
+  fill: var(--paper);
+  stroke: var(--ink);
+  stroke-width: 1.6;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.callout-circle:hover,
+.callout-group.active .callout-circle {
+  fill: var(--accent);
+  stroke: var(--accent);
+}
+.callout-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 600;
+  fill: var(--ink);
+  pointer-events: none;
+  text-anchor: middle;
+  dominant-baseline: central;
+  transition: fill 0.2s ease;
+}
+.callout-group:hover .callout-num,
+.callout-group.active .callout-num {
+  fill: var(--paper);
+}
+.callout-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  fill: var(--ink);
+  cursor: pointer;
+  font-weight: 500;
+  transition: fill 0.2s ease;
+}
+.callout-group:hover .callout-text,
+.callout-group.active .callout-text {
+  fill: var(--accent);
+}
+
+/* ========== FOOTER ========== */
+footer {
+  margin-top: 24px;
+  padding-top: 14px;
+  border-top: 1px solid var(--rule-soft);
+  display: flex;
+  justify-content: space-between;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-light);
+}
+
+@media (max-width: 1100px) {
+  main { grid-template-columns: 1fr; }
+  .container { padding: 24px; }
+  .title-block h1 { font-size: 40px; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="title-block">
+      <div class="pretitle">Plate I · Apparatus of the Cell Sciences</div>
+      <h1>The Light <em>Microscope</em></h1>
+    </div>
+    <div class="meta">
+      <strong>Year 7 Biology</strong><br>
+      Cells &amp; Microscopy<br>
+      Click any label to learn more
+    </div>
+  </header>
+
+  <div class="subhead">
+    <span>Compound monocular microscope <span class="dot"></span> LED illumination</span>
+    <span>Seven labelled parts</span>
+  </div>
+
+  <main>
+    <div class="scope-panel">
+      <div class="scope-frame">
+        <svg viewBox="0 0 800 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <!-- Metal gradients -->
+            <linearGradient id="armGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#1a1f27"/>
+              <stop offset="35%" stop-color="#3a4350"/>
+              <stop offset="55%" stop-color="#525c6b"/>
+              <stop offset="80%" stop-color="#2a313b"/>
+              <stop offset="100%" stop-color="#15191f"/>
+            </linearGradient>
+
+            <linearGradient id="baseGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#3b424d"/>
+              <stop offset="50%" stop-color="#262c35"/>
+              <stop offset="100%" stop-color="#15191f"/>
+            </linearGradient>
+
+            <linearGradient id="baseFront" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#2a3039"/>
+              <stop offset="100%" stop-color="#101319"/>
+            </linearGradient>
+
+            <linearGradient id="metalGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#1c2129"/>
+              <stop offset="50%" stop-color="#4a5260"/>
+              <stop offset="100%" stop-color="#1c2129"/>
+            </linearGradient>
+
+            <radialGradient id="knobGrad" cx="0.35" cy="0.35" r="0.8">
+              <stop offset="0%" stop-color="#5b6473"/>
+              <stop offset="40%" stop-color="#2d333d"/>
+              <stop offset="100%" stop-color="#0e1116"/>
+            </radialGradient>
+
+            <radialGradient id="knobHub" cx="0.4" cy="0.4" r="0.7">
+              <stop offset="0%" stop-color="#a8b0bb"/>
+              <stop offset="100%" stop-color="#454c58"/>
+            </radialGradient>
+
+            <radialGradient id="lensGlass" cx="0.4" cy="0.4" r="0.7">
+              <stop offset="0%" stop-color="#4a5868"/>
+              <stop offset="60%" stop-color="#1d242e"/>
+              <stop offset="100%" stop-color="#0a0d12"/>
+            </radialGradient>
+
+            <linearGradient id="objBody" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#1a1f27"/>
+              <stop offset="50%" stop-color="#3d4654"/>
+              <stop offset="100%" stop-color="#13171c"/>
+            </linearGradient>
+
+            <linearGradient id="objColor" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#c25a3e"/>
+              <stop offset="100%" stop-color="#7a2e1c"/>
+            </linearGradient>
+            <linearGradient id="objColor2" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#5a8a52"/>
+              <stop offset="100%" stop-color="#2f4d2a"/>
+            </linearGradient>
+            <linearGradient id="objColor3" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#d4b35a"/>
+              <stop offset="100%" stop-color="#7e6420"/>
+            </linearGradient>
+
+            <linearGradient id="stageGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#383e48"/>
+              <stop offset="35%" stop-color="#1c2128"/>
+              <stop offset="100%" stop-color="#0d1015"/>
+            </linearGradient>
+
+            <linearGradient id="stageTop" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#1c2128"/>
+              <stop offset="100%" stop-color="#0a0d12"/>
+            </linearGradient>
+
+            <linearGradient id="slideGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#e8eff4"/>
+              <stop offset="100%" stop-color="#aab9c2"/>
+            </linearGradient>
+
+            <radialGradient id="ledCore" cx="0.5" cy="0.5" r="0.5">
+              <stop offset="0%" stop-color="#fffce8"/>
+              <stop offset="60%" stop-color="#ffe39a"/>
+              <stop offset="100%" stop-color="#d49a2c"/>
+            </radialGradient>
+
+            <radialGradient id="ledGlow" cx="0.5" cy="0.5" r="0.5">
+              <stop offset="0%" stop-color="rgba(255,235,160,0.85)"/>
+              <stop offset="60%" stop-color="rgba(255,210,110,0.25)"/>
+              <stop offset="100%" stop-color="rgba(255,200,90,0)"/>
+            </radialGradient>
+
+            <linearGradient id="lightBeam" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="rgba(255,235,170,0)"/>
+              <stop offset="50%" stop-color="rgba(255,235,170,0.18)"/>
+              <stop offset="100%" stop-color="rgba(255,235,170,0)"/>
+            </linearGradient>
+
+            <linearGradient id="bodyTube" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#13171c"/>
+              <stop offset="50%" stop-color="#444d5b"/>
+              <stop offset="100%" stop-color="#13171c"/>
+            </linearGradient>
+
+            <linearGradient id="eyepieceGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#10141a"/>
+              <stop offset="50%" stop-color="#3e4855"/>
+              <stop offset="100%" stop-color="#10141a"/>
+            </linearGradient>
+
+            <radialGradient id="ocular" cx="0.5" cy="0.4" r="0.6">
+              <stop offset="0%" stop-color="#3a4452"/>
+              <stop offset="60%" stop-color="#13181f"/>
+              <stop offset="100%" stop-color="#05070a"/>
+            </radialGradient>
+
+            <!-- Subtle drop shadow under microscope -->
+            <radialGradient id="floorShadow" cx="0.5" cy="0.5" r="0.5">
+              <stop offset="0%" stop-color="rgba(20,15,5,0.35)"/>
+              <stop offset="100%" stop-color="rgba(20,15,5,0)"/>
+            </radialGradient>
+          </defs>
+
+          <!-- floor shadow -->
+          <ellipse cx="400" cy="850" rx="240" ry="14" fill="url(#floorShadow)"/>
+
+          <!-- ============ BASE ============ -->
+          <g>
+            <!-- back panel of base (slightly behind) -->
+            <path d="M 200 778 L 600 778 L 580 800 L 220 800 Z" fill="#0c0f14"/>
+            <!-- main base trapezoid -->
+            <path d="M 175 838 L 625 838 L 600 778 L 200 778 Z" fill="url(#baseFront)"/>
+            <!-- top rim -->
+            <path d="M 200 778 L 600 778 L 595 770 L 205 770 Z" fill="url(#baseGrad)"/>
+            <!-- foot stripe / detail -->
+            <rect x="175" y="828" width="450" height="10" fill="#0a0c10"/>
+            <!-- on/off indicator -->
+            <circle cx="560" cy="810" r="3.5" fill="#3fbf6a" opacity="0.85"/>
+            <circle cx="560" cy="810" r="6" fill="#3fbf6a" opacity="0.18"/>
+            <!-- brand plate -->
+            <rect x="265" y="800" width="100" height="20" rx="2" fill="#0d1015" stroke="#262c34" stroke-width="0.5"/>
+            <text x="315" y="814" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#6a7280" letter-spacing="2">OPTILUME 200</text>
+          </g>
+
+          <!-- ============ ARM (vertical pillar) ============ -->
+          <g>
+            <!-- main arm -->
+            <path d="M 478 770 L 478 320 Q 478 290 508 290 L 558 290 Q 580 290 580 312 L 580 770 Z"
+                  fill="url(#armGrad)"/>
+            <!-- arm front highlight strip -->
+            <path d="M 487 770 L 487 326 Q 487 302 510 302 L 552 302" fill="none" stroke="#646e7c" stroke-width="1.2" opacity="0.6"/>
+            <!-- arm shadow back -->
+            <path d="M 575 770 L 575 326" stroke="#0a0d12" stroke-width="3" opacity="0.7"/>
+          </g>
+
+          <!-- ============ HEAD HORIZONTAL EXTENSION ============ -->
+          <!-- bridge from arm forward to over the stage, holding the head -->
+          <g>
+            <!-- horizontal bar at top of arm extending left -->
+            <path d="M 478 290 L 478 348 Q 478 362 462 362 L 320 362 Q 304 362 304 348 L 304 320 Q 304 290 334 290 L 478 290 Z"
+                  fill="url(#armGrad)"/>
+            <!-- highlight -->
+            <path d="M 314 348 L 314 320 Q 314 300 334 300 L 478 300" fill="none" stroke="#5e6876" stroke-width="1" opacity="0.55"/>
+          </g>
+
+          <!-- ============ BODY TUBE (rises from head) ============ -->
+          <g>
+            <!-- vertical body tube cylinder, sits on top of head pointing up to eyepiece -->
+            <rect x="350" y="220" width="48" height="80" fill="url(#bodyTube)"/>
+            <!-- top ring -->
+            <rect x="346" y="218" width="56" height="6" fill="#0c1016"/>
+            <!-- bottom ring -->
+            <rect x="346" y="296" width="56" height="6" fill="#0c1016"/>
+          </g>
+
+          <!-- ============ EYEPIECE (clickable) ============ -->
+          <g class="part" data-part="eyepiece">
+            <!-- angled tube leaning forward (left). pivot at top of body tube ~(374, 220). Rotate -22deg -->
+            <g transform="rotate(-22 374 220)">
+              <!-- tube body -->
+              <rect x="358" y="120" width="32" height="100" fill="url(#eyepieceGrad)"/>
+              <!-- ridges/grip -->
+              <line x1="358" y1="160" x2="390" y2="160" stroke="#0a0d12" stroke-width="1.2"/>
+              <line x1="358" y1="170" x2="390" y2="170" stroke="#0a0d12" stroke-width="1.2"/>
+              <line x1="358" y1="180" x2="390" y2="180" stroke="#0a0d12" stroke-width="1.2"/>
+              <!-- eyecup (wider rubber top) -->
+              <rect x="348" y="98" width="52" height="24" rx="3" fill="#16191e"/>
+              <ellipse cx="374" cy="100" rx="26" ry="6" fill="url(#ocular)"/>
+              <!-- glass reflection -->
+              <ellipse cx="368" cy="98" rx="8" ry="2" fill="#5e6878" opacity="0.5"/>
+              <!-- bottom collar -->
+              <rect x="354" y="218" width="40" height="8" fill="#0a0d12"/>
+            </g>
+          </g>
+
+          <!-- ============ NOSEPIECE (turret) ============ -->
+          <g>
+            <!-- top of turret (ellipse seen from side) -->
+            <ellipse cx="391" cy="362" rx="68" ry="10" fill="#1a1f27"/>
+            <!-- main turret body -->
+            <rect x="323" y="362" width="136" height="26" fill="url(#metalGrad)"/>
+            <!-- bottom curve of turret -->
+            <ellipse cx="391" cy="388" rx="68" ry="10" fill="#0c0f14"/>
+            <!-- inner shadow ring -->
+            <ellipse cx="391" cy="388" rx="58" ry="7" fill="#06080b"/>
+          </g>
+
+          <!-- ============ OBJECTIVE LENSES (clickable) ============ -->
+          <g class="part" data-part="objective">
+            <!-- LEFT objective (short, ×4, red band) - angled left -->
+            <g transform="rotate(-25 358 388)">
+              <rect x="348" y="388" width="20" height="40" fill="url(#objBody)"/>
+              <rect x="346" y="388" width="24" height="6" fill="#0a0d12"/>
+              <rect x="346" y="402" width="24" height="6" fill="url(#objColor)"/>
+              <rect x="350" y="424" width="16" height="6" fill="#0c0f14"/>
+              <!-- lens glass -->
+              <ellipse cx="358" cy="430" rx="6" ry="2" fill="url(#lensGlass)"/>
+            </g>
+            <!-- CENTRE objective (longest, ×40, yellow band) - straight down (active position) -->
+            <g>
+              <rect x="380" y="388" width="22" height="60" fill="url(#objBody)"/>
+              <rect x="378" y="388" width="26" height="6" fill="#0a0d12"/>
+              <rect x="378" y="404" width="26" height="6" fill="url(#objColor3)"/>
+              <rect x="382" y="446" width="18" height="6" fill="#0c0f14"/>
+              <!-- lens glass -->
+              <ellipse cx="391" cy="452" rx="7" ry="2.2" fill="url(#lensGlass)"/>
+            </g>
+            <!-- RIGHT objective (medium, ×10, green band) - angled right -->
+            <g transform="rotate(25 424 388)">
+              <rect x="414" y="388" width="20" height="48" fill="url(#objBody)"/>
+              <rect x="412" y="388" width="24" height="6" fill="#0a0d12"/>
+              <rect x="412" y="402" width="24" height="6" fill="url(#objColor2)"/>
+              <rect x="416" y="432" width="16" height="6" fill="#0c0f14"/>
+              <!-- lens glass -->
+              <ellipse cx="424" cy="438" rx="6" ry="2" fill="url(#lensGlass)"/>
+            </g>
+          </g>
+
+          <!-- ============ LIGHT BEAM (subtle, between LED and stage hole) ============ -->
+          <path d="M 378 762 L 404 762 L 410 482 L 372 482 Z" fill="url(#lightBeam)" opacity="0.7"/>
+
+          <!-- ============ STAGE (clickable) ============ -->
+          <g class="part" data-part="stage">
+            <!-- main stage block -->
+            <rect x="220" y="475" width="340" height="38" fill="url(#stageGrad)"/>
+            <!-- top surface -->
+            <rect x="220" y="475" width="340" height="6" fill="url(#stageTop)"/>
+            <!-- under-shadow -->
+            <rect x="220" y="510" width="340" height="6" fill="#06080b"/>
+            <!-- centre hole for light -->
+            <ellipse cx="391" cy="481" rx="22" ry="4" fill="#000"/>
+            <ellipse cx="391" cy="481" rx="18" ry="3" fill="#1c2128"/>
+            <!-- mechanical stage adjustment knob (small) on the right side -->
+            <g transform="translate(560 495)">
+              <circle cx="0" cy="0" r="9" fill="url(#knobGrad)"/>
+              <circle cx="0" cy="0" r="3" fill="url(#knobHub)"/>
+            </g>
+            <!-- small bracket connecting to mech knob -->
+            <rect x="540" y="491" width="20" height="8" fill="#1a1f27"/>
+          </g>
+
+          <!-- ============ SLIDE (clickable) ============ -->
+          <g class="part" data-part="slide">
+            <!-- glass slide rectangle on stage (raised to be more visible) -->
+            <rect x="285" y="461" width="210" height="14" fill="url(#slideGrad)" stroke="#7a8893" stroke-width="0.8"/>
+            <!-- slide edge highlight -->
+            <line x1="285" y1="463" x2="495" y2="463" stroke="#ffffff" stroke-width="0.8" opacity="0.55"/>
+            <!-- coverslip outline -->
+            <rect x="368" y="464" width="46" height="9" fill="rgba(255,255,255,0.12)" stroke="#94a3ad" stroke-width="0.5" opacity="0.85"/>
+            <!-- specimen smear -->
+            <ellipse cx="391" cy="468" rx="16" ry="2.5" fill="rgba(93,130,64,0.65)"/>
+            <ellipse cx="385" cy="468" rx="3" ry="1.2" fill="#3a5524" opacity="0.75"/>
+            <ellipse cx="396" cy="468" rx="2.5" ry="1" fill="#3a5524" opacity="0.75"/>
+            <!-- left clip (sits on top of slide pinning it down) -->
+            <path d="M 290 459 L 290 454 L 320 454 L 320 461 L 318 461 L 318 456 L 297 456 L 297 459 Z" fill="#1a1f27"/>
+            <!-- right clip -->
+            <path d="M 460 459 L 460 454 L 490 454 L 490 461 L 488 461 L 488 456 L 467 456 L 467 459 Z" fill="#1a1f27"/>
+          </g>
+
+          <!-- ============ LIGHT SOURCE (clickable) ============ -->
+          <g class="part" data-part="light">
+            <!-- pillar/condenser support extending from stage down to base -->
+            <rect x="362" y="513" width="58" height="257" fill="url(#metalGrad)"/>
+            <rect x="362" y="513" width="58" height="6" fill="#0a0d12"/>
+            <rect x="362" y="764" width="58" height="6" fill="#0a0d12"/>
+            <!-- small condenser ring (just under stage) -->
+            <ellipse cx="391" cy="525" rx="22" ry="5" fill="#1a1f27"/>
+            <ellipse cx="391" cy="525" rx="18" ry="3.5" fill="#0a0d12"/>
+            <!-- iris diaphragm lever sticking out -->
+            <rect x="420" y="540" width="22" height="3" fill="#3a4250"/>
+            <circle cx="442" cy="541.5" r="3" fill="#5e6876"/>
+            <!-- LED housing (top of base, where pillar meets base) -->
+            <rect x="368" y="754" width="46" height="18" fill="#161a20"/>
+            <!-- LED itself - bright spot at top of base -->
+            <ellipse cx="391" cy="763" rx="15" ry="6" fill="url(#ledCore)"/>
+            <!-- LED glow halo -->
+            <ellipse cx="391" cy="763" rx="38" ry="14" fill="url(#ledGlow)" opacity="0.85"/>
+            <ellipse cx="391" cy="763" rx="64" ry="22" fill="url(#ledGlow)" opacity="0.4"/>
+            <!-- brightness dial on side of base (decorative, indicates LED control) -->
+            <g transform="translate(225 805)">
+              <circle cx="0" cy="0" r="9" fill="url(#knobGrad)"/>
+              <circle cx="0" cy="0" r="3" fill="url(#knobHub)"/>
+              <text x="0" y="-14" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="6.5" fill="#6a7280" letter-spacing="1">LIGHT</text>
+            </g>
+          </g>
+
+          <!-- ============ COARSE FOCUS KNOB (clickable) ============ -->
+          <g class="part" data-part="coarse">
+            <!-- shaft connecting through arm -->
+            <rect x="556" y="466" width="40" height="22" fill="#0a0d12"/>
+            <!-- main large knob disc -->
+            <circle cx="612" cy="477" r="44" fill="url(#knobGrad)"/>
+            <!-- ridge texture -->
+            <g stroke="#0a0d12" stroke-width="1.2" opacity="0.7">
+              <line x1="568" y1="477" x2="572" y2="477"/>
+              <line x1="652" y1="477" x2="656" y2="477"/>
+              <line x1="612" y1="433" x2="612" y2="437"/>
+              <line x1="612" y1="517" x2="612" y2="521"/>
+              <line x1="582" y1="447" x2="585" y2="450"/>
+              <line x1="639" y1="504" x2="642" y2="507"/>
+              <line x1="582" y1="507" x2="585" y2="504"/>
+              <line x1="639" y1="450" x2="642" y2="447"/>
+              <line x1="574" y1="462" x2="578" y2="464"/>
+              <line x1="646" y1="490" x2="650" y2="492"/>
+              <line x1="574" y1="492" x2="578" y2="490"/>
+              <line x1="646" y1="464" x2="650" y2="462"/>
+            </g>
+            <!-- inner hub -->
+            <circle cx="612" cy="477" r="14" fill="url(#knobHub)"/>
+            <circle cx="612" cy="477" r="4" fill="#0a0d12"/>
+            <!-- highlight reflection -->
+            <ellipse cx="600" cy="462" rx="10" ry="4" fill="#7e8896" opacity="0.45"/>
+          </g>
+
+          <!-- ============ FINE FOCUS KNOB (clickable) ============ -->
+          <g class="part" data-part="fine">
+            <!-- small knob coaxial above coarse, slightly behind -->
+            <rect x="566" y="582" width="30" height="16" fill="#0a0d12"/>
+            <circle cx="606" cy="590" r="26" fill="url(#knobGrad)"/>
+            <!-- ridge texture -->
+            <g stroke="#0a0d12" stroke-width="1" opacity="0.7">
+              <line x1="580" y1="590" x2="583" y2="590"/>
+              <line x1="629" y1="590" x2="632" y2="590"/>
+              <line x1="606" y1="564" x2="606" y2="567"/>
+              <line x1="606" y1="613" x2="606" y2="616"/>
+              <line x1="588" y1="572" x2="590" y2="574"/>
+              <line x1="622" y1="606" x2="624" y2="608"/>
+              <line x1="588" y1="608" x2="590" y2="606"/>
+              <line x1="622" y1="574" x2="624" y2="572"/>
+            </g>
+            <circle cx="606" cy="590" r="8" fill="url(#knobHub)"/>
+            <circle cx="606" cy="590" r="2.5" fill="#0a0d12"/>
+            <ellipse cx="598" cy="581" rx="6" ry="2.5" fill="#7e8896" opacity="0.45"/>
+          </g>
+
+          <!-- ============ CALLOUTS (numbered labels) ============ -->
+          <g id="callouts">
+
+            <!-- 1 EYEPIECE -->
+            <g class="callout-group" data-part="eyepiece">
+              <line class="callout-line" x1="320" y1="120" x2="180" y2="120"/>
+              <line class="callout-line" x1="180" y1="120" x2="120" y2="120"/>
+              <circle class="callout-anchor" cx="320" cy="120" r="2.5"/>
+              <circle class="callout-circle" cx="100" cy="120" r="16"/>
+              <text class="callout-num" x="100" y="120">1</text>
+              <text class="callout-text" x="40" y="148">Eyepiece Lens</text>
+            </g>
+
+            <!-- 2 OBJECTIVE LENSES -->
+            <g class="callout-group" data-part="objective">
+              <line class="callout-line" x1="345" y1="425" x2="200" y2="425"/>
+              <line class="callout-line" x1="200" y1="425" x2="120" y2="395"/>
+              <circle class="callout-anchor" cx="345" cy="425" r="2.5"/>
+              <circle class="callout-circle" cx="100" cy="395" r="16"/>
+              <text class="callout-num" x="100" y="395">2</text>
+              <text class="callout-text" x="34" y="423">Objective Lenses</text>
+            </g>
+
+            <!-- 3 SLIDE -->
+            <g class="callout-group" data-part="slide">
+              <line class="callout-line" x1="290" y1="463" x2="200" y2="510"/>
+              <line class="callout-line" x1="200" y1="510" x2="120" y2="510"/>
+              <circle class="callout-anchor" cx="290" cy="463" r="2.5"/>
+              <circle class="callout-circle" cx="100" cy="510" r="16"/>
+              <text class="callout-num" x="100" y="510">3</text>
+              <text class="callout-text" x="68" y="538">Slide</text>
+            </g>
+
+            <!-- 4 STAGE -->
+            <g class="callout-group" data-part="stage">
+              <line class="callout-line" x1="225" y1="498" x2="180" y2="600"/>
+              <line class="callout-line" x1="180" y1="600" x2="120" y2="600"/>
+              <circle class="callout-anchor" cx="225" cy="498" r="2.5"/>
+              <circle class="callout-circle" cx="100" cy="600" r="16"/>
+              <text class="callout-num" x="100" y="600">4</text>
+              <text class="callout-text" x="68" y="628">Stage</text>
+            </g>
+
+            <!-- 5 COARSE FOCUS KNOB (right side) -->
+            <g class="callout-group" data-part="coarse">
+              <line class="callout-line" x1="654" y1="455" x2="720" y2="425"/>
+              <line class="callout-line" x1="720" y1="425" x2="780" y2="425"/>
+              <circle class="callout-anchor" cx="654" cy="455" r="2.5"/>
+              <circle class="callout-circle" cx="780" cy="425" r="16"/>
+              <text class="callout-num" x="780" y="425">5</text>
+              <text class="callout-text" x="700" y="453">Coarse Focus Knob</text>
+            </g>
+
+            <!-- 6 FINE FOCUS KNOB -->
+            <g class="callout-group" data-part="fine">
+              <line class="callout-line" x1="630" y1="600" x2="720" y2="610"/>
+              <line class="callout-line" x1="720" y1="610" x2="780" y2="610"/>
+              <circle class="callout-anchor" cx="630" cy="600" r="2.5"/>
+              <circle class="callout-circle" cx="780" cy="610" r="16"/>
+              <text class="callout-num" x="780" y="610">6</text>
+              <text class="callout-text" x="710" y="638">Fine Focus Knob</text>
+            </g>
+
+            <!-- 7 LIGHT SOURCE -->
+            <g class="callout-group" data-part="light">
+              <line class="callout-line" x1="421" y1="763" x2="500" y2="780"/>
+              <line class="callout-line" x1="500" y1="780" x2="780" y2="780"/>
+              <circle class="callout-anchor" cx="421" cy="763" r="2.5"/>
+              <circle class="callout-circle" cx="780" cy="780" r="16"/>
+              <text class="callout-num" x="780" y="780">7</text>
+              <text class="callout-text" x="722" y="808">Light Source</text>
+            </g>
+
+          </g>
+        </svg>
+      </div>
+      <div class="scope-caption">Fig. I — Compound monocular light microscope with LED illumination</div>
+    </div>
+
+    <aside class="info-panel">
+      <div class="info-empty" id="emptyState">
+        <div class="symbol">?</div>
+        <p>Click any numbered label to read about that part of the microscope.</p>
+        <div class="hint">Begin with No. 1 — the Eyepiece</div>
+      </div>
+      <div class="info-content" id="infoContent">
+        <div class="info-header">
+          <div class="info-number" id="infoNumber">01</div>
+          <div class="info-titles">
+            <div class="info-title" id="infoTitle">Title</div>
+            <div class="info-subtitle" id="infoSubtitle">Subtitle</div>
+          </div>
+        </div>
+        <div class="info-body" id="infoBody"></div>
+        <div class="info-tip">
+          <span class="info-tip-label">Tip</span><span id="infoTip"></span>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <footer>
+    <span>For classroom projection · AQA KS3 Biology</span>
+    <span>Plate I of I</span>
+  </footer>
+</div>
+
+<script>
+const info = {
+  eyepiece: {
+    number: "01",
+    title: "Eyepiece Lens",
+    subtitle: "Top of the microscope · Magnification ×10",
+    description: "The lens you look through. It usually magnifies the image by ×10. The total magnification of what you see is the eyepiece magnification multiplied by the objective lens magnification.",
+    tip: "If the eyepiece is ×10 and the objective is ×40, the total magnification is ×400."
+  },
+  objective: {
+    number: "02",
+    title: "Objective Lenses",
+    subtitle: "On the rotating nosepiece · Typically ×4, ×10, ×40",
+    description: "These are the lenses closest to the slide. Most school microscopes have three or four objective lenses with different magnifications. You rotate the nosepiece to switch between them, like changing camera lenses.",
+    tip: "Always start on the lowest power lens (×4) to find your specimen, then rotate to higher powers to zoom in."
+  },
+  slide: {
+    number: "03",
+    title: "Slide",
+    subtitle: "Glass specimen holder",
+    description: "A thin rectangle of glass that holds the specimen you want to look at. The specimen is usually covered with a tiny piece of glass called a coverslip — this keeps the specimen flat and protects the objective lens.",
+    tip: "For a wet mount: drop water on the slide, place your specimen, then lower a coverslip from one side to avoid air bubbles."
+  },
+  stage: {
+    number: "04",
+    title: "Stage",
+    subtitle: "Where the slide sits",
+    description: "The flat platform that holds the slide in place. Two stage clips on top stop the slide from sliding off. There is a hole in the middle of the stage so light from the LED below can pass up through the specimen.",
+    tip: "Move the slide gently with your fingers, or use the small mechanical stage knob, to find different parts of your specimen."
+  },
+  coarse: {
+    number: "05",
+    title: "Coarse Focusing Knob",
+    subtitle: "The larger of the two knobs",
+    description: "Use this knob first. It moves the stage up and down by a large amount, bringing the specimen roughly into focus. Only use the coarse knob on the lowest-power objective — at higher powers it can crash the lens into your slide and break it.",
+    tip: "The rule: lowest power first, coarse focus only on low power, then switch to fine focus."
+  },
+  fine: {
+    number: "06",
+    title: "Fine Focusing Knob",
+    subtitle: "The smaller of the two knobs",
+    description: "Use this knob after the coarse knob. It moves the stage by tiny amounts, sharpening the image. This is the only focusing knob you should use on the higher-power objective lenses.",
+    tip: "Small adjustments only — at high magnification, even a tiny turn makes a big difference."
+  },
+  light: {
+    number: "07",
+    title: "Light Source",
+    subtitle: "LED illuminator built into the base",
+    description: "A small LED inside the base shines light upwards through the hole in the stage, through the specimen, and into the objective lens. Without enough light passing through the specimen, you cannot see it clearly. Many microscopes have a brightness dial on the base.",
+    tip: "Adjust the brightness until the image is clear and well-lit but not glaring — too bright washes out detail."
+  }
+};
+
+const emptyState = document.getElementById('emptyState');
+const infoContent = document.getElementById('infoContent');
+const infoNumber = document.getElementById('infoNumber');
+const infoTitle = document.getElementById('infoTitle');
+const infoSubtitle = document.getElementById('infoSubtitle');
+const infoBody = document.getElementById('infoBody');
+const infoTip = document.getElementById('infoTip');
+
+function selectPart(key) {
+  // remove active state
+  document.querySelectorAll('.part').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.callout-group').forEach(c => c.classList.remove('active'));
+
+  // add active to matching elements
+  document.querySelectorAll(`.part[data-part="${key}"]`).forEach(el => el.classList.add('active'));
+  document.querySelectorAll(`.callout-group[data-part="${key}"]`).forEach(el => el.classList.add('active'));
+
+  // populate info panel
+  const data = info[key];
+  if (!data) return;
+  emptyState.style.display = 'none';
+  infoContent.classList.add('show');
+  // restart animation
+  infoContent.style.animation = 'none';
+  void infoContent.offsetWidth;
+  infoContent.style.animation = '';
+
+  infoNumber.textContent = data.number;
+  infoTitle.textContent = data.title;
+  infoSubtitle.textContent = data.subtitle;
+  infoBody.textContent = data.description;
+  infoTip.textContent = data.tip;
+}
+
+// wire up clicks
+document.querySelectorAll('[data-part]').forEach(el => {
+  el.addEventListener('click', (e) => {
+    e.stopPropagation();
+    selectPart(el.dataset.part);
+  });
+});
+
+// keyboard support: 1-7 jump to parts
+const order = ['eyepiece','objective','slide','stage','coarse','fine','light'];
+document.addEventListener('keydown', e => {
+  const n = parseInt(e.key);
+  if (n >= 1 && n <= 7) selectPart(order[n-1]);
+});
+</script>
+</body>
+</html>

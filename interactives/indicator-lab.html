@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Indicator lab</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1E2761; --navy-soft:#2a3478; --warm:#F8F4EC; --warm-deep:#EFE8D6;
+  --paper:#FCFAF4; --soft-blue:#EDF2FA; --ink:#1A1A1A; --muted:#5C6370;
+  --rule:#CFD8E3; --accent:#B85042; --accent-soft:#F4DAD7; --success:#2C5F2D;
+  --success-soft:#DDEBDD; --gold:#C8A24A; --gold-soft:#F2E6BD;
+  --display:'Instrument Serif',Georgia,serif;
+  --body:'IBM Plex Sans',system-ui,sans-serif;
+  --mono:'IBM Plex Mono','Courier New',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{margin:0;background:var(--paper);font-family:var(--body);color:var(--ink);font-weight:300}
+.wrap{max-width:700px;margin:0 auto;padding:16px 18px}
+.instr{font-family:var(--mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;text-align:center}
+.pick{display:flex;gap:12px;flex-wrap:wrap}
+.field{flex:1;min-width:170px}
+label.lbl{display:block;font-family:var(--mono);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--navy);margin-bottom:5px;font-weight:500}
+select{width:100%;font-family:var(--body);font-size:14px;padding:9px 10px;border:1px solid var(--rule);border-radius:3px;background:var(--warm);color:var(--ink);cursor:pointer}
+select:focus-visible{outline:none;border-color:var(--navy);box-shadow:0 0 0 3px var(--gold-soft)}
+.stage{display:flex;gap:18px;align-items:center;margin-top:18px}
+.tube-col{flex:0 0 80px;display:flex;flex-direction:column;align-items:center}
+.tube{position:relative;width:42px;height:160px;border:3px solid var(--navy);border-top:none;border-radius:0 0 21px 21px;background:var(--warm);overflow:hidden}
+.tube .rim{position:absolute;top:-3px;left:-6px;right:-6px;height:5px;border-top:3px solid var(--navy);border-radius:3px}
+.fill{position:absolute;left:0;right:0;bottom:0;height:70%;transition:background 0.4s ease;background:#cfd8e3}
+.fill::before{content:'';position:absolute;top:0;left:0;right:0;height:6px;background:rgba(255,255,255,0.3)}
+.tube-cap{font-family:var(--mono);font-size:9px;letter-spacing:0.08em;color:var(--muted);margin-top:8px;text-transform:uppercase;text-align:center}
+.result{flex:1;min-width:0}
+.colourname{font-family:var(--display);font-style:italic;font-size:26px;line-height:1.1;color:var(--navy)}
+.verdict{display:inline-block;font-family:var(--mono);font-size:13px;font-weight:500;letter-spacing:0.16em;text-transform:uppercase;padding:6px 14px;border-radius:3px;margin:12px 0 8px;color:#fff}
+.band{font-family:var(--mono);font-size:12px;letter-spacing:0.08em;color:var(--muted)}
+.band strong{color:var(--navy)}
+.explain{margin-top:14px;background:var(--soft-blue);border:1px solid #C9D7ED;border-left:3px solid var(--navy);padding:11px 14px;font-size:13px;line-height:1.5}
+.takeaway{font-family:var(--display);font-style:italic;font-size:18px;color:var(--muted);text-align:center;margin-top:18px;padding-top:14px;border-top:1px solid var(--rule)}
+@media(max-width:430px){.colourname{font-size:21px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="instr">Pick a solution and an indicator — see what colour it turns</p>
+  <div class="pick">
+    <div class="field">
+      <label class="lbl" for="sol">Solution</label>
+      <select id="sol" aria-label="Choose a solution">
+        <option value="0">Oven cleaner (pH 13)</option>
+        <option value="1">Soap solution (pH 10)</option>
+        <option value="2">Sea water (pH 8)</option>
+        <option value="3" selected>Pure water (pH 7)</option>
+        <option value="4">Vinegar (pH 3)</option>
+        <option value="5">Lemon juice (pH 2)</option>
+      </select>
+    </div>
+    <div class="field">
+      <label class="lbl" for="ind">Indicator</label>
+      <select id="ind" aria-label="Choose an indicator">
+        <option value="uni" selected>Universal indicator</option>
+        <option value="blitmus">Blue litmus</option>
+        <option value="rlitmus">Red litmus</option>
+        <option value="phenol">Phenolphthalein</option>
+        <option value="methyl">Methyl orange</option>
+      </select>
+    </div>
+  </div>
+  <div class="stage">
+    <div class="tube-col">
+      <div class="tube"><span class="rim"></span><div class="fill" id="fill"></div></div>
+      <div class="tube-cap" id="tubeCap">test tube</div>
+    </div>
+    <div class="result">
+      <div class="colourname" id="colourName">Green</div>
+      <span class="verdict" id="verdict">Neutral</span>
+      <div class="band" id="band">pH band: <strong>7</strong></div>
+    </div>
+  </div>
+  <div class="explain" id="explain"></div>
+  <p class="takeaway">Indicators tell acids from alkalis by changing colour.</p>
+</div>
+<script>
+(function(){
+  // solutions: pH and verdict
+  var sols=[
+    {name:'Oven cleaner',ph:13,type:'alkali'},
+    {name:'Soap solution',ph:10,type:'alkali'},
+    {name:'Sea water',ph:8,type:'alkali'},
+    {name:'Pure water',ph:7,type:'neutral'},
+    {name:'Vinegar',ph:3,type:'acid'},
+    {name:'Lemon juice',ph:2,type:'acid'}
+  ];
+  // universal indicator colour swatch + name by pH
+  var uniColours={2:['#CB3A26','Red'],3:['#E0561F','Orange-red'],7:['#2E8B57','Green'],8:['#2AA8A8','Blue-green'],10:['#2E78C9','Blue'],13:['#6E2FA0','Indigo / violet']};
+  var selSol=document.getElementById('sol'),selInd=document.getElementById('ind'),
+      fill=document.getElementById('fill'),colourName=document.getElementById('colourName'),
+      verdict=document.getElementById('verdict'),band=document.getElementById('band'),
+      explain=document.getElementById('explain'),tubeCap=document.getElementById('tubeCap');
+  function indicatorResult(ind,type,ph){
+    // returns {hex, name, note}
+    if(ind==='uni'){
+      var u=uniColours[ph];
+      return {hex:u[0],name:u[1],note:'Universal indicator shows the full pH colour, so it gives the exact strength as well as acid/alkali.'};
+    }
+    if(ind==='blitmus'){
+      if(type==='acid') return {hex:'#CB3A26',name:'Red',note:'Blue litmus turns red in acid.'};
+      return {hex:'#2E5FB0',name:'Blue (stays blue)',note:type==='alkali'?'Blue litmus stays blue in alkali.':'Blue litmus stays blue in a neutral solution.'};
+    }
+    if(ind==='rlitmus'){
+      if(type==='alkali') return {hex:'#2E5FB0',name:'Blue',note:'Red litmus turns blue in alkali.'};
+      return {hex:'#CB3A26',name:'Red (stays red)',note:type==='acid'?'Red litmus stays red in acid.':'Red litmus stays red in a neutral solution.'};
+    }
+    if(ind==='phenol'){
+      if(type==='alkali') return {hex:'#E84B8A',name:'Pink',note:'Phenolphthalein is pink in alkali.'};
+      return {hex:'#E9EEF5',name:'Colourless',note:'Phenolphthalein stays colourless in acids and neutral solutions — it only shows alkalis.'};
+    }
+    // methyl orange
+    if(type==='acid') return {hex:'#CB3A26',name:'Red',note:'Methyl orange is red in acid.'};
+    if(type==='alkali') return {hex:'#F2C73D',name:'Yellow',note:'Methyl orange is yellow in alkali.'};
+    return {hex:'#E8964B',name:'Orange',note:'Methyl orange is orange in a neutral solution (between its red and yellow).'};
+  }
+  function update(){
+    var s=sols[parseInt(selSol.value,10)];
+    var ind=selInd.value;
+    var r=indicatorResult(ind,s.type,s.ph);
+    fill.style.background=r.hex;
+    colourName.textContent=r.name;
+    var col,vlabel;
+    if(s.type==='acid'){vlabel='Acid';col='#CB3A26';}
+    else if(s.type==='alkali'){vlabel='Alkali';col='#2E78C9';}
+    else{vlabel='Neutral';col='#2E8B57';}
+    verdict.textContent=vlabel;
+    verdict.style.background=col;
+    band.innerHTML='pH band: <strong>'+s.ph+'</strong> ('+(s.ph<7?'below 7':s.ph>7?'above 7':'exactly 7')+')';
+    tubeCap.textContent=s.name;
+    explain.textContent=r.note;
+  }
+  selSol.addEventListener('change',update);
+  selInd.addEventListener('change',update);
+  update();
+})();
+</script>
+</body>
+</html>

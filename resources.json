@@ -1,0 +1,646 @@
+{
+  "site": {
+    "origin": "https://interactive-science.com"
+  },
+  "sections": [
+    {
+      "id": "biology",
+      "title": "Biology",
+      "blurb": "Cells, transport, gas exchange, genetics",
+      "items": [
+        {
+          "href": "cell-zoom.html",
+          "accent": "#C84A6D",
+          "cat": "biology",
+          "tokens": "ks3 gcse tool",
+          "spec": "AQA 4.1.1",
+          "folder": "Cells &amp; Microscopy",
+          "name": "Zoom into <em>the Cell</em>",
+          "tag": "cell → nucleus → DNA",
+          "desc": "A continuous zoom from a whole cell down to the bases of DNA. Toggle between animal, plant, and bacterial cells. Click any organelle for GCSE-level detail.",
+          "tags": [
+            "KS3",
+            "GCSE",
+            "Combined",
+            "Triple"
+          ],
+          "level": "GCSE",
+          "type": "interactive tool",
+          "about": "Biology"
+        },
+        {
+          "href": "specialised-cells.html",
+          "accent": "#C84A6D",
+          "cat": "biology",
+          "tokens": "gcse tool",
+          "spec": "AQA 4.1.2",
+          "folder": "Cells &amp; Microscopy",
+          "name": "Specialised <em>Cells</em>",
+          "tag": "six cell types, six adaptations",
+          "desc": "Sperm, egg, ciliated, root hair, nerve, red blood. Click adaptation hotspots to learn how structure links to function — with mark-scheme-aware exam tips.",
+          "tags": [
+            "GCSE",
+            "Combined"
+          ],
+          "level": "GCSE",
+          "type": "interactive tool",
+          "about": "Biology"
+        },
+        {
+          "href": "microscope.html",
+          "accent": "#C84A6D",
+          "cat": "biology",
+          "tokens": "ks3 gcse tool",
+          "spec": "Cells · Microscopy",
+          "folder": "Cells &amp; Microscopy",
+          "name": "The <em>Microscope</em>",
+          "tag": "eyepiece, objective, focus",
+          "desc": "An interactive microscope for the classroom — adjust magnification, focus the image, and explore what a real specimen looks like under the eyepiece. Pairs well with the cell-zoom tool above.",
+          "tags": [
+            "KS3",
+            "GCSE"
+          ],
+          "level": "GCSE",
+          "type": "interactive tool",
+          "about": "Biology"
+        },
+        {
+          "href": "diffusion.html",
+          "accent": "#C84A6D",
+          "cat": "biology",
+          "tokens": "gcse tool",
+          "spec": "AQA 4.1.3",
+          "folder": "Transport — Diffusion &amp; Osmosis",
+          "name": "Diffusion &amp; <em>SA:V</em>",
+          "tag": "why small cells diffuse faster",
+          "desc": "Particles diffuse from a high concentration outside a cell to a low concentration inside, until equilibrium. Three sliders change the rate — temperature, concentration gradient, and the cell&#x27;s surface area : volume ratio — with a live crossings counter and a time-to-equilibrium readout. Built to make the counterintuitive result visible: a bigger cell has more membrane but fills more slowly.",
+          "tags": [
+            "GCSE",
+            "Combined",
+            "Triple"
+          ],
+          "level": "GCSE",
+          "type": "interactive tool",
+          "about": "Biology"
+        },
+        {
+          "href": "osmosis.html",
+          "accent": "#C84A6D",
+          "cat": "biology",
+          "tokens": "gcse tool",
+          "spec": "AQA 4.1.3 · Foundation",
+          "folder": "Transport — Diffusion &amp; Osmosis",
+          "name": "<em>Osmosis</em>",
+          "tag": "water across a partially permeable membrane",
+          "desc": "An animated beaker split by a partially permeable membrane — small water molecules slip across while large sugar molecules can&#x27;t, and the levels shift as water moves into the concentrated side. A labelled-diagram toggle gives the exam-ready version. Then ten checks for understanding run picture-first before moving to words, built to attack the “water moves to where there&#x27;s more water” misconception head-on.",
+          "tags": [
+            "GCSE",
+            "Combined",
+            "Foundation"
+          ],
+          "level": "GCSE",
+          "type": "interactive tool",
+          "about": "Biology"
+        },
+        {
+          "href": "osmosis-required-practical.html",
+          "accent": "#C84A6D",
+          "cat": "biology",
+          "tokens": "gcse tool required-practical",
+          "spec": "AQA 4.1.3 · Required practical",
+          "folder": "Transport — Diffusion &amp; Osmosis",
+          "name": "Osmosis <em>Required Practical</em>",
+          "tag": "the potato practical · watch, order, explain",
+          "desc": "The full required practical, animated for the front of the room. Watch cylinders get cut to size, dropped into a range of sugar concentrations, then swell or shrink as the live mass readouts change — and those same masses feed the percentage-change calculation and the graph that crosses zero. Pupils then order the method, reason about the results by size, work through picture-first checks, and build up to a scaffolded 6-marker with a levelled AQA-style mark scheme. Combined tier, whole-class.",
+          "tags": [
+            "GCSE",
+            "Combined",
+            "Required practical"
+          ],
+          "level": "GCSE",
+          "type": "interactive tool",
+          "about": "Biology"
+        },
+        {
+          "href": "gas-exchange-alveoli.html",
+          "accent": "#C84A6D",
+          "cat": "biology",
+          "tokens": "gcse tool",
+          "spec": "AQA · Gas exchange",
+          "folder": "Gas Exchange",
+          "name": "Gas Exchange in <em>the Alveoli</em>",
+          "tag": "four adaptations · maximise the rate",
+          "desc": "A live cross-section of an alveolus and a capillary, with oxygen diffusing into the blood. The alveolus starts deliberately poor — students adjust surface area, wall thickness, blood flow, and a moist-lining switch to maximise the diffusion rate, unlocking why each adaptation works and how three of them map onto Fick&#x27;s law. A second tab checks understanding with six exam-style questions.",
+          "tags": [
+            "GCSE",
+            "Combined",
+            "Triple"
+          ],
+          "level": "GCSE",
+          "type": "interactive tool",
+          "about": "Biology"
+        },
+        {
+          "href": "dna-zoom.html",
+          "accent": "#C84A6D",
+          "cat": "biology",
+          "tokens": "gcse tool",
+          "spec": "AQA 6.1.5",
+          "folder": "Genetics &amp; DNA",
+          "name": "Zoom into <em>DNA</em>",
+          "tag": "a double helix, in five steps",
+          "desc": "Chromosome → double helix → gene → nucleotide → base pairs. Built for Triple Biology. Click each part of a nucleotide to see what it does and why it matters in the exam.",
+          "tags": [
+            "GCSE",
+            "Triple Biology"
+          ],
+          "level": "GCSE",
+          "type": "interactive tool",
+          "about": "Biology"
+        },
+        {
+          "href": "genetics-vocabulary.html",
+          "accent": "#C84A6D",
+          "cat": "biology",
+          "tokens": "ks3 tool",
+          "spec": "Y8 · B9 Inheritance",
+          "folder": "Genetics &amp; DNA",
+          "name": "Genetics <em>Vocab</em>",
+          "tag": "twelve questions · staged reveals",
+          "desc": "A check for understanding for the seven core genetics terms: allele, dominant, recessive, genotype, phenotype, heterozygous, homozygous. Twelve questions move from forward chains through reverse problems to a final trick question — each answer reveals in stages so a teacher can cold-call between every step.",
+          "tags": [
+            "KS3",
+            "Year 8"
+          ],
+          "level": "Key Stage 3",
+          "type": "interactive tool",
+          "about": "Biology"
+        },
+        {
+          "href": "genetics-recap.html",
+          "accent": "#C84A6D",
+          "cat": "biology",
+          "tokens": "ks3 tool",
+          "spec": "Y8 · B9 Inheritance",
+          "folder": "Genetics &amp; DNA",
+          "name": "Genetics <em>Recap</em>",
+          "tag": "whole-unit recap · diagnose, recall, practise",
+          "desc": "A teacher-led recap of the whole B9 inheritance unit, built for the first lesson back. Opens with diagnostic hinge questions, then moves through five sections — DNA structure, alleles and genotype/phenotype, Punnett squares, sex determination, and genetic disorders — each with a recall prompt, a quick task, and independent practice. Tackles the “1 in 4” misconception head-on and ends with a say-it-then-write-it task.",
+          "tags": [
+            "KS3",
+            "Year 8"
+          ],
+          "level": "Key Stage 3",
+          "type": "interactive tool",
+          "about": "Biology"
+        }
+      ]
+    },
+    {
+      "id": "physics",
+      "title": "Physics",
+      "blurb": "Forces, particles, energy and power",
+      "items": [
+        {
+          "href": "force-diagram-builder.html",
+          "accent": "#C77A1E",
+          "cat": "physics",
+          "tokens": "ks3 gcse tool",
+          "spec": "AQA 5.1",
+          "folder": "Forces &amp; Motion",
+          "name": "Force <em>Diagram Builder</em>",
+          "tag": "drag, label, balance",
+          "desc": "Build free-body diagrams for objects in motion or equilibrium. Drag force arrows, label them, and see whether the resultant is zero.",
+          "tags": [
+            "KS3",
+            "GCSE"
+          ],
+          "level": "GCSE",
+          "type": "interactive tool",
+          "about": "Physics"
+        },
+        {
+          "href": "particle-model.html",
+          "accent": "#C77A1E",
+          "cat": "physics",
+          "tokens": "ks3 gcse tool",
+          "spec": "KS3 · Particles",
+          "folder": "Particles &amp; Matter",
+          "name": "Particle <em>Model</em>",
+          "tag": "why solids, liquids, and gases behave that way",
+          "desc": "Watch particles in solids, liquids, and gases. Heat them, cool them, change their state. Explore how the model explains pressure and diffusion — the everyday physics behind the everyday world.",
+          "tags": [
+            "KS3",
+            "GCSE bridge"
+          ],
+          "level": "GCSE",
+          "type": "interactive tool",
+          "about": "Physics"
+        },
+        {
+          "href": "energy-stores.html",
+          "accent": "#C77A1E",
+          "cat": "physics",
+          "tokens": "ks3 tool",
+          "spec": "KS3 · P1.2 Energy",
+          "folder": "Energy &amp; Power",
+          "name": "Energy <em>Stores</em>",
+          "tag": "a roller coaster, three stores, conservation",
+          "desc": "Drag a cart along a roller-coaster track and watch gravitational and kinetic stores swap energy. Toggle friction to see thermal appear. Predict-mode hides the answer until you&#x27;re ready. Total energy stays at 1000 J — conservation, made visible.",
+          "tags": [
+            "KS3",
+            "Year 7"
+          ],
+          "level": "Key Stage 3",
+          "type": "interactive tool",
+          "about": "Physics"
+        },
+        {
+          "href": "shc-builder.html",
+          "accent": "#C77A1E",
+          "cat": "physics",
+          "tokens": "ks3 gcse tool required-practical",
+          "spec": "Y9 · SHC Required Practical",
+          "folder": "Energy &amp; Power",
+          "name": "Specific Heat <em>Capacity</em>",
+          "tag": "build the apparatus · sequence · 6-marker",
+          "desc": "A five-stage builder for the AQA Combined SHC required practical. Click through the apparatus stage-by-stage, sequence the method on an empty bench, drill equipment and method with quizzes, fix a bad 6-marker, then write your own with a scaffolded frame. Built for Year 9 first attempts at the extended response.",
+          "tags": [
+            "Year 9",
+            "GCSE Combined",
+            "Required practical"
+          ],
+          "level": "GCSE",
+          "type": "interactive tool",
+          "about": "Physics"
+        },
+        {
+          "href": "power-intro.html",
+          "accent": "#C77A1E",
+          "cat": "physics",
+          "tokens": "ks3 tool",
+          "spec": "KS3 · P1.3 Power",
+          "folder": "Energy &amp; Power",
+          "name": "What is <em>Power?</em>",
+          "tag": "two fans, two batteries — power as a rate",
+          "desc": "A teacher-talk diagram for introducing power. Two fans run side by side on Low and High while their batteries drain live — High empties faster. Build the idea one step at a time: same stores, same transfers, just more energy each second. Each step has a cold-call prompt with a teacher-controlled answer reveal. Click or use arrow keys to advance.",
+          "tags": [
+            "KS3",
+            "Year 7"
+          ],
+          "level": "Key Stage 3",
+          "type": "interactive tool",
+          "about": "Physics"
+        }
+      ]
+    },
+    {
+      "id": "chemistry",
+      "title": "Chemistry",
+      "blurb": "Atoms, the Earth, the atmosphere",
+      "items": [
+        {
+          "href": "atom-counter.html",
+          "accent": "#3672C2",
+          "cat": "chemistry",
+          "tokens": "ks3 tool",
+          "spec": "KS3 · Atoms &amp; Molecules",
+          "folder": "Atoms &amp; Compounds",
+          "name": "Atom <em>Counter</em>",
+          "tag": "read a formula · count the atoms",
+          "desc": "Drop a chemical formula in — H₂O, CO₂, Ca(OH)₂, 2H₂SO₄ — and see exactly how each atom is counted, including subscripts, brackets, and big multipliers. Built for KS3 to make formula-reading click.",
+          "tags": [
+            "KS3"
+          ],
+          "level": "Key Stage 3",
+          "type": "interactive tool",
+          "about": "Chemistry"
+        },
+        {
+          "href": "naming-compounds.html",
+          "accent": "#3672C2",
+          "cat": "chemistry",
+          "tokens": "ks3 tool",
+          "spec": "Y7–8 · Compounds",
+          "folder": "Atoms &amp; Compounds",
+          "name": "Naming <em>Compounds</em>",
+          "tag": "three rules · then the test",
+          "desc": "The three KS3 naming rules — –ide for metal + non-metal (NaCl), prefixes for two non-metals (CO₂), and –ate names for polyatomic groups (CaCO₃). Each rule starts with a prediction, walks through an animated worked example, then four tap-to-build practice questions. Ends with a mixed challenge where pupils have to choose the rule themselves — including the AlCl₃ trap.",
+          "tags": [
+            "KS3",
+            "Year 7",
+            "Year 8"
+          ],
+          "level": "Key Stage 3",
+          "type": "interactive tool",
+          "about": "Chemistry"
+        },
+        {
+          "href": "rock-cycle.html",
+          "accent": "#3672C2",
+          "cat": "chemistry",
+          "tokens": "ks3 tool",
+          "spec": "KS3 · The Rock Cycle",
+          "folder": "Earth &amp; Geology",
+          "name": "The <em>Rock Cycle</em>",
+          "tag": "three rock types · one endless loop",
+          "desc": "An interactive hub: tour the Earth&#x27;s layers, then click each process — cooling, weathering &amp; erosion, heat &amp; pressure, melting — to see how igneous, sedimentary and metamorphic rocks turn into one another. Opens into full explorers for each rock type, including a crystal-growth lab and a fossil-forming sequence.",
+          "tags": [
+            "KS3",
+            "Interactive"
+          ],
+          "level": "Key Stage 3",
+          "type": "interactive tool",
+          "about": "Chemistry"
+        },
+        {
+          "href": "fossil-formation.html",
+          "accent": "#3672C2",
+          "cat": "chemistry",
+          "tokens": "ks3 tool",
+          "spec": "KS3 · How Fossils Form",
+          "folder": "Earth &amp; Geology",
+          "name": "How Fossils <em>Form</em>",
+          "tag": "five stages · death to discovery",
+          "desc": "A step-through cross-section that animates how a fossil forms: an ammonite dies and sinks to the seabed, sediment buries it, the soft parts decay, minerals slowly replace the shell over millions of years, and erosion finally exposes it to be dug up. Built for teacher-led delivery at the front — click or use the arrow keys to move one stage at a time.",
+          "tags": [
+            "KS3",
+            "Interactive"
+          ],
+          "level": "Key Stage 3",
+          "type": "interactive tool",
+          "about": "Chemistry"
+        },
+        {
+          "href": "atmosphere-evolution.html",
+          "accent": "#3672C2",
+          "cat": "chemistry",
+          "tokens": "gcse tool",
+          "spec": "AQA · Chemistry of the atmosphere",
+          "folder": "The Atmosphere",
+          "name": "Evolution of the <em>Atmosphere</em>",
+          "tag": "four stages · volcanoes to present-day air",
+          "desc": "A step-through of how Earth&#x27;s atmosphere changed over billions of years. Volcanoes released carbon dioxide, water vapour and nitrogen into an oxygen-poor early atmosphere; the water vapour condensed to form oceans that dissolved CO₂; then algae and plants photosynthesised, removing CO₂ and adding O₂ — until unreactive nitrogen and oxygen came to dominate. A live composition bar shifts at each stage, with exam tips on the usual misconceptions, and ends with four checks for understanding.",
+          "tags": [
+            "GCSE",
+            "Combined",
+            "Trilogy"
+          ],
+          "level": "GCSE",
+          "type": "interactive tool",
+          "about": "Chemistry"
+        }
+      ]
+    },
+    {
+      "id": "environmental",
+      "title": "Environmental design",
+      "blurb": "Cross-curricular, built environment",
+      "items": [
+        {
+          "accent": "#1D9E75",
+          "cat": "environmental",
+          "tokens": "ks3 tool",
+          "coming": true,
+          "spec": "Bioclimatic",
+          "name": "Desert Building Explorer",
+          "tag": "passive cooling, in 3D",
+          "desc": "A seven-floor apartment in a hot climate. Toggle passive cooling features — shading, ventilation, tree-channelled wind — and watch the indoor temperature respond in real time.",
+          "tags": [
+            "3D",
+            "Three.js",
+            "Cross-curricular"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "revision",
+      "title": "Revision booklets",
+      "blurb": "Bitesize topics, hide-and-reveal answers",
+      "items": [
+        {
+          "href": "cells-revision.html",
+          "accent": "#7E4FB8",
+          "cat": "revision",
+          "tokens": "ks3 revision",
+          "spec": "Y7 · B1 Cells",
+          "name": "Cells, <em>bitesize</em>",
+          "tag": "eight short topics · microscopes to specialised cells",
+          "desc": "Why we need microscopes, the parts of one and how to use them, what&#x27;s inside every cell, animal vs plant cells, the magnification equation, unicellular bacteria, diffusion in and out of cells, and four specialised cells. Each topic is a bitesize summary with hinge questions and a hide-and-reveal quiz. Print-ready PDF pack included.",
+          "tags": [
+            "KS3",
+            "Year 7"
+          ],
+          "level": "Key Stage 3",
+          "type": "revision",
+          "about": "Year 7"
+        },
+        {
+          "href": "particle-model-revision.html",
+          "accent": "#7E4FB8",
+          "cat": "revision",
+          "tokens": "ks3 revision",
+          "spec": "Y7 · Particle Model (C1.1–C1.4)",
+          "name": "Particles, <em>bitesize</em>",
+          "tag": "four short topics · solids, liquids, gases, pressure",
+          "desc": "The particle model and how to draw it, properties of states and why they flow, the four changes of state with melting and boiling points, and gas pressure as collisions. Includes the particle simulator embedded at three different points — states, heating, and pressure.",
+          "tags": [
+            "KS3",
+            "Year 7"
+          ],
+          "level": "Key Stage 3",
+          "type": "revision",
+          "about": "Year 7"
+        },
+        {
+          "href": "atoms-revision.html",
+          "accent": "#7E4FB8",
+          "cat": "revision",
+          "tokens": "ks3 revision",
+          "spec": "Y7 · Atoms (C2)",
+          "name": "Atoms, <em>bitesize</em>",
+          "tag": "six short topics · atoms to the periodic table",
+          "desc": "What an atom is and how it differs from an element, how our model has changed from Dalton&#x27;s solid sphere to Bohr&#x27;s planetary model, the three subatomic particles (PEN), reading atomic number and mass number, electron configuration in shells (2, 8, 8), then using group and period numbers to predict electron arrangements. Ten worked examples with a labelled Bohr atom and a simplified periodic table.",
+          "tags": [
+            "KS3",
+            "Year 7"
+          ],
+          "level": "Key Stage 3",
+          "type": "revision",
+          "about": "Year 7"
+        },
+        {
+          "href": "energy-revision.html",
+          "accent": "#7E4FB8",
+          "cat": "revision",
+          "tokens": "ks3 revision",
+          "spec": "Y7 · Energy (P1.1–P1.2)",
+          "name": "Energy, <em>bitesize</em>",
+          "tag": "six short topics · stores, transfers, joules",
+          "desc": "Fuels and the chemical store, joules and kJ, heating, kinetic and gravitational stores, the elastic store and transfer by a force, then transfers by electric current and waves. Includes the energy-stores roller coaster interactive embedded at the right moment.",
+          "tags": [
+            "KS3",
+            "Year 7"
+          ],
+          "level": "Key Stage 3",
+          "type": "revision",
+          "about": "Year 7"
+        },
+        {
+          "href": "power-revision.html",
+          "accent": "#7E4FB8",
+          "cat": "revision",
+          "tokens": "ks3 revision",
+          "spec": "Y7 · Power (P1.3)",
+          "name": "Power, <em>bitesize</em>",
+          "tag": "six short topics · the equation, units, calculations",
+          "desc": "What power means and how to compare devices, the power equation P = E ÷ t, calculating energy with E = P × t using the FIFA method, kilowatts and kilojoules, working with minutes in calculations, then linking back to energy stores and conservation. Twelve worked examples and a watch-out for every common unit-conversion mistake.",
+          "tags": [
+            "KS3",
+            "Year 7"
+          ],
+          "level": "Key Stage 3",
+          "type": "revision",
+          "about": "Year 7"
+        },
+        {
+          "href": "genetics-revision.html",
+          "accent": "#7E4FB8",
+          "cat": "revision",
+          "tokens": "ks3 revision",
+          "spec": "Y8 · B9 Inheritance",
+          "name": "Genetics, <em>bitesize</em>",
+          "tag": "five short topics · hide-reveal answers",
+          "desc": "DNA &amp; chromosomes, variation, DNA structure, Punnett squares, and genetic disorders. Each topic is a bitesize summary with hinge questions and longer questions whose answers reveal on click. Embeds the cell-zoom and DNA-zoom interactives at the right moments.",
+          "tags": [
+            "KS3",
+            "Year 8"
+          ],
+          "level": "Key Stage 3",
+          "type": "revision",
+          "about": "Year 8"
+        },
+        {
+          "href": "forces-and-motion-revision.html",
+          "accent": "#7E4FB8",
+          "cat": "revision",
+          "tokens": "ks3 revision",
+          "spec": "Y8 · Forces &amp; Motion",
+          "name": "Forces &amp; Motion, <em>bitesize</em>",
+          "tag": "ten short topics · motion then forces",
+          "desc": "Speed, distance-time graphs, relative motion, typical speeds, then the ten named forces, contact vs non-contact, interaction pairs, resultant force, and effect on motion. Each topic is a short summary with a hinge question and longer questions whose answers reveal on click.",
+          "tags": [
+            "KS3",
+            "Year 8"
+          ],
+          "level": "Key Stage 3",
+          "type": "revision",
+          "about": "Year 8"
+        },
+        {
+          "href": "gas-exchange-revision.html",
+          "accent": "#7E4FB8",
+          "cat": "revision",
+          "tokens": "ks3 revision",
+          "spec": "Y8 · B4 Gas exchange",
+          "name": "Gas exchange, <em>bitesize</em>",
+          "tag": "seven short topics · breathing to smoking",
+          "desc": "The respiratory system and the journey of air, how the lungs work using volume and pressure, how inhaled and exhaled air differ, gas exchange by diffusion in the alveoli, how the alveoli are adapted, exercise and asthma, and how smoking damages the lungs. Hinge questions, a hide-and-reveal quiz, embedded interactive diagrams and a print-ready PDF.",
+          "tags": [
+            "KS3",
+            "Year 8"
+          ],
+          "level": "Key Stage 3",
+          "type": "revision",
+          "about": "Year 8"
+        },
+        {
+          "href": "chemical-reactions-revision.html",
+          "accent": "#7E4FB8",
+          "cat": "revision",
+          "tokens": "ks3 revision",
+          "spec": "Y8 · C4 Chemical reactions",
+          "name": "Chemical reactions, <em>bitesize</em>",
+          "tag": "nine short topics · reactions to balancing equations",
+          "desc": "What a chemical reaction is, physical vs chemical changes, the five signs of a reaction, combustion, thermal decomposition, oxidation, displacement, conservation of mass, and balancing symbol equations. Worked examples throughout, hinge questions, a hide-and-reveal quiz and a print-ready PDF.",
+          "tags": [
+            "KS3",
+            "Year 8"
+          ],
+          "level": "Key Stage 3",
+          "type": "revision",
+          "about": "Year 8"
+        },
+        {
+          "href": "acids-and-alkalis-revision.html",
+          "accent": "#7E4FB8",
+          "cat": "revision",
+          "tokens": "ks3 revision",
+          "spec": "Y8 · C4 Acids &amp; alkalis",
+          "name": "Acids &amp; alkalis, <em>bitesize</em>",
+          "tag": "five short topics · the pH scale to making salts",
+          "desc": "Acids, alkalis and the pH scale, bases and alkalis, indicators, neutralisation and naming salts, and the reactions of acids with metals. Worked examples, hinge questions, a hide-and-reveal quiz, an embedded pH slider and neutralisation curve, and a print-ready PDF.",
+          "tags": [
+            "KS3",
+            "Year 8"
+          ],
+          "level": "Key Stage 3",
+          "type": "revision",
+          "about": "Year 8"
+        }
+      ]
+    },
+    {
+      "id": "retrieval",
+      "title": "Retrieval practice",
+      "blurb": "Spaced daily quizzing",
+      "items": [
+        {
+          "href": "https://retrieval-app.com",
+          "accent": "#2E7D4F",
+          "cat": "retrieval",
+          "tokens": "ks3 retrieval",
+          "external": true,
+          "spec": "External · retrieval-app.com",
+          "name": "Retrieval <em>App</em>",
+          "tag": "daily quizzes · spaced just right",
+          "desc": "Short daily quizzes covering everything you&#x27;ve studied. Questions return at the right intervals so the things you nearly forgot get strengthened — and the things you know well don&#x27;t waste your time.",
+          "tags": [
+            "External link",
+            "Daily",
+            "Quizzes"
+          ],
+          "level": "Key Stage 3",
+          "type": "retrieval",
+          "about": "Daily Retrieval"
+        }
+      ]
+    },
+    {
+      "id": "teacher",
+      "title": "For teachers",
+      "blurb": "A shared, copyable lesson base",
+      "items": [
+        {
+          "href": "https://science-kit.vercel.app/",
+          "accent": "#A0463A",
+          "cat": "teacher",
+          "tokens": "ks3 teacher",
+          "external": true,
+          "spec": "External · science-kit.vercel.app",
+          "name": "Science <em>Kit</em>",
+          "tag": "a shared base of lessons · access, edit, copy",
+          "desc": "A growing library of science lessons that any teacher can browse, copy into their own bank, or adapt for their class. The aim is a shared starting point — open, fork, edit — rather than building every lesson from scratch.",
+          "tags": [
+            "External link",
+            "Lesson library"
+          ],
+          "level": "Key Stage 3",
+          "type": "teacher",
+          "about": "Lesson Library"
+        }
+      ]
+    }
+  ]
+}

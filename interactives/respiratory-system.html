@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The respiratory system</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1E2761;--navy-soft:#2a3478;--warm:#F8F4EC;--warm-deep:#EFE8D6;
+  --paper:#FCFAF4;--soft-blue:#EDF2FA;--ink:#1A1A1A;--muted:#5C6370;
+  --rule:#CFD8E3;--accent:#B85042;--accent-soft:#F4DAD7;--success:#2C5F2D;
+  --success-soft:#DDEBDD;--gold:#C8A24A;--gold-soft:#F2E6BD;
+  --display:'Instrument Serif',Georgia,serif;
+  --body:'IBM Plex Sans',system-ui,sans-serif;
+  --mono:'IBM Plex Mono','Courier New',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{margin:0;background:var(--paper);font-family:var(--body);color:var(--ink);font-weight:300}
+.wrap{padding:16px;max-width:700px;margin:0 auto}
+.instruction{font-family:var(--mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.layout{display:flex;gap:16px;align-items:stretch}
+.diagram{flex:0 0 auto;width:280px}
+.panel{flex:1 1 auto;min-width:0;display:flex;flex-direction:column}
+svg{width:100%;height:auto;display:block}
+.part{cursor:pointer;transition:opacity .2s,fill .2s,stroke .2s}
+.part:focus{outline:none}
+.part:focus-visible .hit,.part:hover .hit{stroke:var(--accent);stroke-width:2.5}
+.part.active .hit{stroke:var(--accent);stroke-width:3}
+.hit{fill:transparent;stroke:transparent;stroke-width:0}
+.lbl{font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;fill:var(--muted)}
+.part.active .organ,.part.flash .organ{fill:var(--gold)!important}
+.controls{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap}
+button{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:500;
+  background:var(--navy);color:var(--warm);border:0;padding:9px 14px;cursor:pointer;transition:background .2s;border-radius:2px}
+button:hover{background:var(--accent)}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button:disabled{opacity:.5;cursor:default}
+.info{background:var(--soft-blue);border:1px solid #C9D7ED;border-left:3px solid var(--navy);padding:14px 16px;flex:1 1 auto;min-height:120px}
+.info h3{font-family:var(--display);font-style:italic;font-weight:400;font-size:24px;color:var(--navy);margin-bottom:6px}
+.info p{font-size:14px;line-height:1.5;color:var(--ink)}
+.info .hint{color:var(--muted);font-style:italic;font-family:var(--display);font-size:18px}
+.takeaway{font-family:var(--display);font-style:italic;font-size:17px;color:var(--muted);margin-top:14px;line-height:1.35;border-top:1px solid var(--rule);padding-top:10px}
+.takeaway b{color:var(--accent);font-style:normal;font-weight:400}
+@media(max-width:520px){.layout{flex-direction:column}.diagram{width:100%;max-width:280px;margin:0 auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="instruction">Click a labelled part — or trace the air's path</p>
+  <div class="layout">
+    <div class="diagram">
+      <svg viewBox="0 0 256 260" role="group" aria-label="Diagram of the human respiratory system">
+        <!-- trachea -->
+        <g class="part" data-key="trachea" tabindex="0" role="button" aria-label="Trachea">
+          <rect class="organ" x="92" y="40" width="16" height="70" rx="7" fill="#C9D7ED" stroke="var(--navy)" stroke-width="1.5"/>
+          <line x1="94" y1="50" x2="106" y2="50" stroke="var(--navy)" stroke-width="1"/>
+          <line x1="94" y1="60" x2="106" y2="60" stroke="var(--navy)" stroke-width="1"/>
+          <line x1="94" y1="70" x2="106" y2="70" stroke="var(--navy)" stroke-width="1"/>
+          <line x1="94" y1="80" x2="106" y2="80" stroke="var(--navy)" stroke-width="1"/>
+          <line x1="94" y1="90" x2="106" y2="90" stroke="var(--navy)" stroke-width="1"/>
+          <rect class="hit" x="86" y="36" width="28" height="78" rx="8"/>
+          <text class="lbl" x="114" y="62">trachea</text>
+        </g>
+        <!-- bronchi -->
+        <g class="part" data-key="bronchi" tabindex="0" role="button" aria-label="Bronchi">
+          <path class="organ" d="M100 108 L72 134" stroke="#9FB3D6" stroke-width="9" stroke-linecap="round" fill="none"/>
+          <path class="organ" d="M100 108 L128 134" stroke="#9FB3D6" stroke-width="9" stroke-linecap="round" fill="none"/>
+          <rect class="hit" x="64" y="104" width="72" height="38" rx="8"/>
+          <text class="lbl" x="2" y="120">bronchi</text>
+        </g>
+        <!-- lungs -->
+        <g class="part" data-key="lungs" tabindex="0" role="button" aria-label="Lungs">
+          <path class="organ" d="M68 130 C46 138 36 168 40 196 C42 214 58 218 66 206 C74 194 74 150 72 136 Z" fill="#F4DAD7" stroke="var(--accent)" stroke-width="1.5"/>
+          <path class="organ" d="M132 130 C154 138 164 168 160 196 C158 214 142 218 134 206 C126 194 126 150 128 136 Z" fill="#F4DAD7" stroke="var(--accent)" stroke-width="1.5"/>
+          <rect class="hit" x="36" y="128" width="40" height="86" rx="10"/>
+          <rect class="hit" x="124" y="128" width="40" height="86" rx="10"/>
+          <text class="lbl" x="6" y="176">lungs</text>
+        </g>
+        <!-- bronchioles -->
+        <g class="part" data-key="bronchioles" tabindex="0" role="button" aria-label="Bronchioles">
+          <path class="organ" d="M72 136 C66 150 60 158 54 166 M62 152 L48 156 M58 160 L46 168" stroke="var(--navy-soft)" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path class="organ" d="M128 136 C134 150 140 158 146 166 M138 152 L152 156 M142 160 L154 168" stroke="var(--navy-soft)" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <rect class="hit" x="44" y="138" width="28" height="34" rx="6"/>
+          <rect class="hit" x="128" y="138" width="28" height="34" rx="6"/>
+          <text class="lbl" x="152" y="146">bronchioles</text>
+        </g>
+        <!-- alveoli -->
+        <g class="part" data-key="alveoli" tabindex="0" role="button" aria-label="Alveoli">
+          <circle class="organ" cx="50" cy="186" r="5" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.2"/>
+          <circle class="organ" cx="58" cy="194" r="5" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.2"/>
+          <circle class="organ" cx="46" cy="196" r="4" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.2"/>
+          <circle class="organ" cx="150" cy="186" r="5" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.2"/>
+          <circle class="organ" cx="142" cy="194" r="5" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.2"/>
+          <circle class="organ" cx="154" cy="196" r="4" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.2"/>
+          <rect class="hit" x="40" y="178" width="26" height="26" rx="6"/>
+          <rect class="hit" x="136" y="178" width="26" height="26" rx="6"/>
+          <text class="lbl" x="150" y="214">alveoli</text>
+        </g>
+        <!-- diaphragm -->
+        <g class="part" data-key="diaphragm" tabindex="0" role="button" aria-label="Diaphragm">
+          <path class="organ" d="M40 222 Q100 244 160 222" stroke="var(--success)" stroke-width="5" fill="none" stroke-linecap="round"/>
+          <rect class="hit" x="36" y="214" width="128" height="28" rx="10"/>
+          <text class="lbl" x="64" y="254">diaphragm</text>
+        </g>
+      </svg>
+    </div>
+    <div class="panel">
+      <div class="info" id="info" aria-live="polite">
+        <h3 id="info-title">Explore the airways</h3>
+        <p class="hint" id="info-text">Tap any labelled part to see what it does.</p>
+      </div>
+      <div class="controls">
+        <button id="trace" aria-label="Trace the air path">&#9654; Trace the air path</button>
+        <button id="reset" aria-label="Reset diagram">Reset</button>
+      </div>
+    </div>
+  </div>
+  <p class="takeaway">Air travels <b>nose &rarr; trachea &rarr; bronchi &rarr; bronchioles &rarr; alveoli</b>.</p>
+</div>
+<script>
+(function(){
+  var data={
+    trachea:{n:'Trachea (windpipe)',d:'Carries air from the throat down towards the lungs. Rings of cartilage hold it open so it cannot collapse.'},
+    bronchi:{n:'Bronchi',d:'The trachea splits into two bronchi — one carrying air into each lung.'},
+    bronchioles:{n:'Bronchioles',d:'The bronchi branch into many smaller tubes called bronchioles, spreading air deep through the lungs.'},
+    alveoli:{n:'Alveoli (air sacs)',d:'Tiny balloon-like sacs at the ends of the bronchioles. This is where gas exchange happens — oxygen in, carbon dioxide out.'},
+    lungs:{n:'Lungs',d:'Two spongy organs in the chest that hold the airways and millions of alveoli, bringing air and blood close together.'},
+    diaphragm:{n:'Diaphragm',d:'A sheet of muscle below the lungs. It flattens to pull air in and domes up to push air out.'}
+  };
+  var order=['trachea','bronchi','bronchioles','alveoli'];
+  var parts={},timer=null;
+  var title=document.getElementById('info-title'),text=document.getElementById('info-text');
+  document.querySelectorAll('.part').forEach(function(g){
+    var k=g.getAttribute('data-key');parts[k]=g;
+    function sel(){select(k);}
+    g.addEventListener('click',sel);
+    g.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();sel();}});
+  });
+  function clearActive(){Object.keys(parts).forEach(function(k){parts[k].classList.remove('active','flash');});}
+  function select(k){
+    stopTrace();clearActive();parts[k].classList.add('active');
+    title.textContent=data[k].n;text.textContent=data[k].d;text.classList.remove('hint');
+  }
+  function stopTrace(){if(timer){clearTimeout(timer);timer=null;}document.getElementById('trace').disabled=false;}
+  document.getElementById('trace').addEventListener('click',function(){
+    stopTrace();clearActive();this.disabled=true;
+    title.textContent='Tracing the air path…';text.textContent='Air enters at the nose, then flows down through each part to the alveoli.';text.classList.remove('hint');
+    var i=0;
+    (function step(){
+      Object.keys(parts).forEach(function(k){parts[k].classList.remove('flash');});
+      if(i>=order.length){document.getElementById('trace').disabled=false;
+        title.textContent='At the alveoli';text.textContent='Air has reached the alveoli — ready for gas exchange.';return;}
+      var k=order[i];parts[k].classList.add('flash');
+      title.textContent=(i+1)+'. '+data[k].n;text.textContent=data[k].d;
+      i++;timer=setTimeout(step,1100);
+    })();
+  });
+  document.getElementById('reset').addEventListener('click',function(){
+    stopTrace();clearActive();
+    title.textContent='Explore the airways';text.textContent='Tap any labelled part to see what it does.';text.classList.add('hint');
+  });
+})();
+</script>
+</body>
+</html>

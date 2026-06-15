@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What is power? — Teacher talk</title>
+<style>
+  :root{
+    --cream:#f6f4ec;
+    --paper:#fcfbf6;
+    --ink:#1b2559;
+    --ink-soft:#4a5183;
+    --line:#d9d5c4;
+    --chem:#5b4b9e;      /* chemical store */
+    --kin:#2f72b8;       /* kinetic store  */
+    --therm:#d2812a;     /* thermal store  */
+    --gold:#f2b705;      /* energy packet  */
+    --gold-deep:#d99a00;
+    --metal-1:#cfd4dc;
+    --metal-2:#9aa3b1;
+    --metal-3:#6f7787;
+    --stop:#b23b3b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background:var(--cream);
+    color:var(--ink);
+    height:100vh;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    cursor:default;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ---------- top bar ---------- */
+  .topbar{
+    flex:0 0 auto;
+    display:flex;align-items:baseline;gap:1.2rem;
+    padding:1.1rem 2rem 0.9rem;
+  }
+  .kicker{
+    font-size:.78rem;font-weight:700;letter-spacing:.14em;
+    color:var(--ink-soft);text-transform:uppercase;
+  }
+  .steptitle{
+    font-size:2.15rem;font-weight:700;line-height:1;letter-spacing:-.01em;
+    margin-left:auto;text-align:right;
+  }
+  .dots{display:flex;gap:.5rem;align-self:center}
+  .dot{width:11px;height:11px;border-radius:50%;background:var(--line);transition:.3s}
+  .dot.on{background:var(--ink);transform:scale(1.15)}
+
+  /* ---------- stage ---------- */
+  .stage{
+    flex:1 1 auto;
+    display:flex;justify-content:center;align-items:stretch;
+    gap:clamp(2rem,7vw,7rem);
+    padding:0.5rem 2rem 0;
+    position:relative;
+    min-height:0;
+  }
+
+  .col{
+    flex:0 1 340px;
+    display:flex;flex-direction:column;align-items:center;
+    position:relative;
+  }
+  .setting{
+    font-size:1.35rem;font-weight:700;letter-spacing:.16em;
+    color:var(--ink-soft);text-transform:uppercase;
+    margin-bottom:.2rem;
+  }
+  .col.high .setting{color:var(--ink)}
+
+  .fanbox{position:relative;flex:0 0 auto}
+  svg.fan{display:block;width:clamp(180px,20vw,260px);height:auto}
+
+  /* blade spin */
+  .blades{transform-box:fill-box;transform-origin:center;animation:spin linear infinite}
+  .col.low  .blades{animation-duration:1.5s}
+  .col.high .blades{animation-duration:.5s}
+  .col.stopped .blades{animation-play-state:paused;opacity:.85}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* high-speed motion blur */
+  .col.high .blades{filter:blur(.6px)}
+  .blurdisc{opacity:0;transition:opacity .4s}
+  .col.high .blurdisc{opacity:.18}
+
+  /* thermal shimmer (appears step3+) */
+  .shimmer{opacity:0;transition:opacity .5s}
+  .stage[data-step="3"] .shimmer,
+  .stage[data-step="4"] .shimmer{opacity:1}
+  .shimmer path{animation:rise 1.6s ease-in-out infinite}
+  .col.high .shimmer path{animation-duration:.9s}
+  @keyframes rise{0%{transform:translateY(4px);opacity:.15}50%{opacity:.6}100%{transform:translateY(-6px);opacity:.1}}
+  .col.stopped .shimmer{opacity:0}
+
+  /* fan store labels (kinetic / thermal) */
+  .fanlabel{
+    position:absolute;font-size:.82rem;font-weight:700;letter-spacing:.04em;
+    opacity:0;transition:opacity .5s, transform .5s;pointer-events:none;
+    transform:translateY(6px);
+  }
+  .stage[data-step="3"] .fanlabel,
+  .stage[data-step="4"] .fanlabel{opacity:1;transform:none}
+  .lbl-kin{top:18%;right:-6px;color:var(--kin)}
+  .lbl-therm{top:46%;right:-14px;color:var(--therm)}
+  .lbl-kin small,.lbl-therm small{display:block;font-weight:500;font-size:.66rem;color:var(--ink-soft);letter-spacing:.02em}
+
+  /* ---------- transfer arrow + packets ---------- */
+  .transfer{
+    position:relative;width:64px;height:clamp(54px,9vh,96px);
+    margin:.1rem 0 .1rem;
+    display:flex;justify-content:center;
+    opacity:0;transition:opacity .5s;
+  }
+  .stage[data-step="3"] .transfer,
+  .stage[data-step="4"] .transfer{opacity:1}
+  .arrowline{
+    position:absolute;left:50%;top:6px;bottom:6px;width:3px;
+    transform:translateX(-50%);
+    background:linear-gradient(var(--ink-soft),var(--ink-soft));
+    border-radius:2px;
+  }
+  .arrowhead{
+    position:absolute;left:50%;top:0;transform:translateX(-50%);
+    width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;
+    border-bottom:10px solid var(--ink-soft);
+  }
+  .transfer-label{
+    position:absolute;left:calc(50% + 14px);top:50%;transform:translateY(-50%);
+    font-size:.74rem;font-weight:600;color:var(--ink-soft);white-space:nowrap;
+  }
+  /* energy packets */
+  .packet{
+    position:absolute;left:50%;bottom:0;width:16px;height:16px;border-radius:50%;
+    margin-left:-8px;
+    background:radial-gradient(circle at 35% 30%, #fff4c2, var(--gold) 55%, var(--gold-deep));
+    box-shadow:0 0 6px rgba(242,183,5,.7);
+    animation:flow 1.05s linear forwards;
+  }
+  @keyframes flow{
+    0%{bottom:0;opacity:0;transform:scale(.6)}
+    12%{opacity:1;transform:scale(1)}
+    85%{opacity:1}
+    100%{bottom:100%;opacity:0;transform:scale(.7)}
+  }
+
+  /* ---------- battery (chemical store) ---------- */
+  .batterywrap{
+    opacity:0;transform:translateY(8px);transition:opacity .5s,transform .5s;
+    display:flex;flex-direction:column;align-items:center;gap:.4rem;
+  }
+  .stage[data-step="2"] .batterywrap,
+  .stage[data-step="3"] .batterywrap,
+  .stage[data-step="4"] .batterywrap{opacity:1;transform:none}
+
+  .battery{
+    position:relative;width:clamp(150px,16vw,200px);height:clamp(56px,7vh,72px);
+    border:4px solid var(--ink);border-radius:9px;background:var(--paper);
+    display:flex;align-items:center;padding:5px;
+  }
+  .battery::after{
+    content:"";position:absolute;right:-13px;top:50%;transform:translateY(-50%);
+    width:10px;height:40%;background:var(--ink);border-radius:0 3px 3px 0;
+  }
+  .fill{
+    height:100%;width:100%;border-radius:4px;
+    background:linear-gradient(180deg,#7a68c4,var(--chem));
+    transition:width .15s linear, background .3s;
+  }
+  .fill.low-charge{background:linear-gradient(180deg,#e0a23a,var(--therm))}
+  .fill.empty{background:var(--stop)}
+  .pct{
+    position:absolute;width:100%;left:0;text-align:center;
+    font-size:1.15rem;font-weight:700;color:#fff;mix-blend-mode:difference;
+    letter-spacing:.02em;
+  }
+  .batt-caption{
+    font-size:.82rem;font-weight:700;letter-spacing:.04em;color:var(--chem);
+    opacity:0;transition:opacity .5s;text-align:center;
+  }
+  .stage[data-step="3"] .batt-caption,
+  .stage[data-step="4"] .batt-caption{opacity:1}
+  .batt-caption small{display:block;font-weight:500;color:var(--ink-soft);letter-spacing:.02em}
+
+  /* ---------- prompt bar ---------- */
+  .promptbar{
+    flex:0 0 auto;
+    background:var(--paper);
+    border-top:2px solid var(--line);
+    padding:1rem 2rem 1.05rem;
+    display:flex;align-items:center;gap:1.5rem;
+  }
+  .qblock{flex:1 1 auto;min-width:0}
+  .qlabel{font-size:.7rem;font-weight:700;letter-spacing:.14em;color:var(--ink-soft);text-transform:uppercase}
+  .question{font-size:1.45rem;font-weight:600;line-height:1.18;margin-top:.15rem}
+  .answer{
+    margin-top:.55rem;font-size:1.12rem;line-height:1.3;color:var(--ink-soft);
+    border-left:4px solid var(--gold);padding-left:.9rem;
+    max-height:0;opacity:0;overflow:hidden;transition:max-height .45s ease, opacity .35s, margin .3s;
+  }
+  .answer.show{max-height:200px;opacity:1}
+  .answer b{color:var(--ink);font-weight:700}
+
+  .btncol{flex:0 0 auto;display:flex;flex-direction:column;gap:.5rem;align-items:flex-end}
+  button{
+    font-family:inherit;font-size:.92rem;font-weight:700;letter-spacing:.02em;
+    border:2px solid var(--ink);background:var(--ink);color:var(--paper);
+    padding:.6rem 1.15rem;border-radius:7px;cursor:pointer;transition:.18s;white-space:nowrap;
+  }
+  button:hover{background:#2c3a85;border-color:#2c3a85}
+  button.ghost{background:transparent;color:var(--ink)}
+  button.ghost:hover{background:var(--ink);color:var(--paper)}
+  button:disabled{opacity:.35;cursor:not-allowed}
+
+  /* ---------- footer hint ---------- */
+  .hint{
+    position:fixed;bottom:.4rem;left:0;width:100%;text-align:center;
+    font-size:.72rem;color:var(--ink-soft);opacity:.7;pointer-events:none;
+  }
+  kbd{
+    font-family:inherit;background:var(--paper);border:1px solid var(--line);
+    border-bottom-width:2px;border-radius:4px;padding:.05rem .4rem;font-size:.7rem;font-weight:600;
+  }
+
+  /* step-1 staging: hide everything below fans cleanly handled by data-step rules above */
+</style>
+</head>
+<body>
+
+  <div class="topbar">
+    <span class="kicker">Teacher Talk · Power</span>
+    <div class="dots" id="dots"></div>
+    <h1 class="steptitle" id="steptitle">Which fan has more power?</h1>
+  </div>
+
+  <div class="stage" id="stage" data-step="1">
+
+    <!-- LOW -->
+    <div class="col low" id="colLow">
+      <div class="setting">Low</div>
+      <div class="fanbox">
+        <span class="fanlabel lbl-kin">Kinetic store<small>moving air</small></span>
+        <span class="fanlabel lbl-therm">Thermal store<small>wasted heat</small></span>
+        <!-- fan injected here -->
+      </div>
+      <div class="transfer">
+        <div class="arrowline"></div>
+        <div class="arrowhead"></div>
+        <span class="transfer-label">transfer</span>
+        <div class="packets" id="packLow"></div>
+      </div>
+      <div class="batterywrap">
+        <div class="battery"><div class="fill" id="fillLow"></div><span class="pct" id="pctLow">100%</span></div>
+        <div class="batt-caption">Chemical store<small>the battery</small></div>
+      </div>
+    </div>
+
+    <!-- HIGH -->
+    <div class="col high" id="colHigh">
+      <div class="setting">High</div>
+      <div class="fanbox">
+        <span class="fanlabel lbl-kin">Kinetic store<small>moving air</small></span>
+        <span class="fanlabel lbl-therm">Thermal store<small>wasted heat</small></span>
+        <!-- fan injected here -->
+      </div>
+      <div class="transfer">
+        <div class="arrowline"></div>
+        <div class="arrowhead"></div>
+        <span class="transfer-label">transfer</span>
+        <div class="packets" id="packHigh"></div>
+      </div>
+      <div class="batterywrap">
+        <div class="battery"><div class="fill" id="fillHigh"></div><span class="pct" id="pctHigh">100%</span></div>
+        <div class="batt-caption">Chemical store<small>the battery</small></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="promptbar">
+    <div class="qblock">
+      <div class="qlabel">Check for understanding</div>
+      <div class="question" id="question"></div>
+      <div class="answer" id="answer"></div>
+    </div>
+    <div class="btncol">
+      <button id="revealBtn" class="ghost">Reveal answer</button>
+      <button id="resetBtn">Reset batteries</button>
+    </div>
+  </div>
+
+  <div class="hint">
+    <kbd>Space</kbd> / <kbd>→</kbd> next &nbsp;·&nbsp; <kbd>←</kbd> back &nbsp;·&nbsp; <kbd>A</kbd> reveal &nbsp;·&nbsp; <kbd>R</kbd> reset
+  </div>
+
+<script>
+/* ---------- fan builder ---------- */
+function buildFan(suffix){
+  const cx=100, cy=90;
+  let blades="";
+  for(let i=0;i<5;i++){
+    const a=i*72;
+    blades+=`<g transform="rotate(${a} ${cx} ${cy})">
+      <ellipse cx="${cx}" cy="${cy-34}" rx="15" ry="34"
+        transform="rotate(24 ${cx} ${cy-34})"
+        fill="url(#blade${suffix})" stroke="#5d6473" stroke-width="1"/>
+    </g>`;
+  }
+  // guard rings + spokes
+  let guard="";
+  [80,62,44,26].forEach(r=>{guard+=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#7e8696" stroke-width="1.4" opacity="0.55"/>`;});
+  for(let i=0;i<12;i++){
+    const ang=i*30*Math.PI/180;
+    const x2=cx+80*Math.cos(ang), y2=cy+80*Math.sin(ang);
+    guard+=`<line x1="${cx}" y1="${cy}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="#7e8696" stroke-width="1" opacity="0.4"/>`;
+  }
+  // thermal shimmer near motor
+  let shim="";
+  [-12,0,12].forEach((dx,k)=>{
+    shim+=`<path d="M${cx+dx} ${cy} q4 -8 0 -16 q-4 -8 0 -16" fill="none" stroke="var(--therm)" stroke-width="2.4" stroke-linecap="round" style="animation-delay:${k*0.3}s"/>`;
+  });
+
+  return `
+  <svg class="fan" viewBox="0 0 200 250" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="blade${suffix}" cx="40%" cy="30%" r="80%">
+        <stop offset="0%" stop-color="var(--metal-1)"/>
+        <stop offset="65%" stop-color="var(--metal-2)"/>
+        <stop offset="100%" stop-color="var(--metal-3)"/>
+      </radialGradient>
+      <linearGradient id="neck${suffix}" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="var(--metal-3)"/>
+        <stop offset="50%" stop-color="var(--metal-1)"/>
+        <stop offset="100%" stop-color="var(--metal-3)"/>
+      </linearGradient>
+      <radialGradient id="hub${suffix}" cx="40%" cy="35%" r="70%">
+        <stop offset="0%" stop-color="#f2f4f7"/>
+        <stop offset="70%" stop-color="var(--metal-2)"/>
+        <stop offset="100%" stop-color="var(--metal-3)"/>
+      </radialGradient>
+    </defs>
+
+    <!-- base + stand -->
+    <ellipse cx="${cx}" cy="232" rx="50" ry="12" fill="url(#neck${suffix})" stroke="#5d6473" stroke-width="1"/>
+    <rect x="${cx-7}" y="168" width="14" height="62" rx="4" fill="url(#neck${suffix})" stroke="#5d6473" stroke-width="1"/>
+    <rect x="${cx-16}" y="158" width="32" height="20" rx="6" fill="url(#neck${suffix})" stroke="#5d6473" stroke-width="1"/>
+
+    <!-- motion blur disc (high only, via CSS opacity) -->
+    <circle class="blurdisc" cx="${cx}" cy="${cy}" r="74" fill="var(--metal-2)"/>
+
+    <!-- spinning blades -->
+    <g class="blades">${blades}</g>
+
+    <!-- thermal shimmer -->
+    <g class="shimmer">${shim}</g>
+
+    <!-- guard cage on top -->
+    <g>${guard}
+      <circle cx="${cx}" cy="${cy}" r="80" fill="none" stroke="#5d6473" stroke-width="3.5"/>
+      <circle cx="${cx}" cy="${cy}" r="14" fill="url(#hub${suffix})" stroke="#5d6473" stroke-width="1.5"/>
+    </g>
+  </svg>`;
+}
+document.querySelectorAll('#colLow .fanbox')[0].insertAdjacentHTML('beforeend', buildFan('lo'));
+document.querySelectorAll('#colHigh .fanbox')[0].insertAdjacentHTML('beforeend', buildFan('hi'));
+
+/* ---------- step content ---------- */
+const steps=[
+  null,
+  { title:"Which fan has more power?",
+    q:"Both fans, same room. Which one has more power — and how can you tell just by looking?",
+    a:"Most pupils say the fast fan, and the instinct is right. But “it looks faster” isn’t proof yet — what is actually <b>different</b> between them? (Hold off on the word <b>power</b> for now.)" },
+  { title:"Which battery dies first?",
+    q:"Same battery in each fan. Predict: which one goes flat first — and how do you know?",
+    a:"<b>High</b> dies first — its bar empties faster. More energy leaves the chemical store <b>every second</b>." },
+  { title:"Same stores, same transfers",
+    q:"Are the energy stores and transfers different on High? What is actually different?",
+    a:"The pathway is <b>identical</b> on both: chemical store → kinetic (moving air) + thermal (wasted heat). The only difference is the <b>rate</b> — how much is shifted each second." },
+  { title:"So… what is power?",
+    q:"In your own words: what is the thing that’s different between Low and High?",
+    a:"<b>Power = the energy transferred each second</b> — the rate of transfer. Same-sized chunks; just more of them per second on High." }
+];
+const TOTAL=4;
+let step=1, revealed=false;
+
+const stage=document.getElementById('stage');
+const stepTitle=document.getElementById('steptitle');
+const questionEl=document.getElementById('question');
+const answerEl=document.getElementById('answer');
+const revealBtn=document.getElementById('revealBtn');
+const dotsEl=document.getElementById('dots');
+
+for(let i=1;i<=TOTAL;i++){const d=document.createElement('span');d.className='dot';dotsEl.appendChild(d);}
+const dots=[...dotsEl.children];
+
+function render(){
+  stage.dataset.step=step;
+  stepTitle.textContent=steps[step].title;
+  questionEl.innerHTML=steps[step].q;
+  answerEl.innerHTML=steps[step].a;
+  answerEl.classList.toggle('show',revealed);
+  revealBtn.textContent=revealed?"Hide answer":"Reveal answer";
+  dots.forEach((d,i)=>d.classList.toggle('on',i<step));
+  if(step>=2) startDrain();
+  updatePackets();
+}
+function goNext(){ if(step<TOTAL){step++;revealed=false;render();} }
+function goPrev(){ if(step>1){step--;revealed=false;render();} }
+function toggleReveal(){ revealed=!revealed; answerEl.classList.toggle('show',revealed); revealBtn.textContent=revealed?"Hide answer":"Reveal answer"; }
+
+/* ---------- battery drain ---------- */
+const DRAIN={low:60000, high:20000}; // ms to empty (3x)
+let charge={low:100, high:100};
+let draining=false, lastT=null;
+const fillLow=document.getElementById('fillLow'), fillHigh=document.getElementById('fillHigh');
+const pctLow=document.getElementById('pctLow'), pctHigh=document.getElementById('pctHigh');
+const colLow=document.getElementById('colLow'), colHigh=document.getElementById('colHigh');
+
+function startDrain(){ if(!draining){draining=true; lastT=performance.now(); requestAnimationFrame(tick);} }
+function tick(now){
+  if(!draining){return;}
+  const dt=now-lastT; lastT=now;
+  ['low','high'].forEach(k=>{
+    if(charge[k]>0){
+      charge[k]=Math.max(0, charge[k] - dt/DRAIN[k]*100);
+    }
+  });
+  paintBattery();
+  requestAnimationFrame(tick);
+}
+function paintBattery(){
+  fillLow.style.width=charge.low+'%';
+  fillHigh.style.width=charge.high+'%';
+  pctLow.textContent=Math.round(charge.low)+'%';
+  pctHigh.textContent=Math.round(charge.high)+'%';
+  styleFill(fillLow,charge.low); styleFill(fillHigh,charge.high);
+  colLow.classList.toggle('stopped',charge.low<=0);
+  colHigh.classList.toggle('stopped',charge.high<=0);
+}
+function styleFill(el,c){
+  el.classList.toggle('low-charge', c>0 && c<25);
+  el.classList.toggle('empty', c<=0);
+}
+function resetBatteries(){ charge={low:100,high:100}; paintBattery(); lastT=performance.now(); }
+
+/* ---------- energy packets ---------- */
+const PKT={low:900, high:300}; // ms between packets (3x)
+let pktTimers={low:null,high:null};
+const packLow=document.getElementById('packLow'), packHigh=document.getElementById('packHigh');
+function spawnPacket(container,k){
+  if(charge[k]<=0) return;            // no energy left in the store
+  const p=document.createElement('div'); p.className='packet';
+  container.appendChild(p);
+  setTimeout(()=>p.remove(),1100);
+}
+function updatePackets(){
+  const on = step>=4;
+  ['low','high'].forEach(k=>{
+    const t=pktTimers[k], cont=(k==='low')?packLow:packHigh;
+    if(on && !t){
+      pktTimers[k]=setInterval(()=>spawnPacket(cont,k), PKT[k]);
+    }else if(!on && t){
+      clearInterval(t); pktTimers[k]=null; cont.innerHTML='';
+    }
+  });
+}
+
+/* ---------- input ---------- */
+revealBtn.addEventListener('click',e=>{e.stopPropagation();toggleReveal();});
+document.getElementById('resetBtn').addEventListener('click',e=>{e.stopPropagation();resetBatteries();});
+stage.addEventListener('click',goNext);
+
+document.addEventListener('keydown',e=>{
+  if(e.key===' '||e.key==='ArrowRight'||e.key==='Enter'||e.key==='PageDown'){e.preventDefault();goNext();}
+  else if(e.key==='ArrowLeft'||e.key==='PageUp'||e.key==='Backspace'){e.preventDefault();goPrev();}
+  else if(e.key==='a'||e.key==='A'){toggleReveal();}
+  else if(e.key==='r'||e.key==='R'){resetBatteries();}
+});
+
+render();
+</script>
+</body>
+</html>

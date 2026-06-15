@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rearranging atoms in a reaction</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1E2761;--navy-soft:#2a3478;--warm:#F8F4EC;--warm-deep:#EFE8D6;--paper:#FCFAF4;
+  --soft-blue:#EDF2FA;--ink:#1A1A1A;--muted:#5C6370;--rule:#CFD8E3;--accent:#B85042;
+  --accent-soft:#F4DAD7;--success:#2C5F2D;--success-soft:#DDEBDD;--gold:#C8A24A;--gold-soft:#F2E6BD;
+  --display:'Instrument Serif',Georgia,serif;--body:'IBM Plex Sans',system-ui,sans-serif;--mono:'IBM Plex Mono',monospace;
+  --c-C:#3A3A3A;--c-H:#F4F4F4;--c-O:#B85042;--c-N:#4B6CB7;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--body);background:var(--paper);color:var(--ink);padding:16px;font-weight:300}
+.wrap{max-width:700px;margin:0 auto}
+.instr{font-size:14px;color:var(--muted);margin-bottom:12px;line-height:1.4}
+.instr strong{color:var(--navy);font-weight:600}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
+.label{font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-right:4px}
+button{font-family:var(--mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;font-weight:500;
+  background:var(--navy);color:var(--warm);border:1px solid var(--navy);padding:9px 14px;border-radius:3px;cursor:pointer;transition:all .18s}
+button:hover:not(:disabled){background:var(--accent);border-color:var(--accent)}
+button:disabled{opacity:.45;cursor:default}
+button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.pick{background:var(--paper);color:var(--navy);border:1px solid var(--rule)}
+.pick.active{background:var(--gold-soft);border-color:var(--gold);color:var(--navy)}
+.pick:hover{background:var(--soft-blue);border-color:var(--navy);color:var(--navy)}
+.stage{position:relative;height:200px;border:1px solid var(--rule);border-radius:4px;background:var(--soft-blue);overflow:hidden;margin-bottom:10px}
+.atom{position:absolute;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:14px;font-weight:600;transition:left 1s cubic-bezier(.5,0,.2,1),top 1s cubic-bezier(.5,0,.2,1);
+  box-shadow:0 1px 3px rgba(0,0,0,.25);border:1.5px solid rgba(0,0,0,.25)}
+.bond{position:absolute;height:5px;background:var(--muted);border-radius:3px;transform-origin:left center;transition:opacity .35s ease;opacity:.55}
+.eqcap{position:absolute;left:0;right:0;text-align:center;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--navy);top:8px;pointer-events:none}
+.eqcap.bottom{top:auto;bottom:8px}
+.tally{display:flex;gap:14px;flex-wrap:wrap;background:var(--warm);border:1px solid var(--rule);border-radius:4px;padding:10px 14px;margin-bottom:10px;font-size:14px}
+.tally .grp{display:flex;flex-direction:column;gap:2px}
+.tally .ttl{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.tally .vals{font-family:var(--mono);font-weight:500;color:var(--navy)}
+.match{color:var(--success);font-weight:600}
+.eqtext{font-family:var(--mono);font-size:15px;color:var(--navy);text-align:center;margin-bottom:10px;font-weight:500}
+.take{font-family:var(--display);font-style:italic;font-size:17px;color:var(--navy);line-height:1.35;margin-top:12px;padding-top:10px;border-top:1px solid var(--rule)}
+sub{font-size:.7em}
+@media(max-width:380px){.stage{height:230px}.atom{width:34px;height:34px;font-size:12px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="instr">Pick a reaction, then press <strong>React</strong>. Watch the very same atoms split apart and rejoin as products — count them before and after.</p>
+  <div class="row" role="group" aria-label="Choose a reaction">
+    <span class="label">Reaction</span>
+    <button class="pick active" data-rx="0" aria-pressed="true">2H₂ + O₂ → 2H₂O</button>
+    <button class="pick" data-rx="1" aria-pressed="false">CH₄ + 2O₂ → CO₂ + 2H₂O</button>
+    <button class="pick" data-rx="2" aria-pressed="false">N₂ + 3H₂ → 2NH₃</button>
+  </div>
+  <div class="eqtext" id="eqtext" aria-live="polite"></div>
+  <div class="stage" id="stage" aria-hidden="true">
+    <div class="eqcap" id="capTop">Reactants</div>
+    <div class="eqcap bottom" id="capBot"></div>
+  </div>
+  <div class="tally" aria-live="polite">
+    <div class="grp"><span class="ttl">Atoms — reactants</span><span class="vals" id="tallyL"></span></div>
+    <div class="grp"><span class="ttl">Atoms — products</span><span class="vals" id="tallyR"></span></div>
+    <div class="grp"><span class="ttl">Conserved?</span><span class="vals match" id="tallyM">✓ same</span></div>
+  </div>
+  <div class="row">
+    <button id="react">React ▸</button>
+    <button id="reset" class="pick">Reset</button>
+  </div>
+  <p class="take">In a reaction, atoms are only rearranged — the same atoms are there before and after.</p>
+</div>
+<script>
+"use strict";
+// Each reaction: list of atoms with element, a "reactant" position and a "product" position (% of stage).
+// Bonds list pairs of atom indices, with a reactant grouping and product grouping for redraw.
+const COL={C:'var(--c-C)',H:'var(--c-H)',O:'var(--c-O)',N:'var(--c-N)'};
+const TXTDARK={H:true}; // light atoms get dark text
+function reactions(){
+  // helper to place
+  return [
+    { // 2H2 + O2 -> 2H2O   atoms: H H H H O O
+      eq:'2H<sub>2</sub> + O<sub>2</sub> &rarr; 2H<sub>2</sub>O',
+      atoms:[
+        {el:'H', r:[14,28], p:[16,62]}, {el:'H', r:[24,28], p:[26,62]},
+        {el:'H', r:[40,28], p:[60,62]}, {el:'H', r:[50,28], p:[70,62]},
+        {el:'O', r:[72,28], p:[20,55]}, {el:'O', r:[82,28], p:[64,55]}
+      ],
+      rbonds:[[0,1],[2,3],[4,5]], pbonds:[[4,0],[4,1],[5,2],[5,3]]
+    },
+    { // CH4 + 2O2 -> CO2 + 2H2O  atoms: C, H H H H, O O O O
+      eq:'CH<sub>4</sub> + 2O<sub>2</sub> &rarr; CO<sub>2</sub> + 2H<sub>2</sub>O',
+      atoms:[
+        {el:'C', r:[16,30], p:[18,52]},
+        {el:'H', r:[8,18], p:[58,58]}, {el:'H', r:[24,18], p:[68,58]},
+        {el:'H', r:[8,42], p:[80,58]}, {el:'H', r:[24,42], p:[90,58]},
+        {el:'O', r:[44,18], p:[10,52]}, {el:'O', r:[54,18], p:[26,52]},
+        {el:'O', r:[44,42], p:[62,50]}, {el:'O', r:[54,42], p:[86,50]}
+      ],
+      rbonds:[[0,1],[0,2],[0,3],[0,4],[5,6],[7,8]], pbonds:[[0,5],[0,6],[7,1],[7,2],[8,3],[8,4]]
+    },
+    { // N2 + 3H2 -> 2NH3  atoms: N N, H x6
+      eq:'N<sub>2</sub> + 3H<sub>2</sub> &rarr; 2NH<sub>3</sub>',
+      atoms:[
+        {el:'N', r:[12,28], p:[24,52]}, {el:'N', r:[22,28], p:[70,52]},
+        {el:'H', r:[40,18], p:[14,40]}, {el:'H', r:[50,18], p:[18,66]},
+        {el:'H', r:[40,42], p:[34,66]}, {el:'H', r:[62,18], p:[60,40]},
+        {el:'H', r:[72,42], p:[64,66]}, {el:'H', r:[84,30], p:[80,66]}
+      ],
+      rbonds:[[0,1],[2,3],[4,5],[6,7]], pbonds:[[0,2],[0,3],[0,4],[1,5],[1,6],[1,7]]
+    }
+  ];
+}
+const RX=reactions();
+let cur=0, state='reactant';
+const stage=document.getElementById('stage');
+const eqtext=document.getElementById('eqtext');
+const capTop=document.getElementById('capTop'), capBot=document.getElementById('capBot');
+let atomEls=[], bondEls=[];
+
+function tallyText(els){
+  const c={};
+  els.forEach(a=>{c[a.el]=(c[a.el]||0)+1});
+  return Object.keys(c).sort().map(k=>k+':'+c[k]).join('  ');
+}
+function build(){
+  // clear
+  atomEls.forEach(e=>e.remove()); bondEls.forEach(e=>e.remove());
+  atomEls=[]; bondEls=[];
+  const rx=RX[cur];
+  eqtext.innerHTML=rx.eq;
+  // bonds first (under atoms)
+  const maxBonds=Math.max(rx.rbonds.length, rx.pbonds.length);
+  for(let i=0;i<maxBonds;i++){
+    const b=document.createElement('div'); b.className='bond'; stage.appendChild(b); bondEls.push(b);
+  }
+  rx.atoms.forEach(a=>{
+    const el=document.createElement('div'); el.className='atom';
+    el.style.background=COL[a.el];
+    el.style.color=TXTDARK[a.el]?'#1A1A1A':'#FFF';
+    el.textContent=a.el;
+    stage.appendChild(el); atomEls.push(el);
+  });
+  state='reactant';
+  capTop.textContent='Reactants'; capBot.textContent='';
+  render(false);
+  updateTally();
+}
+function center(el){ return [el.offsetLeft+el.offsetWidth/2, el.offsetTop+el.offsetHeight/2]; }
+function placeAtoms(useProduct){
+  const rx=RX[cur], W=stage.clientWidth, H=stage.clientHeight;
+  rx.atoms.forEach((a,i)=>{
+    const pos=useProduct?a.p:a.r;
+    const x=pos[0]/100*W, y=pos[1]/100*H;
+    atomEls[i].style.left=(x-20)+'px';
+    atomEls[i].style.top=(y-20)+'px';
+  });
+}
+function drawBonds(useProduct){
+  const rx=RX[cur], list=useProduct?rx.pbonds:rx.rbonds;
+  bondEls.forEach((b,i)=>{
+    if(i>=list.length){b.style.opacity='0';return;}
+    const [a1,a2]=list[i];
+    const [x1,y1]=center(atomEls[a1]), [x2,y2]=center(atomEls[a2]);
+    const dx=x2-x1, dy=y2-y1, len=Math.hypot(dx,dy), ang=Math.atan2(dy,dx)*180/Math.PI;
+    b.style.opacity='.55';
+    b.style.left=x1+'px'; b.style.top=(y1-2.5)+'px';
+    b.style.width=len+'px';
+    b.style.transform='rotate('+ang+'deg)';
+  });
+}
+function render(useProduct){
+  placeAtoms(useProduct);
+  // bonds drawn after atoms settle their layout; draw immediately to start, then again after move
+  drawBonds(useProduct);
+}
+function updateTally(){
+  const els=RX[cur].atoms;
+  document.getElementById('tallyL').textContent=tallyText(els);
+  document.getElementById('tallyR').textContent=tallyText(els);
+}
+function fadeBondsOut(){ bondEls.forEach(b=>{ b.style.opacity='0'; }); }
+function doReact(){
+  if(state==='product') return;
+  state='product';
+  fadeBondsOut();                         // old bonds gently break (fade out) — no flying across the stage
+  placeAtoms(true);                       // the same atoms glide to their product positions
+  setTimeout(()=>drawBonds(true), 1080);  // new bonds form (fade in) once the atoms have settled
+  capTop.textContent='';
+  capBot.textContent='Products — same atoms!';
+}
+function doReset(){
+  state='reactant';
+  fadeBondsOut();
+  placeAtoms(false);
+  setTimeout(()=>drawBonds(false), 1080);
+  capTop.textContent='Reactants'; capBot.textContent='';
+}
+document.querySelectorAll('.pick[data-rx]').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.pick[data-rx]').forEach(b=>{b.classList.remove('active');b.setAttribute('aria-pressed','false')});
+    btn.classList.add('active'); btn.setAttribute('aria-pressed','true');
+    cur=+btn.dataset.rx; build();
+  });
+});
+document.getElementById('react').addEventListener('click',doReact);
+document.getElementById('reset').addEventListener('click',doReset);
+window.addEventListener('resize',()=>render(state==='product'));
+build();
+</script>
+</body>
+</html>

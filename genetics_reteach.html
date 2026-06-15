@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Genetics — rebuilding the picture (Year 8 reteach)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Spline+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F4F0E6; --paper2:#EDE7D8; --ink:#1B1813; --muted:#7A7263; --line:#CFC7B4;
+    --teal:#0F756A; --red:#C23A22; --amber:#D89A2C; --green:#2E7D32;
+    --disp:"Bricolage Grotesque",Georgia,serif; --body:"Spline Sans","Segoe UI",system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;}
+  body{font-family:var(--body);color:var(--ink);height:100vh;overflow:hidden;display:flex;flex-direction:column;
+    background:radial-gradient(1200px 600px at 82% -12%,rgba(15,117,106,.07),transparent 60%),
+               radial-gradient(1000px 520px at -2% 112%,rgba(194,58,34,.06),transparent 60%),var(--paper);}
+  .grain{position:fixed;inset:0;pointer-events:none;opacity:.03;z-index:9;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+
+  header{display:flex;align-items:center;gap:1.2rem;padding:.62rem 1.6rem;border-bottom:2px solid var(--ink);background:var(--paper2);flex:0 0 auto;z-index:5;}
+  .brand{font-family:var(--disp);font-weight:800;font-size:1.1rem;letter-spacing:-.01em;white-space:nowrap;}
+  .brand small{display:block;font-family:var(--body);font-weight:500;font-size:.7rem;color:var(--muted);}
+  .tabs{display:flex;gap:.4rem;margin-left:auto;flex-wrap:wrap;}
+  .tab{font-weight:600;font-size:.8rem;padding:.32rem .68rem;border:1.5px solid var(--line);border-radius:999px;background:transparent;color:var(--muted);cursor:pointer;transition:.18s;white-space:nowrap;}
+  .tab:hover{border-color:var(--ink);color:var(--ink);}
+  .tab.active{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+
+  .stage{flex:1 1 auto;display:flex;flex-direction:column;min-height:0;}
+  .diagram{flex:1 1 56%;min-height:0;position:relative;padding:.3rem 1rem 0;}
+  .fig{display:none;position:absolute;inset:.3rem 1rem 0;}
+  .fig.active{display:block;}
+  .fig svg{width:100%;height:100%;}
+
+  /* shared illustration styling */
+  .bb{fill:none;stroke:#15807440;stroke-width:5;stroke-linecap:round;}
+  .lbl{font-family:var(--disp);font-weight:800;}
+  .cap{font-family:var(--body);font-weight:600;fill:var(--muted);}
+  .magnify{fill:#0F756A0F;stroke:#0F756A;stroke-width:1.5;stroke-dasharray:5 5;}
+  .rv{opacity:0;transition:opacity .55s ease;}
+  .fig.revealed .rv{opacity:1;}
+  .brace{fill:none;stroke:var(--amber);stroke-width:3;}
+  .pin{stroke-width:2;}
+
+  /* teaching panel */
+  .panel{flex:1 1 44%;min-height:0;overflow:auto;border-top:2px solid var(--ink);background:var(--paper2);padding:.95rem 1.8rem;display:flex;flex-direction:column;gap:.5rem;}
+  .ptitle{font-family:var(--disp);font-weight:700;font-size:clamp(1rem,2vw,1.45rem);color:var(--teal);}
+  .ptitle.vary{color:var(--red);}
+  .predict{font-size:clamp(1.2rem,2.6vw,1.95rem);font-weight:600;line-height:1.18;max-width:62ch;}
+  .predict .blank{border-bottom:3px solid var(--amber);padding:0 .8em;}
+  .reveal{font-size:clamp(1.02rem,2.1vw,1.5rem);line-height:1.32;font-weight:500;max-width:66ch;background:#FFFDF7;border-left:6px solid var(--teal);border-radius:0 10px 10px 0;padding:.65rem 1rem;display:none;}
+  .reveal.vary{border-left-color:var(--red);}
+  .reveal.show{display:block;animation:rise .35s ease;}
+  .reveal b{font-weight:700;} .reveal .q{font-weight:700;color:var(--muted);font-size:.84em;}
+  @keyframes rise{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+
+  .activity{display:flex;flex-wrap:wrap;gap:.55rem;}
+  .acard{border:2px solid var(--line);background:#FFFDF7;border-radius:12px;padding:.5rem .8rem;min-width:120px;cursor:pointer;text-align:center;transition:.15s;font-weight:600;font-size:clamp(.9rem,1.6vw,1.1rem);user-select:none;}
+  .acard:hover{border-color:var(--ink);}
+  .acard .lab{font-family:var(--disp);font-weight:800;font-size:1.1em;display:block;}
+  .acard .guess{display:block;font-size:.76rem;color:var(--muted);margin-top:.18rem;min-height:.95rem;font-weight:600;}
+  .acard.correct{border-color:var(--green);background:#EAF4EA;} .acard.correct .guess{color:var(--green);}
+  .acard.wrong{border-color:var(--red);background:#F3DBD2;} .acard.wrong .guess{color:var(--red);}
+
+  footer{flex:0 0 auto;display:flex;align-items:center;gap:1rem;padding:.55rem 1.6rem;border-top:2px solid var(--ink);background:var(--paper);}
+  .hint{font-size:.76rem;color:var(--muted);font-weight:500;}
+  .hint kbd,.legend kbd{font-family:var(--body);background:#fff;border:1.5px solid var(--line);border-bottom-width:3px;border-radius:6px;padding:.04rem .4rem;font-size:.72rem;font-weight:600;}
+  .nav{margin-left:auto;display:flex;gap:.55rem;}
+  .btn{font-family:var(--body);font-weight:700;font-size:1rem;cursor:pointer;padding:.52rem 1.3rem;border-radius:10px;border:2px solid var(--ink);transition:.15s;}
+  .btn.ghost{background:transparent;color:var(--ink);} .btn.ghost:hover{background:var(--ink);color:var(--paper);}
+  .btn.go{background:var(--ink);color:var(--paper);} .btn.go:hover{background:var(--teal);border-color:var(--teal);}
+  .btn:disabled{opacity:.3;cursor:not-allowed;}
+  .progress{position:fixed;left:0;bottom:0;height:4px;background:var(--amber);transition:width .35s ease;z-index:8;}
+
+  .cover{position:fixed;inset:0;z-index:20;background:var(--paper);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.3rem;text-align:center;padding:2rem;
+    background-image:radial-gradient(1200px 600px at 80% -10%,rgba(15,117,106,.10),transparent 60%),radial-gradient(1000px 500px at 10% 110%,rgba(194,58,34,.08),transparent 60%);}
+  .cover .eyebrow{font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);font-size:.82rem;}
+  .cover h1{font-family:var(--disp);font-weight:800;font-size:clamp(2.4rem,7vw,5rem);line-height:.98;letter-spacing:-.02em;max-width:15ch;}
+  .cover h1 .a{color:var(--teal);} .cover h1 .b{color:var(--red);}
+  .cover p{max-width:52ch;font-size:clamp(1rem,2.1vw,1.3rem);font-weight:500;}
+  .legend{display:flex;gap:1.3rem;flex-wrap:wrap;justify-content:center;color:var(--muted);font-size:.88rem;font-weight:600;}
+  .legend span{display:inline-flex;align-items:center;gap:.4rem;}
+  .cover.hide{display:none;}
+</style>
+</head>
+<body>
+<div class="grain"></div>
+
+<div class="cover" id="cover">
+  <div class="eyebrow">Year 8 Science · post-assessment reteach</div>
+  <h1>Rebuilding the <span class="a">genetics</span> <span class="b">picture</span></h1>
+  <p>One idea, one diagram, one prediction at a time. We don't draw the connections — you'll see how it all fits only at the very end.</p>
+  <div class="legend"><span><kbd>Space</kbd>/<kbd>&rarr;</kbd> predict, then reveal</span><span><kbd>&larr;</kbd> back</span><span>click the cards with the class</span></div>
+  <button class="btn go" id="beginBtn" style="font-size:1.25rem;padding:.8rem 2.4rem;">Begin &rarr;</button>
+</div>
+
+<header>
+  <div class="brand">Genetics · rebuilding the picture<small>Year 8 reteach — predict before every reveal</small></div>
+  <nav class="tabs" id="tabs"></nav>
+</header>
+
+<div class="stage">
+  <div class="diagram" id="diagram">
+
+    <!-- ============ DEFS (shared art) ============ -->
+    <svg width="0" height="0" style="position:absolute"><defs>
+      <linearGradient id="chromoGrad" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#3FB3A4"/><stop offset="1" stop-color="#0C5249"/>
+      </linearGradient>
+      <linearGradient id="ideoGrad" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#3FB3A4"/><stop offset=".5" stop-color="#149083"/><stop offset="1" stop-color="#0C5249"/>
+      </linearGradient>
+      <radialGradient id="nucGrad" cx=".4" cy=".35" r=".75">
+        <stop offset="0" stop-color="#F3E2D6"/><stop offset="1" stop-color="#E7C9B6"/>
+      </radialGradient>
+      <radialGradient id="cellGrad" cx=".4" cy=".3" r=".85">
+        <stop offset="0" stop-color="#EAF3F0"/><stop offset="1" stop-color="#CFE6E0"/>
+      </radialGradient>
+      <radialGradient id="petalR" cx=".4" cy=".3" r=".8">
+        <stop offset="0" stop-color="#E8654C"/><stop offset="1" stop-color="#B22E18"/>
+      </radialGradient>
+      <radialGradient id="petalW" cx=".4" cy=".3" r=".8">
+        <stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#E9E2D2"/>
+      </radialGradient>
+
+      <!-- realistic condensed chromosome (X), centred at origin -->
+      <g id="chromo">
+        <g transform="rotate(-13)">
+          <rect x="-9" y="-46" width="18" height="92" rx="9" fill="url(#chromoGrad)" stroke="#0A453D" stroke-width="1.4"/>
+          <rect x="-6" y="-38" width="5" height="64" rx="2.5" fill="#0A453D" opacity=".22"/>
+          <rect x="-6.5" y="-30" width="13" height="4" rx="2" fill="#073A33" opacity=".4"/>
+          <rect x="-6.5" y="14" width="13" height="4" rx="2" fill="#073A33" opacity=".4"/>
+        </g>
+        <g transform="rotate(13)">
+          <rect x="-9" y="-46" width="18" height="92" rx="9" fill="url(#chromoGrad)" stroke="#0A453D" stroke-width="1.4"/>
+          <rect x="1" y="-38" width="5" height="64" rx="2.5" fill="#FFFFFF" opacity=".18"/>
+          <rect x="-6.5" y="-22" width="13" height="4" rx="2" fill="#073A33" opacity=".4"/>
+          <rect x="-6.5" y="22" width="13" height="4" rx="2" fill="#073A33" opacity=".4"/>
+        </g>
+        <circle cx="0" cy="0" r="6.5" fill="#0A453D"/>
+        <circle cx="-1.6" cy="-1.6" r="2.4" fill="#3FB3A4" opacity=".8"/>
+      </g>
+
+      <!-- chromosome ideogram (straight bar) for allele teaching, centred at origin -->
+      <g id="ideo">
+        <rect x="-12" y="-58" width="24" height="116" rx="12" fill="url(#ideoGrad)" stroke="#0A453D" stroke-width="1.4"/>
+        <circle cx="-12" cy="-6" r="5" fill="#F4F0E6"/><circle cx="12" cy="-6" r="5" fill="#F4F0E6"/>
+        <rect x="-7" y="22" width="14" height="3.5" rx="1.7" fill="#073A33" opacity=".35"/>
+        <rect x="-7" y="38" width="14" height="3.5" rx="1.7" fill="#073A33" opacity=".35"/>
+      </g>
+
+      <!-- double helix (generated), centred at origin -->
+<g id="helixG">
+<line x1="0.0" y1="-150.0" x2="-0.0" y2="-150.0" stroke="#C23A22" stroke-width="6.5" stroke-linecap="round" opacity="1.0"/>
+<line x1="22.7" y1="-138.4" x2="-22.7" y2="-138.4" stroke="#0F756A" stroke-width="6.2" stroke-linecap="round" opacity="0.93"/>
+<line x1="33.8" y1="-126.7" x2="-33.8" y2="-126.7" stroke="#E0A23A" stroke-width="5.4" stroke-linecap="round" opacity="0.76"/>
+<line x1="27.7" y1="-115.1" x2="-27.7" y2="-115.1" stroke="#2E6FB0" stroke-width="4.5" stroke-linecap="round" opacity="0.56"/>
+<line x1="7.4" y1="-103.5" x2="-7.4" y2="-103.5" stroke="#C23A22" stroke-width="4.0" stroke-linecap="round" opacity="0.46"/>
+<line x1="-16.6" y1="-91.9" x2="16.6" y2="-91.9" stroke="#0F756A" stroke-width="4.2" stroke-linecap="round" opacity="0.49"/>
+<line x1="-32.2" y1="-80.2" x2="32.2" y2="-80.2" stroke="#E0A23A" stroke-width="4.8" stroke-linecap="round" opacity="0.64"/>
+<line x1="-31.3" y1="-68.6" x2="31.3" y2="-68.6" stroke="#2E6FB0" stroke-width="5.7" stroke-linecap="round" opacity="0.83"/>
+<line x1="-14.4" y1="-57.0" x2="14.4" y2="-57.0" stroke="#C23A22" stroke-width="6.4" stroke-linecap="round" opacity="0.97"/>
+<line x1="9.8" y1="-45.3" x2="-9.8" y2="-45.3" stroke="#0F756A" stroke-width="6.4" stroke-linecap="round" opacity="0.99"/>
+<line x1="29.0" y1="-33.7" x2="-29.0" y2="-33.7" stroke="#E0A23A" stroke-width="5.9" stroke-linecap="round" opacity="0.87"/>
+<line x1="33.4" y1="-22.1" x2="-33.4" y2="-22.1" stroke="#2E6FB0" stroke-width="5.0" stroke-linecap="round" opacity="0.68"/>
+<line x1="20.8" y1="-10.5" x2="-20.8" y2="-10.5" stroke="#C23A22" stroke-width="4.3" stroke-linecap="round" opacity="0.51"/>
+<line x1="-2.5" y1="1.2" x2="2.5" y2="1.2" stroke="#0F756A" stroke-width="4.0" stroke-linecap="round" opacity="0.45"/>
+<line x1="-24.5" y1="12.8" x2="24.5" y2="12.8" stroke="#E0A23A" stroke-width="4.4" stroke-linecap="round" opacity="0.53"/>
+<line x1="-34.0" y1="24.4" x2="34.0" y2="24.4" stroke="#2E6FB0" stroke-width="5.2" stroke-linecap="round" opacity="0.71"/>
+<line x1="-26.1" y1="36.0" x2="26.1" y2="36.0" stroke="#C23A22" stroke-width="6.0" stroke-linecap="round" opacity="0.9"/>
+<line x1="-5.0" y1="47.7" x2="5.0" y2="47.7" stroke="#0F756A" stroke-width="6.5" stroke-linecap="round" opacity="1.0"/>
+<line x1="18.8" y1="59.3" x2="-18.8" y2="59.3" stroke="#E0A23A" stroke-width="6.3" stroke-linecap="round" opacity="0.95"/>
+<line x1="32.9" y1="70.9" x2="-32.9" y2="70.9" stroke="#2E6FB0" stroke-width="5.6" stroke-linecap="round" opacity="0.79"/>
+<line x1="30.2" y1="82.6" x2="-30.2" y2="82.6" stroke="#C23A22" stroke-width="4.7" stroke-linecap="round" opacity="0.6"/>
+<line x1="12.1" y1="94.2" x2="-12.1" y2="94.2" stroke="#0F756A" stroke-width="4.1" stroke-linecap="round" opacity="0.47"/>
+<line x1="-12.1" y1="105.8" x2="12.1" y2="105.8" stroke="#E0A23A" stroke-width="4.1" stroke-linecap="round" opacity="0.47"/>
+<line x1="-30.2" y1="117.4" x2="30.2" y2="117.4" stroke="#2E6FB0" stroke-width="4.7" stroke-linecap="round" opacity="0.6"/>
+<line x1="-32.9" y1="129.1" x2="32.9" y2="129.1" stroke="#C23A22" stroke-width="5.6" stroke-linecap="round" opacity="0.79"/>
+<line x1="-18.8" y1="140.7" x2="18.8" y2="140.7" stroke="#0F756A" stroke-width="6.3" stroke-linecap="round" opacity="0.95"/>
+<path class="bb" d="M 0.0 -150.0 L 5.0 -147.7 L 9.8 -145.3 L 14.4 -143.0 L 18.8 -140.7 L 22.7 -138.4 L 26.1 -136.0 L 29.0 -133.7 L 31.3 -131.4 L 32.9 -129.1 L 33.8 -126.7 L 34.0 -124.4 L 33.4 -122.1 L 32.2 -119.8 L 30.2 -117.4 L 27.7 -115.1 L 24.5 -112.8 L 20.8 -110.5 L 16.6 -108.1 L 12.1 -105.8 L 7.4 -103.5 L 2.5 -101.2 L -2.5 -98.8 L -7.4 -96.5 L -12.1 -94.2 L -16.6 -91.9 L -20.8 -89.5 L -24.5 -87.2 L -27.7 -84.9 L -30.2 -82.6 L -32.2 -80.2 L -33.4 -77.9 L -34.0 -75.6 L -33.8 -73.3 L -32.9 -70.9 L -31.3 -68.6 L -29.0 -66.3 L -26.1 -64.0 L -22.7 -61.6 L -18.8 -59.3 L -14.4 -57.0 L -9.8 -54.7 L -5.0 -52.3 L -0.0 -50.0 L 5.0 -47.7 L 9.8 -45.3 L 14.4 -43.0 L 18.8 -40.7 L 22.7 -38.4 L 26.1 -36.0 L 29.0 -33.7 L 31.3 -31.4 L 32.9 -29.1 L 33.8 -26.7 L 34.0 -24.4 L 33.4 -22.1 L 32.2 -19.8 L 30.2 -17.4 L 27.7 -15.1 L 24.5 -12.8 L 20.8 -10.5 L 16.6 -8.1 L 12.1 -5.8 L 7.4 -3.5 L 2.5 -1.2 L -2.5 1.2 L -7.4 3.5 L -12.1 5.8 L -16.6 8.1 L -20.8 10.5 L -24.5 12.8 L -27.7 15.1 L -30.2 17.4 L -32.2 19.8 L -33.4 22.1 L -34.0 24.4 L -33.8 26.7 L -32.9 29.1 L -31.3 31.4 L -29.0 33.7 L -26.1 36.0 L -22.7 38.4 L -18.8 40.7 L -14.4 43.0 L -9.8 45.3 L -5.0 47.7 L -0.0 50.0 L 5.0 52.3 L 9.8 54.7 L 14.4 57.0 L 18.8 59.3 L 22.7 61.6 L 26.1 64.0 L 29.0 66.3 L 31.3 68.6 L 32.9 70.9 L 33.8 73.3 L 34.0 75.6 L 33.4 77.9 L 32.2 80.2 L 30.2 82.6 L 27.7 84.9 L 24.5 87.2 L 20.8 89.5 L 16.6 91.9 L 12.1 94.2 L 7.4 96.5 L 2.5 98.8 L -2.5 101.2 L -7.4 103.5 L -12.1 105.8 L -16.6 108.1 L -20.8 110.5 L -24.5 112.8 L -27.7 115.1 L -30.2 117.4 L -32.2 119.8 L -33.4 122.1 L -34.0 124.4 L -33.8 126.7 L -32.9 129.1 L -31.3 131.4 L -29.0 133.7 L -26.1 136.0 L -22.7 138.4 L -18.8 140.7 L -14.4 143.0 L -9.8 145.3 L -5.0 147.7 L -0.0 150.0"/>
+<path class="bb" d="M -0.0 -150.0 L -5.0 -147.7 L -9.8 -145.3 L -14.4 -143.0 L -18.8 -140.7 L -22.7 -138.4 L -26.1 -136.0 L -29.0 -133.7 L -31.3 -131.4 L -32.9 -129.1 L -33.8 -126.7 L -34.0 -124.4 L -33.4 -122.1 L -32.2 -119.8 L -30.2 -117.4 L -27.7 -115.1 L -24.5 -112.8 L -20.8 -110.5 L -16.6 -108.1 L -12.1 -105.8 L -7.4 -103.5 L -2.5 -101.2 L 2.5 -98.8 L 7.4 -96.5 L 12.1 -94.2 L 16.6 -91.9 L 20.8 -89.5 L 24.5 -87.2 L 27.7 -84.9 L 30.2 -82.6 L 32.2 -80.2 L 33.4 -77.9 L 34.0 -75.6 L 33.8 -73.3 L 32.9 -70.9 L 31.3 -68.6 L 29.0 -66.3 L 26.1 -64.0 L 22.7 -61.6 L 18.8 -59.3 L 14.4 -57.0 L 9.8 -54.7 L 5.0 -52.3 L 0.0 -50.0 L -5.0 -47.7 L -9.8 -45.3 L -14.4 -43.0 L -18.8 -40.7 L -22.7 -38.4 L -26.1 -36.0 L -29.0 -33.7 L -31.3 -31.4 L -32.9 -29.1 L -33.8 -26.7 L -34.0 -24.4 L -33.4 -22.1 L -32.2 -19.8 L -30.2 -17.4 L -27.7 -15.1 L -24.5 -12.8 L -20.8 -10.5 L -16.6 -8.1 L -12.1 -5.8 L -7.4 -3.5 L -2.5 -1.2 L 2.5 1.2 L 7.4 3.5 L 12.1 5.8 L 16.6 8.1 L 20.8 10.5 L 24.5 12.8 L 27.7 15.1 L 30.2 17.4 L 32.2 19.8 L 33.4 22.1 L 34.0 24.4 L 33.8 26.7 L 32.9 29.1 L 31.3 31.4 L 29.0 33.7 L 26.1 36.0 L 22.7 38.4 L 18.8 40.7 L 14.4 43.0 L 9.8 45.3 L 5.0 47.7 L 0.0 50.0 L -5.0 52.3 L -9.8 54.7 L -14.4 57.0 L -18.8 59.3 L -22.7 61.6 L -26.1 64.0 L -29.0 66.3 L -31.3 68.6 L -32.9 70.9 L -33.8 73.3 L -34.0 75.6 L -33.4 77.9 L -32.2 80.2 L -30.2 82.6 L -27.7 84.9 L -24.5 87.2 L -20.8 89.5 L -16.6 91.9 L -12.1 94.2 L -7.4 96.5 L -2.5 98.8 L 2.5 101.2 L 7.4 103.5 L 12.1 105.8 L 16.6 108.1 L 20.8 110.5 L 24.5 112.8 L 27.7 115.1 L 30.2 117.4 L 32.2 119.8 L 33.4 122.1 L 34.0 124.4 L 33.8 126.7 L 32.9 129.1 L 31.3 131.4 L 29.0 133.7 L 26.1 136.0 L 22.7 138.4 L 18.8 140.7 L 14.4 143.0 L 9.8 145.3 L 5.0 147.7 L 0.0 150.0"/>
+</g>
+
+      <!-- flowers (head at origin, short stem below) -->
+      <g id="flowerR">
+        <path d="M0,28 C-4,55 -4,80 0,96" fill="none" stroke="#2E7D32" stroke-width="6" stroke-linecap="round"/>
+        <path d="M0,62 C18,52 34,58 40,72 C24,80 8,74 0,64 Z" fill="#3E9B43"/>
+        <g><ellipse cx="0" cy="-26" rx="13" ry="24" fill="url(#petalR)" stroke="#8E230F" stroke-width="1.2"/>
+           <ellipse cx="0" cy="-26" rx="13" ry="24" fill="url(#petalR)" stroke="#8E230F" stroke-width="1.2" transform="rotate(72)"/>
+           <ellipse cx="0" cy="-26" rx="13" ry="24" fill="url(#petalR)" stroke="#8E230F" stroke-width="1.2" transform="rotate(144)"/>
+           <ellipse cx="0" cy="-26" rx="13" ry="24" fill="url(#petalR)" stroke="#8E230F" stroke-width="1.2" transform="rotate(216)"/>
+           <ellipse cx="0" cy="-26" rx="13" ry="24" fill="url(#petalR)" stroke="#8E230F" stroke-width="1.2" transform="rotate(288)"/></g>
+        <circle cx="0" cy="0" r="11" fill="#E7B53F" stroke="#B98A1E" stroke-width="1.5"/>
+      </g>
+      <g id="flowerW">
+        <path d="M0,28 C-4,55 -4,80 0,96" fill="none" stroke="#2E7D32" stroke-width="6" stroke-linecap="round"/>
+        <path d="M0,62 C18,52 34,58 40,72 C24,80 8,74 0,64 Z" fill="#3E9B43"/>
+        <g><ellipse cx="0" cy="-26" rx="13" ry="24" fill="url(#petalW)" stroke="#B9B19C" stroke-width="1.4"/>
+           <ellipse cx="0" cy="-26" rx="13" ry="24" fill="url(#petalW)" stroke="#B9B19C" stroke-width="1.4" transform="rotate(72)"/>
+           <ellipse cx="0" cy="-26" rx="13" ry="24" fill="url(#petalW)" stroke="#B9B19C" stroke-width="1.4" transform="rotate(144)"/>
+           <ellipse cx="0" cy="-26" rx="13" ry="24" fill="url(#petalW)" stroke="#B9B19C" stroke-width="1.4" transform="rotate(216)"/>
+           <ellipse cx="0" cy="-26" rx="13" ry="24" fill="url(#petalW)" stroke="#B9B19C" stroke-width="1.4" transform="rotate(288)"/></g>
+        <circle cx="0" cy="0" r="11" fill="#E7B53F" stroke="#B98A1E" stroke-width="1.5"/>
+      </g>
+    </defs></svg>
+
+    <!-- ============ FIGURES ============ -->
+
+    <!-- 1. DNA -->
+    <div class="fig" id="fig-dna"><svg viewBox="0 0 900 520">
+      <use href="#helixG" transform="translate(450 250) scale(1.18)"/>
+      <text class="cap rv" x="450" y="500" text-anchor="middle" font-size="20">the genetic code, stored as a sequence of paired bases</text>
+      <text class="lbl rv" x="630" y="250" font-size="40" fill="#C23A22">DNA</text>
+    </svg></div>
+
+    <!-- 2. GENE = section of DNA -->
+    <div class="fig" id="fig-gene"><svg viewBox="0 0 900 520">
+      <use href="#chromo" transform="translate(150 250) scale(2.0)"/>
+      <text class="cap" x="150" y="430" text-anchor="middle" font-size="19">chromosome</text>
+      <path class="magnify" d="M205,170 L560,70 L560,440 L205,330 Z"/>
+      <use href="#helixG" transform="translate(640 255) scale(0.92) rotate(90)"/>
+      <rect class="rv" x="600" y="218" width="80" height="74" rx="10" fill="none" stroke="#D89A2C" stroke-width="5"/>
+      <text class="lbl rv" x="640" y="120" text-anchor="middle" font-size="30" fill="#D89A2C">a GENE</text>
+      <text class="cap rv" x="640" y="150" text-anchor="middle" font-size="18" fill="#B98322">= one section of the DNA</text>
+    </svg></div>
+
+    <!-- 3. CHROMOSOME bigger than gene -->
+    <div class="fig" id="fig-chromosome"><svg viewBox="0 0 900 520">
+      <use href="#chromo" transform="translate(200 250) scale(2.5)"/>
+      <text class="cap" x="200" y="440" text-anchor="middle" font-size="19">one chromosome</text>
+      <path class="magnify" d="M270,150 L560,90 L560,430 L270,350 Z"/>
+      <!-- zoomed strand with many gene bands -->
+      <rect x="600" y="95" width="40" height="330" rx="20" fill="url(#ideoGrad)" stroke="#0A453D" stroke-width="1.5"/>
+      <g>
+        <rect x="606" y="112" width="28" height="20" rx="6" fill="#2E6FB0"/>
+        <rect x="606" y="146" width="28" height="20" rx="6" fill="#E0A23A"/>
+        <rect x="606" y="180" width="28" height="20" rx="6" fill="#C23A22"/>
+        <rect x="606" y="214" width="28" height="20" rx="6" fill="#0F756A"/>
+        <rect x="606" y="248" width="28" height="20" rx="6" fill="#2E6FB0"/>
+        <rect x="606" y="300" width="28" height="20" rx="6" fill="#E0A23A"/>
+        <rect x="606" y="334" width="28" height="20" rx="6" fill="#0F756A"/>
+        <rect x="606" y="368" width="28" height="20" rx="6" fill="#C23A22"/>
+      </g>
+      <rect class="rv" x="601" y="177" width="38" height="26" rx="8" fill="none" stroke="#D89A2C" stroke-width="5"/>
+      <text class="lbl rv" x="700" y="195" font-size="22" fill="#D89A2C">one gene</text>
+      <text class="lbl rv" x="700" y="285" font-size="22" fill="#0F756A">a chromosome</text>
+      <text class="cap rv" x="700" y="312" font-size="18">holds hundreds of genes</text>
+    </svg></div>
+
+    <!-- 4. GENOME = whole cell's genetic material -->
+    <div class="fig" id="fig-genome"><svg viewBox="0 0 900 520">
+      <ellipse cx="450" cy="260" rx="360" ry="225" fill="url(#cellGrad)" stroke="#9CC4BC" stroke-width="3"/>
+      <text class="cap" x="450" y="500" text-anchor="middle" font-size="18">a body cell</text>
+      <circle cx="450" cy="255" r="190" fill="url(#nucGrad)" stroke="#D2A98F" stroke-width="3"/>
+      <text class="cap" x="450" y="80" text-anchor="middle" font-size="17" fill="#9A6B4E">nucleus</text>
+      <g transform="translate(450 255) scale(1.06)">
+<use href="#chromo" transform="translate(-24.3 39.9) rotate(1.7) scale(0.63)"/>
+<use href="#chromo" transform="translate(-22.0 -25.1) rotate(19.4) scale(0.54)"/>
+<use href="#chromo" transform="translate(-82.5 -15.5) rotate(43.9) scale(0.66)"/>
+<use href="#chromo" transform="translate(93.2 29.1) rotate(41.2) scale(0.66)"/>
+<use href="#chromo" transform="translate(38.2 14.7) rotate(-11.8) scale(0.59)"/>
+<use href="#chromo" transform="translate(-113.3 47.7) rotate(-43.6) scale(0.63)"/>
+<use href="#chromo" transform="translate(-94.9 -80.2) rotate(-48.2) scale(0.54)"/>
+<use href="#chromo" transform="translate(47.5 -48.0) rotate(-32.0) scale(0.55)"/>
+<use href="#chromo" transform="translate(-45.4 96.8) rotate(-17.6) scale(0.54)"/>
+<use href="#chromo" transform="translate(45.0 79.4) rotate(-55.0) scale(0.55)"/>
+<use href="#chromo" transform="translate(-38.8 -68.0) rotate(-43.8) scale(0.59)"/>
+<use href="#chromo" transform="translate(32.2 -92.3) rotate(-52.2) scale(0.67)"/>
+<use href="#chromo" transform="translate(-129.3 -16.9) rotate(12.5) scale(0.55)"/>
+<use href="#chromo" transform="translate(111.3 -27.7) rotate(-27.3) scale(0.59)"/>
+      </g>
+      <circle class="rv" cx="450" cy="255" r="190" fill="none" stroke="#D89A2C" stroke-width="6"/>
+      <text class="lbl rv" x="450" y="252" text-anchor="middle" font-size="34" fill="#D89A2C" stroke="#F4F0E6" stroke-width="5" paint-order="stroke">GENOME</text>
+      <text class="cap rv" x="450" y="286" text-anchor="middle" font-size="19" fill="#B98322" stroke="#F4F0E6" stroke-width="4" paint-order="stroke">= every chromosome together</text>
+    </svg></div>
+
+    <!-- 5. SCALE / size order -->
+    <div class="fig" id="fig-scale"><svg viewBox="0 0 900 520">
+      <line x1="90" y1="430" x2="810" y2="430" stroke="#CFC7B4" stroke-width="3"/>
+      <text class="cap" x="90" y="465" font-size="17">smaller</text>
+      <text class="cap" x="810" y="465" text-anchor="end" font-size="17">bigger</text>
+      <!-- gene band -->
+      <rect x="150" y="300" width="34" height="120" rx="10" fill="url(#ideoGrad)" stroke="#0A453D" stroke-width="1.4"/>
+      <rect x="156" y="345" width="22" height="20" rx="6" fill="#C23A22"/>
+      <text class="cap rv" x="167" y="280" text-anchor="middle" font-size="20" fill="#C23A22">gene</text>
+      <!-- chromosome -->
+      <use href="#chromo" transform="translate(450 360) scale(1.4)"/>
+      <text class="cap rv" x="450" y="250" text-anchor="middle" font-size="20" fill="#0F756A">chromosome</text>
+      <!-- genome (mini cell) -->
+      <circle cx="730" cy="350" r="75" fill="url(#nucGrad)" stroke="#D2A98F" stroke-width="2.5"/>
+      <g transform="translate(730 350) scale(.4)">
+        <use href="#chromo" transform="translate(-40 -20) rotate(20) scale(.6)"/>
+        <use href="#chromo" transform="translate(45 10) rotate(-30) scale(.6)"/>
+        <use href="#chromo" transform="translate(-10 50) rotate(10) scale(.6)"/>
+        <use href="#chromo" transform="translate(20 -55) rotate(-15) scale(.6)"/>
+      </g>
+      <text class="cap rv" x="730" y="250" text-anchor="middle" font-size="20" fill="#9A6B4E">genome</text>
+    </svg></div>
+
+    <!-- 6. ALLELE -->
+    <div class="fig" id="fig-allele"><svg viewBox="0 0 900 520">
+      <text class="cap" x="450" y="70" text-anchor="middle" font-size="19">a pair of matching (homologous) chromosomes</text>
+      <use href="#ideo" transform="translate(370 270) scale(1.7)"/>
+      <use href="#ideo" transform="translate(530 270) scale(1.7)"/>
+      <!-- gene locus on each at same height -->
+      <g transform="translate(370 212)"><rect x="-22" y="-16" width="44" height="32" rx="8" fill="#C23A22" stroke="#8E230F" stroke-width="2"/><text x="0" y="9" text-anchor="middle" font-size="26" fill="#fff" class="lbl">R</text></g>
+      <g transform="translate(530 212)"><rect x="-22" y="-16" width="44" height="32" rx="8" fill="#FFFDF7" stroke="#C23A22" stroke-width="3"/><text x="0" y="9" text-anchor="middle" font-size="26" fill="#C23A22" class="lbl">r</text></g>
+      <path class="rv brace" d="M345,150 q105,-34 210,0"/>
+      <text class="lbl rv" x="450" y="128" text-anchor="middle" font-size="26" fill="#C23A22">same gene, two ALLELES</text>
+      <text class="cap rv" x="450" y="470" text-anchor="middle" font-size="19" fill="#8E230F">R = red version · r = white version</text>
+    </svg></div>
+
+    <!-- 7. GENOTYPE -->
+    <div class="fig" id="fig-genotype"><svg viewBox="0 0 900 520">
+      <use href="#ideo" transform="translate(400 260) scale(1.6)"/>
+      <use href="#ideo" transform="translate(540 260) scale(1.6)"/>
+      <g transform="translate(400 206)"><rect x="-21" y="-15" width="42" height="30" rx="8" fill="#C23A22" stroke="#8E230F" stroke-width="2"/><text x="0" y="8" text-anchor="middle" font-size="24" fill="#fff" class="lbl">R</text></g>
+      <g transform="translate(540 206)"><rect x="-21" y="-15" width="42" height="30" rx="8" fill="#FFFDF7" stroke="#C23A22" stroke-width="3"/><text x="0" y="8" text-anchor="middle" font-size="24" fill="#C23A22" class="lbl">r</text></g>
+      <text class="lbl" x="470" y="430" text-anchor="middle" font-size="46" fill="#1B1813">Rr</text>
+      <text class="cap" x="470" y="462" text-anchor="middle" font-size="18">the two alleles you have = your genotype</text>
+      <text class="lbl rv" x="760" y="225" text-anchor="middle" font-size="30" fill="#C23A22">RR</text>
+      <text class="lbl rv" x="760" y="280" text-anchor="middle" font-size="30" fill="#C23A22">Rr</text>
+      <text class="lbl rv" x="760" y="335" text-anchor="middle" font-size="30" fill="#C23A22">rr</text>
+      <text class="cap rv" x="760" y="180" text-anchor="middle" font-size="17">three possible<tspan x="760" dy="22">genotypes</tspan></text>
+    </svg></div>
+
+    <!-- 8. HOMO / HETERO (activity) -->
+    <div class="fig" id="fig-homhet"><svg viewBox="0 0 900 520">
+      <!-- RR -->
+      <g transform="translate(190 0)">
+        <use href="#ideo" transform="translate(-32 260) scale(1.25)"/><use href="#ideo" transform="translate(32 260) scale(1.25)"/>
+        <g transform="translate(-32 218)"><rect x="-17" y="-13" width="34" height="26" rx="7" fill="#C23A22"/><text x="0" y="7" text-anchor="middle" font-size="20" fill="#fff" class="lbl">R</text></g>
+        <g transform="translate(32 218)"><rect x="-17" y="-13" width="34" height="26" rx="7" fill="#C23A22"/><text x="0" y="7" text-anchor="middle" font-size="20" fill="#fff" class="lbl">R</text></g>
+        <text class="lbl" x="0" y="430" text-anchor="middle" font-size="34">RR</text>
+      </g>
+      <!-- Rr -->
+      <g transform="translate(450 0)">
+        <use href="#ideo" transform="translate(-32 260) scale(1.25)"/><use href="#ideo" transform="translate(32 260) scale(1.25)"/>
+        <g transform="translate(-32 218)"><rect x="-17" y="-13" width="34" height="26" rx="7" fill="#C23A22"/><text x="0" y="7" text-anchor="middle" font-size="20" fill="#fff" class="lbl">R</text></g>
+        <g transform="translate(32 218)"><rect x="-17" y="-13" width="34" height="26" rx="7" fill="#FFFDF7" stroke="#C23A22" stroke-width="3"/><text x="0" y="7" text-anchor="middle" font-size="20" fill="#C23A22" class="lbl">r</text></g>
+        <text class="lbl" x="0" y="430" text-anchor="middle" font-size="34">Rr</text>
+      </g>
+      <!-- rr -->
+      <g transform="translate(710 0)">
+        <use href="#ideo" transform="translate(-32 260) scale(1.25)"/><use href="#ideo" transform="translate(32 260) scale(1.25)"/>
+        <g transform="translate(-32 218)"><rect x="-17" y="-13" width="34" height="26" rx="7" fill="#FFFDF7" stroke="#C23A22" stroke-width="3"/><text x="0" y="7" text-anchor="middle" font-size="20" fill="#C23A22" class="lbl">r</text></g>
+        <g transform="translate(32 218)"><rect x="-17" y="-13" width="34" height="26" rx="7" fill="#FFFDF7" stroke="#C23A22" stroke-width="3"/><text x="0" y="7" text-anchor="middle" font-size="20" fill="#C23A22" class="lbl">r</text></g>
+        <text class="lbl" x="0" y="430" text-anchor="middle" font-size="34">rr</text>
+      </g>
+      <text class="cap rv" x="190" y="465" text-anchor="middle" font-size="19" fill="#0F756A">homozygous</text>
+      <text class="cap rv" x="450" y="465" text-anchor="middle" font-size="19" fill="#C23A22">heterozygous</text>
+      <text class="cap rv" x="710" y="465" text-anchor="middle" font-size="19" fill="#0F756A">homozygous</text>
+    </svg></div>
+
+    <!-- 9. PHENOTYPE -->
+    <div class="fig" id="fig-phenotype"><svg viewBox="0 0 900 520">
+      <use href="#flowerR" transform="translate(300 200) scale(1.9)"/>
+      <use href="#flowerW" transform="translate(600 200) scale(1.9)"/>
+      <text class="lbl rv" x="450" y="60" text-anchor="middle" font-size="30" fill="#C23A22">PHENOTYPE</text>
+      <text class="cap rv" x="450" y="90" text-anchor="middle" font-size="19">= the characteristic you can actually see</text>
+    </svg></div>
+
+    <!-- 10. EXPRESSION -->
+    <div class="fig" id="fig-express"><svg viewBox="0 0 900 520">
+      <g transform="translate(140 0)">
+        <text class="lbl" x="0" y="120" text-anchor="middle" font-size="40">RR</text>
+        <path d="M0,140 L0,200" stroke="#7A7263" stroke-width="3" marker-end="url(#ar)"/>
+        <use href="#flowerR" transform="translate(0 300) scale(1.5)"/>
+      </g>
+      <g transform="translate(450 0)">
+        <text class="lbl" x="0" y="120" text-anchor="middle" font-size="40">Rr</text>
+        <path d="M0,140 L0,200" stroke="#7A7263" stroke-width="3" marker-end="url(#ar)"/>
+        <use href="#flowerR" transform="translate(0 300) scale(1.5)"/>
+      </g>
+      <g transform="translate(760 0)">
+        <text class="lbl" x="0" y="120" text-anchor="middle" font-size="40">rr</text>
+        <path d="M0,140 L0,200" stroke="#7A7263" stroke-width="3" marker-end="url(#ar)"/>
+        <use href="#flowerW" transform="translate(0 300) scale(1.5)"/>
+      </g>
+      <defs><marker id="ar" markerWidth="10" markerHeight="10" refX="6" refY="5" orient="auto"><path d="M0,0 L8,5 L0,10 z" fill="#7A7263"/></marker></defs>
+      <text class="cap rv" x="140" y="470" text-anchor="middle" font-size="18" fill="#C23A22">red (R shows)</text>
+      <text class="cap rv" x="450" y="470" text-anchor="middle" font-size="18" fill="#C23A22">red (one R is enough)</text>
+      <text class="cap rv" x="760" y="470" text-anchor="middle" font-size="18" fill="#8E230F">white (only rr)</text>
+    </svg></div>
+
+    <!-- 11. THE TRAPS -->
+    <div class="fig" id="fig-traps"><svg viewBox="0 0 900 520">
+      <use href="#ideo" transform="translate(300 250) scale(1.5)"/>
+      <use href="#ideo" transform="translate(420 250) scale(1.5)"/>
+      <g transform="translate(300 198)"><rect x="-20" y="-15" width="40" height="30" rx="8" fill="#C23A22"/><text x="0" y="8" text-anchor="middle" font-size="22" fill="#fff" class="lbl">R</text></g>
+      <g transform="translate(420 198)"><rect x="-20" y="-15" width="40" height="30" rx="8" fill="#FFFDF7" stroke="#C23A22" stroke-width="3"/><text x="0" y="8" text-anchor="middle" font-size="22" fill="#C23A22" class="lbl">r</text></g>
+      <use href="#flowerR" transform="translate(620 230) scale(1.5)"/>
+      <g class="rv">
+        <text class="lbl" x="360" y="430" text-anchor="middle" font-size="26" fill="#C23A22">Rr = heterozygous</text>
+        <text class="cap" x="360" y="458" text-anchor="middle" font-size="17">NOT &#8220;recessive&#8221; (Q9)</text>
+        <text class="lbl" x="620" y="430" text-anchor="middle" font-size="26" fill="#C23A22">red = phenotype</text>
+        <text class="cap" x="620" y="458" text-anchor="middle" font-size="17">NOT &#8220;heterozygous&#8221; (Q11)</text>
+      </g>
+    </svg></div>
+
+    <!-- 12. WHY STUDY THE GENOME -->
+    <div class="fig" id="fig-genomeuse"><svg viewBox="0 0 900 520">
+      <rect x="120" y="120" width="44" height="280" rx="22" fill="url(#ideoGrad)" stroke="#0A453D" stroke-width="1.5"/>
+      <rect x="126" y="150" width="32" height="22" rx="6" fill="#2E6FB0"/>
+      <rect x="126" y="186" width="32" height="22" rx="6" fill="#E0A23A"/>
+      <rect x="126" y="222" width="32" height="22" rx="6" fill="#C23A22"/>
+      <rect x="126" y="300" width="32" height="22" rx="6" fill="#0F756A"/>
+      <rect x="126" y="336" width="32" height="22" rx="6" fill="#2E6FB0"/>
+      <rect x="118" y="219" width="48" height="28" rx="8" fill="none" stroke="#C23A22" stroke-width="4"/>
+      <path d="M170,232 L300,232" stroke="#C23A22" stroke-width="2.5" stroke-dasharray="5 5"/>
+      <text class="cap" x="142" y="430" text-anchor="middle" font-size="17">a faulty gene</text>
+      <g class="rv">
+        <rect x="300" y="120" width="470" height="56" rx="12" fill="#FFFDF7" stroke="#0F756A" stroke-width="2"/>
+        <text class="cap" x="324" y="155" font-size="20" fill="#0F756A">Find genes linked to diseases</text>
+        <rect x="300" y="196" width="470" height="56" rx="12" fill="#FFFDF7" stroke="#0F756A" stroke-width="2"/>
+        <text class="cap" x="324" y="231" font-size="20" fill="#0F756A">Treat inherited disorders</text>
+        <rect x="300" y="272" width="470" height="56" rx="12" fill="#FFFDF7" stroke="#0F756A" stroke-width="2"/>
+        <text class="cap" x="324" y="307" font-size="20" fill="#0F756A">Trace human migration</text>
+        <rect x="300" y="348" width="470" height="56" rx="12" fill="#F3DBD2" stroke="#C23A22" stroke-width="2" stroke-dasharray="6 5"/>
+        <text class="cap" x="324" y="383" font-size="20" fill="#C23A22">Make a clone &#8212; NOT a reason</text>
+      </g>
+    </svg></div>
+
+    <!-- 13. THE FULL NESTED STRUCTURE -->
+    <div class="fig" id="fig-final"><svg viewBox="0 0 900 520">
+      <!-- nested containment: genome > chromosome > gene > DNA -->
+      <g class="rv" style="transition-delay:0s">
+        <circle cx="185" cy="250" r="150" fill="url(#nucGrad)" stroke="#D2A98F" stroke-width="3"/>
+        <g transform="translate(185 250) scale(.78)">
+          <use href="#chromo" transform="translate(-70 -40) rotate(18) scale(.6)"/>
+          <use href="#chromo" transform="translate(60 50) rotate(-26) scale(.6)"/>
+          <use href="#chromo" transform="translate(-20 90) rotate(10) scale(.6)"/>
+          <use href="#chromo" transform="translate(80 -60) rotate(-12) scale(.6)"/>
+          <use href="#chromo" transform="translate(-95 60) rotate(40) scale(.6)"/>
+        </g>
+        <text class="lbl" x="185" y="430" text-anchor="middle" font-size="22" fill="#9A6B4E">GENOME</text>
+      </g>
+      <g class="rv" style="transition-delay:.35s">
+        <path class="magnify" d="M300,200 L420,150 L420,350 L300,300 Z"/>
+        <use href="#chromo" transform="translate(470 250) scale(1.5)"/>
+        <text class="lbl" x="470" y="400" text-anchor="middle" font-size="20" fill="#0F756A">CHROMOSOME</text>
+      </g>
+      <g class="rv" style="transition-delay:.7s">
+        <path class="magnify" d="M512,215 L600,150 L600,350 L512,285 Z"/>
+        <rect x="600" y="150" width="36" height="200" rx="18" fill="url(#ideoGrad)" stroke="#0A453D" stroke-width="1.4"/>
+        <rect x="604" y="225" width="28" height="22" rx="6" fill="#D89A2C" stroke="#B98322" stroke-width="2"/>
+        <text class="lbl" x="618" y="400" text-anchor="middle" font-size="20" fill="#D89A2C">GENE</text>
+      </g>
+      <g class="rv" style="transition-delay:1.05s">
+        <path class="magnify" d="M634,232 L720,170 L720,330 L634,242 Z"/>
+        <use href="#helixG" transform="translate(790 250) scale(.5)"/>
+        <text class="lbl" x="790" y="400" text-anchor="middle" font-size="20" fill="#C23A22">DNA</text>
+      </g>
+      <!-- variation branch off the GENE -->
+      <g class="rv" style="transition-delay:1.5s">
+        <path d="M618,355 C618,430 360,420 360,448" fill="none" stroke="#C23A22" stroke-width="3" stroke-dasharray="6 5"/>
+        <text class="cap" x="638" y="385" font-size="15" fill="#C23A22" transform="rotate(20 638 385)">a gene comes in versions...</text>
+        <g transform="translate(150 470)"><rect x="-46" y="-22" width="92" height="40" rx="9" fill="#F6E3DA" stroke="#C23A22" stroke-width="2"/><text x="0" y="6" text-anchor="middle" font-size="17" class="lbl" fill="#C23A22">ALLELES</text></g>
+        <path d="M196,470 L264,470" stroke="#C23A22" stroke-width="2.5" marker-end="url(#ar2)"/>
+        <g transform="translate(330 470)"><rect x="-48" y="-22" width="96" height="40" rx="9" fill="#F6E3DA" stroke="#C23A22" stroke-width="2"/><text x="0" y="6" text-anchor="middle" font-size="16" class="lbl" fill="#C23A22">GENOTYPE</text></g>
+        <path d="M380,470 L448,470" stroke="#C23A22" stroke-width="2.5" marker-end="url(#ar2)"/>
+        <g transform="translate(520 470)"><rect x="-50" y="-22" width="100" height="40" rx="9" fill="#F6E3DA" stroke="#C23A22" stroke-width="2"/><text x="0" y="6" text-anchor="middle" font-size="16" class="lbl" fill="#C23A22">PHENOTYPE</text></g>
+        <use href="#flowerR" transform="translate(640 470) scale(.5)"/>
+      </g>
+      <defs><marker id="ar2" markerWidth="10" markerHeight="10" refX="6" refY="5" orient="auto"><path d="M0,0 L8,5 L0,10 z" fill="#C23A22"/></marker></defs>
+      <text class="lbl" x="450" y="40" text-anchor="middle" font-size="22" fill="#1B1813">the whole picture &#8212; hinged on the gene</text>
+    </svg></div>
+
+  </div>
+
+  <div class="panel" id="panel">
+    <div class="ptitle" id="ptitle"></div>
+    <div class="predict" id="predict"></div>
+    <div class="activity" id="activity"></div>
+    <div class="reveal" id="reveal"></div>
+  </div>
+</div>
+
+<footer>
+  <div class="hint"><kbd>Space</kbd>/<kbd>&rarr;</kbd> reveal &amp; advance &nbsp;·&nbsp; <kbd>&larr;</kbd> back &nbsp;·&nbsp; <span id="posn"></span></div>
+  <div class="nav"><button class="btn ghost" id="backBtn">&larr; Back</button><button class="btn go" id="nextBtn">Reveal &rarr;</button></div>
+</footer>
+<div class="progress" id="bar"></div>
+
+<script>
+const STEPS=[
+ {part:0,fig:"fig-dna",title:"Start with the molecule",
+  predict:"What is the molecule that stores all the genetic instructions?",
+  reveal:"<b>DNA.</b> It stores the code as a long sequence of paired bases. Everything today is built from it."},
+ {part:0,fig:"fig-gene",title:"What a gene is",
+  predict:"A gene is a <span class='blank'>?</span> of DNA.",
+  reveal:"A gene is a <b>section of DNA</b> that codes for one characteristic — e.g. flower colour."},
+ {part:0,fig:"fig-chromosome",title:"Zoom out — the chromosome",
+  predict:"Which is bigger: a gene, or a chromosome?",
+  reveal:"A <b>chromosome</b> — coiled DNA carrying <b>many genes</b>. A gene is one small part of it."},
+ {part:0,fig:"fig-genome",title:"Zoom out fully — the genome",
+  predict:"What do we call <b>all</b> of an organism's genetic material together?",
+  reveal:"The <b>genome</b> — every chromosome, all the DNA. <span class='q'>(Q15.)</span>"},
+ {part:0,fig:"fig-scale",title:"Lock in the size order",
+  predict:"Click each card, then reveal: order them smallest &rarr; largest.",
+  reveal:"<b>Gene &rarr; chromosome &rarr; genome.</b> A gene sits in a chromosome; chromosomes make the genome.",
+  activity:{options:["1st","2nd","3rd"],items:[{label:"CHROMOSOME",correct:"2nd"},{label:"GENOME",correct:"3rd"},{label:"GENE",correct:"1st"}]}},
+
+ {part:1,fig:"fig-allele",title:"The gene comes in versions",
+  predict:"Different versions of the same gene are called <span class='blank'>?</span>",
+  reveal:"<b>Alleles.</b> Here R (red) and r (white) sit at the same place on a matching pair of chromosomes."},
+ {part:1,fig:"fig-genotype",title:"The pair you inherit",
+  predict:"You inherit <b>two</b> alleles — one per parent. What's the pair called?",
+  reveal:"Your <b>genotype</b> — RR, Rr or rr."},
+ {part:1,fig:"fig-homhet",title:"Homozygous or heterozygous?",
+  predict:"Click each: same two alleles = homozygous, different = heterozygous.",
+  reveal:"<b>RR &amp; rr = homozygous; Rr = heterozygous.</b> Nothing to do with dominance. <span class='q'>(Q7: rr is HOMOzygous.)</span>",
+  activity:{options:["homozygous","heterozygous"],items:[{label:"RR",correct:"homozygous"},{label:"Rr",correct:"heterozygous"},{label:"rr",correct:"homozygous"}]}},
+ {part:1,fig:"fig-phenotype",title:"What you actually see",
+  predict:"The characteristic that shows — red or white flower — is your <span class='blank'>?</span>",
+  reveal:"Your <b>phenotype.</b> <span class='q'>(Q11 — the expressed characteristic, not 'heterozygous'.)</span>"},
+ {part:1,fig:"fig-express",title:"Which phenotype shows?",
+  predict:"R is dominant, r is recessive. Colour of RR? Rr? rr?",
+  reveal:"<b>RR &rarr; red · Rr &rarr; red</b> (one R masks the r) <b>· rr &rarr; white.</b> The recessive trait shows only when both alleles are recessive."},
+ {part:1,fig:"fig-traps",title:"The traps — named",
+  predict:"Why is it wrong to call an <b>Rr</b> plant 'recessive'?",
+  reveal:"<b>Rr is heterozygous</b> — 'recessive' describes an allele, not the pair <span class='q'>(Q9)</span>. The colour you see is the <b>phenotype</b> <span class='q'>(Q11)</span>, and <b>rr</b> is homozygous <span class='q'>(Q7)</span>."},
+
+ {part:2,fig:"fig-genomeuse",title:"Why map the genome?",
+  predict:"Now you know what a genome <b>is</b> — give one reason scientists study it.",
+  reveal:"<b>Find disease genes · treat inherited disorders · trace human migration.</b>"},
+ {part:2,fig:"fig-genomeuse",title:"Reason, or not a reason?",
+  predict:"Click each card REASON / NOT, then reveal.",
+  reveal:"First three are real reasons. <b>Making a clone is NOT</b> a reason to study the genome. <span class='q'>(Q12 — finding disease genes definitely counts.)</span>",
+  activity:{options:["reason","not"],items:[{label:"Find a disease gene",correct:"reason"},{label:"Trace migration",correct:"reason"},{label:"Target a medicine",correct:"reason"},{label:"Clone an animal",correct:"not"}]}},
+
+ {part:3,fig:"fig-final",title:"The whole picture",
+  predict:"Where does the <b>gene</b> sit in all of this? Take answers — then reveal the full map.",
+  reveal:"The <b>gene is the hinge.</b> Zoom OUT: DNA &rarr; gene &rarr; chromosome &rarr; genome. Zoom IN at the gene: alleles &rarr; genotype &rarr; phenotype. One connected structure."}
+];
+const PARTS=["1 · Structure","2 · Variation","3 · Purpose","4 · The map"];
+
+let idx=0,phase=0;const $=id=>document.getElementById(id);const guesses={};
+
+PARTS.forEach((p,i)=>{const b=document.createElement('button');b.className='tab';b.textContent=p;
+  b.onclick=()=>{const f=STEPS.findIndex(s=>s.part===i);if(f>=0){idx=f;phase=0;render();}};$('tabs').appendChild(b);});
+
+function renderActivity(s){const w=$('activity');w.innerHTML='';if(!s.activity)return;
+  const g=guesses[idx]||(guesses[idx]={});
+  s.activity.items.forEach((it,i)=>{const c=document.createElement('div');c.className='acard';
+    const opts=s.activity.options;const lab=document.createElement('span');lab.className='lab';lab.textContent=it.label;
+    const gs=document.createElement('span');gs.className='guess';c.appendChild(lab);c.appendChild(gs);
+    function paint(){c.classList.remove('correct','wrong');
+      if(phase===1){gs.textContent='✓ '+it.correct;
+        if(g[i]&&g[i]!==it.correct){c.classList.add('wrong');gs.textContent='✗ '+g[i]+' → '+it.correct;}else c.classList.add('correct');}
+      else gs.textContent=g[i]?g[i]:'— tap to guess';}
+    c.onclick=()=>{if(phase===1)return;const oi=opts.indexOf(g[i]);g[i]=opts[(oi+1)%opts.length];paint();};
+    paint();w.appendChild(c);});}
+
+function render(){const s=STEPS[idx];const vary=s.part===1;
+  $('ptitle').textContent=s.title;$('ptitle').className='ptitle'+(vary?' vary':'');
+  $('predict').innerHTML=s.predict;
+  $('reveal').innerHTML=s.reveal;$('reveal').className='reveal'+(vary?' vary':'')+(phase===1?' show':'');
+  renderActivity(s);
+  document.querySelectorAll('.fig').forEach(f=>f.classList.remove('active','revealed'));
+  const fig=$(s.fig);fig.classList.add('active');if(phase===1)fig.classList.add('revealed');
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',i===s.part));
+  $('nextBtn').textContent=phase===0?'Reveal →':(idx===STEPS.length-1?'Done':'Next →');
+  $('nextBtn').disabled=(phase===1&&idx===STEPS.length-1);
+  $('backBtn').disabled=(idx===0&&phase===0);
+  $('posn').textContent='Step '+(idx+1)+' / '+STEPS.length;
+  $('bar').style.width=(((idx+(phase===1?1:.5))/STEPS.length)*100)+'%';}
+
+function next(){if(phase===0){phase=1;render();return;}if(idx<STEPS.length-1){idx++;phase=0;render();}}
+function back(){if(phase===1){phase=0;render();return;}if(idx>0){idx--;phase=1;render();}}
+$('nextBtn').onclick=next;$('backBtn').onclick=back;
+$('beginBtn').onclick=()=>{$('cover').classList.add('hide');render();};
+document.addEventListener('keydown',e=>{
+  if(!$('cover').classList.contains('hide')){if(e.key==='Enter'||e.key===' '){$('cover').classList.add('hide');render();e.preventDefault();}return;}
+  if(e.key===' '||e.key==='ArrowRight'){e.preventDefault();next();}
+  else if(e.key==='ArrowLeft'){e.preventDefault();back();}
+  else if(e.key==='Home'){idx=0;phase=0;render();}});
+render();
+</script>
+</body>
+</html>

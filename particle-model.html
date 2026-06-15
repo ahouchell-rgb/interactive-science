@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Particle Model — Springboard Interactive</title>
+<style>
+  :root {
+    --navy: #1E2761;
+    --ink: #1A1A1A;
+    --muted: #5C6370;
+    --warm: #F8F4EC;
+    --soft-blue: #EDF2FA;
+    --accent: #B85042;
+    --success: #2C5F2D;
+    --grid: #CFD8E3;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: "Century Gothic", "URW Gothic", "Avant Garde", "Trebuchet MS", sans-serif;
+    color: var(--ink);
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--navy);
+    color: #fff;
+    padding: 18px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .header .label {
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.65);
+    margin-bottom: 2px;
+  }
+  .header h1 {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+  }
+  .header .corner {
+    text-align: right;
+    font-size: 11px;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.4;
+  }
+
+  /* MODE TABS */
+  .mode-tabs {
+    display: flex;
+    background: var(--soft-blue);
+    border-bottom: 2px solid var(--grid);
+    flex-shrink: 0;
+  }
+  .mode-tab {
+    flex: 1;
+    padding: 14px 20px;
+    background: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    transition: all 0.15s;
+  }
+  .mode-tab:hover {
+    color: var(--navy);
+    background: rgba(255,255,255,0.45);
+  }
+  .mode-tab.active {
+    color: var(--navy);
+    border-bottom-color: var(--navy);
+    background: #fff;
+  }
+
+  /* MAIN GRID */
+  .main {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    flex: 1;
+    min-height: 0;
+  }
+  .canvas-area {
+    padding: 18px;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 0;
+  }
+  .scenario-strap {
+    background: var(--warm);
+    border-left: 4px solid var(--navy);
+    padding: 10px 16px;
+    font-size: 13px;
+    color: var(--ink);
+    line-height: 1.5;
+  }
+  .scenario-strap b {
+    color: var(--navy);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-size: 11px;
+  }
+  .canvas-wrap {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  canvas {
+    background: var(--warm);
+    border: 1px solid var(--grid);
+    border-radius: 4px;
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    aspect-ratio: 900 / 540;
+  }
+
+  /* CONTROLS */
+  .controls {
+    background: var(--soft-blue);
+    border-left: 2px solid var(--grid);
+    padding: 16px 18px;
+    overflow-y: auto;
+  }
+  .controls .panel-label {
+    font-size: 10px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 3px;
+  }
+  .controls .panel-title {
+    font-size: 17px;
+    color: var(--navy);
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+  .control-group {
+    margin-bottom: 16px;
+  }
+  .control-group .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 6px;
+  }
+  .control-group label {
+    font-size: 13px;
+    color: var(--ink);
+    font-weight: 700;
+  }
+  .control-group .value {
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 14px;
+    font-variant-numeric: tabular-nums;
+  }
+  input[type="range"] {
+    width: 100%;
+    accent-color: var(--navy);
+    cursor: pointer;
+  }
+  .ticks {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 2px;
+    letter-spacing: 0.5px;
+  }
+  button.action {
+    width: 100%;
+    padding: 8px 12px;
+    background: var(--navy);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    transition: background 0.15s;
+    margin-bottom: 8px;
+  }
+  button.action:hover { background: #2A357A; }
+  button.action.secondary {
+    background: #fff;
+    color: var(--navy);
+    border: 1.5px solid var(--navy);
+  }
+  button.action.secondary:hover { background: var(--soft-blue); }
+  button.action:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .readouts {
+    background: #fff;
+    border: 1px solid var(--grid);
+    padding: 10px 12px;
+    border-radius: 4px;
+    margin-top: 10px;
+  }
+  .readouts h4 {
+    font-size: 9px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+  .readout {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--grid);
+    font-size: 12px;
+  }
+  .readout:last-child { border-bottom: none; }
+  .readout .lab { color: var(--muted); }
+  .readout .val {
+    color: var(--navy);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  .readout .val.success { color: var(--success); }
+  .readout .val.accent { color: var(--accent); }
+
+  .legend {
+    margin-top: 12px;
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.5;
+    padding: 8px 12px;
+    background: #fff;
+    border: 1px dashed var(--grid);
+    border-radius: 4px;
+  }
+  .legend b { color: var(--navy); }
+
+  /* FOOTER */
+  .footer {
+    padding: 6px 18px;
+    background: var(--warm);
+    color: var(--muted);
+    font-size: 9px;
+    text-align: right;
+    border-top: 1px solid var(--grid);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 560px) {
+    .main {
+      grid-template-columns: 1fr;
+      grid-template-rows: minmax(0, 1fr) auto;
+    }
+    .controls {
+      border-left: none;
+      border-top: 2px solid var(--grid);
+      max-height: 38vh;
+      padding: 12px 14px;
+    }
+    .controls .panel-title { font-size: 15px; margin-bottom: 10px; }
+    .control-group { margin-bottom: 10px; }
+    .canvas-area { padding: 10px 14px; }
+    .scenario-strap { font-size: 12px; padding: 8px 12px; line-height: 1.4; }
+  }
+
+  /* Embed mode: when ?embed=1 is in the URL, hide chrome so the
+     interactive can sit cleanly inside an iframe in a revision booklet. */
+  body.embed .header { display: none; }
+  body.embed .mode-tabs { display: none; }
+  body.embed .scenario-strap { display: none; }
+  body.embed .footer { display: none; }
+  body.embed .canvas-area { padding: 12px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="label">Springboard KS3 Science · Interactive</div>
+    <h1>The Particle Model</h1>
+  </div>
+  <div class="corner">
+    Front-of-class demo<br>
+    C1 · B1.6 · C3.1 · P4.1 · B4.2
+  </div>
+</div>
+
+<div class="mode-tabs">
+  <button class="mode-tab active" data-mode="states">States of matter</button>
+  <button class="mode-tab" data-mode="heating">Heating &amp; cooling</button>
+  <button class="mode-tab" data-mode="diffusion">Diffusion</button>
+  <button class="mode-tab" data-mode="pressure">Gas pressure</button>
+</div>
+
+<div class="main">
+  <div class="canvas-area">
+    <div class="scenario-strap" id="scenarioStrap">
+      <b>Scenario</b><br>
+      <span id="scenarioText">Compare how particles are arranged and how they move in solids, liquids and gases. Adjust the temperature to see how each state responds.</span>
+    </div>
+    <div class="canvas-wrap">
+      <canvas id="sim" width="900" height="540"></canvas>
+    </div>
+  </div>
+  <div class="controls" id="controls"></div>
+</div>
+
+<div class="footer">Springboard · Particle Model · v1</div>
+
+<script>
+"use strict";
+
+/* ================================================================
+   PALETTE & CANVAS SETUP
+   ================================================================ */
+const PALETTE = {
+  navy:     '#1E2761',
+  ink:      '#1A1A1A',
+  muted:    '#5C6370',
+  warm:     '#F8F4EC',
+  softBlue: '#EDF2FA',
+  accent:   '#B85042',
+  success:  '#2C5F2D',
+  grid:     '#CFD8E3',
+  red:      '#B85042',
+  blue:     '#1E2761',
+  particle: '#1E2761',
+};
+
+const canvas = document.getElementById('sim');
+const ctx = canvas.getContext('2d');
+
+// Fixed internal resolution; CSS scales it to the canvas wrap
+const W = canvas.width;
+const H = canvas.height;
+
+/* ================================================================
+   STATE
+   ================================================================ */
+const S = {
+  mode: 'states',
+  temperature: 100,        // 0..200, used in all modes
+  volume: 1.0,             // 0.35..1.0, used in pressure mode
+  particleCount: 60,       // 20..120, used in pressure mode
+  // particle pools by mode
+  states: { solid: [], liquid: [], gas: [] },
+  heating: [],
+  diffusion: { red: [], blue: [], barrierRemoved: false },
+  pressure: { particles: [], collisionTimes: [], wallFlash: 0, rightWallX: W },
+};
+
+/* ================================================================
+   PARTICLE FACTORY
+   ================================================================ */
+function makeParticle(x, y, vx, vy, color = PALETTE.particle, r = 7) {
+  return { x, y, vx, vy, r, color, homeX: x, homeY: y, phase: Math.random() * Math.PI * 2 };
+}
+
+function randomVel(speed) {
+  const a = Math.random() * Math.PI * 2;
+  return { vx: Math.cos(a) * speed, vy: Math.sin(a) * speed };
+}
+
+function tempLabel(t) {
+  const v = +t;
+  if (v < 40)  return 'Very cold';
+  if (v < 90)  return 'Cold';
+  if (v < 130) return 'Warm';
+  if (v < 170) return 'Hot';
+  return 'Very hot';
+}
+
+function tempScale() {
+  // map temperature (0..200) to a kinetic scaling factor
+  // sqrt-like so it feels like KE → speed
+  return Math.sqrt(Math.max(S.temperature, 1) / 50);
+}
+
+/* ================================================================
+   COLLISIONS (particle–particle, elastic, equal masses)
+   ================================================================ */
+function collidePair(a, b) {
+  const dx = b.x - a.x;
+  const dy = b.y - a.y;
+  const d2 = dx*dx + dy*dy;
+  const minD = a.r + b.r;
+  if (d2 >= minD*minD || d2 < 0.0001) return;
+  const dist = Math.sqrt(d2);
+  const nx = dx / dist;
+  const ny = dy / dist;
+  // separate
+  const overlap = (minD - dist) * 0.5;
+  a.x -= nx * overlap; a.y -= ny * overlap;
+  b.x += nx * overlap; b.y += ny * overlap;
+  // exchange normal velocity
+  const dvx = b.vx - a.vx;
+  const dvy = b.vy - a.vy;
+  const vn = dvx * nx + dvy * ny;
+  if (vn < 0) {
+    a.vx += vn * nx; a.vy += vn * ny;
+    b.vx -= vn * nx; b.vy -= vn * ny;
+  }
+}
+
+function collideAll(arr) {
+  for (let i = 0; i < arr.length; i++)
+    for (let j = i + 1; j < arr.length; j++)
+      collidePair(arr[i], arr[j]);
+}
+
+/* ================================================================
+   PHYSICS PER STATE
+   ================================================================ */
+function stepSolid(p, x0, y0, x1, y1) {
+  // vibrate around home position; amplitude scales with T but kept
+  // small so touching particles don't visibly overlap.
+  const T = tempScale();
+  const amp = 0.5 * T;
+  p.phase += 0.25 * T;
+  p.x = p.homeX + Math.cos(p.phase) * amp + Math.sin(p.phase * 1.7) * amp * 0.4;
+  p.y = p.homeY + Math.sin(p.phase * 1.3) * amp + Math.cos(p.phase * 0.9) * amp * 0.3;
+}
+
+function stepLiquid(p, x0, y0, x1, y1) {
+  const T = tempScale();
+  // gravity
+  p.vy += 0.18;
+  // small thermal kick
+  p.vx += (Math.random() - 0.5) * 0.6 * T;
+  p.vy += (Math.random() - 0.5) * 0.6 * T;
+  // damping
+  p.vx *= 0.985;
+  p.vy *= 0.995;
+  // cap
+  const v = Math.hypot(p.vx, p.vy);
+  if (v > 5) { p.vx *= 5/v; p.vy *= 5/v; }
+  p.x += p.vx;
+  p.y += p.vy;
+  // walls (lossy floor for pooling)
+  if (p.x - p.r < x0) { p.x = x0 + p.r; p.vx = Math.abs(p.vx) * 0.7; }
+  if (p.x + p.r > x1) { p.x = x1 - p.r; p.vx = -Math.abs(p.vx) * 0.7; }
+  if (p.y - p.r < y0) { p.y = y0 + p.r; p.vy = Math.abs(p.vy); }
+  if (p.y + p.r > y1) { p.y = y1 - p.r; p.vy = -Math.abs(p.vy) * 0.4; }
+}
+
+function stepGas(p, x0, y0, x1, y1, onWallHit) {
+  const T = tempScale();
+  p.x += p.vx * T;
+  p.y += p.vy * T;
+  if (p.x - p.r < x0) { p.x = x0 + p.r; p.vx = Math.abs(p.vx); if (onWallHit) onWallHit('left'); }
+  if (p.x + p.r > x1) { p.x = x1 - p.r; p.vx = -Math.abs(p.vx); if (onWallHit) onWallHit('right'); }
+  if (p.y - p.r < y0) { p.y = y0 + p.r; p.vy = Math.abs(p.vy); if (onWallHit) onWallHit('top'); }
+  if (p.y + p.r > y1) { p.y = y1 - p.r; p.vy = -Math.abs(p.vy); if (onWallHit) onWallHit('bottom'); }
+}
+
+/* ================================================================
+   INIT each mode
+   ================================================================ */
+function initStates() {
+  // three side-by-side boxes
+  const boxW = (W - 80) / 3;
+  const boxH = H - 100;
+  const y0 = 60;
+  const y1 = y0 + boxH;
+
+  // SOLID — densely packed lattice (particles touching)
+  S.states.solid = [];
+  const sx0 = 20;
+  const sx1 = sx0 + boxW;
+  const sLatticeMargin = 14;
+  const sSpacing = 15;  // 2r + 1 — particles essentially touching
+  const sCols = Math.floor((boxW - sLatticeMargin * 2) / sSpacing) + 1;
+  const sRows = Math.floor((boxH - sLatticeMargin * 2) / sSpacing) + 1;
+  const sStartX = sx0 + (boxW - (sCols - 1) * sSpacing) / 2;
+  const sStartY = y0 + (boxH - (sRows - 1) * sSpacing) / 2;
+  for (let r = 0; r < sRows; r++) {
+    for (let c = 0; c < sCols; c++) {
+      const x = sStartX + c * sSpacing;
+      const y = sStartY + r * sSpacing;
+      S.states.solid.push(makeParticle(x, y, 0, 0));
+    }
+  }
+
+  // LIQUID — clustered in lower portion, tight
+  S.states.liquid = [];
+  const lx0 = sx1 + 20;
+  const lx1 = lx0 + boxW;
+  for (let i = 0; i < 42; i++) {
+    const x = lx0 + 20 + Math.random() * (boxW - 40);
+    const y = y1 - 20 - Math.random() * (boxH * 0.55);
+    const v = randomVel(0.8);
+    S.states.liquid.push(makeParticle(x, y, v.vx, v.vy));
+  }
+
+  // GAS — spread throughout
+  S.states.gas = [];
+  const gx0 = lx1 + 20;
+  const gx1 = gx0 + boxW;
+  for (let i = 0; i < 24; i++) {
+    const x = gx0 + 20 + Math.random() * (boxW - 40);
+    const y = y0 + 20 + Math.random() * (boxH - 40);
+    const v = randomVel(2.2);
+    S.states.gas.push(makeParticle(x, y, v.vx, v.vy));
+  }
+}
+
+function initHeating() {
+  // Densely packed lattice in the centre — particles touching when solid.
+  // Sample size kept moderate so liquid/gas modes stay smooth.
+  S.heating = [];
+  const cols = 18, rows = 12;
+  const spacing = 15;  // 2r + 1
+  const cx = W / 2, cy = H / 2 + 20;
+  const startX = cx - (cols - 1) * spacing / 2;
+  const startY = cy - (rows - 1) * spacing / 2;
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const x = startX + c * spacing;
+      const y = startY + r * spacing;
+      S.heating.push(makeParticle(x, y, 0, 0));
+    }
+  }
+}
+
+function initDiffusion() {
+  S.diffusion.red = [];
+  S.diffusion.blue = [];
+  S.diffusion.barrierRemoved = false;
+  const x0 = 40, x1 = W - 40;
+  const y0 = 60, y1 = H - 60;
+  const mid = (x0 + x1) / 2;
+  for (let i = 0; i < 35; i++) {
+    const v1 = randomVel(2);
+    S.diffusion.red.push(
+      makeParticle(
+        x0 + 20 + Math.random() * (mid - x0 - 40),
+        y0 + 20 + Math.random() * (y1 - y0 - 40),
+        v1.vx, v1.vy, PALETTE.red, 6
+      )
+    );
+    const v2 = randomVel(2);
+    S.diffusion.blue.push(
+      makeParticle(
+        mid + 20 + Math.random() * (x1 - mid - 40),
+        y0 + 20 + Math.random() * (y1 - y0 - 40),
+        v2.vx, v2.vy, PALETTE.blue, 6
+      )
+    );
+  }
+}
+
+function initPressure() {
+  S.pressure.particles = [];
+  S.pressure.collisionTimes = [];
+  S.pressure.wallFlash = 0;
+  S.pressure.rightWallX = W - 40;
+  const x0 = 40, y0 = 60, y1 = H - 60;
+  const x1 = S.pressure.rightWallX;
+  for (let i = 0; i < S.particleCount; i++) {
+    const v = randomVel(2);
+    S.pressure.particles.push(
+      makeParticle(
+        x0 + 20 + Math.random() * (x1 - x0 - 40),
+        y0 + 20 + Math.random() * (y1 - y0 - 40),
+        v.vx, v.vy
+      )
+    );
+  }
+}
+
+/* ================================================================
+   UPDATE PER MODE
+   ================================================================ */
+function updateStates() {
+  const boxW = (W - 80) / 3;
+  const boxH = H - 100;
+  const y0 = 60;
+  const y1 = y0 + boxH;
+  const sx0 = 20, sx1 = sx0 + boxW;
+  const lx0 = sx1 + 20, lx1 = lx0 + boxW;
+  const gx0 = lx1 + 20, gx1 = gx0 + boxW;
+
+  S.states.solid.forEach(p => stepSolid(p, sx0, y0, sx1, y1));
+  S.states.liquid.forEach(p => stepLiquid(p, lx0, y0, lx1, y1));
+  collideAll(S.states.liquid);
+  S.states.gas.forEach(p => stepGas(p, gx0, y0, gx1, y1));
+  collideAll(S.states.gas);
+}
+
+function updateHeating() {
+  const x0 = 60, x1 = W - 60, y0 = 80, y1 = H - 60;
+  const T = S.temperature;
+
+  // thresholds
+  const TmeltLo = 50, TmeltHi = 70;
+  const TboilLo = 130, TboilHi = 150;
+
+  for (const p of S.heating) {
+    if (T < TmeltLo) {
+      // solid
+      stepSolid(p, x0, y0, x1, y1);
+    } else if (T < TmeltHi) {
+      // melting transition — interpolate
+      const k = (T - TmeltLo) / (TmeltHi - TmeltLo);
+      // do solid step
+      stepSolid(p, x0, y0, x1, y1);
+      // gentle nudge into liquid behaviour
+      if (k > 0.5 && Math.abs(p.vx) + Math.abs(p.vy) < 0.5) {
+        const v = randomVel(0.6);
+        p.vx = v.vx; p.vy = v.vy;
+      }
+    } else if (T < TboilLo) {
+      // liquid
+      stepLiquid(p, x0, y0, x1, y1);
+    } else if (T < TboilHi) {
+      // boiling transition — bridging liquid and gas
+      stepLiquid(p, x0, y0, x1, y1);
+      // boost particles a little
+      p.vy -= 0.3;  // counter gravity
+    } else {
+      // gas
+      stepGas(p, x0, y0, x1, y1);
+    }
+  }
+
+  // when in liquid or gas: collide
+  if (T >= TmeltHi) collideAll(S.heating);
+}
+
+function updateDiffusion() {
+  const x0 = 40, x1 = W - 40, y0 = 60, y1 = H - 60;
+  const mid = (x0 + x1) / 2;
+
+  const all = [...S.diffusion.red, ...S.diffusion.blue];
+  for (const p of all) {
+    stepGas(p, x0, y0, x1, y1);
+    // barrier
+    if (!S.diffusion.barrierRemoved) {
+      // check if particle would cross mid
+      if (p.color === PALETTE.red && p.x + p.r > mid) {
+        p.x = mid - p.r;
+        p.vx = -Math.abs(p.vx);
+      } else if (p.color === PALETTE.blue && p.x - p.r < mid) {
+        p.x = mid + p.r;
+        p.vx = Math.abs(p.vx);
+      }
+    }
+  }
+  collideAll(all);
+}
+
+function updatePressure() {
+  const x0 = 40, y0 = 60, y1 = H - 60;
+  // right wall position from volume slider
+  const targetWall = x0 + (W - 80) * S.volume;
+  S.pressure.rightWallX += (targetWall - S.pressure.rightWallX) * 0.15;
+  const x1 = S.pressure.rightWallX;
+
+  // sync particle count
+  while (S.pressure.particles.length < S.particleCount) {
+    const v = randomVel(2);
+    S.pressure.particles.push(makeParticle(
+      x0 + 20 + Math.random() * (x1 - x0 - 40),
+      y0 + 20 + Math.random() * (y1 - y0 - 40),
+      v.vx, v.vy
+    ));
+  }
+  while (S.pressure.particles.length > S.particleCount) {
+    S.pressure.particles.pop();
+  }
+
+  const now = performance.now();
+  const onHit = () => {
+    S.pressure.collisionTimes.push(now);
+    S.pressure.wallFlash = 1;
+  };
+
+  for (const p of S.pressure.particles) {
+    // contain to current box (in case wall moved in)
+    if (p.x + p.r > x1) p.x = x1 - p.r;
+    stepGas(p, x0, y0, x1, y1, onHit);
+  }
+  collideAll(S.pressure.particles);
+
+  // decay flash
+  S.pressure.wallFlash *= 0.85;
+
+  // trim collisionTimes to last 1000ms
+  const cutoff = now - 1000;
+  while (S.pressure.collisionTimes.length && S.pressure.collisionTimes[0] < cutoff) {
+    S.pressure.collisionTimes.shift();
+  }
+}
+
+/* ================================================================
+   RENDER HELPERS
+   ================================================================ */
+function drawBox(x0, y0, x1, y1, label, sublabel) {
+  ctx.strokeStyle = PALETTE.navy;
+  ctx.lineWidth = 1.5;
+  ctx.strokeRect(x0, y0, x1 - x0, y1 - y0);
+
+  if (label) {
+    ctx.fillStyle = PALETTE.navy;
+    ctx.font = 'bold 16px "Century Gothic", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    ctx.fillText(label, (x0 + x1) / 2, y1 + 10);
+  }
+  if (sublabel) {
+    ctx.fillStyle = PALETTE.muted;
+    ctx.font = 'italic 11px "Century Gothic", sans-serif';
+    ctx.fillText(sublabel, (x0 + x1) / 2, y1 + 30);
+  }
+}
+
+function drawParticles(arr) {
+  for (const p of arr) {
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = p.color;
+    ctx.fill();
+    // subtle highlight for depth
+    ctx.beginPath();
+    ctx.arc(p.x - p.r * 0.35, p.y - p.r * 0.35, p.r * 0.35, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(255,255,255,0.3)';
+    ctx.fill();
+  }
+}
+
+/* ================================================================
+   RENDER PER MODE
+   ================================================================ */
+function renderStates() {
+  ctx.fillStyle = PALETTE.warm;
+  ctx.fillRect(0, 0, W, H);
+
+  const boxW = (W - 80) / 3;
+  const boxH = H - 100;
+  const y0 = 60;
+  const y1 = y0 + boxH;
+  const sx0 = 20, sx1 = sx0 + boxW;
+  const lx0 = sx1 + 20, lx1 = lx0 + boxW;
+  const gx0 = lx1 + 20, gx1 = gx0 + boxW;
+
+  // box backgrounds
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(sx0, y0, boxW, boxH);
+  ctx.fillRect(lx0, y0, boxW, boxH);
+  ctx.fillRect(gx0, y0, boxW, boxH);
+
+  drawParticles(S.states.solid);
+  drawParticles(S.states.liquid);
+  drawParticles(S.states.gas);
+
+  drawBox(sx0, y0, sx1, y1, 'SOLID', 'Fixed positions · vibrating');
+  drawBox(lx0, y0, lx1, y1, 'LIQUID', 'Free to move · stay close');
+  drawBox(gx0, y0, gx1, y1, 'GAS',    'Free to move · spread apart');
+
+  // header strip
+  ctx.fillStyle = PALETTE.muted;
+  ctx.font = 'bold 11px "Century Gothic", sans-serif';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'top';
+  ctx.fillText('SAME TEMPERATURE — DIFFERENT ARRANGEMENTS', sx0, 20);
+}
+
+function renderHeating() {
+  ctx.fillStyle = PALETTE.warm;
+  ctx.fillRect(0, 0, W, H);
+
+  const x0 = 60, x1 = W - 60, y0 = 80, y1 = H - 60;
+
+  // box
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(x0, y0, x1 - x0, y1 - y0);
+
+  drawParticles(S.heating);
+
+  ctx.strokeStyle = PALETTE.navy;
+  ctx.lineWidth = 1.5;
+  ctx.strokeRect(x0, y0, x1 - x0, y1 - y0);
+
+  // top strip — current state (left side, stacked)
+  let stateLabel, stateColor, stateSub;
+  const T = S.temperature;
+  if (T < 50) { stateLabel = 'SOLID'; stateColor = PALETTE.navy; stateSub = 'particles vibrating in place'; }
+  else if (T < 70) { stateLabel = 'MELTING'; stateColor = PALETTE.accent; stateSub = 'breaking out of fixed positions'; }
+  else if (T < 130) { stateLabel = 'LIQUID'; stateColor = PALETTE.navy; stateSub = 'free to move · staying close'; }
+  else if (T < 150) { stateLabel = 'BOILING'; stateColor = PALETTE.accent; stateSub = 'gaining enough energy to escape'; }
+  else { stateLabel = 'GAS'; stateColor = PALETTE.navy; stateSub = 'flying freely · filling the container'; }
+
+  ctx.textBaseline = 'top';
+
+  ctx.fillStyle = PALETTE.muted;
+  ctx.font = 'bold 10px "Century Gothic", sans-serif';
+  ctx.textAlign = 'left';
+  ctx.fillText('CURRENT STATE', x0, 14);
+
+  ctx.fillStyle = stateColor;
+  ctx.font = 'bold 26px "Century Gothic", sans-serif';
+  ctx.fillText(stateLabel, x0, 28);
+
+  ctx.fillStyle = PALETTE.muted;
+  ctx.font = 'italic 12px "Century Gothic", sans-serif';
+  ctx.fillText(stateSub, x0, 60);
+
+  // temperature gauge — right side, vertically clear of the state stack
+  drawTempGauge(x1 - 220, 22, 220, 18, T);
+}
+
+function drawTempGauge(x, y, w, h, T) {
+  // background
+  ctx.fillStyle = '#fff';
+  ctx.strokeStyle = PALETTE.grid;
+  ctx.lineWidth = 1;
+  ctx.fillRect(x, y, w, h);
+  ctx.strokeRect(x, y, w, h);
+
+  // gradient blue→red
+  const grad = ctx.createLinearGradient(x, 0, x + w, 0);
+  grad.addColorStop(0, '#88AACC');
+  grad.addColorStop(0.5, '#F4D58D');
+  grad.addColorStop(1, PALETTE.accent);
+
+  const fillW = (T / 200) * w;
+  ctx.fillStyle = grad;
+  ctx.fillRect(x, y, fillW, h);
+
+  // melt and boil markers
+  const meltX = x + (60 / 200) * w;
+  const boilX = x + (140 / 200) * w;
+  ctx.strokeStyle = PALETTE.navy;
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(meltX, y - 4); ctx.lineTo(meltX, y + h + 4);
+  ctx.moveTo(boilX, y - 4); ctx.lineTo(boilX, y + h + 4);
+  ctx.stroke();
+
+  ctx.fillStyle = PALETTE.muted;
+  ctx.font = 'bold 9px "Century Gothic", sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('MELT', meltX, y + h + 14);
+  ctx.fillText('BOIL', boilX, y + h + 14);
+}
+
+function renderDiffusion() {
+  ctx.fillStyle = PALETTE.warm;
+  ctx.fillRect(0, 0, W, H);
+
+  const x0 = 40, x1 = W - 40, y0 = 60, y1 = H - 60;
+  const mid = (x0 + x1) / 2;
+
+  // box
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(x0, y0, x1 - x0, y1 - y0);
+
+  // barrier
+  if (!S.diffusion.barrierRemoved) {
+    ctx.strokeStyle = PALETTE.navy;
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.moveTo(mid, y0);
+    ctx.lineTo(mid, y1);
+    ctx.stroke();
+
+    ctx.fillStyle = PALETTE.muted;
+    ctx.font = 'bold 11px "Century Gothic", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('← BARRIER →', mid, y0 - 10);
+  } else {
+    ctx.strokeStyle = PALETTE.grid;
+    ctx.setLineDash([4, 6]);
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(mid, y0);
+    ctx.lineTo(mid, y1);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  drawParticles(S.diffusion.red);
+  drawParticles(S.diffusion.blue);
+
+  // outer box
+  ctx.strokeStyle = PALETTE.navy;
+  ctx.lineWidth = 1.5;
+  ctx.strokeRect(x0, y0, x1 - x0, y1 - y0);
+
+  // labels
+  ctx.fillStyle = PALETTE.muted;
+  ctx.font = 'bold 11px "Century Gothic", sans-serif';
+  ctx.textAlign = 'left';
+  ctx.fillText('LEFT HALF', x0 + 10, y1 + 14);
+  ctx.textAlign = 'right';
+  ctx.fillText('RIGHT HALF', x1 - 10, y1 + 14);
+
+  // top header
+  ctx.fillStyle = PALETTE.muted;
+  ctx.font = 'bold 11px "Century Gothic", sans-serif';
+  ctx.textAlign = 'left';
+  ctx.fillText('GAS A', x0, 30);
+  ctx.fillStyle = PALETTE.red;
+  ctx.beginPath();
+  ctx.arc(x0 + 50, 28, 6, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.fillStyle = PALETTE.muted;
+  ctx.textAlign = 'right';
+  ctx.fillText('GAS B', x1, 30);
+  ctx.fillStyle = PALETTE.blue;
+  ctx.beginPath();
+  ctx.arc(x1 - 50, 28, 6, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+function renderPressure() {
+  ctx.fillStyle = PALETTE.warm;
+  ctx.fillRect(0, 0, W, H);
+
+  const x0 = 40, y0 = 60, y1 = H - 60;
+  const x1 = S.pressure.rightWallX;
+
+  // void area to the right of wall (compressed-out space)
+  ctx.fillStyle = PALETTE.softBlue;
+  ctx.fillRect(x1, y0, (W - 40) - x1, y1 - y0);
+
+  // box interior
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(x0, y0, x1 - x0, y1 - y0);
+
+  drawParticles(S.pressure.particles);
+
+  // walls
+  ctx.strokeStyle = PALETTE.navy;
+  ctx.lineWidth = 1.5;
+  ctx.strokeRect(x0, y0, x1 - x0, y1 - y0);
+
+  // moving right wall — emphasised
+  ctx.strokeStyle = PALETTE.navy;
+  ctx.lineWidth = 5;
+  ctx.beginPath();
+  ctx.moveTo(x1, y0);
+  ctx.lineTo(x1, y1);
+  ctx.stroke();
+
+  // wall flash on collision
+  if (S.pressure.wallFlash > 0.05) {
+    ctx.strokeStyle = `rgba(184, 80, 66, ${S.pressure.wallFlash})`;
+    ctx.lineWidth = 5;
+    ctx.beginPath();
+    ctx.moveTo(x1, y0);
+    ctx.lineTo(x1, y1);
+    ctx.stroke();
+  }
+
+  // piston handle
+  ctx.fillStyle = PALETTE.navy;
+  ctx.fillRect(x1 - 4, (y0 + y1) / 2 - 22, 22, 44);
+  ctx.fillStyle = '#fff';
+  ctx.font = 'bold 14px "Century Gothic", sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('||', x1 + 7, (y0 + y1) / 2);
+
+  // labels
+  ctx.fillStyle = PALETTE.muted;
+  ctx.font = 'bold 11px "Century Gothic", sans-serif';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'top';
+  ctx.fillText('SEALED CONTAINER · MOVABLE PISTON →', x0, 30);
+  ctx.fillStyle = PALETTE.accent;
+  ctx.fillText('FLASHES = WALL COLLISIONS', x0, 46);
+}
+
+/* ================================================================
+   MAIN LOOP
+   ================================================================ */
+function update() {
+  if (S.mode === 'states') updateStates();
+  else if (S.mode === 'heating') updateHeating();
+  else if (S.mode === 'diffusion') updateDiffusion();
+  else if (S.mode === 'pressure') updatePressure();
+}
+
+function render() {
+  // Map logical 900×540 coordinate system onto the actual canvas
+  // pixel buffer (which fitCanvas keeps at displayed-size × DPR).
+  const sx = canvas.width / W;
+  const sy = canvas.height / H;
+  ctx.setTransform(sx, 0, 0, sy, 0, 0);
+  if (S.mode === 'states') renderStates();
+  else if (S.mode === 'heating') renderHeating();
+  else if (S.mode === 'diffusion') renderDiffusion();
+  else if (S.mode === 'pressure') renderPressure();
+}
+
+let lastReadout = 0;
+function loop(t) {
+  update();
+  render();
+  if (t - lastReadout > 200) {
+    updateReadouts();
+    lastReadout = t;
+  }
+  requestAnimationFrame(loop);
+}
+
+/* ================================================================
+   CONTROLS / READOUTS
+   ================================================================ */
+const controlsEl = document.getElementById('controls');
+const scenarioText = document.getElementById('scenarioText');
+
+const SCENARIOS = {
+  states:    'Compare how particles are arranged and how they move in solids, liquids and gases at the same temperature. Use the temperature slider to see how each state responds.',
+  heating:   'Heat the substance from cold solid through to hot gas. Watch the particles change behaviour at the melting and boiling points. Slide back down to cool.',
+  diffusion: 'Two different gases sit on either side of a barrier. Remove the barrier and watch the particles mix. Increase temperature to speed the process up.',
+  pressure:  'Sealed gas in a container with a movable piston. Increasing temperature, decreasing volume, or adding more particles all increase the pressure. Watch the wall collisions and the pressure readout.',
+};
+
+function buildControls() {
+  scenarioText.textContent = SCENARIOS[S.mode];
+  controlsEl.innerHTML = '';
+
+  const labelEl = document.createElement('div');
+  labelEl.className = 'panel-label';
+  labelEl.textContent = 'Controls';
+  controlsEl.appendChild(labelEl);
+
+  const titleEl = document.createElement('div');
+  titleEl.className = 'panel-title';
+  titleEl.textContent = ({
+    states: 'States of matter',
+    heating: 'Heating & cooling',
+    diffusion: 'Diffusion',
+    pressure: 'Gas pressure',
+  })[S.mode];
+  controlsEl.appendChild(titleEl);
+
+  // Temperature slider — present in all modes
+  controlsEl.appendChild(makeSlider({
+    id: 'tempSlider',
+    label: 'Temperature',
+    min: 0, max: 200, step: 1,
+    value: S.temperature,
+    onInput: v => { S.temperature = +v; },
+    ticks: ['cold', 'warm', 'hot'],
+    format: v => tempLabel(v),
+  }));
+
+  if (S.mode === 'pressure') {
+    controlsEl.appendChild(makeSlider({
+      id: 'volSlider',
+      label: 'Volume',
+      min: 0.35, max: 1.0, step: 0.01,
+      value: S.volume,
+      onInput: v => { S.volume = +v; },
+      ticks: ['compressed', 'expanded'],
+      format: v => Math.round(v * 100) + '%',
+    }));
+    controlsEl.appendChild(makeSlider({
+      id: 'countSlider',
+      label: 'Number of particles',
+      min: 20, max: 120, step: 1,
+      value: S.particleCount,
+      onInput: v => { S.particleCount = +v; },
+      ticks: ['few', 'many'],
+      format: v => Math.round(v),
+    }));
+  }
+
+  // Mode-specific actions
+  if (S.mode === 'diffusion') {
+    const removeBtn = document.createElement('button');
+    removeBtn.className = 'action';
+    removeBtn.id = 'removeBarrierBtn';
+    removeBtn.textContent = S.diffusion.barrierRemoved ? 'Reset (replace barrier)' : 'Remove barrier';
+    removeBtn.onclick = () => {
+      if (S.diffusion.barrierRemoved) {
+        initDiffusion();
+        removeBtn.textContent = 'Remove barrier';
+      } else {
+        S.diffusion.barrierRemoved = true;
+        removeBtn.textContent = 'Reset (replace barrier)';
+      }
+    };
+    controlsEl.appendChild(removeBtn);
+  }
+
+  const resetBtn = document.createElement('button');
+  resetBtn.className = 'action secondary';
+  resetBtn.textContent = 'Reset simulation';
+  resetBtn.onclick = () => {
+    if (S.mode === 'states') initStates();
+    else if (S.mode === 'heating') initHeating();
+    else if (S.mode === 'diffusion') initDiffusion();
+    else if (S.mode === 'pressure') initPressure();
+    if (S.mode === 'diffusion') {
+      const b = document.getElementById('removeBarrierBtn');
+      if (b) b.textContent = 'Remove barrier';
+    }
+  };
+  controlsEl.appendChild(resetBtn);
+
+  // Readouts
+  const ro = document.createElement('div');
+  ro.className = 'readouts';
+  ro.id = 'readouts';
+  ro.innerHTML = '<h4>Live readings</h4>';
+  controlsEl.appendChild(ro);
+
+  // Legend per mode
+  const legend = document.createElement('div');
+  legend.className = 'legend';
+  legend.innerHTML = ({
+    states:    '<b>Notice:</b> all three boxes are at the same temperature — the difference is the <i>arrangement</i> and how <i>tightly bonded</i> the particles are. Increasing temperature will not change the state in this mode.',
+    heating:   '<b>Watch the markers:</b> below the <i>melt</i> line the substance is solid, between melt and boil it is liquid, above the <i>boil</i> line it is a gas.',
+    diffusion: '<b>Diffusion is the random mixing</b> of particles caused by their constant motion. It happens in <i>both directions</i> — gas A spreads right, gas B spreads left.',
+    pressure:  '<b>Pressure</b> is caused by particles colliding with the walls. More collisions per second = more pressure. Try changing one variable at a time and watching the pressure readout.',
+  })[S.mode];
+  controlsEl.appendChild(legend);
+}
+
+function makeSlider({ id, label, min, max, step, value, onInput, ticks, suffix, format }) {
+  const wrap = document.createElement('div');
+  wrap.className = 'control-group';
+  const fmt = format || (v => v + (suffix || ''));
+
+  wrap.innerHTML = `
+    <div class="row">
+      <label for="${id}">${label}</label>
+      <span class="value" id="${id}-val">${fmt(value)}</span>
+    </div>
+    <input type="range" id="${id}" min="${min}" max="${max}" step="${step}" value="${value}">
+    ${ticks ? `<div class="ticks">${ticks.map(t => `<span>${t}</span>`).join('')}</div>` : ''}
+  `;
+
+  const input = wrap.querySelector('input');
+  const valEl = wrap.querySelector('.value');
+  input.addEventListener('input', e => {
+    onInput(e.target.value);
+    valEl.textContent = fmt(+e.target.value);
+  });
+  return wrap;
+}
+
+function updateReadouts() {
+  const ro = document.getElementById('readouts');
+  if (!ro) return;
+  let html = '<h4>Live readings</h4>';
+
+  html += `<div class="readout"><span class="lab">Temperature</span><span class="val">${tempLabel(S.temperature)}</span></div>`;
+
+  if (S.mode === 'heating') {
+    let stateLabel, cls = 'val';
+    const T = S.temperature;
+    if (T < 50) stateLabel = 'Solid';
+    else if (T < 70) { stateLabel = 'Melting'; cls = 'val accent'; }
+    else if (T < 130) stateLabel = 'Liquid';
+    else if (T < 150) { stateLabel = 'Boiling'; cls = 'val accent'; }
+    else stateLabel = 'Gas';
+    html += `<div class="readout"><span class="lab">Current state</span><span class="${cls}">${stateLabel}</span></div>`;
+  }
+
+  if (S.mode === 'diffusion') {
+    const x0 = 40, x1 = W - 40;
+    const mid = (x0 + x1) / 2;
+    const redLeft = S.diffusion.red.filter(p => p.x < mid).length;
+    const redTotal = S.diffusion.red.length;
+    const blueLeft = S.diffusion.blue.filter(p => p.x < mid).length;
+    const blueTotal = S.diffusion.blue.length;
+    const redLeftPct = Math.round((redLeft / redTotal) * 100);
+    const blueLeftPct = Math.round((blueLeft / blueTotal) * 100);
+
+    html += `<div class="readout"><span class="lab">Gas A in left half</span><span class="val accent">${redLeftPct}%</span></div>`;
+    html += `<div class="readout"><span class="lab">Gas B in left half</span><span class="val">${blueLeftPct}%</span></div>`;
+    html += `<div class="readout"><span class="lab">Barrier</span><span class="${S.diffusion.barrierRemoved ? 'val success' : 'val'}">${S.diffusion.barrierRemoved ? 'Removed' : 'In place'}</span></div>`;
+  }
+
+  if (S.mode === 'pressure') {
+    const collisions = S.pressure.collisionTimes.length;
+    // normalise against a "baseline" — at the default settings it should read about 100
+    const baseline = 60;
+    const pressure = Math.round((collisions / baseline) * 100);
+    html += `<div class="readout"><span class="lab">Volume</span><span class="val">${Math.round(S.volume * 100)}%</span></div>`;
+    html += `<div class="readout"><span class="lab">Particles</span><span class="val">${S.particleCount}</span></div>`;
+    html += `<div class="readout"><span class="lab">Collisions / sec</span><span class="val">${collisions}</span></div>`;
+    html += `<div class="readout"><span class="lab">Pressure</span><span class="val accent">${pressure}</span></div>`;
+  }
+
+  ro.innerHTML = html;
+}
+
+/* ================================================================
+   MODE SWITCHING
+   ================================================================ */
+function setMode(m) {
+  S.mode = m;
+  // re-init the mode's particles for a clean start
+  if (m === 'states') initStates();
+  else if (m === 'heating') initHeating();
+  else if (m === 'diffusion') initDiffusion();
+  else if (m === 'pressure') initPressure();
+
+  document.querySelectorAll('.mode-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.mode === m);
+  });
+  buildControls();
+}
+
+document.querySelectorAll('.mode-tab').forEach(tab => {
+  tab.addEventListener('click', () => setMode(tab.dataset.mode));
+});
+
+/* ================================================================
+   HIGH-DPI / RESIZE
+   ================================================================ */
+function fitCanvas() {
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  if (rect.width < 1 || rect.height < 1) return;
+  const pxW = Math.max(W, Math.round(rect.width * dpr));
+  const pxH = Math.max(H, Math.round(rect.height * dpr));
+  if (canvas.width !== pxW)  canvas.width = pxW;
+  if (canvas.height !== pxH) canvas.height = pxH;
+}
+window.addEventListener('resize', fitCanvas);
+
+/* ================================================================
+   URL PARAM HANDLING
+   - ?mode=states|heating|diffusion|pressure  → start on that tab
+   - #states|#heating|#diffusion|#pressure    → same, via hash
+   - ?embed=1                                  → hide header + tab bar
+   Both work; hash takes priority over query string if both are set.
+   ================================================================ */
+function getHashParams() {
+  // Allow params via hash too (e.g. for data: URLs which can't carry query strings).
+  // Supports both "#heating" (bare mode) and "#mode=heating&embed=1".
+  const raw = (window.location.hash || '').replace(/^#/, '');
+  if (!raw) return {};
+  if (raw.indexOf('=') === -1) return { mode: raw.toLowerCase() };
+  const out = {};
+  raw.split('&').forEach(seg => {
+    const [k, v] = seg.split('=');
+    if (k) out[k.toLowerCase()] = (v || '').toLowerCase();
+  });
+  return out;
+}
+
+function getInitialMode() {
+  const valid = ['states', 'heating', 'diffusion', 'pressure'];
+  const hashParams = getHashParams();
+  if (hashParams.mode && valid.includes(hashParams.mode)) return hashParams.mode;
+  const params = new URLSearchParams(window.location.search);
+  const m = (params.get('mode') || '').toLowerCase();
+  if (valid.includes(m)) return m;
+  return 'states';
+}
+
+function isEmbedMode() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('embed') === '1' || params.get('embed') === 'true') return true;
+  const hashParams = getHashParams();
+  return hashParams.embed === '1' || hashParams.embed === 'true';
+}
+
+if (isEmbedMode()) {
+  document.body.classList.add('embed');
+}
+
+/* ================================================================
+   BOOT
+   ================================================================ */
+fitCanvas();
+initStates();
+initHeating();
+initDiffusion();
+initPressure();
+const startMode = getInitialMode();
+if (startMode !== 'states') {
+  setMode(startMode);
+} else {
+  buildControls();
+}
+
+// Keep tab in sync if hash changes (back/forward)
+window.addEventListener('hashchange', () => {
+  const m = getInitialMode();
+  if (m !== S.mode) setMode(m);
+});
+
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>

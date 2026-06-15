@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gas Exchange in the Alveoli — Interactive</title>
+<style>
+  :root{
+    --cream:#f4ede1;
+    --cream-2:#fbf6ec;
+    --card:#ffffff;
+    --ink:#1d2a44;
+    --ink-soft:#52607d;
+    --line:#e3d8c6;
+    --line-strong:#d3c4ab;
+    --accent:#c05f44;        /* terracotta */
+    --accent-dark:#a44c34;
+    --o2:#2f7dd1;            /* oxygen blue */
+    --blood:#bb3a46;        /* capillary / RBC */
+    --good:#3f7d56;
+    --good-bg:#e7f1e9;
+    --bad:#b1402f;
+    --bad-bg:#f6e4df;
+    --shadow:0 1px 2px rgba(29,42,68,.06), 0 4px 16px rgba(29,42,68,.06);
+    --radius:14px;
+    --font:"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:var(--font);
+    background:var(--cream);
+    color:var(--ink);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 20px 64px;}
+
+  /* ---------- Header + tabs ---------- */
+  header.site{margin-bottom:18px;}
+  h1{font-size:clamp(1.4rem,2.6vw,1.95rem);font-weight:600;margin:0 0 4px;letter-spacing:-.01em;}
+  .sub{color:var(--ink-soft);font-size:.98rem;margin:0;}
+  .tabs{display:flex;gap:6px;margin-top:18px;border-bottom:2px solid var(--line);}
+  .tab{
+    appearance:none;border:none;background:none;cursor:pointer;
+    font-family:inherit;font-size:1rem;font-weight:500;color:var(--ink-soft);
+    padding:11px 18px;border-radius:10px 10px 0 0;position:relative;top:2px;
+    transition:color .15s ease, background .15s ease;
+  }
+  .tab:hover{color:var(--ink);background:var(--cream-2);}
+  .tab[aria-selected="true"]{color:var(--accent);border-bottom:3px solid var(--accent);font-weight:600;}
+  .view{display:none;animation:fade .25s ease;}
+  .view.active{display:block;}
+  @keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+
+  /* ---------- Goal banner ---------- */
+  .goal{
+    display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+    background:linear-gradient(180deg,var(--cream-2),#fff);
+    border:1px solid var(--line);border-left:5px solid var(--accent);
+    border-radius:var(--radius);padding:14px 18px;margin:20px 0;box-shadow:var(--shadow);
+  }
+  .goal .icon{font-size:1.5rem;line-height:1;}
+  .goal b{color:var(--accent-dark);}
+  .goal p{margin:0;font-size:.97rem;}
+
+  /* ---------- Sim layout ---------- */
+  .sim-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:20px;}
+  @media(max-width:860px){.sim-grid{grid-template-columns:1fr;}}
+
+  .stage-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);overflow:hidden;}
+  .stage-head{display:flex;justify-content:space-between;align-items:baseline;
+    padding:12px 16px;border-bottom:1px solid var(--line);}
+  .stage-head h2{margin:0;font-size:.85rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);}
+  .legend{display:flex;gap:14px;font-size:.78rem;color:var(--ink-soft);}
+  .legend span{display:inline-flex;align-items:center;gap:5px;}
+  .dot{width:10px;height:10px;border-radius:50%;display:inline-block;}
+  canvas{display:block;width:100%;height:auto;background:#fff;}
+
+  /* rate meter under canvas */
+  .meter{padding:14px 16px 16px;border-top:1px solid var(--line);}
+  .meter-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px;}
+  .meter-top .label{font-size:.85rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft);}
+  .meter-top .val{font-size:1.5rem;font-weight:600;font-variant-numeric:tabular-nums;}
+  .bar{height:14px;border-radius:8px;background:#eee5d6;overflow:hidden;position:relative;}
+  .bar-fill{height:100%;width:0;border-radius:8px;background:linear-gradient(90deg,#d8a24a,#c05f44 60%,#3f7d56);
+    transition:width .4s cubic-bezier(.4,0,.2,1);}
+  .meter-note{font-size:.82rem;color:var(--ink-soft);margin-top:8px;min-height:1.2em;}
+  .meter-note.dry{color:var(--bad);font-weight:500;}
+
+  /* ---------- Controls ---------- */
+  .controls{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:6px 18px 16px;}
+  .ctrl{padding:15px 0;border-bottom:1px solid var(--line);}
+  .ctrl:last-child{border-bottom:none;}
+  .ctrl-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px;}
+  .ctrl-name{font-weight:600;font-size:.98rem;display:flex;align-items:center;gap:8px;}
+  .ctrl-name .chip{font-size:.62rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;
+    background:var(--cream);color:var(--ink-soft);border:1px solid var(--line-strong);
+    padding:2px 7px;border-radius:20px;}
+  .ctrl-state{font-size:.82rem;font-weight:600;font-variant-numeric:tabular-nums;}
+  .ctrl-state.low{color:var(--bad);}
+  .ctrl-state.mid{color:#b07b29;}
+  .ctrl-state.high{color:var(--good);}
+  input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:6px;
+    background:linear-gradient(90deg,var(--line-strong),var(--line));outline:none;cursor:pointer;margin:2px 0;}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:22px;height:22px;border-radius:50%;
+    background:var(--accent);border:3px solid #fff;box-shadow:0 1px 4px rgba(29,42,68,.3);cursor:pointer;transition:transform .1s;}
+  input[type=range]::-webkit-slider-thumb:active{transform:scale(1.12);}
+  input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--accent);
+    border:3px solid #fff;box-shadow:0 1px 4px rgba(29,42,68,.3);cursor:pointer;}
+  .ctrl-hint{font-size:.8rem;color:var(--ink-soft);margin-top:7px;min-height:1.1em;}
+
+  /* moisture toggle */
+  .toggle-row{display:flex;align-items:center;gap:12px;}
+  .switch{position:relative;width:58px;height:30px;flex:none;}
+  .switch input{opacity:0;width:0;height:0;}
+  .slider-tg{position:absolute;inset:0;background:var(--bad);border-radius:30px;transition:.25s;cursor:pointer;}
+  .slider-tg:before{content:"";position:absolute;height:24px;width:24px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.25s;box-shadow:0 1px 3px rgba(0,0,0,.25);}
+  .switch input:checked + .slider-tg{background:var(--good);}
+  .switch input:checked + .slider-tg:before{transform:translateX(28px);}
+  .toggle-label{font-weight:600;font-size:.9rem;}
+
+  .btn-row{display:flex;gap:10px;margin-top:16px;}
+  .btn{appearance:none;font-family:inherit;font-size:.92rem;font-weight:600;cursor:pointer;
+    border-radius:10px;padding:10px 16px;border:1px solid var(--line-strong);background:var(--cream-2);color:var(--ink);
+    transition:.15s;}
+  .btn:hover{background:#fff;border-color:var(--ink-soft);}
+  .btn.primary{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .btn.primary:hover{background:var(--accent-dark);}
+
+  /* ---------- Discovery cards ---------- */
+  .discovery{margin-top:24px;}
+  .discovery h2{font-size:1.05rem;font-weight:600;margin:0 0 4px;}
+  .discovery .lead{color:var(--ink-soft);font-size:.92rem;margin:0 0 14px;}
+  .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+  @media(max-width:680px){.cards{grid-template-columns:1fr;}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;
+    box-shadow:var(--shadow);position:relative;transition:opacity .3s,transform .3s;}
+  .card.locked{opacity:.5;}
+  .card.locked .card-body{filter:blur(2.5px);user-select:none;}
+  .card-tag{display:inline-flex;align-items:center;gap:7px;font-size:.7rem;font-weight:700;letter-spacing:.05em;
+    text-transform:uppercase;color:var(--accent);margin-bottom:7px;}
+  .card-tag .num{background:var(--accent);color:#fff;width:20px;height:20px;border-radius:50%;
+    display:inline-flex;align-items:center;justify-content:center;font-size:.72rem;}
+  .card h3{margin:0 0 7px;font-size:1.05rem;font-weight:600;}
+  .card-body{font-size:.9rem;color:var(--ink);}
+  .card-body .fact{display:block;margin-top:9px;font-size:.82rem;color:var(--ink-soft);
+    border-left:3px solid var(--line-strong);padding-left:10px;}
+  .lock-badge{position:absolute;top:14px;right:16px;font-size:.72rem;color:var(--ink-soft);
+    background:var(--cream);border:1px solid var(--line);padding:2px 9px;border-radius:20px;}
+  .card.done .lock-badge{background:var(--good-bg);color:var(--good);border-color:#bcd9c4;}
+
+  /* Fick reveal */
+  .fick{margin-top:20px;background:linear-gradient(180deg,#1d2a44,#26375a);color:#f4ede1;
+    border-radius:var(--radius);padding:22px 24px;box-shadow:var(--shadow);
+    display:none;animation:fade .4s ease;}
+  .fick.show{display:block;}
+  .fick .tag{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#e0a86a;}
+  .fick h3{margin:6px 0 12px;font-size:1.2rem;font-weight:600;}
+  .equation{background:rgba(255,255,255,.08);border-radius:10px;padding:16px 18px;text-align:center;
+    font-size:1.05rem;margin:12px 0;}
+  .equation .frac{display:inline-flex;flex-direction:column;text-align:center;vertical-align:middle;margin:0 4px;}
+  .equation .frac .top{border-bottom:2px solid #e0a86a;padding:0 8px 3px;}
+  .equation .frac .bot{padding:4px 8px 0;}
+  .equation em{color:#e0a86a;font-style:normal;font-weight:600;}
+  .fick p{font-size:.9rem;margin:10px 0 0;color:#d8d0c2;}
+  .fick .moist-note{margin-top:12px;font-size:.85rem;background:rgba(224,168,106,.14);
+    border-radius:8px;padding:10px 14px;border-left:3px solid #e0a86a;}
+
+  /* ---------- Quiz ---------- */
+  .quiz-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin:20px 0 6px;}
+  .quiz-head h2{margin:0;font-size:1.2rem;font-weight:600;}
+  .score-pill{background:var(--card);border:1px solid var(--line);border-radius:30px;padding:7px 16px;
+    font-weight:600;font-size:.95rem;box-shadow:var(--shadow);font-variant-numeric:tabular-nums;}
+  .progress{height:6px;border-radius:6px;background:#eee5d6;overflow:hidden;margin:8px 0 22px;}
+  .progress-fill{height:100%;background:var(--accent);width:0;transition:width .3s;}
+  .q{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px;
+    margin-bottom:16px;box-shadow:var(--shadow);}
+  .q .qnum{font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);}
+  .q .qtext{font-size:1.05rem;font-weight:500;margin:6px 0 14px;}
+  .q .ht{font-size:.68rem;font-weight:700;background:var(--ink);color:#fff;padding:2px 7px;border-radius:5px;margin-left:8px;letter-spacing:.04em;vertical-align:middle;}
+  .opt{display:block;width:100%;text-align:left;font-family:inherit;font-size:.95rem;cursor:pointer;
+    background:var(--cream-2);border:1.5px solid var(--line);border-radius:10px;padding:12px 15px;margin-bottom:9px;
+    transition:.13s;color:var(--ink);position:relative;}
+  .opt:hover:not(:disabled){border-color:var(--accent);background:#fff;}
+  .opt:disabled{cursor:default;}
+  .opt.correct{background:var(--good-bg);border-color:var(--good);font-weight:500;}
+  .opt.wrong{background:var(--bad-bg);border-color:var(--bad);}
+  .opt .mark{float:right;font-weight:700;}
+  .opt.correct .mark{color:var(--good);}
+  .opt.wrong .mark{color:var(--bad);}
+  .fb{font-size:.88rem;margin-top:10px;padding:11px 14px;border-radius:9px;display:none;line-height:1.45;}
+  .fb.show{display:block;animation:fade .2s ease;}
+  .fb.right{background:var(--good-bg);color:#27543a;border-left:3px solid var(--good);}
+  .fb.wrongfb{background:var(--bad-bg);color:#7d2a1d;border-left:3px solid var(--bad);}
+  .quiz-end{background:linear-gradient(180deg,var(--cream-2),#fff);border:1px solid var(--line);
+    border-radius:var(--radius);padding:26px;text-align:center;box-shadow:var(--shadow);display:none;}
+  .quiz-end.show{display:block;animation:fade .3s ease;}
+  .quiz-end .big{font-size:2.4rem;font-weight:600;color:var(--accent);}
+  .quiz-end p{color:var(--ink-soft);margin:6px 0 16px;}
+
+  .embed-hide{}
+  body.embed .embed-hide{display:none;}
+  body.embed .wrap{padding-top:14px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="site embed-hide">
+    <h1>Gas Exchange in the Alveoli</h1>
+    <p class="sub">Adjust the alveolus, watch oxygen diffuse into the blood, and work out what makes it fast.</p>
+    <div class="tabs" role="tablist">
+      <button class="tab" id="tab-sim" role="tab" aria-selected="true" aria-controls="view-sim">🫁 Simulation</button>
+      <button class="tab" id="tab-quiz" role="tab" aria-selected="false" aria-controls="view-quiz">✓ Check Understanding</button>
+    </div>
+  </header>
+
+  <!-- ============ SIM VIEW ============ -->
+  <section class="view active" id="view-sim" role="tabpanel" aria-labelledby="tab-sim">
+
+    <div class="goal">
+      <span class="icon">🎯</span>
+      <p><b>Your task:</b> right now this alveolus is <b>terrible</b> at gas exchange. Change the four controls to <b>maximise the rate of oxygen diffusion</b> into the blood. As you fix each one, you'll unlock <em>why</em> it works.</p>
+    </div>
+
+    <div class="sim-grid">
+      <!-- Stage -->
+      <div class="stage-card">
+        <div class="stage-head">
+          <h2>Cross-section of an alveolus</h2>
+          <div class="legend">
+            <span><span class="dot" style="background:var(--o2)"></span>oxygen</span>
+            <span><span class="dot" style="background:var(--blood)"></span>red blood cell</span>
+          </div>
+        </div>
+        <canvas id="scene" width="800" height="500"></canvas>
+        <div class="meter">
+          <div class="meter-top">
+            <span class="label">Relative diffusion rate</span>
+            <span class="val" id="rateVal">0%</span>
+          </div>
+          <div class="bar"><div class="bar-fill" id="rateBar"></div></div>
+          <div class="meter-note" id="rateNote">Surface is dry — nothing can cross yet.</div>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="controls">
+        <div class="ctrl">
+          <div class="ctrl-top">
+            <span class="ctrl-name">Surface area <span class="chip">area</span></span>
+            <span class="ctrl-state low" id="saState">very small</span>
+          </div>
+          <input type="range" id="sa" min="1" max="10" step="1" value="1">
+          <div class="ctrl-hint" id="saHint"></div>
+        </div>
+
+        <div class="ctrl">
+          <div class="ctrl-top">
+            <span class="ctrl-name">Wall thickness <span class="chip">distance</span></span>
+            <span class="ctrl-state low" id="thState">very thick</span>
+          </div>
+          <input type="range" id="th" min="1" max="10" step="1" value="10">
+          <div class="ctrl-hint" id="thHint"></div>
+        </div>
+
+        <div class="ctrl">
+          <div class="ctrl-top">
+            <span class="ctrl-name">Blood flow <span class="chip">gradient</span></span>
+            <span class="ctrl-state low" id="bfState">very slow</span>
+          </div>
+          <input type="range" id="bf" min="1" max="10" step="1" value="1">
+          <div class="ctrl-hint" id="bfHint"></div>
+        </div>
+
+        <div class="ctrl">
+          <div class="ctrl-top">
+            <span class="ctrl-name">Moist lining <span class="chip">on / off</span></span>
+          </div>
+          <div class="toggle-row">
+            <label class="switch">
+              <input type="checkbox" id="moist">
+              <span class="slider-tg"></span>
+            </label>
+            <span class="toggle-label" id="moistLabel">Dry surface</span>
+          </div>
+          <div class="ctrl-hint" id="moistHint"></div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn primary" id="maxBtn">Auto-maximise ▸</button>
+          <button class="btn" id="resetBtn">Reset to bad</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Discovery -->
+    <div class="discovery">
+      <h2>What you've discovered</h2>
+      <p class="lead">Each adaptation unlocks once you've improved that control. Real alveoli have <em>all four</em>.</p>
+      <div class="cards">
+        <div class="card locked" id="card-sa">
+          <span class="lock-badge">🔒 locked</span>
+          <span class="card-tag"><span class="num">1</span> Large surface area</span>
+          <h3>More room to diffuse</h3>
+          <div class="card-body">
+            A bigger surface area means <b>more oxygen molecules can cross at the same time</b>, so the overall rate of diffusion is higher.
+            <span class="fact">Your lungs have ~300–500 million alveoli, giving a total surface area of about <b>70 m²</b> — roughly half a tennis court.</span>
+          </div>
+        </div>
+
+        <div class="card locked" id="card-th">
+          <span class="lock-badge">🔒 locked</span>
+          <span class="card-tag"><span class="num">2</span> Thin walls</span>
+          <h3>A short diffusion distance</h3>
+          <div class="card-body">
+            Thinner walls mean oxygen travels a <b>shorter distance</b> to reach the blood, so it crosses faster.
+            <span class="fact">The alveolar wall and the capillary wall are each just <b>one cell thick</b> — the whole barrier is around 1 µm.</span>
+          </div>
+        </div>
+
+        <div class="card locked" id="card-bf">
+          <span class="lock-badge">🔒 locked</span>
+          <span class="card-tag"><span class="num">3</span> Good blood supply</span>
+          <h3>Keeps the gradient steep</h3>
+          <div class="card-body">
+            Flowing blood <b>carries oxygenated blood away and brings deoxygenated blood in</b>. This keeps oxygen low in the blood, so the <b>concentration gradient</b> between air and blood stays steep — and diffusion stays fast.
+            <span class="fact">Breathing in and out (ventilation) does the same job on the air side, keeping alveolar oxygen high.</span>
+          </div>
+        </div>
+
+        <div class="card locked" id="card-moist">
+          <span class="lock-badge">🔒 locked</span>
+          <span class="card-tag"><span class="num">4</span> Moist lining</span>
+          <h3>Lets gases dissolve</h3>
+          <div class="card-body">
+            Oxygen must <b>dissolve into a thin film of moisture</b> before it can diffuse across the membrane. A dry surface means almost no exchange.
+            <span class="fact">This is a <b>requirement</b> for diffusion, not a dial you turn up — that's why it's a switch, not a slider.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fick reveal -->
+      <div class="fick" id="fick">
+        <span class="tag">Higher tier — putting it together</span>
+        <h3>Fick's Law</h3>
+        <p>The rate of diffusion depends on three things — and three of your four controls map straight onto them:</p>
+        <div class="equation">
+          rate of diffusion ∝
+          <span class="frac">
+            <span class="top"><em>surface area</em> &times; <em>concentration difference</em></span>
+            <span class="bot">diffusion <em>distance</em></span>
+          </span>
+        </div>
+        <p><b>Surface area</b> (slider 1) and <b>concentration difference</b> — kept steep by <b>blood flow</b> (slider 3) — are on top, so increasing them increases the rate. <b>Diffusion distance</b> — the <b>wall thickness</b> (slider 2) — is on the bottom, so making it smaller increases the rate.</p>
+        <div class="moist-note"><b>Where's moisture?</b> It isn't in Fick's law at all. It's an <em>enabling condition</em> — gases have to dissolve before any of this can happen.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ QUIZ VIEW ============ -->
+  <section class="view" id="view-quiz" role="tabpanel" aria-labelledby="tab-quiz">
+    <div class="quiz-head">
+      <h2>Check your understanding</h2>
+      <span class="score-pill" id="scorePill">Score: 0 / 6</span>
+    </div>
+    <div class="progress"><div class="progress-fill" id="quizProgress"></div></div>
+    <div id="quizContainer"></div>
+    <div class="quiz-end" id="quizEnd">
+      <div class="big" id="endScore">0 / 6</div>
+      <p id="endMsg"></p>
+      <button class="btn primary" id="retryBtn">Try again</button>
+    </div>
+  </section>
+
+</div>
+
+<script>
+/* ============================================================
+   GAS EXCHANGE INTERACTIVE
+   Self-contained. URL params: ?embed=1  ?view=sim|quiz
+   Rate model (honest, Fick-based):
+     rate = moist ? (SA * bloodFlow / thickness) : 0   (0..100)
+   ============================================================ */
+(function(){
+  "use strict";
+
+  /* ---------- State ---------- */
+  var state = { sa:1, th:10, bf:1, moist:false };
+  var discovered = { sa:false, th:false, bf:false, moist:false };
+
+  /* ---------- DOM ---------- */
+  var $ = function(id){ return document.getElementById(id); };
+  var saEl=$("sa"), thEl=$("th"), bfEl=$("bf"), moistEl=$("moist");
+  var rateVal=$("rateVal"), rateBar=$("rateBar"), rateNote=$("rateNote");
+
+  /* ---------- Rate maths ---------- */
+  function computeRate(){
+    if(!state.moist) return 0;
+    // SA(1-10) * BF(1-10) / TH(1-10); max = 100 when SA=10,BF=10,TH=1
+    var r = (state.sa * state.bf) / state.th;
+    return Math.max(0, Math.min(100, r));
+  }
+
+  /* descriptive words for slider state */
+  function tier(v){ return v<=3 ? "low" : (v<=7 ? "mid" : "high"); }
+  function saWord(v){ return v<=2?"very small":v<=4?"small":v<=6?"medium":v<=8?"large":"huge"; }
+  function thWord(v){ return v<=2?"one cell thick":v<=4?"thin":v<=6?"medium":v<=8?"thick":"very thick"; }
+  function bfWord(v){ return v<=2?"very slow":v<=4?"slow":v<=6?"steady":v<=8?"fast":"rapid"; }
+
+  /* ---------- Discovery / cards ---------- */
+  function unlock(key){
+    if(discovered[key]) return;
+    discovered[key]=true;
+    var card=$("card-"+key);
+    card.classList.remove("locked");
+    card.classList.add("done");
+    card.querySelector(".lock-badge").innerHTML="✓ found";
+    maybeRevealFick();
+  }
+  function maybeRevealFick(){
+    if(discovered.sa && discovered.th && discovered.bf && discovered.moist){
+      $("fick").classList.add("show");
+    }
+  }
+
+  /* ---------- Limiting-factor hint ---------- */
+  function limitingHint(){
+    if(!state.moist){
+      return {dry:true, msg:"No oxygen is crossing — the surface is dry, so O₂ can't dissolve. Turn on the moist lining."};
+    }
+    // find the factor furthest from optimal
+    var gaps = [
+      {k:"th", gap:(state.th-1)/9, msg:"Your walls are still thick — oxygen has a long way to travel. Try making them thinner."},
+      {k:"sa", gap:(10-state.sa)/9, msg:"Surface area is limited — there isn't much room for diffusion. Try increasing it."},
+      {k:"bf", gap:(10-state.bf)/9, msg:"Blood flow is sluggish — oxygen builds up in the blood and the gradient shallows. Try speeding it up."}
+    ];
+    gaps.sort(function(a,b){ return b.gap-a.gap; });
+    var worst=gaps[0];
+    if(worst.gap < 0.06){
+      return {dry:false, msg:"Maxed out — every adaptation is working together. This is what a real alveolus achieves."};
+    }
+    return {dry:false, msg:worst.msg};
+  }
+
+  /* ---------- Render UI from state ---------- */
+  function render(){
+    // slider state words + colour
+    $("saState").textContent=saWord(state.sa);
+    $("saState").className="ctrl-state "+tier(state.sa);
+    $("thState").textContent=thWord(state.th);
+    $("thState").className="ctrl-state "+tier(11-state.th); // thin = high/good
+    $("bfState").textContent=bfWord(state.bf);
+    $("bfState").className="ctrl-state "+tier(state.bf);
+    $("moistLabel").textContent=state.moist?"Moist surface":"Dry surface";
+
+    // rate
+    var r=computeRate();
+    rateVal.textContent=Math.round(r)+"%";
+    rateBar.style.width=r+"%";
+
+    var hint=limitingHint();
+    rateNote.textContent=hint.msg;
+    rateNote.className="meter-note"+(hint.dry?" dry":"");
+  }
+
+  /* ---------- Per-control feedback + unlock ---------- */
+  function handleChange(key){
+    if(key==="sa"){ state.sa=+saEl.value; if(state.sa>1) unlock("sa");
+      $("saHint").textContent = state.sa>=8 ? "Huge surface — lots of diffusion happening in parallel." :
+                                state.sa>1 ? "More surface area → more molecules cross at once." : ""; }
+    if(key==="th"){ state.th=+thEl.value; if(state.th<10) unlock("th");
+      $("thHint").textContent = state.th<=2 ? "One cell thick — the shortest possible path." :
+                                state.th<10 ? "Thinner wall → shorter distance → faster diffusion." : ""; }
+    if(key==="bf"){ state.bf=+bfEl.value; if(state.bf>1) unlock("bf");
+      $("bfHint").textContent = state.bf>=8 ? "Rapid flow keeps the gradient steep." :
+                                state.bf>1 ? "Faster flow sweeps O₂ away, keeping the gradient steep." : ""; }
+    if(key==="moist"){ state.moist=moistEl.checked; if(state.moist) unlock("moist");
+      $("moistHint").textContent = state.moist ? "O₂ now dissolves and can cross the membrane." :
+                                                 "Dry: O₂ can't dissolve, so diffusion stalls."; }
+    render();
+  }
+
+  saEl.addEventListener("input", function(){ handleChange("sa"); });
+  thEl.addEventListener("input", function(){ handleChange("th"); });
+  bfEl.addEventListener("input", function(){ handleChange("bf"); });
+  moistEl.addEventListener("change", function(){ handleChange("moist"); });
+
+  $("resetBtn").addEventListener("click", function(){
+    state={sa:1,th:10,bf:1,moist:false};
+    saEl.value=1; thEl.value=10; bfEl.value=1; moistEl.checked=false;
+    $("saHint").textContent=""; $("thHint").textContent=""; $("bfHint").textContent=""; $("moistHint").textContent="";
+    render();
+  });
+  $("maxBtn").addEventListener("click", function(){
+    state={sa:10,th:1,bf:10,moist:true};
+    saEl.value=10; thEl.value=1; bfEl.value=10; moistEl.checked=true;
+    unlock("sa"); unlock("th"); unlock("bf"); unlock("moist");
+    render();
+  });
+
+  /* ============================================================
+     CANVAS ANIMATION
+     ============================================================ */
+  var cv=$("scene"), ctx=cv.getContext("2d");
+  var W=800, H=500;
+  var AIR_TOP=0, MEM_TOP=185;          // air space above membrane
+  var air=[], rbcs=[], crossers=[];
+  var spawnAcc=0;
+
+  // colours
+  var C_AIR="#eef4f8", C_MEM="#f3e9d6", C_MEM_EDGE="#d8c19a",
+      C_CAP="#f7e6e6", C_O2="#2f7dd1", C_FILM="rgba(90,160,210,.35)";
+
+  function memBottom(){ return MEM_TOP + (10 + (state.th-1)/9 * 95); } // 10..105 px thick
+
+  /* init air O2 reservoir */
+  function initAir(){
+    air=[];
+    for(var i=0;i<34;i++){
+      air.push({ x:Math.random()*W, y:10+Math.random()*(MEM_TOP-20),
+                 vx:(Math.random()-.5)*.5, vy:(Math.random()-.5)*.5, r:4+Math.random()*1.5 });
+    }
+  }
+  /* init red blood cells */
+  function initRBC(){
+    rbcs=[];
+    for(var i=0;i<7;i++){
+      rbcs.push({ x:(i/7)*W + Math.random()*40, oxy:0 });
+    }
+  }
+  initAir(); initRBC();
+
+  function drawO2(x,y,r){
+    ctx.beginPath(); ctx.arc(x,y,r,0,7); ctx.fillStyle=C_O2; ctx.fill();
+    ctx.lineWidth=1; ctx.strokeStyle="rgba(255,255,255,.7)"; ctx.stroke();
+  }
+
+  function frame(){
+    ctx.clearRect(0,0,W,H);
+    var mb=memBottom();
+    var rate=computeRate();
+
+    /* ---- regions ---- */
+    // air
+    ctx.fillStyle=C_AIR; ctx.fillRect(0,0,W,MEM_TOP);
+    // membrane
+    ctx.fillStyle=C_MEM; ctx.fillRect(0,MEM_TOP,W,mb-MEM_TOP);
+    ctx.strokeStyle=C_MEM_EDGE; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(0,MEM_TOP); ctx.lineTo(W,MEM_TOP); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(0,mb); ctx.lineTo(W,mb); ctx.stroke();
+    // capillary
+    ctx.fillStyle=C_CAP; ctx.fillRect(0,mb,W,H-mb);
+
+    /* ---- labels ---- */
+    ctx.fillStyle="rgba(29,42,68,.55)"; ctx.font="600 13px "+getFont();
+    ctx.fillText("Alveolus (air space)", 14, 22);
+    ctx.fillText("Wall", 14, MEM_TOP+18);
+    ctx.fillText("Capillary (blood)", 14, mb+20);
+
+    /* ---- moisture film ---- */
+    if(state.moist){
+      ctx.fillStyle=C_FILM; ctx.fillRect(0,MEM_TOP-4,W,4);
+    } else {
+      ctx.fillStyle="rgba(177,64,47,.85)"; ctx.font="600 13px "+getFont();
+      ctx.fillText("⚠ dry surface — O₂ cannot dissolve", W/2-120, MEM_TOP-10);
+    }
+
+    /* ---- gateways: number scales with surface area ---- */
+    var nGate = Math.round(1 + (state.sa-1)/9 * 8); // 1..9
+    var gateXs=[];
+    for(var g=0; g<nGate; g++){
+      gateXs.push( (g+0.5)/nGate * W );
+    }
+    // draw faint gateway markers on membrane
+    ctx.fillStyle="rgba(192,95,68,.18)";
+    for(var gi=0; gi<gateXs.length; gi++){
+      ctx.fillRect(gateXs[gi]-9, MEM_TOP, 18, mb-MEM_TOP);
+    }
+
+    /* ---- air molecules wander ---- */
+    for(var i=0;i<air.length;i++){
+      var a=air[i];
+      a.x+=a.vx; a.y+=a.vy;
+      a.vx+=(Math.random()-.5)*.15; a.vy+=(Math.random()-.5)*.15;
+      a.vx=Math.max(-1,Math.min(1,a.vx)); a.vy=Math.max(-1,Math.min(1,a.vy));
+      if(a.x<4||a.x>W-4) a.vx*=-1;
+      if(a.y<8) a.vy=Math.abs(a.vy);
+      if(a.y>MEM_TOP-8) a.vy=-Math.abs(a.vy);  // bounce off membrane top
+      drawO2(a.x,a.y,a.r);
+    }
+
+    /* ---- spawn crossers based on rate ---- */
+    if(rate>0 && gateXs.length>0){
+      spawnAcc += (rate/100) * 0.55;          // crossings per frame at max ≈ 0.55
+      while(spawnAcc>=1){
+        spawnAcc-=1;
+        var gx=gateXs[Math.floor(Math.random()*gateXs.length)];
+        // transit speed: thinner wall = faster
+        var speed = 1.2 + (1 - (state.th-1)/9)*2.2;
+        crossers.push({ x:gx+(Math.random()-.5)*10, y:MEM_TOP-2,
+                        phase:"cross", vy:speed, target:null, r:4.5 });
+      }
+    }
+
+    /* ---- update + draw crossers ---- */
+    for(var c=crossers.length-1;c>=0;c--){
+      var m=crossers[c];
+      if(m.phase==="cross"){
+        m.y+=m.vy;
+        if(m.y>=mb){
+          m.phase="toCell";
+          // pick nearest RBC by x
+          var best=null,bd=1e9;
+          for(var k=0;k<rbcs.length;k++){
+            var d=Math.abs(rbcs[k].x-m.x);
+            if(d<bd){bd=d;best=rbcs[k];}
+          }
+          m.target=best;
+        }
+      } else if(m.phase==="toCell"){
+        var t=m.target;
+        if(!t){ crossers.splice(c,1); continue; }
+        var ty=(mb+H)/2;
+        var dx=t.x-m.x, dy=ty-m.y;
+        var dist=Math.sqrt(dx*dx+dy*dy)||1;
+        m.x+=dx/dist*2.6; m.y+=dy/dist*2.6;
+        if(dist<10){
+          t.oxy=Math.min(1,t.oxy+0.18);  // oxygenate the cell
+          crossers.splice(c,1);
+          continue;
+        }
+      }
+      drawO2(m.x,m.y,m.r);
+    }
+
+    /* ---- red blood cells flow ---- */
+    var flowSpeed = 0.3 + (state.bf-1)/9 * 2.6;  // px/frame
+    for(var j=0;j<rbcs.length;j++){
+      var b=rbcs[j];
+      b.x+=flowSpeed;
+      if(b.x>W+30){ b.x=-30; b.oxy=0; }          // recycle: fresh deoxygenated
+      else { b.oxy=Math.max(0,b.oxy-0.0015); }   // slow drift back if no O2
+      drawRBC(b.x,(mb+H)/2,b.oxy);
+    }
+
+    requestAnimationFrame(frame);
+  }
+
+  function drawRBC(x,y,oxy){
+    // deoxygenated dark purple-red -> oxygenated bright red
+    var c1=[120,55,82], c2=[214,62,52];
+    var col="rgb("+Math.round(c1[0]+(c2[0]-c1[0])*oxy)+","+
+                    Math.round(c1[1]+(c2[1]-c1[1])*oxy)+","+
+                    Math.round(c1[2]+(c2[2]-c1[2])*oxy)+")";
+    ctx.save();
+    ctx.translate(x,y);
+    ctx.beginPath();
+    ctx.ellipse(0,0,17,11,0,0,7);
+    ctx.fillStyle=col; ctx.fill();
+    // biconcave dimple
+    ctx.beginPath(); ctx.ellipse(0,0,6,4,0,0,7);
+    ctx.fillStyle="rgba(0,0,0,.12)"; ctx.fill();
+    ctx.restore();
+  }
+
+  function getFont(){
+    return '"IBM Plex Sans", system-ui, sans-serif';
+  }
+
+  /* ============================================================
+     QUIZ
+     ============================================================ */
+  var QUESTIONS=[
+    { q:"Why are the walls of an alveolus only one cell thick?", ht:false,
+      opts:[
+        "To make the lungs lighter",
+        "To give a short diffusion distance, so gases cross quickly",
+        "To store a larger volume of air",
+        "To warm the air before it reaches the blood"
+      ], correct:1,
+      fb:"A thin wall means a short diffusion distance. The shorter the distance oxygen has to travel, the faster it diffuses into the blood." },
+
+    { q:"Alveoli give the lungs a very large surface area. How does this increase the rate of diffusion?", ht:false,
+      opts:[
+        "More oxygen molecules can diffuse across at the same time",
+        "It shortens the distance oxygen must travel",
+        "It raises the concentration of oxygen in the air",
+        "It warms the blood in the capillaries"
+      ], correct:0,
+      fb:"A larger surface area means more diffusion can happen in parallel — more molecules crossing at once raises the overall rate." },
+
+    { q:"How does a good blood supply increase the rate of oxygen diffusion into the blood?", ht:false,
+      opts:[
+        "It makes the alveolar walls thinner",
+        "It adds moisture to the alveoli",
+        "It carries oxygenated blood away and brings deoxygenated blood, keeping the concentration gradient steep",
+        "It increases the number of alveoli"
+      ], correct:2,
+      fb:"Flowing blood removes oxygen-rich blood and replaces it with oxygen-poor blood, so the concentration gradient between air and blood stays steep — and diffusion stays fast." },
+
+    { q:"The lining of the alveoli is moist. Why is this necessary for gas exchange?", ht:false,
+      opts:[
+        "It increases the surface area of the alveolus",
+        "Gases must dissolve in the moisture before they can diffuse across the membrane",
+        "It speeds up the flow of blood",
+        "It keeps the diffusion distance large"
+      ], correct:1,
+      fb:"Oxygen has to dissolve into the thin film of moisture before it can cross the membrane. Without it, diffusion essentially can't happen — it's a requirement, not a rate dial." },
+
+    { q:"According to Fick's law, the rate of diffusion is proportional to which of these?", ht:true,
+      opts:[
+        "(surface area × concentration difference) ÷ diffusion distance",
+        "diffusion distance ÷ surface area",
+        "concentration difference ÷ (surface area × diffusion distance)",
+        "surface area ÷ concentration difference"
+      ], correct:0,
+      fb:"Rate ∝ (surface area × concentration difference) ÷ diffusion distance. Surface area and concentration difference are on top (bigger = faster); distance is on the bottom (smaller = faster)." },
+
+    { q:"A lung disease causes the alveolar walls to become much thicker. What happens to the rate of oxygen diffusion, and why?", ht:false,
+      opts:[
+        "It increases, because the concentration gradient is steeper",
+        "It stays the same, because surface area is unchanged",
+        "It decreases, because the diffusion distance is now greater",
+        "It increases, because there is more wall for oxygen to cross"
+      ], correct:2,
+      fb:"Thicker walls mean a greater diffusion distance, so oxygen takes longer to cross — the rate of diffusion falls. This is what happens in diseases like fibrosis." }
+  ];
+
+  var answered=[], score=0;
+
+  function buildQuiz(){
+    answered=new Array(QUESTIONS.length).fill(false);
+    score=0;
+    var cont=$("quizContainer");
+    cont.innerHTML="";
+    $("quizEnd").classList.remove("show");
+    QUESTIONS.forEach(function(item,qi){
+      var qDiv=document.createElement("div");
+      qDiv.className="q";
+      var ht = item.ht ? ' <span class="ht">HT</span>' : '';
+      var html='<div class="qnum">Question '+(qi+1)+' of '+QUESTIONS.length+'</div>'+
+               '<div class="qtext">'+item.q+ht+'</div>';
+      item.opts.forEach(function(opt,oi){
+        html+='<button class="opt" data-q="'+qi+'" data-o="'+oi+'">'+opt+'<span class="mark"></span></button>';
+      });
+      html+='<div class="fb" id="fb-'+qi+'"></div>';
+      qDiv.innerHTML=html;
+      cont.appendChild(qDiv);
+    });
+    cont.querySelectorAll(".opt").forEach(function(btn){
+      btn.addEventListener("click", onAnswer);
+    });
+    updateScore();
+  }
+
+  function onAnswer(e){
+    var btn=e.currentTarget;
+    var qi=+btn.dataset.q, oi=+btn.dataset.o;
+    if(answered[qi]) return;
+    answered[qi]=true;
+    var item=QUESTIONS[qi];
+    var opts=document.querySelectorAll('.opt[data-q="'+qi+'"]');
+    opts.forEach(function(o){
+      o.disabled=true;
+      var thisO=+o.dataset.o;
+      if(thisO===item.correct){ o.classList.add("correct"); o.querySelector(".mark").textContent="✓"; }
+    });
+    var fb=$("fb-"+qi);
+    if(oi===item.correct){
+      score++;
+      fb.className="fb right show";
+      fb.innerHTML="<b>Correct.</b> "+item.fb;
+    } else {
+      btn.classList.add("wrong");
+      btn.querySelector(".mark").textContent="✗";
+      fb.className="fb wrongfb show";
+      fb.innerHTML="<b>Not quite.</b> "+item.fb;
+    }
+    updateScore();
+    if(answered.every(Boolean)) showEnd();
+  }
+
+  function updateScore(){
+    var done=answered.filter(Boolean).length;
+    $("scorePill").textContent="Score: "+score+" / "+QUESTIONS.length;
+    $("quizProgress").style.width=(done/QUESTIONS.length*100)+"%";
+  }
+
+  function showEnd(){
+    var end=$("quizEnd");
+    $("endScore").textContent=score+" / "+QUESTIONS.length;
+    var msg;
+    if(score===QUESTIONS.length) msg="Full marks — you've nailed how structure links to function.";
+    else if(score>=QUESTIONS.length-1) msg="Strong work. Re-read the one you missed and you've got it.";
+    else if(score>=QUESTIONS.length/2) msg="Solid start. Look back at the simulation for the ones you missed.";
+    else msg="Worth another go — try the simulation again, then come back.";
+    $("endMsg").textContent=msg;
+    end.classList.add("show");
+    end.scrollIntoView({behavior:"smooth",block:"center"});
+  }
+
+  $("retryBtn").addEventListener("click", buildQuiz);
+
+  /* ============================================================
+     TABS / VIEW ROUTING
+     ============================================================ */
+  function showView(name){
+    var isSim = (name!=="quiz");
+    $("view-sim").classList.toggle("active", isSim);
+    $("view-quiz").classList.toggle("active", !isSim);
+    $("tab-sim").setAttribute("aria-selected", isSim);
+    $("tab-quiz").setAttribute("aria-selected", !isSim);
+  }
+  $("tab-sim").addEventListener("click", function(){ showView("sim"); });
+  $("tab-quiz").addEventListener("click", function(){ showView("quiz"); });
+
+  /* ============================================================
+     INIT  — deep-link calls LAST, after all defs (avoids early-fire bug)
+     ============================================================ */
+  function init(){
+    var params=new URLSearchParams(location.search);
+    if(params.get("embed")==="1") document.body.classList.add("embed");
+
+    buildQuiz();
+    render();
+    requestAnimationFrame(frame);
+
+    // deep-link view routing — done last, once everything is defined
+    var v=params.get("view");
+    if(v==="quiz" || v==="sim") showView(v);
+  }
+  init();
+
+})();
+</script>
+</body>
+</html>

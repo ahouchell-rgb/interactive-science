@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How fossils are preserved</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Spline+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#20305f; --navy-deep:#16224a; --coral:#c8503f;
+    --paper:#f4eee2; --card:#fffdf8; --ink:#2b2d36; --muted:#8c8775; --line:#e6dcc7;
+    --shell-out:#cdab6c; --shell-in:#f1e5c4; --shell-line:#9c7a40;
+    --soft:#d59a68; --soft-line:#a96c3a;
+    --min-out:#a76d33; --min-in:#d29a52; --min-line:#774b1f;
+    --deepc:#7d6346; --clay:#a98a5c; --silt:#c3a575; --sand:#dac292; --silt2:#bd9c66;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:'Spline Sans',sans-serif;color:var(--ink);min-height:100%;
+    background:radial-gradient(1100px 700px at 78% -12%,#fbf7ee 0%,transparent 58%),var(--paper);
+    display:flex;align-items:center;justify-content:center;padding:clamp(14px,3vw,36px);
+  }
+  .wrap{width:100%;max-width:1180px}
+  .top{display:flex;align-items:baseline;gap:18px;flex-wrap:wrap;margin-bottom:16px}
+  .top h1{font-family:'Bricolage Grotesque';font-weight:800;color:var(--navy);
+    font-size:clamp(26px,4.4vw,52px);line-height:.98;letter-spacing:-.02em}
+  .etym{font-style:italic;color:var(--muted);font-size:clamp(13px,1.5vw,18px);
+    border-left:3px solid var(--coral);padding-left:13px}
+  .etym b{color:var(--coral);font-style:normal;font-weight:600}
+
+  .card{position:relative;background:linear-gradient(180deg,#fffefb,#fbf6ec);
+    border-radius:24px;border:1px solid var(--line);overflow:hidden;
+    box-shadow:0 36px 70px -34px rgba(22,34,74,.4),inset 0 1px 0 #fff}
+  svg{display:block;width:100%;height:auto}
+
+  .slab{opacity:0;transition:opacity .6s ease}
+  #soft,#veil,#brush,#years,#stone,#rays,#sun,#shadow,#fall{transition:opacity .6s ease}
+  #rock{transition:transform .9s cubic-bezier(.4,0,.2,1)}
+  #spec *{transition:stroke .7s ease,fill .7s ease}
+  .bob{animation:bob 5s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-6px) rotate(-1deg)}}
+  .p{animation:fall linear infinite}
+  @keyframes fall{0%{transform:translateY(-20px);opacity:0}12%{opacity:.8}100%{transform:translateY(250px);opacity:0}}
+
+  .steps{display:flex;gap:2px;margin:20px 4px 0}
+  .step{flex:1;text-align:center;position:relative;padding-top:24px}
+  .step::before{content:"";position:absolute;top:6px;left:0;right:0;height:3px;background:var(--line);transition:background .35s}
+  .step:first-child::before{left:50%}.step:last-child::before{right:50%}
+  .step.done::before{background:var(--coral)}
+  .dot{position:absolute;top:0;left:50%;transform:translateX(-50%);width:15px;height:15px;border-radius:50%;
+    background:#d2cab6;border:3px solid var(--card);z-index:2;transition:.35s}
+  .step.done .dot{background:var(--coral)}
+  .step.now .dot{background:var(--coral);box-shadow:0 0 0 5px rgba(200,80,63,.18)}
+  .step label{font-family:'Bricolage Grotesque';font-weight:700;letter-spacing:.05em;
+    font-size:clamp(10px,1.15vw,13px);color:var(--muted);transition:color .35s}
+  .step.now label{color:var(--coral)} .step.done label{color:var(--navy)}
+
+  .stage{margin:24px 4px 4px;min-height:104px}
+  .kick{font-family:'Bricolage Grotesque';font-weight:700;letter-spacing:.16em;
+    color:var(--muted);font-size:clamp(12px,1.4vw,15px);text-transform:uppercase;margin-bottom:4px}
+  .kw{font-family:'Bricolage Grotesque';font-weight:800;color:var(--coral);
+    font-size:clamp(28px,4.6vw,50px);line-height:1;letter-spacing:-.01em;margin-bottom:10px}
+  .desc{font-size:clamp(16px,2.1vw,25px);line-height:1.42;max-width:46ch}
+  .desc b{color:var(--navy);font-weight:600}
+
+  .ctr{display:flex;align-items:center;gap:14px;margin-top:22px;flex-wrap:wrap}
+  button{font-family:'Bricolage Grotesque';cursor:pointer;border:none;border-radius:14px;font-weight:700;
+    transition:transform .12s,box-shadow .2s,background .2s}
+  button:active{transform:translateY(1px)}
+  .next{background:var(--navy);color:#fff;font-size:clamp(17px,2vw,23px);padding:16px 36px;
+    box-shadow:0 16px 28px -14px rgba(22,34,74,.85)}
+  .next:hover{background:var(--navy-deep)}
+  .back{background:transparent;color:var(--navy);font-size:clamp(15px,1.7vw,19px);
+    padding:15px 24px;border:2px solid #d7dce8}
+  .back:hover{background:#eef2f8}.back:disabled{opacity:.3;cursor:not-allowed}
+  .count{margin-left:auto;color:var(--muted);font-weight:500;font-size:clamp(13px,1.5vw,16px)}
+  .hint{font-size:13px;color:var(--muted);margin-top:14px}
+  .hint kbd{background:#ece4d3;border:1px solid var(--line);border-radius:6px;padding:1px 7px;font-size:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <h1>How fossils are preserved</h1>
+    <span class="etym"><b>fossil</b> &larr; Latin <i>fossilis</i> = 'dug up'</span>
+  </div>
+
+  <div class="card">
+    <svg viewBox="0 0 1000 440" role="img" aria-label="Cross-section showing how a fossil forms">
+      <defs>
+        <linearGradient id="gWater" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#dcf0f5"/><stop offset="1" stop-color="#5a9cb8"/>
+        </linearGradient>
+        <linearGradient id="gSky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#f0f7f8"/><stop offset="1" stop-color="#cfe3e6"/>
+        </linearGradient>
+        <radialGradient id="gSun" cx="50%" cy="50%" r="50%">
+          <stop offset="0" stop-color="#fff4d8" stop-opacity=".9"/><stop offset="1" stop-color="#fff4d8" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="gVig" cx="50%" cy="40%" r="78%">
+          <stop offset="60%" stop-color="#000" stop-opacity="0"/><stop offset="100%" stop-color="#241a0e" stop-opacity=".22"/>
+        </radialGradient>
+        <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"/>
+          <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .55 0"/></filter>
+        <filter id="soft" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="6"/></filter>
+      </defs>
+
+      <rect id="sky" x="0" y="0" width="1000" height="440" fill="url(#gSky)" opacity="0"/>
+      <rect id="water" x="0" y="0" width="1000" height="440" fill="url(#gWater)"/>
+      <circle id="sun" cx="848" cy="64" r="130" fill="url(#gSun)" opacity="0"/>
+
+      <g id="rays">
+        <polygon points="150,0 220,0 70,440 -10,440" fill="#fff" opacity=".07"/>
+        <polygon points="430,0 480,0 350,440 290,440" fill="#fff" opacity=".05"/>
+        <polygon points="700,0 760,0 640,440 570,440" fill="#fff" opacity=".06"/>
+      </g>
+
+      <g id="rock">
+        <!-- strata slabs (deep -> shallow); shallow ones erode at the end -->
+        <path id="base" d="M0,300 C200,291 380,307 560,296 C760,287 880,305 1000,297 L1000,440 L0,440 Z" fill="var(--deepc)" stroke="#5f4a31" stroke-width="1.5"/>
+        <path class="slab" id="l1" d="M0,212 C200,203 380,219 560,208 C760,199 880,217 1000,209 L1000,297 C880,305 760,287 560,296 C380,307 200,291 0,300 Z" fill="var(--clay)" stroke="#8a6f48" stroke-width="1.5"/>
+        <path class="slab" id="l2" d="M0,170 C200,161 380,177 560,166 C760,157 880,175 1000,167 L1000,209 C880,217 760,199 560,208 C380,219 200,203 0,212 Z" fill="var(--silt)" stroke="#a3855a" stroke-width="1.5"/>
+        <path class="slab" id="l3" d="M0,128 C200,119 380,135 560,124 C760,115 880,133 1000,125 L1000,167 C880,175 760,157 560,166 C380,177 200,161 0,170 Z" fill="var(--sand)" stroke="#bda06f" stroke-width="1.5"/>
+        <path class="slab" id="l4" d="M0,92 C200,83 380,99 560,88 C760,79 880,97 1000,89 L1000,125 C880,133 760,115 560,124 C380,135 200,119 0,128 Z" fill="var(--silt2)" stroke="#9c7e4f" stroke-width="1.5"/>
+
+        <ellipse id="shadow" cx="442" cy="332" rx="78" ry="13" fill="#000" opacity=".15"/>
+        <ellipse id="stone" cx="440" cy="270" rx="74" ry="70" fill="var(--min-in)" opacity="0"/>
+
+        <g id="spec">
+          <!-- coiled shell: dark outline, body, inner highlight -->
+          <path id="coilLine" fill="none" stroke="var(--shell-line)" stroke-width="27" stroke-linecap="round" stroke-linejoin="round"
+            d="M504,270 A55.7,55.7 0 0 0 392.6,270 A41.2,41.2 0 0 1 475.05,270 A30.5,30.5 0 0 0 414.1,270 A22.55,22.55 0 0 1 459.2,270 A16.7,16.7 0 0 0 425.8,270"/>
+          <path id="coilOuter" fill="none" stroke="var(--shell-out)" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"
+            d="M504,270 A55.7,55.7 0 0 0 392.6,270 A41.2,41.2 0 0 1 475.05,270 A30.5,30.5 0 0 0 414.1,270 A22.55,22.55 0 0 1 459.2,270 A16.7,16.7 0 0 0 425.8,270"/>
+          <path id="coilInner" fill="none" stroke="var(--shell-in)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"
+            d="M504,270 A55.7,55.7 0 0 0 392.6,270 A41.2,41.2 0 0 1 475.05,270 A30.5,30.5 0 0 0 414.1,270 A22.55,22.55 0 0 1 459.2,270 A16.7,16.7 0 0 0 425.8,270"/>
+          <g id="ribs" stroke="var(--shell-line)" stroke-width="2.6" stroke-linecap="round" opacity=".7">
+            <line x1="408.5" y1="247" x2="394.6" y2="239"/>
+            <line x1="428.9" y1="228.3" x2="422.1" y2="213.8"/>
+            <line x1="452.4" y1="224.2" x2="453.7" y2="208.2"/>
+            <line x1="474.7" y1="232.3" x2="483.9" y2="219.2"/>
+            <line x1="490" y1="250.5" x2="504.5" y2="243.8"/>
+          </g>
+
+          <!-- living soft body at the aperture -->
+          <g id="soft">
+            <ellipse cx="512" cy="276" rx="16" ry="21" fill="var(--soft)" transform="rotate(20 512 276)"/>
+            <g fill="none" stroke="var(--soft)" stroke-width="6.5" stroke-linecap="round">
+              <path d="M507,260 q26,-16 47,-19"/>
+              <path d="M508,267 q31,-9 57,-3"/>
+              <path d="M509,274 q33,0 60,8"/>
+              <path d="M508,281 q30,8 54,22"/>
+              <path d="M506,288 q25,15 44,33"/>
+            </g>
+            <circle cx="505" cy="259" r="6.5" fill="#fff"/>
+            <circle cx="506" cy="259" r="3.4" fill="#16224a"/>
+          </g>
+        </g>
+
+        <path id="veil" d="M0,212 C200,203 380,219 560,208 C760,199 880,217 1000,209 L1000,340 L0,340 Z" fill="var(--clay)" opacity="0"/>
+
+        <g id="brush" opacity="0">
+          <g transform="rotate(40 500 198)">
+            <rect x="491" y="138" width="18" height="52" rx="5" fill="#7a4a22"/>
+            <rect x="488" y="188" width="24" height="13" rx="3" fill="#c4c4c4"/>
+            <path d="M489,201 l-5,26 l34,0 l-5,-26 Z" fill="#ecca78"/>
+          </g>
+          <circle cx="528" cy="214" r="3" fill="#cdb085"/>
+          <circle cx="544" cy="226" r="2.4" fill="#cdb085"/>
+          <circle cx="556" cy="210" r="2" fill="#cdb085"/>
+        </g>
+      </g>
+
+      <g id="fall" opacity="0" fill="var(--silt)">
+        <circle class="p" cx="250" cy="40" r="4" style="animation-duration:2.6s"/>
+        <circle class="p" cx="360" cy="40" r="3" style="animation-duration:3.1s;animation-delay:.6s"/>
+        <circle class="p" cx="470" cy="40" r="5" style="animation-duration:2.3s;animation-delay:.3s"/>
+        <circle class="p" cx="560" cy="40" r="3" style="animation-duration:3.4s;animation-delay:1s"/>
+        <circle class="p" cx="650" cy="40" r="4" style="animation-duration:2.8s;animation-delay:.2s"/>
+        <circle class="p" cx="430" cy="40" r="3" style="animation-duration:2.5s;animation-delay:1.3s"/>
+        <circle class="p" cx="700" cy="40" r="3" style="animation-duration:3s;animation-delay:.8s"/>
+        <circle class="p" cx="310" cy="40" r="4" style="animation-duration:2.9s;animation-delay:1.5s"/>
+      </g>
+
+      <g id="years" opacity="0">
+        <rect x="618" y="120" width="236" height="40" rx="20" fill="#16224a"/>
+        <text x="646" y="146" fill="#fff" font-family="Bricolage Grotesque" font-weight="700" font-size="20">&#9203; millions of years&#8230;</text>
+      </g>
+
+      <rect x="0" y="0" width="1000" height="440" fill="url(#gVig)" pointer-events="none"/>
+      <rect x="0" y="0" width="1000" height="440" filter="url(#grain)" opacity=".05" pointer-events="none"/>
+    </svg>
+  </div>
+
+  <div class="steps" id="steps"></div>
+
+  <div class="stage">
+    <div class="kick" id="kick"></div>
+    <div class="kw" id="kw"></div>
+    <div class="desc" id="desc"></div>
+  </div>
+
+  <div class="ctr">
+    <button class="back" id="back">&larr; Back</button>
+    <button class="next" id="next">Next &rarr;</button>
+    <span class="count" id="count"></span>
+  </div>
+  <div class="hint">Click <b>Next</b>, or use <kbd>&rarr;</kbd> / <kbd>Space</kbd> (works with a clicker). <kbd>&larr;</kbd> to go back.</div>
+</div>
+
+<script>
+  const STAGES = [
+    {kw:"DIES",        desc:"An ammonite dies and sinks to the seabed."},
+    {kw:"BURIAL",      desc:"It is covered <b>quickly</b> by sediment &mdash; before it rots or is eaten."},
+    {kw:"DECAY",       desc:"The soft body rots away. Only the <b>hard shell</b> is left."},
+    {kw:"REPLACEMENT", desc:"Over <b>millions of years</b>, minerals replace the shell. It slowly turns to rock."},
+    {kw:"FOUND",       desc:"The rock is pushed up and worn away. The fossil is exposed &mdash; and <b>dug up</b>."}
+  ];
+  const el = id => document.getElementById(id);
+  const steps = el('steps');
+  STAGES.forEach((s,idx)=>{
+    const d=document.createElement('div'); d.className='step';
+    d.innerHTML=`<span class="dot"></span><label>${s.kw}</label>`;
+    steps.appendChild(d);
+  });
+  let i=0;
+  const set=(node,show)=> node.style.opacity = show?1:0;
+
+  function render(){
+    const n=i+1, s=STAGES[i];
+    el('kick').textContent=`Step ${n} of 5`;
+    el('kw').textContent=s.kw;
+    el('desc').innerHTML=s.desc;
+    el('count').textContent=`${n} / 5`;
+    [...steps.children].forEach((c,idx)=>{c.classList.toggle('now',idx===i);c.classList.toggle('done',idx<i);});
+
+    set(el('l1'),n>=2); set(el('l2'),n>=3);
+    set(el('l3'),n>=4&&n<5); set(el('l4'),n>=4&&n<5);
+    set(el('soft'),n<=2);
+    set(el('shadow'),n<=2);
+    set(el('veil'),n>=2&&n<5);
+    const mineral=n>=4;
+    el('spec').classList.toggle('min',mineral);
+    set(el('stone'),mineral);
+    set(el('years'),n===4);
+    set(el('fall'),n===2||n===3);
+    set(el('rays'),n<5);
+    set(el('sun'),n===5);
+    set(el('sky'),n===5);
+    set(el('water'),n!==5);
+    set(el('brush'),n===5);
+    el('rock').style.transform=(n===5)?'translateY(-42px)':'translateY(0)';
+
+    el('back').disabled=(i===0);
+    el('next').innerHTML=(i===STAGES.length-1)?'Start again &#8635;':'Next &rarr;';
+  }
+  function next(){ i=(i<STAGES.length-1)?i+1:0; render(); }
+  function back(){ if(i>0){i--;render();} }
+  el('next').addEventListener('click',next);
+  el('back').addEventListener('click',back);
+  document.addEventListener('keydown',e=>{
+    if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();next();}
+    else if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();back();}
+  });
+  render();
+</script>
+<style>
+  #spec.min #coilLine{stroke:var(--min-line)}
+  #spec.min #coilOuter{stroke:var(--min-out)}
+  #spec.min #coilInner{stroke:var(--min-in)}
+  #spec.min #ribs{stroke:var(--min-line)}
+</style>
+</body>
+</html>

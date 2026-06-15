@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Energy Stores — Roller Coaster · Springboard KS3</title>
+<style>
+:root{
+  --navy:#1E2761;
+  --navy-soft:#2a3478;
+  --warm:#F8F4EC;
+  --warm-deep:#EFE8D6;
+  --paper:#FCFAF4;
+  --soft-blue:#EDF2FA;
+  --ink:#1A1A1A;
+  --muted:#5C6370;
+  --rule:#CFD8E3;
+  --accent:#B85042;
+  --accent-soft:#F4DAD7;
+  --success:#2C5F2D;
+  --success-soft:#DDEBDD;
+  --gold:#C8A24A;
+  --gold-soft:#F2E6BD;
+  /* Energy store colours */
+  --gpe-color:#C8A24A;      /* gold */
+  --gpe-bg:#FAF1D8;
+  --ke-color:#2C5F2D;       /* green */
+  --ke-bg:#DDEBDD;
+  --thermal-color:#B85042;  /* red */
+  --thermal-bg:#F4DAD7;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:'Century Gothic','URW Gothic','Avant Garde','Trebuchet MS',sans-serif;
+  color:var(--ink);
+  background:var(--warm);
+  -webkit-font-smoothing:antialiased;
+  display:flex;
+  flex-direction:column;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* Header */
+.header{
+  background:var(--navy);
+  color:#fff;
+  padding:14px 24px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-shrink:0;
+}
+.header .label{
+  font-size:10px;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:rgba(255,255,255,0.6);
+  margin-bottom:2px;
+}
+.header h1{
+  font-size:20px;
+  font-weight:700;
+  letter-spacing:0.3px;
+}
+.header .corner{
+  font-size:10px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:rgba(255,255,255,0.55);
+  text-align:right;
+  line-height:1.4;
+}
+
+/* Main */
+.main{
+  flex:1;
+  display:grid;
+  grid-template-columns:1fr 200px;
+  min-height:0;
+  gap:0;
+}
+@media (max-width:560px){
+  .main{grid-template-columns:1fr;grid-template-rows:1fr auto}
+}
+
+/* Canvas area */
+.canvas-area{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  background:var(--warm);
+  padding:14px 18px;
+  min-height:0;
+}
+.canvas-wrap{
+  flex:1;
+  background:linear-gradient(180deg,#E5EDF8 0%,#F4F0E2 60%,#E5DEC8 100%);
+  border:1px solid var(--rule);
+  border-radius:4px;
+  overflow:hidden;
+  position:relative;
+  min-height:340px;
+}
+.canvas-wrap svg{
+  display:block;
+  width:100%;
+  height:100%;
+}
+.instr{
+  margin-top:10px;
+  padding:8px 14px;
+  background:var(--soft-blue);
+  border:1px solid var(--rule);
+  border-radius:4px;
+  font-size:11px;
+  letter-spacing:1.5px;
+  color:var(--muted);
+  text-transform:uppercase;
+  text-align:center;
+  font-weight:700;
+}
+
+/* Readout panel */
+.readout{
+  background:var(--paper);
+  border-left:1px solid var(--rule);
+  padding:14px 12px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  overflow-y:auto;
+}
+@media (max-width:880px){
+  .readout{border-left:none;border-top:1px solid var(--rule)}
+}
+.readout-head{
+  font-size:10px;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--muted);
+  font-weight:700;
+}
+.pie-wrap{
+  position:relative;
+  width:100%;
+  max-width:130px;
+  margin:0 auto;
+  aspect-ratio:1/1;
+}
+.pie-wrap svg{display:block;width:100%;height:100%}
+.pie-center-text{
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  pointer-events:none;
+  font-family:inherit;
+  gap:1px;
+}
+.pie-center-text .big{
+  font-size:8px;
+  letter-spacing:1.8px;
+  text-transform:uppercase;
+  color:var(--muted);
+  font-weight:700;
+}
+.pie-center-text .q{
+  font-size:30px;
+  color:var(--accent);
+  font-weight:700;
+  line-height:1;
+}
+
+/* Energy rows */
+.energy-list{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.energy-row{
+  background:#fff;
+  border:1px solid var(--rule);
+  border-radius:4px;
+  padding:6px 9px;
+  position:relative;
+  overflow:hidden;
+}
+.energy-row .label{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  margin-bottom:3px;
+  font-size:10px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:1.2px;
+  color:var(--ink);
+  position:relative;
+  z-index:1;
+}
+.energy-row .label .name{display:flex;align-items:center;gap:5px}
+.energy-row .label .swatch{
+  width:8px;
+  height:8px;
+  border-radius:2px;
+  flex-shrink:0;
+}
+.energy-row .label .val{
+  font-family:'Courier New',monospace;
+  font-size:12px;
+  font-weight:700;
+  color:var(--navy);
+}
+.energy-row .bar{
+  height:5px;
+  background:var(--rule);
+  border-radius:3px;
+  overflow:hidden;
+  position:relative;
+  z-index:1;
+}
+.energy-row .bar-fill{
+  height:100%;
+  border-radius:3px;
+  transition:width 0.18s ease, background 0.18s ease;
+}
+.energy-row.gpe .swatch,.energy-row.gpe .bar-fill{background:var(--gpe-color)}
+.energy-row.ke  .swatch,.energy-row.ke  .bar-fill{background:var(--ke-color)}
+.energy-row.thermal .swatch,.energy-row.thermal .bar-fill{background:var(--thermal-color)}
+.energy-row .desc{display:none}
+
+/* Total readout */
+.total-card{
+  background:var(--navy);
+  color:var(--warm);
+  padding:12px 14px;
+  border-radius:4px;
+  text-align:center;
+}
+.total-card .lbl{
+  font-size:9px;
+  letter-spacing:2.5px;
+  text-transform:uppercase;
+  color:rgba(248,244,236,0.65);
+  font-weight:700;
+  margin-bottom:4px;
+}
+.total-card .num{
+  font-family:'Courier New',monospace;
+  font-size:24px;
+  font-weight:700;
+  letter-spacing:0.5px;
+}
+.total-card .num small{
+  font-size:13px;
+  margin-left:4px;
+  opacity:0.75;
+}
+.total-card .conserv{
+  font-size:10px;
+  letter-spacing:1.2px;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin-top:4px;
+  font-weight:700;
+}
+
+/* Controls bar */
+.controls{
+  background:var(--soft-blue);
+  border-top:1px solid var(--rule);
+  padding:12px 18px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px 16px;
+  align-items:center;
+  flex-shrink:0;
+  font-size:12px;
+}
+.toggle{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  cursor:pointer;
+  user-select:none;
+  padding:6px 12px;
+  background:#fff;
+  border:1px solid var(--rule);
+  border-radius:100px;
+  font-weight:700;
+  font-size:11px;
+  letter-spacing:1.2px;
+  text-transform:uppercase;
+  color:var(--muted);
+  transition:all 0.18s;
+}
+.toggle:hover{border-color:var(--navy);color:var(--navy)}
+.toggle .switch{
+  width:30px;
+  height:16px;
+  background:var(--rule);
+  border-radius:100px;
+  position:relative;
+  transition:background 0.2s;
+  flex-shrink:0;
+}
+.toggle .switch::after{
+  content:'';
+  position:absolute;
+  top:2px;
+  left:2px;
+  width:12px;
+  height:12px;
+  background:#fff;
+  border-radius:50%;
+  transition:transform 0.2s;
+  box-shadow:0 1px 2px rgba(0,0,0,0.15);
+}
+.toggle.active{color:var(--navy);background:var(--soft-blue);border-color:var(--navy)}
+.toggle.active .switch{background:var(--accent)}
+.toggle.active .switch::after{transform:translateX(14px)}
+
+.btn{
+  padding:7px 14px;
+  background:#fff;
+  border:1px solid var(--navy);
+  color:var(--navy);
+  font-family:inherit;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  cursor:pointer;
+  border-radius:100px;
+  transition:all 0.15s;
+}
+.btn:hover{background:var(--navy);color:#fff}
+.btn-primary{
+  background:var(--accent);
+  color:#fff;
+  border-color:var(--accent);
+}
+.btn-primary:hover{
+  background:#a04539;
+  border-color:#a04539;
+}
+.spacer{flex:1;min-width:8px}
+
+/* Reveal flash button (for predict mode) */
+.reveal-cta{
+  background:var(--accent);
+  color:#fff;
+  border:0;
+  padding:10px;
+  border-radius:4px;
+  cursor:pointer;
+  font-family:inherit;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  width:100%;
+  transition:background 0.15s;
+}
+.reveal-cta:hover{background:#a04539}
+.reveal-cta:disabled{
+  background:var(--rule);
+  color:var(--muted);
+  cursor:default;
+}
+
+/* Predict mode panel */
+.predict-info{
+  background:var(--accent-soft);
+  border-left:3px solid var(--accent);
+  padding:10px 12px;
+  font-size:12px;
+  line-height:1.45;
+  color:var(--ink);
+  border-radius:0 4px 4px 0;
+}
+.predict-info b{color:var(--accent);text-transform:uppercase;letter-spacing:1px;font-size:10px;display:block;margin-bottom:3px;font-weight:700}
+
+/* Cart cursor */
+#cart{cursor:grab}
+#cart.dragging{cursor:grabbing}
+#cart:hover circle.cart-glow{opacity:0.6}
+
+/* Markers */
+.marker-line{stroke:rgba(30,39,97,0.3);stroke-dasharray:3 4;stroke-width:1}
+.marker-text{
+  font-family:'Courier New',monospace;
+  font-size:10px;
+  fill:var(--muted);
+  font-weight:700;
+  letter-spacing:0.5px;
+}
+
+/* Footer */
+.footer{
+  padding:8px 18px;
+  background:var(--warm-deep);
+  font-size:9px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--muted);
+  text-align:right;
+  flex-shrink:0;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="label">Springboard KS3 · Y7 Physics</div>
+    <h1>Energy Stores — Roller Coaster</h1>
+  </div>
+  <div class="corner">
+    P1.2 · Stores &amp; Transfers<br>
+    Drag · Predict · Reveal
+  </div>
+</div>
+
+<div class="main">
+  <!-- LEFT: Roller coaster canvas -->
+  <div class="canvas-area">
+    <div class="canvas-wrap">
+      <svg id="stage" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet"
+           xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <!-- Sky gradient -->
+          <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#E5EDF8"/>
+            <stop offset="65%" stop-color="#F4F0E2"/>
+            <stop offset="100%" stop-color="#E5DEC8"/>
+          </linearGradient>
+          <!-- Cart shadow filter -->
+          <filter id="cartShadow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
+            <feOffset dx="0" dy="2" result="off"/>
+            <feMerge><feMergeNode in="off"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+
+        <!-- Background -->
+        <rect width="800" height="500" fill="url(#skyGrad)"/>
+
+        <!-- Ground line -->
+        <line x1="0" y1="430" x2="800" y2="430" stroke="#9C8B5A" stroke-width="1.5" opacity="0.6"/>
+        <rect x="0" y="430" width="800" height="70" fill="#7A6A45" opacity="0.18"/>
+
+        <!-- Height markers (horizontal dashed lines) -->
+        <g id="heightMarkers"></g>
+
+        <!-- Track ties (decorative) -->
+        <path id="trackTies" d="" fill="none" stroke="#5C6370" stroke-width="1.5" stroke-dasharray="2 6" opacity="0.55"/>
+
+        <!-- Track main line -->
+        <path id="trackPath"
+              d="M 60 90 C 200 90, 230 380, 380 380 C 480 380, 500 200, 580 220 C 660 240, 680 380, 760 395"
+              fill="none" stroke="#1E2761" stroke-width="4" stroke-linecap="round"/>
+
+        <!-- Hidden: invisible wider track for easier dragging -->
+        <path id="trackHit"
+              d="M 60 90 C 200 90, 230 380, 380 380 C 480 380, 500 200, 580 220 C 660 240, 680 380, 760 395"
+              fill="none" stroke="transparent" stroke-width="40" stroke-linecap="round"
+              style="cursor:ew-resize"/>
+
+        <!-- Position labels along track -->
+        <g id="trackLabels"></g>
+
+        <!-- Cart -->
+        <g id="cart" filter="url(#cartShadow)">
+          <!-- Glow on hover -->
+          <circle class="cart-glow" cx="0" cy="0" r="22" fill="#B85042" opacity="0" style="transition:opacity 0.2s"/>
+          <!-- Body -->
+          <rect x="-20" y="-14" width="40" height="18" rx="3" fill="#B85042" stroke="#7A2E22" stroke-width="1.5"/>
+          <!-- Stripe -->
+          <rect x="-20" y="-7" width="40" height="3" fill="#FFE0DC" opacity="0.5"/>
+          <!-- Wheels -->
+          <circle cx="-12" cy="6" r="5" fill="#1A1A1A" stroke="#444" stroke-width="0.8"/>
+          <circle cx="12" cy="6" r="5" fill="#1A1A1A" stroke="#444" stroke-width="0.8"/>
+          <circle cx="-12" cy="6" r="2" fill="#888"/>
+          <circle cx="12" cy="6" r="2" fill="#888"/>
+          <!-- Drag hint dots -->
+          <circle cx="-6" cy="-6" r="1.2" fill="#FFE0DC" opacity="0.7"/>
+          <circle cx="0" cy="-6" r="1.2" fill="#FFE0DC" opacity="0.7"/>
+          <circle cx="6" cy="-6" r="1.2" fill="#FFE0DC" opacity="0.7"/>
+        </g>
+
+        <!-- Drag instruction badge (top-left) -->
+        <g id="dragHint" opacity="0.85">
+          <rect x="20" y="18" width="180" height="28" rx="14" fill="#1E2761" opacity="0.85"/>
+          <text x="110" y="36" text-anchor="middle" font-family="Century Gothic, sans-serif"
+                font-size="11" font-weight="700" fill="#fff" letter-spacing="1.5">DRAG THE CART →</text>
+        </g>
+      </svg>
+    </div>
+    <p class="instr">Drag the red cart along the track · Watch the energy stores change</p>
+  </div>
+
+  <!-- RIGHT: Pie chart + readouts -->
+  <div class="readout">
+    <div class="readout-head">Energy Stores</div>
+
+    <div class="pie-wrap">
+      <svg id="pie" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <!-- Background ring -->
+        <circle cx="100" cy="100" r="82" fill="none" stroke="#E5DEC8" stroke-width="2"/>
+        <!-- Pie wedges (drawn in JS) -->
+        <g id="pieWedges"></g>
+        <!-- Inner hole -->
+        <circle cx="100" cy="100" r="36" fill="#FCFAF4" stroke="#CFD8E3" stroke-width="1"/>
+      </svg>
+      <div class="pie-center-text" id="pieCenter">
+        <span class="big">Hover</span>
+      </div>
+    </div>
+
+    <div class="energy-list" id="energyList">
+      <div class="energy-row gpe">
+        <div class="label">
+          <span class="name"><span class="swatch"></span>Gravitational</span>
+          <span class="val" id="valGpe">— J</span>
+        </div>
+        <div class="bar"><div class="bar-fill" id="barGpe" style="width:0%"></div></div>
+        <div class="desc">Energy from being lifted up</div>
+      </div>
+      <div class="energy-row ke">
+        <div class="label">
+          <span class="name"><span class="swatch"></span>Kinetic</span>
+          <span class="val" id="valKe">— J</span>
+        </div>
+        <div class="bar"><div class="bar-fill" id="barKe" style="width:0%"></div></div>
+        <div class="desc">Energy from movement</div>
+      </div>
+      <div class="energy-row thermal">
+        <div class="label">
+          <span class="name"><span class="swatch"></span>Thermal</span>
+          <span class="val" id="valTh">— J</span>
+        </div>
+        <div class="bar"><div class="bar-fill" id="barTh" style="width:0%"></div></div>
+        <div class="desc">Heat lost to surroundings</div>
+      </div>
+    </div>
+
+    <div id="predictBox"></div>
+  </div>
+</div>
+
+<div class="controls">
+  <div class="toggle" id="frictionToggle">
+    <div class="switch"></div>
+    <span>Friction</span>
+  </div>
+  <div class="toggle" id="predictToggle">
+    <div class="switch"></div>
+    <span>Predict mode</span>
+  </div>
+  <div class="spacer"></div>
+  <button class="btn" id="resetBtn">Reset to top</button>
+</div>
+
+<div class="footer">Springboard · P1.2 Energy stores &amp; transfers · v1</div>
+
+<script>
+'use strict';
+
+(function(){
+
+/* =================================================================
+   CONFIG
+   ================================================================= */
+const TOTAL_ENERGY = 1000;        // joules — kept constant
+const FRICTION_FRACTION = 0.20;   // 20% of released energy → thermal when on
+
+/* =================================================================
+   TRACK SAMPLING
+   Build a lookup table along the SVG path so we can find a point
+   for any screen-x and compute the cart's height fraction.
+   ================================================================= */
+const trackPath = document.getElementById('trackPath');
+const trackHit = document.getElementById('trackHit');
+const totalLength = trackPath.getTotalLength();
+
+const SAMPLES = 400;
+const samples = [];
+let minY = Infinity, maxY = -Infinity;
+for (let i = 0; i <= SAMPLES; i++) {
+  const t = i / SAMPLES;
+  const len = t * totalLength;
+  const pt = trackPath.getPointAtLength(len);
+  samples.push({ t, x: pt.x, y: pt.y });
+  if (pt.y < minY) minY = pt.y;
+  if (pt.y > maxY) maxY = pt.y;
+}
+const trackHeightRange = maxY - minY;  // total drop, in SVG units
+
+// Decorative ties path (every 12 samples, perpendicular tick)
+function buildTies() {
+  let d = '';
+  for (let i = 0; i < SAMPLES - 1; i += 8) {
+    const a = samples[i];
+    const b = samples[i+1];
+    const dx = b.x - a.x, dy = b.y - a.y;
+    const len = Math.hypot(dx, dy) || 1;
+    // perpendicular unit
+    const px = -dy / len, py = dx / len;
+    const tickLen = 6;
+    const x1 = a.x - px * tickLen;
+    const y1 = a.y - py * tickLen;
+    const x2 = a.x + px * tickLen;
+    const y2 = a.y + py * tickLen;
+    d += `M ${x1.toFixed(1)} ${y1.toFixed(1)} L ${x2.toFixed(1)} ${y2.toFixed(1)} `;
+  }
+  document.getElementById('trackTies').setAttribute('d', d);
+}
+buildTies();
+
+/* =================================================================
+   HEIGHT MARKERS (horizontal reference lines on canvas)
+   ================================================================= */
+function buildHeightMarkers() {
+  const layer = document.getElementById('heightMarkers');
+  const groundY = 430;
+  const topY = minY;
+  // Three reference lines at 25%, 50%, 75% height
+  const fractions = [0.25, 0.5, 0.75];
+  fractions.forEach(f => {
+    const y = groundY - f * (groundY - topY);
+    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    line.setAttribute('x1', 0);
+    line.setAttribute('x2', 800);
+    line.setAttribute('y1', y);
+    line.setAttribute('y2', y);
+    line.setAttribute('class', 'marker-line');
+    layer.appendChild(line);
+  });
+}
+buildHeightMarkers();
+
+/* =================================================================
+   STATE
+   ================================================================= */
+const state = {
+  trackT: 0,            // 0..1 along the track
+  friction: false,
+  predictMode: false,
+  predictRevealed: false,
+  isDragging: false,
+};
+
+/* =================================================================
+   ENERGY MODEL
+   ================================================================= */
+function computeEnergyAt(t) {
+  // Find sample closest to t
+  const idx = Math.max(0, Math.min(SAMPLES, Math.round(t * SAMPLES)));
+  const s = samples[idx];
+  // Height fraction from ground (0 at lowest, 1 at highest point)
+  const heightFrac = (maxY - s.y) / trackHeightRange;
+  // GPE proportional to height
+  const gpe = TOTAL_ENERGY * heightFrac;
+  const released = TOTAL_ENERGY - gpe;
+  let ke, thermal;
+  if (state.friction) {
+    thermal = released * FRICTION_FRACTION;
+    ke = released * (1 - FRICTION_FRACTION);
+  } else {
+    thermal = 0;
+    ke = released;
+  }
+  return { gpe, ke, thermal, total: gpe + ke + thermal, point: s };
+}
+
+/* =================================================================
+   RENDERING
+   ================================================================= */
+const cartEl = document.getElementById('cart');
+const pieWedges = document.getElementById('pieWedges');
+const pieCenter = document.getElementById('pieCenter');
+const dragHint = document.getElementById('dragHint');
+
+function setCart(t) {
+  state.trackT = Math.max(0, Math.min(1, t));
+  const idx = Math.max(0, Math.min(SAMPLES, Math.round(state.trackT * SAMPLES)));
+  const s = samples[idx];
+  cartEl.setAttribute('transform', `translate(${s.x.toFixed(1)} ${(s.y - 8).toFixed(1)})`);
+}
+
+function arcWedge(cx, cy, rOuter, rInner, startAngle, endAngle) {
+  // Angles in radians, clockwise starting from top (-π/2)
+  if (endAngle - startAngle < 0.0001) return '';
+  if (endAngle - startAngle >= Math.PI * 2 - 0.0001) {
+    // Full circle — draw as two half arcs
+    return `M ${cx} ${cy - rOuter} A ${rOuter} ${rOuter} 0 1 1 ${cx} ${cy + rOuter} A ${rOuter} ${rOuter} 0 1 1 ${cx} ${cy - rOuter} Z`;
+  }
+  const x1 = cx + rOuter * Math.cos(startAngle);
+  const y1 = cy + rOuter * Math.sin(startAngle);
+  const x2 = cx + rOuter * Math.cos(endAngle);
+  const y2 = cy + rOuter * Math.sin(endAngle);
+  const largeArc = (endAngle - startAngle) > Math.PI ? 1 : 0;
+  return `M ${cx} ${cy} L ${x1.toFixed(2)} ${y1.toFixed(2)} A ${rOuter} ${rOuter} 0 ${largeArc} 1 ${x2.toFixed(2)} ${y2.toFixed(2)} Z`;
+}
+
+function renderPie(energy, hidden) {
+  pieWedges.innerHTML = '';
+  if (hidden) {
+    // Grey ring while in predict mode, before reveal
+    const ring = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    ring.setAttribute('cx', 100);
+    ring.setAttribute('cy', 100);
+    ring.setAttribute('r', 60);
+    ring.setAttribute('fill', '#E5DEC8');
+    ring.setAttribute('opacity', '0.5');
+    pieWedges.appendChild(ring);
+    pieCenter.innerHTML = '<span class="big">Predict</span><span class="q">?</span>';
+    return;
+  }
+
+  const cx = 100, cy = 100, rOuter = 80;
+  const total = TOTAL_ENERGY;
+  const gpeAng = (energy.gpe / total) * Math.PI * 2;
+  const keAng  = (energy.ke  / total) * Math.PI * 2;
+  const thAng  = (energy.thermal / total) * Math.PI * 2;
+
+  // Start at top (-π/2), going clockwise
+  let cur = -Math.PI / 2;
+  const wedges = [
+    { mag: gpeAng, color: getComputedStyle(document.documentElement).getPropertyValue('--gpe-color').trim() },
+    { mag: keAng,  color: getComputedStyle(document.documentElement).getPropertyValue('--ke-color').trim() },
+    { mag: thAng,  color: getComputedStyle(document.documentElement).getPropertyValue('--thermal-color').trim() },
+  ];
+
+  wedges.forEach(w => {
+    if (w.mag < 0.001) return;
+    const start = cur;
+    const end = cur + w.mag;
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('d', arcWedge(cx, cy, rOuter, 0, start, end));
+    path.setAttribute('fill', w.color);
+    path.setAttribute('opacity', '0.92');
+    pieWedges.appendChild(path);
+    cur = end;
+  });
+
+  // Centre label
+  pieCenter.innerHTML = '<span class="big">Total</span><span style="font-family:Courier New,monospace;font-size:14px;font-weight:700;color:var(--navy);">1000 J</span>';
+}
+
+function setRowValues(energy, hidden) {
+  const fmt = v => Math.round(v) + ' J';
+  const pct = v => Math.round((v / TOTAL_ENERGY) * 100);
+  if (hidden) {
+    document.getElementById('valGpe').textContent = '— J';
+    document.getElementById('valKe').textContent  = '— J';
+    document.getElementById('valTh').textContent  = '— J';
+    document.getElementById('barGpe').style.width = '0%';
+    document.getElementById('barKe').style.width  = '0%';
+    document.getElementById('barTh').style.width  = '0%';
+  } else {
+    document.getElementById('valGpe').textContent = fmt(energy.gpe);
+    document.getElementById('valKe').textContent  = fmt(energy.ke);
+    document.getElementById('valTh').textContent  = fmt(energy.thermal);
+    document.getElementById('barGpe').style.width = pct(energy.gpe) + '%';
+    document.getElementById('barKe').style.width  = pct(energy.ke)  + '%';
+    document.getElementById('barTh').style.width  = pct(energy.thermal) + '%';
+  }
+}
+
+function renderPredictBox() {
+  const box = document.getElementById('predictBox');
+  if (!state.predictMode) {
+    box.innerHTML = '';
+    return;
+  }
+  if (!state.predictRevealed) {
+    box.innerHTML = `
+      <div class="predict-info">
+        <b>Predict mode</b>
+        Move the cart to a new position. Picture in your head what the energy stores will look like — then tap <strong>reveal</strong> to check.
+      </div>
+      <button class="reveal-cta" id="revealBtn">Reveal the answer</button>
+    `;
+    document.getElementById('revealBtn').addEventListener('click', revealPrediction);
+  } else {
+    box.innerHTML = `
+      <div class="predict-info">
+        <b>Revealed ✓</b>
+        Drag the cart again to make a new prediction.
+      </div>
+    `;
+  }
+}
+
+function render() {
+  const energy = computeEnergyAt(state.trackT);
+  const hidden = state.predictMode && !state.predictRevealed;
+  renderPie(energy, hidden);
+  setRowValues(energy, hidden);
+  renderPredictBox();
+}
+
+/* =================================================================
+   ACTIONS
+   ================================================================= */
+function revealPrediction() {
+  state.predictRevealed = true;
+  render();
+}
+
+function resetCart() {
+  setCart(0);
+  state.predictRevealed = false;
+  render();
+}
+
+function toggleFriction() {
+  state.friction = !state.friction;
+  document.getElementById('frictionToggle').classList.toggle('active', state.friction);
+  state.predictRevealed = false;
+  render();
+}
+
+function togglePredict() {
+  state.predictMode = !state.predictMode;
+  state.predictRevealed = false;
+  document.getElementById('predictToggle').classList.toggle('active', state.predictMode);
+  render();
+}
+
+/* =================================================================
+   DRAG HANDLING
+   Pointer events on cart and on the wide invisible track strip.
+   ================================================================= */
+const stage = document.getElementById('stage');
+
+function clientToSvg(clientX, clientY) {
+  const pt = stage.createSVGPoint();
+  pt.x = clientX;
+  pt.y = clientY;
+  const ctm = stage.getScreenCTM();
+  if (!ctm) return { x: 0, y: 0 };
+  const inv = ctm.inverse();
+  const local = pt.matrixTransform(inv);
+  return { x: local.x, y: local.y };
+}
+
+function findClosestSample(svgX, svgY) {
+  // Closest sample in 2D — handles overlap on hills/valleys correctly
+  let bestIdx = 0;
+  let bestDist = Infinity;
+  for (let i = 0; i < samples.length; i++) {
+    const dx = samples[i].x - svgX;
+    const dy = samples[i].y - svgY;
+    const d = dx * dx + dy * dy;
+    if (d < bestDist) { bestDist = d; bestIdx = i; }
+  }
+  return samples[bestIdx];
+}
+
+function onPointerDown(e) {
+  state.isDragging = true;
+  cartEl.classList.add('dragging');
+  // Hide the drag hint after first interaction
+  if (dragHint) dragHint.style.transition = 'opacity 0.4s';
+  if (dragHint) dragHint.style.opacity = '0';
+  // If drag starts in predict-mode after reveal, reset to fresh prediction
+  if (state.predictMode) state.predictRevealed = false;
+  // Capture pointer for smooth dragging
+  try { e.target.setPointerCapture(e.pointerId); } catch (err) {}
+  onPointerMove(e);
+  e.preventDefault();
+}
+
+function onPointerMove(e) {
+  if (!state.isDragging) return;
+  const { x, y } = clientToSvg(e.clientX, e.clientY);
+  const closest = findClosestSample(x, y);
+  setCart(closest.t);
+  render();
+  e.preventDefault();
+}
+
+function onPointerUp(e) {
+  if (!state.isDragging) return;
+  state.isDragging = false;
+  cartEl.classList.remove('dragging');
+  try { e.target.releasePointerCapture(e.pointerId); } catch (err) {}
+}
+
+[cartEl, trackHit].forEach(el => {
+  el.addEventListener('pointerdown', onPointerDown);
+  el.addEventListener('pointermove', onPointerMove);
+  el.addEventListener('pointerup', onPointerUp);
+  el.addEventListener('pointercancel', onPointerUp);
+});
+
+// Also support clicking on the track to teleport cart there
+stage.addEventListener('pointerdown', (e) => {
+  // If they clicked on canvas background but not the cart or track-hit, ignore
+  if (e.target === cartEl || e.target.closest('#cart')) return;
+  if (e.target === trackHit) return;
+  // Background click → ignore
+});
+
+/* =================================================================
+   CONTROLS WIRING
+   ================================================================= */
+document.getElementById('frictionToggle').addEventListener('click', toggleFriction);
+document.getElementById('predictToggle').addEventListener('click', togglePredict);
+document.getElementById('resetBtn').addEventListener('click', resetCart);
+
+// Keyboard support: arrow keys nudge cart
+document.addEventListener('keydown', (e) => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  const step = 0.02;
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+    if (state.predictMode) state.predictRevealed = false;
+    setCart(state.trackT + step);
+    render();
+    e.preventDefault();
+  } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+    if (state.predictMode) state.predictRevealed = false;
+    setCart(state.trackT - step);
+    render();
+    e.preventDefault();
+  } else if (e.key === 'Enter' && state.predictMode && !state.predictRevealed) {
+    revealPrediction();
+  } else if (e.key === 'r' || e.key === 'R') {
+    resetCart();
+  }
+});
+
+/* =================================================================
+   BOOT
+   ================================================================= */
+setCart(0);
+render();
+
+})();
+</script>
+
+</body>
+</html>

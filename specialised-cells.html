@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Specialised Cells — AQA Combined Science GCSE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+--bg-deep:#0a0d1f;
+--bg-mid:#12172e;
+--bg-glow:#1c234a;
+--ink:#f2f4ff;
+--ink-dim:#a8b0d8;
+--ink-dimmer:#6a739c;
+--rule:rgba(255,255,255,0.11);
+--rule-strong:rgba(255,255,255,0.2);
+--sperm:#7ac5ff;
+--nerve:#ffb84a;
+--muscle:#ff6b7a;
+--root:#8dd67f;
+--xylem:#d2a47e;
+--phloem:#c584ff;
+--exam-tip:#ffd166;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%;background:var(--bg-deep);color:var(--ink);font-family:'IBM Plex Sans',sans-serif;overflow-x:hidden}
+body{overflow-y:auto}
+
+/* Ambient background */
+.backdrop{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse at 15% 10%,rgba(80,40,160,0.3),transparent 55%),radial-gradient(ellipse at 85% 90%,rgba(200,50,110,0.22),transparent 55%),radial-gradient(ellipse at 50% 50%,var(--bg-glow),var(--bg-deep) 75%)}
+.grain{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0.5;background-image:radial-gradient(1px 1px at 20% 30%,rgba(255,255,255,0.6),transparent),radial-gradient(1px 1px at 60% 70%,rgba(255,255,255,0.4),transparent),radial-gradient(1px 1px at 80% 20%,rgba(255,255,255,0.5),transparent),radial-gradient(1px 1px at 30% 80%,rgba(255,255,255,0.3),transparent),radial-gradient(1px 1px at 90% 45%,rgba(255,255,255,0.5),transparent),radial-gradient(1px 1px at 10% 60%,rgba(255,255,255,0.3),transparent);background-size:600px 600px;animation:grainDrift 180s linear infinite}
+@keyframes grainDrift{from{transform:translate(0,0)}to{transform:translate(-600px,-600px)}}
+
+main{position:relative;z-index:1;min-height:100vh}
+
+/* Header */
+.site-header{padding:60px 48px 40px;text-align:center;max-width:900px;margin:0 auto}
+.site-kicker{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.35em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:12px}
+.site-title{font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(36px,5vw,56px);line-height:1.05;margin-bottom:10px;letter-spacing:-0.015em}
+.site-title em{font-style:italic}
+.site-subtitle{font-family:'Instrument Serif',serif;font-style:italic;font-size:clamp(16px,1.8vw,19px);color:var(--ink-dim);font-weight:400}
+
+/* Grid */
+.grid-view{padding:20px 48px 80px;max-width:1280px;margin:0 auto}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+
+.card{position:relative;background:rgba(18,23,46,0.75);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--rule);border-radius:4px;padding:0;cursor:pointer;overflow:hidden;transition:all 0.3s cubic-bezier(0.2,0,0.2,1);text-align:left;color:inherit;font-family:inherit;width:100%}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--card-accent);opacity:0.85;transition:opacity 0.3s}
+.card:hover{transform:translateY(-3px);border-color:var(--rule-strong);background:rgba(25,32,62,0.85)}
+.card:hover::before{opacity:1;box-shadow:0 0 16px var(--card-accent)}
+.card-illustration{aspect-ratio:16/10;padding:24px;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,transparent 0%,rgba(0,0,0,0.15) 100%)}
+.card-illustration svg{width:100%;height:100%;max-height:180px}
+.card-body{padding:20px 22px 22px;border-top:1px solid var(--rule)}
+.card-kicker{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:var(--card-accent);margin-bottom:6px;font-weight:500}
+.card-name{font-family:'Instrument Serif',serif;font-weight:400;font-size:26px;line-height:1.1;margin-bottom:6px;letter-spacing:-0.01em}
+.card-name em{font-style:italic}
+.card-function{font-size:13.5px;line-height:1.45;color:var(--ink-dim);font-weight:300}
+.card-hint{margin-top:14px;padding-top:12px;border-top:1px solid var(--rule);font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink-dimmer);display:flex;align-items:center;gap:6px}
+.card-hint svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2}
+
+/* Focus mode */
+.focus-view{display:none;padding:28px 48px 80px;max-width:1200px;margin:0 auto;min-height:100vh}
+.focus-view.active{display:block}
+
+.focus-header{display:flex;align-items:center;gap:16px;margin-bottom:24px;flex-wrap:wrap}
+.back-btn{background:rgba(18,23,46,0.75);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--rule);color:var(--ink);font-family:'IBM Plex Sans',sans-serif;font-size:13px;font-weight:500;letter-spacing:0.04em;padding:10px 18px;border-radius:2px;cursor:pointer;transition:all 0.2s;display:inline-flex;align-items:center;gap:8px}
+.back-btn:hover{background:rgba(30,40,80,0.9);border-color:var(--rule-strong)}
+.back-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2}
+
+.focus-title-block{flex:1;min-width:260px}
+.focus-kicker{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.3em;text-transform:uppercase;color:var(--focus-accent,var(--ink-dim));margin-bottom:4px;font-weight:500}
+.focus-title{font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(30px,4vw,44px);line-height:1;letter-spacing:-0.01em;color:var(--focus-accent,var(--ink))}
+.focus-title em{font-style:italic}
+
+.focus-nav{display:flex;gap:4px;background:rgba(18,23,46,0.75);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--rule);border-radius:100px;padding:3px}
+.focus-nav-btn{background:transparent;border:none;color:var(--ink-dim);font-family:'IBM Plex Sans',sans-serif;font-size:12px;font-weight:500;padding:6px 14px;border-radius:100px;cursor:pointer;transition:all 0.2s}
+.focus-nav-btn:hover{color:var(--ink)}
+.focus-nav-btn:disabled{opacity:0.3;cursor:not-allowed}
+.focus-nav-btn svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;vertical-align:middle}
+
+.focus-layout{display:grid;grid-template-columns:1.3fr 1fr;gap:32px;align-items:start}
+@media(max-width:900px){.focus-layout{grid-template-columns:1fr;gap:20px}}
+
+.focus-illustration{position:relative;background:rgba(18,23,46,0.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--rule);border-radius:4px;aspect-ratio:1/1;overflow:hidden}
+.focus-illustration::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--focus-accent);opacity:0.85}
+.focus-illustration svg{width:100%;height:100%;display:block}
+
+.focus-sidebar{display:flex;flex-direction:column;gap:14px}
+.sidebar-card{background:rgba(18,23,46,0.75);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--rule);border-radius:4px;padding:20px 24px}
+.sidebar-label{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:8px}
+.sidebar-text{font-size:14.5px;line-height:1.55;color:var(--ink);font-weight:300}
+.sidebar-text em{font-style:italic;color:var(--focus-accent)}
+
+.adaptations-card{background:rgba(18,23,46,0.75);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--rule);border-radius:4px;padding:20px 24px 14px}
+.adaptations-heading{font-family:'Instrument Serif',serif;font-size:20px;margin-bottom:14px;letter-spacing:-0.01em}
+.adaptations-heading em{font-style:italic;color:var(--focus-accent)}
+.adaptations-instr{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink-dimmer);margin-bottom:12px}
+.adaptation-list{display:flex;flex-direction:column;gap:6px}
+.adaptation-pill{background:transparent;border:1px solid var(--rule);color:var(--ink-dim);font-family:'IBM Plex Sans',sans-serif;font-size:13px;font-weight:400;padding:10px 14px;border-radius:3px;cursor:pointer;transition:all 0.2s;text-align:left;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.adaptation-pill:hover{border-color:var(--focus-accent);color:var(--ink);background:rgba(255,255,255,0.03)}
+.adaptation-pill .arrow{opacity:0.5;transition:all 0.2s;font-size:14px}
+.adaptation-pill:hover .arrow{opacity:1;transform:translateX(3px)}
+
+/* Hotspots on illustration */
+[data-adaptation]{cursor:pointer;transition:filter 0.2s ease}
+[data-adaptation]:hover{filter:brightness(1.4) drop-shadow(0 0 8px rgba(255,255,255,0.6))}
+
+.hotspot-marker{fill:var(--focus-accent);stroke:#fff;stroke-width:1.5;cursor:pointer;animation:hotspotPulse 2.4s ease-in-out infinite}
+.hotspot-marker-bg{fill:var(--focus-accent);opacity:0.15;cursor:pointer;animation:hotspotPulse 2.4s ease-in-out infinite}
+@keyframes hotspotPulse{0%,100%{opacity:0.6}50%{opacity:1}}
+.hotspot-group{cursor:pointer}
+.hotspot-group:hover .hotspot-marker{filter:drop-shadow(0 0 8px currentColor)}
+.hotspot-label{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;fill:var(--ink);pointer-events:none;font-weight:500}
+
+/* Popup */
+.popup-backdrop{position:fixed;inset:0;background:rgba(7,10,26,0.65);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity 0.25s ease;z-index:100}
+.popup-backdrop.visible{opacity:1;pointer-events:auto}
+
+.adapt-popup{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.94);width:min(560px,calc(100vw - 40px));max-height:calc(100vh - 40px);overflow-y:auto;background:rgba(18,23,46,0.98);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--rule-strong);border-radius:4px;padding:36px 40px 32px;opacity:0;pointer-events:none;transition:all 0.3s cubic-bezier(0.4,0,0.2,1);z-index:101}
+.adapt-popup.visible{opacity:1;transform:translate(-50%,-50%) scale(1);pointer-events:auto}
+.adapt-popup::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--popup-accent);opacity:0.9}
+
+.popup-close{position:absolute;top:14px;right:14px;width:32px;height:32px;background:transparent;border:1px solid var(--rule);border-radius:50%;color:var(--ink-dim);font-size:19px;line-height:1;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center}
+.popup-close:hover{color:var(--ink);border-color:var(--rule-strong)}
+
+.popup-kicker{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:8px}
+.popup-name{font-family:'Instrument Serif',serif;font-weight:400;font-size:34px;line-height:1.05;color:var(--popup-accent);margin-bottom:22px;letter-spacing:-0.01em}
+
+.popup-section{margin-bottom:18px}
+.popup-section:last-child{margin-bottom:0}
+.popup-section-label{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:6px;font-weight:500}
+.popup-section-text{font-size:15px;line-height:1.55;color:var(--ink);font-weight:300}
+
+.popup-exam-tip{margin-top:22px;padding:14px 16px;background:rgba(255,209,102,0.08);border:1px solid rgba(255,209,102,0.22);border-radius:3px}
+.popup-exam-tip-label{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:var(--exam-tip);margin-bottom:6px;font-weight:600;display:flex;align-items:center;gap:6px}
+.popup-exam-tip-label::before{content:'★';font-size:11px}
+.popup-exam-tip-text{font-size:14px;line-height:1.5;color:var(--ink);font-weight:300;font-style:italic}
+
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition-duration:0.2s !important}}
+
+@media(max-width:640px){
+.site-header{padding:40px 20px 24px}
+.grid-view{padding:0 20px 60px}
+.focus-view{padding:20px 20px 60px}
+.adapt-popup{padding:28px 24px 24px}
+.popup-name{font-size:28px}
+.focus-header{margin-bottom:16px}
+.focus-nav{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="backdrop"></div>
+<div class="grain"></div>
+
+<main>
+  <!-- =================== GRID VIEW =================== -->
+  <div class="grid-view" id="gridView">
+    <header class="site-header">
+      <div class="site-kicker">AQA GCSE Combined Science · Biology 1.1.2</div>
+      <h1 class="site-title">Specialised <em>Cells</em></h1>
+      <p class="site-subtitle">Cells adapted for particular jobs — click one to explore how its structure fits its function.</p>
+    </header>
+
+    <div class="card-grid" id="cardGrid">
+      <!--CARDS-->
+    </div>
+  </div>
+
+  <!-- =================== FOCUS VIEW =================== -->
+  <div class="focus-view" id="focusView">
+    <div class="focus-header">
+      <button class="back-btn" id="backBtn">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        All cells
+      </button>
+      <div class="focus-title-block">
+        <div class="focus-kicker" id="focusKicker">Specialised cell</div>
+        <h2 class="focus-title" id="focusTitle">—</h2>
+      </div>
+      <div class="focus-nav">
+        <button class="focus-nav-btn" id="prevCell" aria-label="Previous">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+          Prev
+        </button>
+        <button class="focus-nav-btn" id="nextCell" aria-label="Next">
+          Next
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="focus-layout">
+      <div class="focus-illustration" id="focusIllustration">
+        <!--FOCUS_ILLUSTRATION_SLOT-->
+      </div>
+      <aside class="focus-sidebar">
+        <div class="sidebar-card">
+          <div class="sidebar-label">Where it's found</div>
+          <div class="sidebar-text" id="focusLocation">—</div>
+        </div>
+        <div class="sidebar-card">
+          <div class="sidebar-label">Its job</div>
+          <div class="sidebar-text" id="focusJob">—</div>
+        </div>
+        <div class="adaptations-card">
+          <h3 class="adaptations-heading"><em>Adaptations</em></h3>
+          <div class="adaptations-instr">Click any adaptation — on the diagram or here</div>
+          <div class="adaptation-list" id="adaptationList"></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</main>
+
+<!-- Popup -->
+<div class="popup-backdrop" id="popupBackdrop"></div>
+<div class="adapt-popup" id="adaptPopup" role="dialog" aria-modal="true" aria-labelledby="popupName">
+  <button class="popup-close" id="popupClose" aria-label="Close">×</button>
+  <div class="popup-kicker" id="popupKicker">Adaptation</div>
+  <h2 class="popup-name" id="popupName">—</h2>
+  <div class="popup-section">
+    <div class="popup-section-label">What it is</div>
+    <div class="popup-section-text" id="popupAdaptation">—</div>
+  </div>
+  <div class="popup-section">
+    <div class="popup-section-label">Why it helps</div>
+    <div class="popup-section-text" id="popupWhy">—</div>
+  </div>
+  <div class="popup-exam-tip">
+    <div class="popup-exam-tip-label">Exam tip</div>
+    <div class="popup-exam-tip-text" id="popupExamTip">—</div>
+  </div>
+</div>
+
+<script>
+/* ================== DATA ================== */
+const cells = {
+  sperm: {
+    name: 'Sperm cell',
+    nameHtml: 'Sperm <em>cell</em>',
+    accent: 'var(--sperm)',
+    accentLight: '#7ac5ff',
+    location: 'Testes, in the male reproductive system.',
+    job: 'To carry the father\u2019s genetic material (DNA) to the egg and fertilise it.',
+    cardPreview: 'spermPreview',
+    illustration: 'spermIllus',
+    adaptations: [
+      {
+        id: 'sperm-tail',
+        name: 'Long tail (flagellum)',
+        adaptation: 'A long, whip-like tail at the back of the cell that beats side to side.',
+        why: 'Lets the sperm swim through the female reproductive tract to reach the egg. Without it, the sperm couldn\u2019t move.',
+        examTip: 'Say \u201Cswims to the egg\u201D \u2014 not just \u201Cfor movement\u201D. Examiners want you to link the adaptation to the specific job.'
+      },
+      {
+        id: 'sperm-mito',
+        name: 'Many mitochondria',
+        adaptation: 'A high number of mitochondria packed into the middle section (the \u201Cmid-piece\u201D).',
+        why: 'Mitochondria release energy through respiration. The tail needs a lot of energy to keep beating on the long swim to the egg.',
+        examTip: 'Always link mitochondria \u2192 respiration \u2192 energy \u2192 for the tail. Missing the word \u201Crespiration\u201D drops marks.'
+      },
+      {
+        id: 'sperm-acrosome',
+        name: 'Acrosome (enzyme head)',
+        adaptation: 'The tip of the head contains enzymes stored in a structure called the acrosome.',
+        why: 'When the sperm reaches the egg, these enzymes digest the egg\u2019s outer membrane so the sperm can get in and fertilise it.',
+        examTip: 'A common wrong answer is \u201Cbreaks the egg open\u201D. Use the words \u201Cdigest\u201D or \u201Cbreak down the membrane\u201D.'
+      },
+      {
+        id: 'sperm-nucleus',
+        name: 'Haploid nucleus',
+        adaptation: 'The nucleus contains only 23 chromosomes \u2014 half the normal number (haploid).',
+        why: 'When sperm (23) joins with egg (23), the fertilised cell has the full 46 chromosomes. This is how sexual reproduction keeps the chromosome number constant between generations.',
+        examTip: 'Haploid means HALF. 23 chromosomes in sperm, 23 in egg, 46 in zygote. Learn these numbers.'
+      }
+    ]
+  },
+  nerve: {
+    name: 'Nerve cell (neurone)',
+    nameHtml: 'Nerve <em>cell</em>',
+    accent: 'var(--nerve)',
+    accentLight: '#ffb84a',
+    location: 'Brain, spinal cord, and nerves throughout the body.',
+    job: 'To carry electrical impulses quickly from one part of the body to another.',
+    cardPreview: 'nervePreview',
+    illustration: 'nerveIllus',
+    adaptations: [
+      {
+        id: 'nerve-length',
+        name: 'Very long axon',
+        adaptation: 'The axon (the long thin part) can be up to a metre long in humans \u2014 reaching from your spine to your toes.',
+        why: 'A single cell can carry an impulse a long distance without the signal needing to jump between cells, which speeds up the response.',
+        examTip: 'Say \u201Ccarries impulses over long distances\u201D. Don\u2019t just say \u201Cit\u2019s long\u201D \u2014 link the length to the function.'
+      },
+      {
+        id: 'nerve-myelin',
+        name: 'Myelin sheath',
+        adaptation: 'A fatty layer wrapped around the axon in segments, with small gaps between them.',
+        why: 'The myelin sheath insulates the axon and makes the electrical impulse travel much faster \u2014 the signal effectively jumps from gap to gap.',
+        examTip: 'Use the word \u201Cinsulates\u201D. Myelin \u2192 insulation \u2192 faster impulse.'
+      },
+      {
+        id: 'nerve-dendrites',
+        name: 'Dendrites',
+        adaptation: 'Many branched extensions at one end of the cell (the cell body end).',
+        why: 'Dendrites receive signals from many other nerve cells at the same time, so one neurone can gather information from lots of sources.',
+        examTip: 'Dendrites RECEIVE signals. Axons CARRY signals away. Don\u2019t mix these up.'
+      },
+      {
+        id: 'nerve-synapse',
+        name: 'Synapse (nerve ending)',
+        adaptation: 'The end of the axon has branched endings (\u201Csynaptic terminals\u201D) that sit very close to the next nerve cell or muscle.',
+        why: 'Chemicals called neurotransmitters are released at the synapse to pass the signal on. The close gap means the signal passes quickly.',
+        examTip: 'GCSE often asks how a signal crosses a synapse. The answer is: chemicals are released, diffuse across the gap, and trigger the next cell.'
+      }
+    ]
+  },
+  muscle: {
+    name: 'Muscle cell',
+    nameHtml: 'Muscle <em>cell</em>',
+    accent: 'var(--muscle)',
+    accentLight: '#ff6b7a',
+    location: 'In all muscles \u2014 attached to bones (skeletal muscle), in the heart (cardiac), or in walls of organs (smooth).',
+    job: 'To contract (get shorter) and cause movement \u2014 of limbs, organs, or the whole body.',
+    cardPreview: 'musclePreview',
+    illustration: 'muscleIllus',
+    adaptations: [
+      {
+        id: 'muscle-fibres',
+        name: 'Contractile protein fibres',
+        adaptation: 'Contains long parallel protein fibres (actin and myosin) arranged along the length of the cell.',
+        why: 'These fibres slide past each other when the cell contracts, making the whole cell shorter and generating force to move bones or squeeze organs.',
+        examTip: 'For GCSE Combined you don\u2019t need to name actin/myosin \u2014 just say \u201Cprotein fibres that slide past each other to contract\u201D.'
+      },
+      {
+        id: 'muscle-mito',
+        name: 'Many mitochondria',
+        adaptation: 'Muscle cells contain very large numbers of mitochondria.',
+        why: 'Contracting takes huge amounts of energy. Mitochondria release energy through aerobic respiration, keeping the muscle working.',
+        examTip: 'Muscle and sperm both need \u201Cmany mitochondria for energy\u201D \u2014 but always link it to the specific job (contracting, swimming).'
+      },
+      {
+        id: 'muscle-glycogen',
+        name: 'Stores of glycogen',
+        adaptation: 'Muscle cells store a carbohydrate called glycogen.',
+        why: 'Glycogen is a quick-release energy store that can be broken down to glucose for respiration, so the muscle has fuel ready when needed.',
+        examTip: 'Glycogen \u2192 glucose \u2192 respiration \u2192 energy. Memorise this chain.'
+      }
+    ]
+  },
+  root: {
+    name: 'Root hair cell',
+    nameHtml: 'Root hair <em>cell</em>',
+    accent: 'var(--root)',
+    accentLight: '#8dd67f',
+    location: 'On the surface of plant roots, just behind the root tip.',
+    job: 'To absorb water and mineral ions from the soil and pass them into the rest of the plant.',
+    cardPreview: 'rootPreview',
+    illustration: 'rootIllus',
+    adaptations: [
+      {
+        id: 'root-projection',
+        name: 'Long hair-like projection',
+        adaptation: 'A long, thin extension sticks out from the cell into the soil.',
+        why: 'This hugely increases the surface area of the cell, so more water can be absorbed through the cell membrane at the same time.',
+        examTip: 'The magic phrase is \u201Clarge surface area for absorption of water/mineral ions\u201D. Memorise this \u2014 it appears on nearly every exam.'
+      },
+      {
+        id: 'root-mito',
+        name: 'Many mitochondria',
+        adaptation: 'The cell contains lots of mitochondria.',
+        why: 'Mineral ions are absorbed by active transport, which needs energy. Mitochondria release this energy through respiration.',
+        examTip: 'Water moves by OSMOSIS (no energy). Mineral ions move by ACTIVE TRANSPORT (needs energy from mitochondria). Don\u2019t mix these up.'
+      },
+      {
+        id: 'root-no-chloro',
+        name: 'No chloroplasts',
+        adaptation: 'Unlike most plant cells, root hair cells have no chloroplasts.',
+        why: 'Roots are underground with no sunlight, so there\u2019s no point having chloroplasts \u2014 photosynthesis couldn\u2019t happen there anyway.',
+        examTip: 'If asked \u201Cwhy no chloroplasts?\u201D \u2014 the answer is no sunlight underground, so they\u2019d be useless.'
+      }
+    ]
+  },
+  xylem: {
+    name: 'Xylem cell',
+    nameHtml: 'Xylem <em>cell</em>',
+    accent: 'var(--xylem)',
+    accentLight: '#d2a47e',
+    location: 'In the xylem tissue of plant stems, roots, and leaves \u2014 running through the whole plant.',
+    job: 'To carry water and dissolved minerals UP from the roots to the leaves (transpiration stream).',
+    cardPreview: 'xylemPreview',
+    illustration: 'xylemIllus',
+    adaptations: [
+      {
+        id: 'xylem-dead',
+        name: 'Dead, hollow cells',
+        adaptation: 'Xylem cells die as they mature and lose their contents (no nucleus, no cytoplasm).',
+        why: 'This creates a continuous hollow tube with nothing in the way, so water can flow up the plant without obstruction.',
+        examTip: 'Xylem cells are DEAD; phloem cells are ALIVE. This is a classic comparison question.'
+      },
+      {
+        id: 'xylem-endwalls',
+        name: 'No end walls',
+        adaptation: 'The end walls between xylem cells break down, joining the cells into one long, continuous tube.',
+        why: 'Water can travel up the plant in a single unbroken column \u2014 if the walls were in the way, the flow would be interrupted at every cell.',
+        examTip: 'Think of xylem as a drinking straw: top to bottom, nothing blocking it.'
+      },
+      {
+        id: 'xylem-lignin',
+        name: 'Lignin in cell walls',
+        adaptation: 'The cell walls are thickened with a tough, waterproof substance called lignin, often in spirals or rings.',
+        why: 'Lignin makes the xylem strong enough not to collapse under the pressure of water being pulled up, and provides support to keep the whole plant upright.',
+        examTip: 'Lignin has two jobs: \u201Cstrengthens xylem\u201D and \u201Csupports the plant\u201D. Mention both for full marks.'
+      }
+    ]
+  },
+  phloem: {
+    name: 'Phloem cell',
+    nameHtml: 'Phloem <em>cell</em>',
+    accent: 'var(--phloem)',
+    accentLight: '#c584ff',
+    location: 'In the phloem tissue of plants, alongside the xylem.',
+    job: 'To carry dissolved sugars (food) made in the leaves to all other parts of the plant \u2014 this is called translocation.',
+    cardPreview: 'phloemPreview',
+    illustration: 'phloemIllus',
+    adaptations: [
+      {
+        id: 'phloem-sieveplate',
+        name: 'Sieve plates',
+        adaptation: 'The end walls of phloem cells have many small holes, forming a \u201Csieve plate\u201D.',
+        why: 'Dissolved sugars can flow through the holes from one cell to the next, so the sap can move up OR down the plant as needed.',
+        examTip: 'Phloem moves sugars in BOTH directions (up and down). Xylem only moves water UP. This two-way vs one-way point is examined a lot.'
+      },
+      {
+        id: 'phloem-alive',
+        name: 'Alive but no nucleus',
+        adaptation: 'Phloem cells stay alive but lose most of their internal structures, including the nucleus, as they mature.',
+        why: 'Without the nucleus and other organelles cluttering up the cell, there is more space for the sugary sap to flow through quickly.',
+        examTip: 'Phloem = alive but \u201Chollowed out\u201D. Xylem = fully dead. Don\u2019t confuse these two points.'
+      },
+      {
+        id: 'phloem-companion',
+        name: 'Companion cells',
+        adaptation: 'Next to each phloem cell is a small \u201Ccompanion cell\u201D with a nucleus and lots of mitochondria.',
+        why: 'Because the phloem cell has no nucleus, the companion cell controls it and provides energy (from respiration) to move the sugars against gravity.',
+        examTip: 'Translocation uses ENERGY \u2014 the companion cell supplies it. If asked \u201Cwhy do phloem cells need companion cells?\u201D this is the answer.'
+      }
+    ]
+  }
+};
+
+const cellOrder = ['sperm','nerve','muscle','root','xylem','phloem'];
+
+/* ================== SVG TEMPLATES ================== */
+const svgTemplates = {
+  /* ----- SPERM ----- */
+  spermPreview: `<svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="spHead" cx="40%" cy="40%">
+        <stop offset="0%" stop-color="#b4e0ff"/>
+        <stop offset="100%" stop-color="#3d8fcf"/>
+      </radialGradient>
+    </defs>
+    <ellipse cx="70" cy="90" rx="30" ry="22" fill="url(#spHead)" stroke="#7ac5ff" stroke-width="1.5"/>
+    <circle cx="70" cy="90" r="11" fill="#1b4b9c" opacity="0.7"/>
+    <rect x="95" y="84" width="45" height="12" fill="#7ac5ff" opacity="0.6" rx="3"/>
+    <path d="M 140 90 Q 170 70, 200 95 T 260 92" stroke="#7ac5ff" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+  </svg>`,
+
+  spermIllus: `<svg viewBox="0 0 900 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+    <defs>
+      <radialGradient id="spIllusHead" cx="40%" cy="40%">
+        <stop offset="0%" stop-color="#cdebff"/>
+        <stop offset="70%" stop-color="#5ca9e0"/>
+        <stop offset="100%" stop-color="#2d6da0"/>
+      </radialGradient>
+      <linearGradient id="spIllusMid" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#7ac5ff" stop-opacity="0.7"/>
+        <stop offset="100%" stop-color="#7ac5ff" stop-opacity="0.3"/>
+      </linearGradient>
+      <filter id="spGlow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    </defs>
+
+    <!-- Tail (flagellum) - wavy -->
+    <g data-adaptation="sperm-tail">
+      <path d="M 350 450 Q 430 380, 500 450 T 650 450 T 800 450" stroke="#7ac5ff" stroke-width="8" fill="none" stroke-linecap="round" filter="url(#spGlow)"/>
+    </g>
+
+    <!-- Mid-piece with mitochondria -->
+    <g data-adaptation="sperm-mito">
+      <rect x="245" y="420" width="110" height="60" fill="url(#spIllusMid)" stroke="#7ac5ff" stroke-width="2" rx="4"/>
+      <ellipse cx="265" cy="450" rx="10" ry="4" fill="#ff9f7a"/>
+      <ellipse cx="285" cy="450" rx="10" ry="4" fill="#ff9f7a"/>
+      <ellipse cx="305" cy="450" rx="10" ry="4" fill="#ff9f7a"/>
+      <ellipse cx="325" cy="450" rx="10" ry="4" fill="#ff9f7a"/>
+      <ellipse cx="345" cy="450" rx="10" ry="4" fill="#ff9f7a"/>
+    </g>
+
+    <!-- Head (main oval) -->
+    <g>
+      <ellipse cx="180" cy="450" rx="80" ry="60" fill="url(#spIllusHead)" stroke="#7ac5ff" stroke-width="2.5" filter="url(#spGlow)"/>
+      <!-- Nucleus -->
+      <g data-adaptation="sperm-nucleus">
+        <ellipse cx="180" cy="455" rx="42" ry="32" fill="#1b4b9c" opacity="0.75"/>
+        <text x="180" y="461" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="14" font-weight="600" fill="#cdebff">23</text>
+      </g>
+      <!-- Acrosome (cap at front) -->
+      <g data-adaptation="sperm-acrosome">
+        <path d="M 100 440 Q 105 400, 140 405 L 145 450 Q 135 472, 120 470 Q 102 465, 100 450 Z" fill="#ffb84a" opacity="0.85" stroke="#e69d2a" stroke-width="1.5"/>
+      </g>
+    </g>
+
+    <!-- Labels -->
+    <g font-family="IBM Plex Mono,monospace" font-size="13" fill="#f2f4ff" font-weight="500" letter-spacing="1">
+      <text x="120" y="365" text-anchor="middle" opacity="0.9">ACROSOME</text>
+      <line x1="120" y1="372" x2="120" y2="395" stroke="#ffb84a" stroke-width="1" opacity="0.5"/>
+      <text x="300" y="380" text-anchor="middle" opacity="0.9">MID-PIECE</text>
+      <line x1="300" y1="388" x2="300" y2="415" stroke="#7ac5ff" stroke-width="1" opacity="0.5"/>
+      <text x="600" y="400" text-anchor="middle" opacity="0.9">TAIL</text>
+      <line x1="600" y1="408" x2="600" y2="435" stroke="#7ac5ff" stroke-width="1" opacity="0.5"/>
+      <text x="180" y="550" text-anchor="middle" opacity="0.9">HEAD</text>
+      <text x="180" y="580" text-anchor="middle" font-size="11" opacity="0.6">(contains nucleus)</text>
+    </g>
+  </svg>`,
+
+  /* ----- NERVE ----- */
+  nervePreview: `<svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="60" cy="90" r="28" fill="#ffb84a" opacity="0.4" stroke="#ffb84a" stroke-width="1.5"/>
+    <circle cx="60" cy="90" r="12" fill="#c77a3c"/>
+    <g stroke="#ffb84a" stroke-width="2.5" stroke-linecap="round" fill="none">
+      <line x1="34" y1="70" x2="18" y2="52"/>
+      <line x1="38" y1="112" x2="22" y2="130"/>
+      <line x1="32" y1="90" x2="10" y2="90"/>
+      <line x1="42" y1="60" x2="30" y2="40"/>
+    </g>
+    <rect x="88" y="83" width="180" height="14" fill="#ffb84a" opacity="0.35" rx="7"/>
+    <rect x="100" y="83" width="30" height="14" fill="#ffb84a" rx="2"/>
+    <rect x="148" y="83" width="30" height="14" fill="#ffb84a" rx="2"/>
+    <rect x="196" y="83" width="30" height="14" fill="#ffb84a" rx="2"/>
+    <rect x="244" y="83" width="24" height="14" fill="#ffb84a" rx="2"/>
+    <g stroke="#ffb84a" stroke-width="2" stroke-linecap="round" fill="none">
+      <line x1="270" y1="90" x2="286" y2="78"/>
+      <line x1="270" y1="90" x2="286" y2="102"/>
+    </g>
+  </svg>`,
+
+  nerveIllus: `<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+    <defs>
+      <radialGradient id="nrCell" cx="50%" cy="50%">
+        <stop offset="0%" stop-color="#ffe0a8"/>
+        <stop offset="100%" stop-color="#c77a3c"/>
+      </radialGradient>
+      <filter id="nrGlow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    </defs>
+
+    <!-- Dendrites (left) -->
+    <g data-adaptation="nerve-dendrites" stroke="#ffb84a" stroke-width="4" stroke-linecap="round" fill="none" filter="url(#nrGlow)">
+      <path d="M 150 250 Q 110 180, 60 140"/>
+      <path d="M 150 250 Q 100 220, 40 200"/>
+      <path d="M 150 250 Q 100 250, 40 245"/>
+      <path d="M 150 250 Q 100 285, 40 300"/>
+      <path d="M 150 250 Q 110 320, 60 360"/>
+      <!-- Sub-branches -->
+      <path d="M 75 160 L 55 135"/>
+      <path d="M 75 160 L 85 130"/>
+      <path d="M 60 340 L 40 325"/>
+      <path d="M 60 340 L 50 360"/>
+    </g>
+
+    <!-- Cell body -->
+    <circle cx="200" cy="250" r="60" fill="url(#nrCell)" stroke="#ffb84a" stroke-width="2.5" filter="url(#nrGlow)"/>
+    <circle cx="210" cy="240" r="22" fill="#6b3a18" opacity="0.75"/>
+
+    <!-- Axon with myelin sheath -->
+    <g>
+      <!-- Axon base line -->
+      <line x1="260" y1="250" x2="820" y2="250" stroke="#c77a3c" stroke-width="6" stroke-linecap="round"/>
+      <!-- Myelin segments -->
+      <g data-adaptation="nerve-myelin">
+        <rect x="280" y="236" width="90" height="28" rx="6" ry="6" fill="#ffb84a" opacity="0.55" stroke="#ffb84a" stroke-width="1.5"/>
+        <rect x="385" y="236" width="90" height="28" rx="6" ry="6" fill="#ffb84a" opacity="0.55" stroke="#ffb84a" stroke-width="1.5"/>
+        <rect x="490" y="236" width="90" height="28" rx="6" ry="6" fill="#ffb84a" opacity="0.55" stroke="#ffb84a" stroke-width="1.5"/>
+        <rect x="595" y="236" width="90" height="28" rx="6" ry="6" fill="#ffb84a" opacity="0.55" stroke="#ffb84a" stroke-width="1.5"/>
+        <rect x="700" y="236" width="90" height="28" rx="6" ry="6" fill="#ffb84a" opacity="0.55" stroke="#ffb84a" stroke-width="1.5"/>
+      </g>
+    </g>
+
+    <!-- Axon length highlight region -->
+    <g data-adaptation="nerve-length">
+      <rect x="260" y="220" width="560" height="60" fill="transparent"/>
+    </g>
+
+    <!-- Synaptic terminals (right end) -->
+    <g data-adaptation="nerve-synapse" stroke="#ffb84a" stroke-width="3.5" stroke-linecap="round" fill="none" filter="url(#nrGlow)">
+      <path d="M 820 250 L 855 235"/>
+      <path d="M 820 250 L 860 250"/>
+      <path d="M 820 250 L 855 265"/>
+      <path d="M 820 250 L 845 220"/>
+      <path d="M 820 250 L 845 280"/>
+      <circle cx="860" cy="235" r="5" fill="#ffb84a" stroke="none"/>
+      <circle cx="865" cy="250" r="5" fill="#ffb84a" stroke="none"/>
+      <circle cx="860" cy="265" r="5" fill="#ffb84a" stroke="none"/>
+      <circle cx="850" cy="220" r="4" fill="#ffb84a" stroke="none"/>
+      <circle cx="850" cy="280" r="4" fill="#ffb84a" stroke="none"/>
+    </g>
+
+    <!-- Labels -->
+    <g font-family="IBM Plex Mono,monospace" font-size="13" fill="#f2f4ff" font-weight="500" letter-spacing="1">
+      <text x="60" y="80" text-anchor="middle" opacity="0.9">DENDRITES</text>
+      <line x1="60" y1="87" x2="60" y2="120" stroke="#ffb84a" stroke-width="1" opacity="0.5"/>
+      <text x="200" y="350" text-anchor="middle" opacity="0.9">CELL BODY</text>
+      <text x="425" y="190" text-anchor="middle" opacity="0.9">MYELIN SHEATH</text>
+      <line x1="425" y1="197" x2="425" y2="228" stroke="#ffb84a" stroke-width="1" opacity="0.5"/>
+      <text x="540" y="310" text-anchor="middle" opacity="0.9" font-size="11">AXON (long)</text>
+      <text x="860" y="335" text-anchor="middle" opacity="0.9" font-size="11">SYNAPSE</text>
+      <line x1="860" y1="327" x2="860" y2="295" stroke="#ffb84a" stroke-width="1" opacity="0.5"/>
+    </g>
+  </svg>`,
+
+  /* ----- MUSCLE ----- */
+  musclePreview: `<svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+    <rect x="30" y="60" width="240" height="60" fill="#ff6b7a" opacity="0.25" stroke="#ff6b7a" stroke-width="1.5" rx="8"/>
+    <g stroke="#ff6b7a" stroke-width="2" opacity="0.9">
+      <line x1="40" y1="75" x2="260" y2="75"/>
+      <line x1="40" y1="90" x2="260" y2="90"/>
+      <line x1="40" y1="105" x2="260" y2="105"/>
+    </g>
+    <g fill="#ff9f7a">
+      <ellipse cx="80" cy="135" rx="8" ry="3"/>
+      <ellipse cx="150" cy="135" rx="8" ry="3"/>
+      <ellipse cx="220" cy="135" rx="8" ry="3"/>
+    </g>
+  </svg>`,
+
+  muscleIllus: `<svg viewBox="0 0 900 550" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+    <defs>
+      <linearGradient id="mcCell" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="#ffc5cc" stop-opacity="0.4"/>
+        <stop offset="100%" stop-color="#ff6b7a" stop-opacity="0.3"/>
+      </linearGradient>
+      <filter id="mcGlow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    </defs>
+
+    <!-- Muscle fibre cell (elongated) -->
+    <rect x="60" y="150" width="780" height="250" rx="30" ry="30" fill="url(#mcCell)" stroke="#ff6b7a" stroke-width="3" filter="url(#mcGlow)"/>
+
+    <!-- Contractile protein fibres (bands) -->
+    <g data-adaptation="muscle-fibres">
+      <g stroke="#ff6b7a" stroke-width="2" opacity="0.9">
+        <line x1="90" y1="200" x2="810" y2="200"/>
+        <line x1="90" y1="230" x2="810" y2="230"/>
+        <line x1="90" y1="260" x2="810" y2="260"/>
+        <line x1="90" y1="290" x2="810" y2="290"/>
+        <line x1="90" y1="320" x2="810" y2="320"/>
+        <line x1="90" y1="350" x2="810" y2="350"/>
+      </g>
+      <!-- Dark bands (striations) -->
+      <g fill="#c74956" opacity="0.35">
+        <rect x="130" y="195" width="18" height="160" rx="2"/>
+        <rect x="220" y="195" width="18" height="160" rx="2"/>
+        <rect x="310" y="195" width="18" height="160" rx="2"/>
+        <rect x="400" y="195" width="18" height="160" rx="2"/>
+        <rect x="490" y="195" width="18" height="160" rx="2"/>
+        <rect x="580" y="195" width="18" height="160" rx="2"/>
+        <rect x="670" y="195" width="18" height="160" rx="2"/>
+        <rect x="760" y="195" width="18" height="160" rx="2"/>
+      </g>
+    </g>
+
+    <!-- Mitochondria (between the fibre rows) -->
+    <g data-adaptation="muscle-mito">
+      <ellipse cx="170" cy="175" rx="18" ry="7" fill="#ff9f7a"/>
+      <ellipse cx="270" cy="175" rx="18" ry="7" fill="#ff9f7a"/>
+      <ellipse cx="370" cy="175" rx="18" ry="7" fill="#ff9f7a"/>
+      <ellipse cx="470" cy="175" rx="18" ry="7" fill="#ff9f7a"/>
+      <ellipse cx="570" cy="175" rx="18" ry="7" fill="#ff9f7a"/>
+      <ellipse cx="670" cy="175" rx="18" ry="7" fill="#ff9f7a"/>
+      <ellipse cx="770" cy="175" rx="18" ry="7" fill="#ff9f7a"/>
+      <ellipse cx="170" cy="377" rx="18" ry="7" fill="#ff9f7a"/>
+      <ellipse cx="270" cy="377" rx="18" ry="7" fill="#ff9f7a"/>
+      <ellipse cx="370" cy="377" rx="18" ry="7" fill="#ff9f7a"/>
+      <ellipse cx="470" cy="377" rx="18" ry="7" fill="#ff9f7a"/>
+      <ellipse cx="570" cy="377" rx="18" ry="7" fill="#ff9f7a"/>
+      <ellipse cx="670" cy="377" rx="18" ry="7" fill="#ff9f7a"/>
+      <ellipse cx="770" cy="377" rx="18" ry="7" fill="#ff9f7a"/>
+    </g>
+
+    <!-- Glycogen granules (dots scattered) -->
+    <g data-adaptation="muscle-glycogen" fill="#8b4d3a">
+      <circle cx="120" cy="420" r="5"/>
+      <circle cx="200" cy="430" r="4"/>
+      <circle cx="280" cy="420" r="5"/>
+      <circle cx="360" cy="435" r="4"/>
+      <circle cx="440" cy="420" r="5"/>
+      <circle cx="520" cy="430" r="4"/>
+      <circle cx="600" cy="420" r="5"/>
+      <circle cx="680" cy="435" r="4"/>
+      <circle cx="760" cy="420" r="5"/>
+      <circle cx="160" cy="440" r="3"/>
+      <circle cx="340" cy="440" r="3"/>
+      <circle cx="500" cy="440" r="3"/>
+      <circle cx="720" cy="440" r="3"/>
+    </g>
+
+    <!-- Labels -->
+    <g font-family="IBM Plex Mono,monospace" font-size="13" fill="#f2f4ff" font-weight="500" letter-spacing="1">
+      <text x="450" y="125" text-anchor="middle" opacity="0.9">PROTEIN FIBRES (contract)</text>
+      <line x1="450" y1="132" x2="450" y2="192" stroke="#ff6b7a" stroke-width="1" opacity="0.5"/>
+      <text x="80" y="160" text-anchor="start" opacity="0.9" font-size="11">MITOCHONDRIA</text>
+      <line x1="80" y1="168" x2="130" y2="173" stroke="#ff9f7a" stroke-width="1" opacity="0.5"/>
+      <text x="450" y="490" text-anchor="middle" opacity="0.9">GLYCOGEN STORES</text>
+      <line x1="450" y1="473" x2="450" y2="448" stroke="#8b4d3a" stroke-width="1" opacity="0.5"/>
+    </g>
+  </svg>`,
+
+  /* ----- ROOT HAIR ----- */
+  rootPreview: `<svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+    <rect x="130" y="45" width="100" height="110" fill="#8dd67f" opacity="0.2" stroke="#8dd67f" stroke-width="1.5" rx="6"/>
+    <circle cx="170" cy="90" r="16" fill="#4a9eff" opacity="0.8"/>
+    <path d="M 130 100 Q 90 95, 60 90 Q 40 85, 25 90" stroke="#8dd67f" stroke-width="12" fill="none" stroke-linecap="round"/>
+    <g fill="#5d9c1e" opacity="0.7">
+      <circle cx="260" cy="180" r="6"/>
+      <circle cx="240" cy="185" r="5"/>
+      <circle cx="280" cy="170" r="4"/>
+      <circle cx="265" cy="160" r="5"/>
+    </g>
+  </svg>`,
+
+  rootIllus: `<svg viewBox="0 0 900 700" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+    <defs>
+      <linearGradient id="rhSoil" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="#5d3a1f" stop-opacity="0.3"/>
+        <stop offset="100%" stop-color="#3d2310" stop-opacity="0.5"/>
+      </linearGradient>
+      <linearGradient id="rhCell" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="#d4f0c4" stop-opacity="0.35"/>
+        <stop offset="100%" stop-color="#8dd67f" stop-opacity="0.3"/>
+      </linearGradient>
+      <filter id="rhGlow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    </defs>
+
+    <!-- Soil background -->
+    <rect x="0" y="0" width="460" height="700" fill="url(#rhSoil)"/>
+    <g fill="#8b5a2b" opacity="0.6">
+      <circle cx="80" cy="120" r="18"/>
+      <circle cx="180" cy="80" r="14"/>
+      <circle cx="120" cy="240" r="16"/>
+      <circle cx="60" cy="380" r="20"/>
+      <circle cx="200" cy="450" r="15"/>
+      <circle cx="100" cy="560" r="17"/>
+      <circle cx="240" cy="620" r="13"/>
+      <circle cx="40" cy="620" r="14"/>
+      <circle cx="320" cy="140" r="11"/>
+      <circle cx="360" cy="280" r="14"/>
+      <circle cx="300" cy="400" r="12"/>
+      <circle cx="380" cy="500" r="15"/>
+    </g>
+
+    <!-- Water/mineral ions in soil -->
+    <g fill="#4aa3ff" opacity="0.7">
+      <circle cx="130" cy="180" r="5"/>
+      <circle cx="200" cy="220" r="4"/>
+      <circle cx="90" cy="320" r="5"/>
+      <circle cx="170" cy="360" r="4"/>
+      <circle cx="140" cy="450" r="5"/>
+      <circle cx="220" cy="500" r="4"/>
+      <circle cx="80" cy="480" r="4"/>
+      <circle cx="300" cy="200" r="4"/>
+      <circle cx="340" cy="350" r="5"/>
+      <circle cx="280" cy="550" r="4"/>
+    </g>
+
+    <!-- The root hair cell body -->
+    <rect x="490" y="180" width="340" height="340" rx="30" ry="30" fill="url(#rhCell)" stroke="#8dd67f" stroke-width="3" filter="url(#rhGlow)"/>
+
+    <!-- Root hair projection -->
+    <g data-adaptation="root-projection">
+      <path d="M 490 320 Q 420 325, 340 340 Q 260 350, 180 355 Q 120 360, 70 365" stroke="#8dd67f" stroke-width="52" fill="none" stroke-linecap="round" filter="url(#rhGlow)"/>
+      <path d="M 490 335 Q 420 340, 340 355 Q 260 365, 180 370 Q 120 375, 70 380" stroke="#a4d85a" stroke-width="36" fill="none" stroke-linecap="round" opacity="0.7"/>
+    </g>
+
+    <!-- Nucleus -->
+    <circle cx="680" cy="300" r="48" fill="#4a9eff" opacity="0.85" stroke="#7bb8ff" stroke-width="2"/>
+
+    <!-- Mitochondria -->
+    <g data-adaptation="root-mito">
+      <ellipse cx="580" cy="230" rx="22" ry="9" fill="#ff9f7a" transform="rotate(-20 580 230)"/>
+      <ellipse cx="760" cy="240" rx="20" ry="8" fill="#ff9f7a" transform="rotate(30 760 240)"/>
+      <ellipse cx="560" cy="460" rx="22" ry="9" fill="#ff9f7a" transform="rotate(45 560 460)"/>
+      <ellipse cx="770" cy="440" rx="20" ry="8" fill="#ff9f7a" transform="rotate(-30 770 440)"/>
+      <ellipse cx="780" cy="380" rx="18" ry="7" fill="#ff9f7a" transform="rotate(90 780 380)"/>
+      <ellipse cx="540" cy="360" rx="18" ry="7" fill="#ff9f7a" transform="rotate(60 540 360)"/>
+    </g>
+
+    <!-- "No chloroplasts" - hotspot is a transparent area with annotation -->
+    <g data-adaptation="root-no-chloro">
+      <rect x="600" y="380" width="80" height="60" fill="transparent"/>
+      <g transform="translate(640 410)">
+        <circle r="22" fill="none" stroke="#8dd67f" stroke-width="2" stroke-dasharray="4 3" opacity="0.7"/>
+        <line x1="-15" y1="-15" x2="15" y2="15" stroke="#ff6b7a" stroke-width="2.5" opacity="0.85"/>
+        <line x1="-15" y1="15" x2="15" y2="-15" stroke="#ff6b7a" stroke-width="2.5" opacity="0.85"/>
+      </g>
+    </g>
+
+    <!-- Cytoplasm dots -->
+    <g fill="#6d9c2c" opacity="0.5">
+      <circle cx="620" cy="260" r="3"/>
+      <circle cx="720" cy="280" r="3"/>
+      <circle cx="610" cy="400" r="3"/>
+      <circle cx="700" cy="450" r="3"/>
+    </g>
+
+    <!-- Labels -->
+    <g font-family="IBM Plex Mono,monospace" font-size="13" fill="#f2f4ff" font-weight="500" letter-spacing="1">
+      <text x="230" y="300" text-anchor="middle" opacity="0.9">ROOT HAIR</text>
+      <text x="230" y="318" text-anchor="middle" opacity="0.7" font-size="11">(large surface area)</text>
+      <text x="680" y="270" text-anchor="middle" opacity="0.9" font-size="11">NUCLEUS</text>
+      <text x="660" y="590" text-anchor="middle" opacity="0.9">CELL BODY</text>
+      <text x="640" y="460" text-anchor="middle" font-size="10" opacity="0.85" fill="#ff6b7a">NO CHLOROPLASTS</text>
+      <text x="240" y="100" text-anchor="middle" opacity="0.65" font-style="italic" font-size="12">SOIL</text>
+      <text x="680" y="100" text-anchor="middle" opacity="0.65" font-style="italic" font-size="12">INSIDE THE ROOT</text>
+    </g>
+  </svg>`,
+
+  /* ----- XYLEM ----- */
+  xylemPreview: `<svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+    <rect x="110" y="20" width="80" height="140" fill="transparent" stroke="#d2a47e" stroke-width="4"/>
+    <g stroke="#d2a47e" stroke-width="3" fill="none" opacity="0.75">
+      <path d="M 115 40 Q 150 45, 185 40"/>
+      <path d="M 115 70 Q 150 75, 185 70"/>
+      <path d="M 115 100 Q 150 105, 185 100"/>
+      <path d="M 115 130 Q 150 135, 185 130"/>
+    </g>
+    <g stroke="#4aa3ff" stroke-width="2" fill="none" stroke-linecap="round">
+      <path d="M 150 160 L 150 20"/>
+      <polyline points="142,35 150,20 158,35"/>
+    </g>
+  </svg>`,
+
+  xylemIllus: `<svg viewBox="0 0 900 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+    <defs>
+      <linearGradient id="xyWall" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#9e7354"/>
+        <stop offset="50%" stop-color="#d2a47e"/>
+        <stop offset="100%" stop-color="#9e7354"/>
+      </linearGradient>
+      <filter id="xyGlow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    </defs>
+
+    <!-- Xylem tube - tall hollow cylinder -->
+    <!-- Outer walls (thick with lignin) -->
+    <g data-adaptation="xylem-lignin">
+      <rect x="300" y="80" width="40" height="740" fill="url(#xyWall)" stroke="#6b4a30" stroke-width="2"/>
+      <rect x="560" y="80" width="40" height="740" fill="url(#xyWall)" stroke="#6b4a30" stroke-width="2"/>
+      <!-- Lignin rings pattern on walls -->
+      <g fill="#6b4a30" opacity="0.55">
+        <rect x="300" y="120" width="40" height="4"/>
+        <rect x="300" y="200" width="40" height="4"/>
+        <rect x="300" y="280" width="40" height="4"/>
+        <rect x="300" y="360" width="40" height="4"/>
+        <rect x="300" y="440" width="40" height="4"/>
+        <rect x="300" y="520" width="40" height="4"/>
+        <rect x="300" y="600" width="40" height="4"/>
+        <rect x="300" y="680" width="40" height="4"/>
+        <rect x="300" y="760" width="40" height="4"/>
+        <rect x="560" y="120" width="40" height="4"/>
+        <rect x="560" y="200" width="40" height="4"/>
+        <rect x="560" y="280" width="40" height="4"/>
+        <rect x="560" y="360" width="40" height="4"/>
+        <rect x="560" y="440" width="40" height="4"/>
+        <rect x="560" y="520" width="40" height="4"/>
+        <rect x="560" y="600" width="40" height="4"/>
+        <rect x="560" y="680" width="40" height="4"/>
+        <rect x="560" y="760" width="40" height="4"/>
+      </g>
+      <!-- Spiral thickening (classic xylem pattern) -->
+      <g stroke="#6b4a30" stroke-width="3" fill="none" opacity="0.5">
+        <path d="M 340 120 Q 450 145, 560 120"/>
+        <path d="M 340 200 Q 450 225, 560 200"/>
+        <path d="M 340 280 Q 450 305, 560 280"/>
+        <path d="M 340 360 Q 450 385, 560 360"/>
+        <path d="M 340 440 Q 450 465, 560 440"/>
+        <path d="M 340 520 Q 450 545, 560 520"/>
+        <path d="M 340 600 Q 450 625, 560 600"/>
+        <path d="M 340 680 Q 450 705, 560 680"/>
+        <path d="M 340 760 Q 450 785, 560 760"/>
+      </g>
+    </g>
+
+    <!-- Hollow interior (the dead, empty lumen) -->
+    <g data-adaptation="xylem-dead">
+      <rect x="340" y="100" width="220" height="700" fill="#1c234a" opacity="0.3"/>
+    </g>
+
+    <!-- "No end walls" - show faint marks where end walls WOULD be, crossed out -->
+    <g data-adaptation="xylem-endwalls">
+      <g stroke="#9aa3cf" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.45">
+        <line x1="340" y1="330" x2="560" y2="330"/>
+        <line x1="340" y1="560" x2="560" y2="560"/>
+      </g>
+      <g stroke="#ff6b7a" stroke-width="2.5" stroke-linecap="round" opacity="0.9">
+        <!-- X marks on the faded walls -->
+        <line x1="440" y1="320" x2="460" y2="340"/>
+        <line x1="440" y1="340" x2="460" y2="320"/>
+        <line x1="440" y1="550" x2="460" y2="570"/>
+        <line x1="440" y1="570" x2="460" y2="550"/>
+      </g>
+    </g>
+
+    <!-- Water flowing up arrows -->
+    <g stroke="#4aa3ff" stroke-width="4" fill="none" stroke-linecap="round" filter="url(#xyGlow)">
+      <line x1="450" y1="800" x2="450" y2="140"/>
+      <polyline points="430,170 450,140 470,170" fill="none"/>
+    </g>
+    <g fill="#4aa3ff" opacity="0.8">
+      <circle cx="420" cy="700" r="6"/>
+      <circle cx="475" cy="500" r="5"/>
+      <circle cx="420" cy="400" r="6"/>
+      <circle cx="475" cy="250" r="5"/>
+    </g>
+
+    <!-- Labels -->
+    <g font-family="IBM Plex Mono,monospace" font-size="13" fill="#f2f4ff" font-weight="500" letter-spacing="1">
+      <text x="175" y="470" text-anchor="middle" opacity="0.9">LIGNIN WALL</text>
+      <text x="175" y="490" text-anchor="middle" opacity="0.7" font-size="11">(thick + strong)</text>
+      <line x1="220" y1="475" x2="298" y2="475" stroke="#d2a47e" stroke-width="1" opacity="0.5"/>
+      <text x="755" y="450" text-anchor="middle" opacity="0.9">HOLLOW TUBE</text>
+      <text x="755" y="470" text-anchor="middle" opacity="0.7" font-size="11">(dead cells)</text>
+      <line x1="600" y1="455" x2="680" y2="455" stroke="#d2a47e" stroke-width="1" opacity="0.5"/>
+      <text x="450" y="65" text-anchor="middle" opacity="0.9" fill="#4aa3ff">WATER UP</text>
+      <text x="640" y="345" text-anchor="start" opacity="0.85" font-size="10" fill="#ff6b7a">NO END WALL</text>
+      <line x1="638" y1="340" x2="570" y2="330" stroke="#ff6b7a" stroke-width="1" opacity="0.5"/>
+    </g>
+  </svg>`,
+
+  /* ----- PHLOEM ----- */
+  phloemPreview: `<svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg">
+    <rect x="110" y="20" width="80" height="140" fill="transparent" stroke="#c584ff" stroke-width="3"/>
+    <g stroke="#c584ff" stroke-width="2.5" fill="none">
+      <line x1="110" y1="80" x2="190" y2="80"/>
+      <line x1="110" y1="120" x2="190" y2="120"/>
+    </g>
+    <g fill="#c584ff">
+      <circle cx="125" cy="80" r="2.5"/><circle cx="140" cy="80" r="2.5"/><circle cx="155" cy="80" r="2.5"/><circle cx="170" cy="80" r="2.5"/>
+      <circle cx="125" cy="120" r="2.5"/><circle cx="140" cy="120" r="2.5"/><circle cx="155" cy="120" r="2.5"/><circle cx="170" cy="120" r="2.5"/>
+    </g>
+    <rect x="200" y="30" width="30" height="120" fill="#c584ff" opacity="0.25" stroke="#c584ff" stroke-width="1.5"/>
+    <circle cx="215" cy="85" r="7" fill="#1b4b9c" opacity="0.8"/>
+  </svg>`,
+
+  phloemIllus: `<svg viewBox="0 0 900 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+    <defs>
+      <linearGradient id="phCell" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="#e8d0ff" stop-opacity="0.25"/>
+        <stop offset="100%" stop-color="#c584ff" stop-opacity="0.2"/>
+      </linearGradient>
+      <linearGradient id="phCompanion" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="#e8d0ff" stop-opacity="0.5"/>
+        <stop offset="100%" stop-color="#c584ff" stop-opacity="0.4"/>
+      </linearGradient>
+      <filter id="phGlow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    </defs>
+
+    <!-- Main phloem tube (sieve tube elements stacked) -->
+    <g data-adaptation="phloem-alive">
+      <rect x="280" y="100" width="280" height="700" fill="url(#phCell)" stroke="#c584ff" stroke-width="3" filter="url(#phGlow)"/>
+    </g>
+
+    <!-- Sieve plates (horizontal bands with holes) -->
+    <g data-adaptation="phloem-sieveplate">
+      <!-- Plate 1 -->
+      <rect x="280" y="335" width="280" height="18" fill="#c584ff" opacity="0.7"/>
+      <g fill="var(--bg-deep)">
+        <circle cx="320" cy="344" r="5"/>
+        <circle cx="350" cy="344" r="5"/>
+        <circle cx="380" cy="344" r="5"/>
+        <circle cx="410" cy="344" r="5"/>
+        <circle cx="440" cy="344" r="5"/>
+        <circle cx="470" cy="344" r="5"/>
+        <circle cx="500" cy="344" r="5"/>
+        <circle cx="530" cy="344" r="5"/>
+      </g>
+      <!-- Plate 2 -->
+      <rect x="280" y="570" width="280" height="18" fill="#c584ff" opacity="0.7"/>
+      <g fill="var(--bg-deep)">
+        <circle cx="320" cy="579" r="5"/>
+        <circle cx="350" cy="579" r="5"/>
+        <circle cx="380" cy="579" r="5"/>
+        <circle cx="410" cy="579" r="5"/>
+        <circle cx="440" cy="579" r="5"/>
+        <circle cx="470" cy="579" r="5"/>
+        <circle cx="500" cy="579" r="5"/>
+        <circle cx="530" cy="579" r="5"/>
+      </g>
+    </g>
+
+    <!-- Sugar (sucrose) molecules flowing -->
+    <g fill="#ffd93d" opacity="0.85">
+      <circle cx="350" cy="200" r="7"/>
+      <circle cx="480" cy="240" r="6"/>
+      <circle cx="400" cy="290" r="7"/>
+      <circle cx="350" cy="420" r="6"/>
+      <circle cx="470" cy="470" r="7"/>
+      <circle cx="380" cy="510" r="6"/>
+      <circle cx="420" cy="650" r="7"/>
+      <circle cx="360" cy="700" r="6"/>
+      <circle cx="490" cy="750" r="7"/>
+    </g>
+
+    <!-- Two-way flow arrows -->
+    <g stroke="#ffd93d" stroke-width="3" fill="none" stroke-linecap="round" filter="url(#phGlow)">
+      <!-- Up arrow (left side of tube) -->
+      <line x1="320" y1="780" x2="320" y2="140"/>
+      <polyline points="305,165 320,140 335,165"/>
+      <!-- Down arrow (right side) -->
+      <line x1="520" y1="140" x2="520" y2="780"/>
+      <polyline points="505,755 520,780 535,755"/>
+    </g>
+
+    <!-- Companion cell (on the right) -->
+    <g data-adaptation="phloem-companion">
+      <rect x="620" y="260" width="140" height="380" rx="6" ry="6" fill="url(#phCompanion)" stroke="#c584ff" stroke-width="2.5"/>
+      <!-- Nucleus -->
+      <circle cx="690" cy="360" r="32" fill="#4a9eff" opacity="0.85" stroke="#7bb8ff" stroke-width="1.5"/>
+      <!-- Mitochondria (lots of them for energy) -->
+      <g fill="#ff9f7a">
+        <ellipse cx="665" cy="450" rx="14" ry="6" transform="rotate(-20 665 450)"/>
+        <ellipse cx="715" cy="460" rx="14" ry="6" transform="rotate(30 715 460)"/>
+        <ellipse cx="660" cy="500" rx="14" ry="6" transform="rotate(45 660 500)"/>
+        <ellipse cx="720" cy="510" rx="14" ry="6" transform="rotate(-30 720 510)"/>
+        <ellipse cx="680" cy="550" rx="14" ry="6" transform="rotate(60 680 550)"/>
+        <ellipse cx="710" cy="600" rx="14" ry="6" transform="rotate(-10 710 600)"/>
+      </g>
+    </g>
+
+    <!-- Labels -->
+    <g font-family="IBM Plex Mono,monospace" font-size="13" fill="#f2f4ff" font-weight="500" letter-spacing="1">
+      <text x="170" y="346" text-anchor="middle" opacity="0.9">SIEVE PLATE</text>
+      <text x="170" y="364" text-anchor="middle" opacity="0.7" font-size="11">(holes for flow)</text>
+      <line x1="220" y1="348" x2="275" y2="344" stroke="#c584ff" stroke-width="1" opacity="0.5"/>
+      <text x="170" y="640" text-anchor="middle" opacity="0.9">SUGAR SAP</text>
+      <text x="170" y="658" text-anchor="middle" opacity="0.7" font-size="11">(flows both ways)</text>
+      <text x="420" y="80" text-anchor="middle" opacity="0.9">SIEVE TUBE</text>
+      <text x="420" y="860" text-anchor="middle" opacity="0.7" font-size="11">(alive but no nucleus)</text>
+      <text x="690" y="240" text-anchor="middle" opacity="0.9">COMPANION</text>
+      <text x="690" y="680" text-anchor="middle" opacity="0.7" font-size="11">(provides energy)</text>
+    </g>
+  </svg>`
+};
+
+/* ================== DOM REFS ================== */
+const gridView = document.getElementById('gridView');
+const focusView = document.getElementById('focusView');
+const cardGrid = document.getElementById('cardGrid');
+const backBtn = document.getElementById('backBtn');
+const focusKicker = document.getElementById('focusKicker');
+const focusTitle = document.getElementById('focusTitle');
+const focusIllustration = document.getElementById('focusIllustration');
+const focusLocation = document.getElementById('focusLocation');
+const focusJob = document.getElementById('focusJob');
+const adaptationList = document.getElementById('adaptationList');
+const prevCellBtn = document.getElementById('prevCell');
+const nextCellBtn = document.getElementById('nextCell');
+const popup = document.getElementById('adaptPopup');
+const popupBackdrop = document.getElementById('popupBackdrop');
+const popupClose = document.getElementById('popupClose');
+const popupKicker = document.getElementById('popupKicker');
+const popupName = document.getElementById('popupName');
+const popupAdaptation = document.getElementById('popupAdaptation');
+const popupWhy = document.getElementById('popupWhy');
+const popupExamTip = document.getElementById('popupExamTip');
+
+/* ================== STATE ================== */
+let currentCellKey = null;
+let isPopupOpen = false;
+
+/* ================== BUILD GRID ================== */
+function buildGrid(){
+  cardGrid.innerHTML = '';
+  cellOrder.forEach(key => {
+    const c = cells[key];
+    const card = document.createElement('button');
+    card.className = 'card';
+    card.style.setProperty('--card-accent', c.accent);
+    card.setAttribute('data-cell', key);
+    card.innerHTML = `
+      <div class="card-illustration">${svgTemplates[c.cardPreview]}</div>
+      <div class="card-body">
+        <div class="card-kicker">${c.adaptations.length} adaptations</div>
+        <div class="card-name">${c.nameHtml}</div>
+        <div class="card-function">${c.job}</div>
+        <div class="card-hint">Explore <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+      </div>`;
+    card.addEventListener('click', () => openFocus(key));
+    cardGrid.appendChild(card);
+  });
+}
+
+/* ================== FOCUS VIEW ================== */
+function openFocus(key){
+  currentCellKey = key;
+  const c = cells[key];
+  focusTitle.innerHTML = c.nameHtml;
+  focusKicker.textContent = 'Specialised cell';
+  focusLocation.textContent = c.location;
+  focusJob.textContent = c.job;
+  document.documentElement.style.setProperty('--focus-accent', c.accent);
+  focusIllustration.style.setProperty('--focus-accent', c.accent);
+
+  // Inject illustration
+  focusIllustration.innerHTML = svgTemplates[c.illustration];
+
+  // Attach click handlers to adaptation hotspots inside the SVG
+  focusIllustration.querySelectorAll('[data-adaptation]').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openPopup(key, el.getAttribute('data-adaptation'));
+    });
+  });
+
+  // Build adaptation list
+  adaptationList.innerHTML = '';
+  c.adaptations.forEach(a => {
+    const pill = document.createElement('button');
+    pill.className = 'adaptation-pill';
+    pill.style.setProperty('--focus-accent', c.accent);
+    pill.innerHTML = `<span>${a.name}</span><span class="arrow">→</span>`;
+    pill.addEventListener('click', () => openPopup(key, a.id));
+    adaptationList.appendChild(pill);
+  });
+
+  // Nav state
+  const idx = cellOrder.indexOf(key);
+  prevCellBtn.disabled = idx <= 0;
+  nextCellBtn.disabled = idx >= cellOrder.length - 1;
+
+  // Switch views
+  gridView.style.display = 'none';
+  focusView.classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function closeFocus(){
+  focusView.classList.remove('active');
+  gridView.style.display = '';
+  currentCellKey = null;
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function navCell(delta){
+  if(!currentCellKey) return;
+  const idx = cellOrder.indexOf(currentCellKey);
+  const next = idx + delta;
+  if(next >= 0 && next < cellOrder.length){
+    openFocus(cellOrder[next]);
+  }
+}
+
+/* ================== POPUP ================== */
+function openPopup(cellKey, adaptId){
+  const c = cells[cellKey];
+  const a = c.adaptations.find(x => x.id === adaptId);
+  if(!a) return;
+  popupKicker.textContent = 'Adaptation · ' + c.name;
+  popupName.textContent = a.name;
+  popupAdaptation.textContent = a.adaptation;
+  popupWhy.textContent = a.why;
+  popupExamTip.textContent = a.examTip;
+  popup.style.setProperty('--popup-accent', c.accent);
+  popup.classList.add('visible');
+  popupBackdrop.classList.add('visible');
+  isPopupOpen = true;
+}
+function closePopup(){
+  popup.classList.remove('visible');
+  popupBackdrop.classList.remove('visible');
+  isPopupOpen = false;
+}
+
+/* ================== EVENTS ================== */
+backBtn.addEventListener('click', closeFocus);
+prevCellBtn.addEventListener('click', () => navCell(-1));
+nextCellBtn.addEventListener('click', () => navCell(1));
+popupClose.addEventListener('click', closePopup);
+popupBackdrop.addEventListener('click', closePopup);
+
+window.addEventListener('keydown', (e) => {
+  if(isPopupOpen){
+    if(e.key === 'Escape'){ closePopup(); e.preventDefault(); }
+    return;
+  }
+  if(currentCellKey){
+    if(e.key === 'Escape'){ closeFocus(); e.preventDefault(); }
+    else if(e.key === 'ArrowLeft'){ navCell(-1); e.preventDefault(); }
+    else if(e.key === 'ArrowRight'){ navCell(1); e.preventDefault(); }
+  }
+});
+
+/* ================== INIT ================== */
+buildGrid();
+</script>
+</body>
+</html>

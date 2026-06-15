@@ -1,0 +1,1476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gas exchange — Year 8 Revision</title>
+<meta name="description" content="A Year 8 KS3 science revision booklet on B4 Gas exchange — seven short topics covering the respiratory system, how the lungs work, inhaled and exhaled air, gas exchange in the alveoli, alveolar adaptations, exercise and asthma, and how smoking affects breathing.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1E2761;
+  --navy-soft:#2a3478;
+  --warm:#F8F4EC;
+  --warm-deep:#EFE8D6;
+  --paper:#FCFAF4;
+  --soft-blue:#EDF2FA;
+  --ink:#1A1A1A;
+  --muted:#5C6370;
+  --rule:#CFD8E3;
+  --accent:#B85042;
+  --accent-soft:#F4DAD7;
+  --success:#2C5F2D;
+  --success-soft:#DDEBDD;
+  --gold:#C8A24A;
+  --gold-soft:#F2E6BD;
+  --display: 'Instrument Serif', 'Cormorant Garamond', Georgia, serif;
+  --body: 'IBM Plex Sans', 'Helvetica Neue', system-ui, sans-serif;
+  --mono: 'IBM Plex Mono', 'Courier New', monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--body);
+  font-weight:300;
+  font-size:17px;
+  line-height:1.65;
+  color:var(--ink);
+  background:var(--warm);
+  background-image:
+    radial-gradient(ellipse at 10% 0%, rgba(30,39,97,0.04), transparent 50%),
+    radial-gradient(ellipse at 90% 100%, rgba(184,80,66,0.04), transparent 50%);
+  background-attachment:fixed;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+/* ---------- HERO ---------- */
+.hero{background:var(--navy);color:var(--warm);padding:48px 24px 56px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 30%,rgba(75,30,160,0.25),transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(184,80,66,0.18),transparent 60%);pointer-events:none}
+.hero-inner{max-width:720px;margin:0 auto;position:relative;z-index:1}
+.kicker{font-family:var(--mono);font-size:11px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(248,244,236,0.55);margin-bottom:20px}
+.hero h1{font-family:var(--display);font-weight:400;font-size:clamp(40px,8vw,68px);line-height:1.0;letter-spacing:-0.015em;margin-bottom:14px}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero .tag{font-family:var(--display);font-style:italic;font-size:clamp(18px,3.5vw,22px);color:rgba(248,244,236,0.75);font-weight:400;max-width:520px}
+.pace-banner{margin-top:36px;padding:18px 22px;border:1px solid rgba(248,244,236,0.2);border-left:3px solid var(--gold);background:rgba(0,0,0,0.15);display:flex;gap:14px;align-items:flex-start}
+.pace-banner .pace-icon{font-family:var(--display);font-size:30px;line-height:1;color:var(--gold);flex:0 0 auto}
+.pace-banner p{font-size:15px;line-height:1.5;color:rgba(248,244,236,0.92)}
+.pace-banner strong{color:var(--warm);font-weight:500}
+
+/* ---------- LESSON NAV ---------- */
+.lesson-nav{position:sticky;top:0;z-index:100;background:rgba(252,250,244,0.96);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--rule);padding:12px 0}
+.nav-inner{max-width:720px;margin:0 auto;padding:0 16px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-pill{flex:0 0 auto;font-family:var(--mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);padding:8px 14px;border:1px solid var(--rule);background:var(--paper);text-decoration:none;border-radius:100px;transition:all 0.2s;font-weight:500;white-space:nowrap}
+.nav-pill:hover{border-color:var(--navy);color:var(--navy)}
+.nav-pill.done{background:var(--success-soft);border-color:var(--success);color:var(--success)}
+.nav-pill.done::before{content:'✓ ';font-weight:600}
+
+/* ---------- LESSON ---------- */
+main{max-width:720px;margin:0 auto;padding:48px 24px 80px}
+.lesson{margin-bottom:64px;scroll-margin-top:80px}
+.lesson-head{margin-bottom:36px;padding-bottom:24px;border-bottom:1px solid var(--rule);position:relative}
+.lesson-num{font-family:var(--mono);font-size:11px;letter-spacing:0.3em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+.lesson-title{font-family:var(--display);font-weight:400;font-size:clamp(32px,6vw,46px);line-height:1.05;color:var(--navy);letter-spacing:-0.01em;margin-bottom:14px}
+.lesson-title em{font-style:italic}
+.lesson-promise{font-family:var(--display);font-style:italic;font-size:19px;color:var(--muted);line-height:1.4;max-width:540px}
+
+/* ---------- SECTION ---------- */
+.section{margin-bottom:42px}
+.section-head{font-family:var(--display);font-weight:400;font-size:26px;line-height:1.15;color:var(--navy);margin-bottom:16px;letter-spacing:-0.005em}
+.section-head .num{font-family:var(--mono);font-size:12px;color:var(--accent);letter-spacing:0.2em;display:block;margin-bottom:6px}
+.section p{margin-bottom:16px;font-size:17px}
+.section p strong{font-weight:500;color:var(--navy);background:linear-gradient(180deg,transparent 60%,rgba(200,162,74,0.25) 60%);padding:0 2px}
+
+/* ---------- KEYWORD BOX ---------- */
+.keywords{background:var(--soft-blue);border:1px solid #C9D7ED;border-left:3px solid var(--navy);padding:20px 22px;margin:24px 0}
+.keywords h4{font-family:var(--mono);font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:var(--navy);margin-bottom:14px;font-weight:500}
+.keywords dl{display:grid;gap:10px}
+.keywords dt{font-family:var(--display);font-size:20px;font-style:italic;color:var(--navy);font-weight:400}
+.keywords dd{font-size:15px;color:var(--ink);margin-bottom:6px}
+
+/* ---------- HINGE QUESTION ---------- */
+.hinge{background:var(--paper);border:1px solid var(--rule);padding:22px 24px;margin:28px 0;position:relative}
+.hinge-tag{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);padding:4px 10px;margin-bottom:12px;font-weight:500}
+.hinge-q{font-family:var(--display);font-size:22px;line-height:1.3;color:var(--navy);margin-bottom:14px;font-weight:400}
+.choices{list-style:none;display:grid;gap:8px;margin-bottom:16px}
+.choices li{font-size:15px;padding:10px 14px;background:var(--warm);border:1px solid var(--rule);display:flex;gap:10px;align-items:flex-start}
+.choices li .letter{font-family:var(--mono);font-weight:500;color:var(--accent);flex:0 0 auto}
+.reveal{width:100%;background:transparent}
+.reveal summary{cursor:pointer;list-style:none;font-family:var(--mono);font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);padding:10px 0;border-top:1px dashed var(--rule);display:flex;align-items:center;gap:10px;transition:color 0.2s;font-weight:500;user-select:none}
+.reveal summary::-webkit-details-marker{display:none}
+.reveal summary::before{content:'+';font-family:var(--display);font-size:18px;color:var(--accent);width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--accent);border-radius:50%;transition:transform 0.25s}
+.reveal[open] summary::before{transform:rotate(45deg)}
+.reveal summary:hover{color:var(--navy)}
+.reveal-body{padding:14px 16px;margin-top:10px;background:var(--success-soft);border-left:3px solid var(--success);font-size:15px;line-height:1.55;color:var(--ink)}
+.reveal-body strong{color:var(--success);font-weight:500}
+.reveal-body em{color:var(--muted);font-style:italic;font-size:13px;display:block;margin-top:8px}
+
+/* ---------- WATCH OUT ---------- */
+.watch-out{background:var(--accent-soft);border:1px solid #E6BCB7;border-left:3px solid var(--accent);padding:18px 22px;margin:24px 0}
+.watch-out h4{font-family:var(--mono);font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;font-weight:500}
+.watch-out p{font-size:15px;line-height:1.5;margin:0}
+.watch-out p+p{margin-top:8px}
+
+/* ---------- WORKED EXAMPLE / FORMULA ---------- */
+.worked{background:var(--paper);border:1px solid var(--rule);padding:22px;margin:24px 0}
+.worked h4{font-family:var(--mono);font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:var(--navy);margin-bottom:14px;font-weight:500}
+.worked .q{font-size:16px;margin-bottom:14px;line-height:1.5;color:var(--ink);font-weight:400}
+.worked .step{display:grid;grid-template-columns:80px 1fr;gap:14px;padding:8px 0;border-bottom:1px dashed var(--rule);align-items:baseline}
+.worked .step:last-child{border-bottom:0;padding-bottom:0}
+.worked .step .label{font-family:var(--mono);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);font-weight:500}
+.worked .step .v{font-family:var(--mono);font-size:14px;color:var(--ink);line-height:1.5}
+.worked .step.answer .v{font-family:var(--mono);font-size:16px;font-weight:500;color:var(--success);background:var(--success-soft);padding:4px 10px;display:inline-block}
+.formula{font-family:var(--mono);font-size:15px;background:var(--soft-blue);padding:8px 12px;display:inline-block;margin:4px 0;color:var(--navy);font-weight:500}
+
+/* ---------- INLINE DIAGRAM ---------- */
+.diagram{margin:18px 0;padding:20px;background:var(--paper);border:1px solid var(--rule);text-align:center}
+.diagram svg{display:inline-block;width:100%;max-width:560px;height:auto}
+.diagram .caption{font-family:var(--mono);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-top:10px;font-weight:500}
+
+/* ---------- QUIZ ---------- */
+.quiz{background:var(--paper);border:1px solid var(--rule);margin-top:36px;padding:28px 24px 24px}
+.quiz-head{font-family:var(--display);font-size:26px;color:var(--navy);margin-bottom:6px;font-weight:400}
+.quiz-head em{font-style:italic}
+.quiz-sub{font-family:var(--mono);font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:20px}
+.quiz ol{list-style:none;counter-reset:q;display:grid;gap:10px}
+.quiz li{counter-increment:q;border:1px solid var(--rule);background:var(--warm)}
+.quiz details summary{cursor:pointer;list-style:none;padding:14px 18px;display:flex;gap:14px;align-items:flex-start;font-size:16px;line-height:1.45;user-select:none}
+.quiz details summary::-webkit-details-marker{display:none}
+.quiz details summary::before{content:counter(q,decimal-leading-zero);font-family:var(--mono);font-size:13px;font-weight:500;color:var(--accent);flex:0 0 auto;padding-top:2px}
+.quiz details summary::after{content:'show answer';font-family:var(--mono);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-left:auto;flex:0 0 auto;padding-top:4px;white-space:nowrap;align-self:flex-start}
+.quiz details[open] summary::after{content:'hide';}
+.quiz details summary:hover::after{color:var(--accent)}
+.quiz .ans{padding:0 18px 16px 50px;font-size:15px;color:var(--success);line-height:1.5;border-top:1px dashed var(--rule);padding-top:14px;margin-top:4px}
+.quiz .ans strong{font-weight:600}
+
+/* ---------- DONE BUTTON ---------- */
+.done-btn{display:block;width:100%;margin-top:24px;padding:14px;background:var(--navy);color:var(--warm);border:0;font-family:var(--mono);font-size:12px;letter-spacing:0.25em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;font-weight:500}
+.done-btn:hover{background:var(--accent)}
+.done-btn.is-done{background:var(--success);cursor:default}
+.done-btn.is-done::before{content:'✓ '}
+
+/* ---------- DIVIDER ---------- */
+.section-rule{height:1px;background:var(--rule);margin:36px 0;position:relative}
+.section-rule::after{content:'⁂';position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--warm);padding:0 14px;color:var(--accent);font-size:18px}
+
+/* ---------- FOOTER ---------- */
+footer{text-align:center;padding:48px 24px;background:var(--navy);color:rgba(248,244,236,0.6)}
+footer p{font-size:13px;line-height:1.5;margin-bottom:6px}
+footer .sig{font-family:var(--display);font-style:italic;font-size:18px;color:var(--gold);margin-bottom:14px}
+
+/* ---------- SMALL SCREENS ---------- */
+@media (max-width:540px){
+  body{font-size:16px}
+  .hero{padding:36px 20px 44px}
+  main{padding:32px 18px 60px}
+  .keywords,.hinge,.watch-out,.worked{padding:18px 18px}
+  .lesson{margin-bottom:48px}
+  .quiz{padding:22px 16px 18px}
+  .quiz details summary{padding:12px 14px;font-size:15px}
+  .quiz .ans{padding-left:42px;padding-right:14px}
+  .worked .step{grid-template-columns:64px 1fr;gap:10px}
+}
+
+.pdf-btn{display:inline-flex;align-items:center;gap:8px;margin-top:22px;font-family:var(--mono);font-size:12px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;color:var(--navy);background:var(--gold);padding:12px 18px;text-decoration:none;border-radius:3px;transition:background .2s,color .2s}
+.pdf-btn:hover{background:var(--warm);color:var(--navy)}
+.pdf-btn .ic{font-size:15px;line-height:1}
+.answers-print{margin-top:56px;padding-top:26px;border-top:2px solid var(--navy)}
+.answers-print-title{font-family:var(--display);font-weight:400;font-size:40px;color:var(--navy);line-height:1}
+.answers-print-sub{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin:6px 0 20px}
+.answers-block{margin-bottom:22px}
+.answers-topic{font-family:var(--display);font-weight:400;font-size:23px;color:var(--accent);margin:0 0 8px}
+.answers-qc{font-size:14px;line-height:1.5;margin:0 0 8px}
+.answers-qc strong{color:var(--navy);font-weight:500}
+.answers-list{margin:0;padding-left:22px;display:grid;gap:9px}
+.answers-list li{font-size:14px;line-height:1.5}
+.answers-list .aq{display:block;color:var(--muted)}
+.answers-list .aa{display:block;color:var(--success)}
+.answers-list .aa strong{color:var(--success);font-weight:600}
+@media screen{.answers-print{display:none}}
+@page{size:A4;margin:12mm}
+@media print{
+  .lesson-nav,.pace-banner,.done-btn,.pdf-btn,.embed-slot,.reveal{display:none !important}
+  body{background:white}
+  *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important}
+  main{max-width:100% !important;padding:6px 2px 0 !important}
+  details>summary::after,.quiz details summary::after{content:'' !important}
+  .quiz-sub{display:none !important}
+  .answers-print{break-before:page}
+  .worked,.hinge,.keywords,.watch-out,.diagram,.quiz li,.answers-block{break-inside:avoid}
+  .lesson-head,.section-head,.quiz-head,.answers-topic{break-after:avoid}
+}
+
+/* ---------- INTERACTIVE EMBED SLOT ---------- */
+.embed-slot{margin:28px 0;border:2px dashed var(--navy);background:repeating-linear-gradient(45deg,var(--soft-blue),var(--soft-blue) 12px,var(--paper) 12px,var(--paper) 24px);padding:5px}
+.embed-slot-inner{background:var(--paper);border:1px solid var(--rule);padding:26px 22px;text-align:center}
+.embed-tag{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:var(--navy);background:var(--gold-soft);border:1px solid var(--gold);padding:4px 12px;margin-bottom:14px;font-weight:600}
+.embed-slot h4{font-family:var(--display);font-size:23px;color:var(--navy);font-weight:400;margin-bottom:8px;font-style:italic}
+.embed-slot p{font-size:15px;color:var(--muted);max-width:480px;margin:0 auto}
+.embed-canvas{margin-top:18px;min-height:130px;border:1px dashed var(--rule);display:flex;align-items:center;justify-content:center;color:var(--muted);font-family:var(--mono);font-size:12px;letter-spacing:0.1em;background:var(--warm)}
+.embed-note{font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin-top:14px}
+</style>
+</head>
+<body>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="kicker">KS3 Science · Year 8 · B4 Gas exchange</div>
+    <h1>Gas exchange, <em>but bitesize.</em></h1>
+    <p class="tag">A revision booklet — seven short topics, from how air reaches your lungs to how smoking damages them.</p>
+    <div class="pace-banner">
+      <span class="pace-icon">i</span>
+      <p><strong>Take it one topic at a time.</strong> There are seven topics. Each one is short — about 10 minutes. Do one or two a day.</p>
+    </div>
+    <a class="pdf-btn" href="pdf/gas-exchange-revision.pdf" download><span class="ic">&#8595;</span> Download printable PDF</a>
+  </div>
+</header>
+
+<!-- ============ STICKY NAV ============ -->
+<nav class="lesson-nav">
+  <div class="nav-inner">
+    <a href="#lesson-1" class="nav-pill" data-lesson="1">Respiratory system</a>
+    <a href="#lesson-2" class="nav-pill" data-lesson="2">How lungs work</a>
+    <a href="#lesson-3" class="nav-pill" data-lesson="3">Inhaled &amp; exhaled air</a>
+    <a href="#lesson-4" class="nav-pill" data-lesson="4">Gas exchange</a>
+    <a href="#lesson-5" class="nav-pill" data-lesson="5">Adaptations</a>
+    <a href="#lesson-6" class="nav-pill" data-lesson="6">Exercise &amp; asthma</a>
+    <a href="#lesson-7" class="nav-pill" data-lesson="7">Smoking</a>
+  </div>
+</nav>
+
+<main>
+
+<!-- ===================================================================== -->
+<!-- TOPIC 1 — THE RESPIRATORY SYSTEM                                        -->
+<!-- ===================================================================== -->
+<section class="lesson" id="lesson-1">
+  <div class="lesson-head">
+    <div class="lesson-num">Topic 01 · B4 · Gas exchange</div>
+    <h2 class="lesson-title">The <em>respiratory system</em></h2>
+    <p class="lesson-promise">By the end of this topic you'll know what ventilation is, the path air takes into the lungs, and how the trachea is built to stay open and stay clean.</p>
+  </div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 1</span>What is the respiratory system?</h3>
+    <p>You breathe about 20 000 times a day, usually without thinking about it. Each breath, air travels from your nose all the way down to tiny sacs deep in your lungs. The job of this whole system is <strong>ventilation</strong> — the movement of air (gases) INTO and OUT OF the lungs.</p>
+    <p>Why do you do it? You breathe <strong>IN</strong> to take in oxygen, which your body needs. You breathe <strong>OUT</strong> to get rid of carbon dioxide, a waste gas. Air does not jump straight to your lungs — it follows a clear pathway, getting into smaller and smaller tubes.</p>
+    <p style="text-align:center"><span class="formula">nose → trachea → bronchi → bronchioles → alveoli</span></p>
+    <p>The trachea is your windpipe — the main tube. It branches into two <strong>bronchi</strong> (one per lung), which split into tiny <strong>bronchioles</strong>, which end in the <strong>alveoli</strong> (the air sacs where gases are swapped). Around all this, your <strong>ribs</strong> protect the lungs, and the <strong>diaphragm</strong> (a sheet of muscle) sits below them.</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 560 260" xmlns="http://www.w3.org/2000/svg">
+        <!-- Nose / mouth -->
+        <circle cx="80" cy="40" r="22" fill="#EDF2FA" stroke="#1E2761" stroke-width="2"/>
+        <text x="80" y="45" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="10" font-weight="700" fill="#1E2761">NOSE</text>
+        <!-- Trachea -->
+        <rect x="68" y="62" width="24" height="80" rx="6" fill="#EDF2FA" stroke="#1E2761" stroke-width="2"/>
+        <!-- cartilage rings -->
+        <g stroke="#C8A24A" stroke-width="2">
+          <line x1="68" y1="78" x2="92" y2="78"/>
+          <line x1="68" y1="92" x2="92" y2="92"/>
+          <line x1="68" y1="106" x2="92" y2="106"/>
+          <line x1="68" y1="120" x2="92" y2="120"/>
+        </g>
+        <text x="105" y="105" font-family="IBM Plex Sans,sans-serif" font-size="11" font-weight="700" fill="#1E2761">trachea (windpipe)</text>
+        <!-- Bronchi split -->
+        <line x1="80" y1="142" x2="50" y2="172" stroke="#1E2761" stroke-width="6" stroke-linecap="round"/>
+        <line x1="80" y1="142" x2="110" y2="172" stroke="#1E2761" stroke-width="6" stroke-linecap="round"/>
+        <text x="80" y="162" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="10" font-weight="700" fill="#1E2761">bronchi</text>
+        <!-- Lungs -->
+        <path d="M 50 172 Q 22 200 30 235 Q 50 248 70 232 L 70 180 Z" fill="#F4DAD7" stroke="#1E2761" stroke-width="2"/>
+        <path d="M 110 172 Q 138 200 130 235 Q 110 248 90 232 L 90 180 Z" fill="#F4DAD7" stroke="#1E2761" stroke-width="2"/>
+        <!-- bronchioles -->
+        <g stroke="#1E2761" stroke-width="1.5">
+          <line x1="60" y1="190" x2="48" y2="205"/>
+          <line x1="60" y1="190" x2="58" y2="212"/>
+          <line x1="100" y1="190" x2="112" y2="205"/>
+          <line x1="100" y1="190" x2="102" y2="212"/>
+        </g>
+        <text x="80" y="252" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="10" font-weight="700" fill="#1E2761">lungs &amp; bronchioles</text>
+        <!-- Diaphragm -->
+        <path d="M 24 244 Q 80 262 136 244" fill="none" stroke="#B85042" stroke-width="3"/>
+        <text x="80" y="280" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="9" fill="#B85042">diaphragm below</text>
+        <!-- Pathway list on the right -->
+        <g font-family="IBM Plex Mono,monospace" font-size="13" fill="#1A1A1A">
+          <text x="240" y="60" font-weight="700" fill="#1E2761">THE AIR PATHWAY</text>
+          <text x="240" y="92">1 · nose</text>
+          <text x="240" y="114">2 · trachea</text>
+          <text x="240" y="136">3 · bronchi</text>
+          <text x="240" y="158">4 · bronchioles</text>
+          <text x="240" y="180">5 · alveoli (air sacs)</text>
+        </g>
+        <text x="240" y="222" font-family="Instrument Serif,serif" font-style="italic" font-size="14" fill="#5C6370">smaller and smaller tubes,</text>
+        <text x="240" y="242" font-family="Instrument Serif,serif" font-style="italic" font-size="14" fill="#5C6370">all the way to the air sacs</text>
+      </svg>
+      <div class="caption">Air travels nose → trachea → bronchi → bronchioles → alveoli</div>
+    </div>
+
+    <div class="embed-slot" id="embed-respiratory-diagram">
+      <div class="embed-slot-inner">
+        <span class="embed-tag">Interactive · drop-in</span>
+        <h4>Clickable respiratory system</h4>
+        <p>Click each part of the airway — nose, trachea, bronchi, bronchioles, alveoli — to light it up and read what it does.</p>
+        <div class="embed-canvas"><iframe src="interactives/respiratory-system.html" title="Clickable respiratory system" loading="lazy" style="width:100%;height:400px;border:0;display:block;border-radius:2px"></iframe></div>
+        <div class="embed-note"><a href="interactives/respiratory-system.html" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none">Open this interactive in a new tab ↗</a></div>
+      </div>
+    </div>
+
+    <div class="keywords">
+      <h4>Keywords for Part 1</h4>
+      <dl>
+        <dt>Ventilation</dt>
+        <dd><em>ventilare</em> = "to fan / make a wind." The movement of air (gases) into and out of the lungs.</dd>
+        <dt>Respiratory</dt>
+        <dd><em>respirare</em> = "to breathe again." To do with breathing — the system that moves air in and out.</dd>
+        <dt>Trachea</dt>
+        <dd><em>trakheia</em> = "rough." The windpipe — the tube carrying air to the lungs.</dd>
+      </dl>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">What is the correct path of air into the lungs?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>nose → bronchi → trachea → alveoli</span></li>
+        <li><span class="letter">B</span><span>nose → trachea → bronchi → bronchioles → alveoli</span></li>
+        <li><span class="letter">C</span><span>nose → alveoli → bronchi → trachea</span></li>
+        <li><span class="letter">D</span><span>trachea → nose → lungs</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>B — nose → trachea → bronchi → bronchioles → alveoli.</strong> Air goes down into smaller and smaller tubes until it reaches the air sacs. <em>A puts the bronchi before the trachea — but the trachea (the single windpipe) always comes first, then it branches into the two bronchi.</em></div>
+      </details>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 2</span>The trachea is built for the job</h3>
+    <p>Press gently on the front of your throat and you can feel hard rings under the skin. Those are rings of <strong>cartilage</strong>. They hold the trachea OPEN so it cannot collapse under pressure when you breathe — like the rings in a vacuum-cleaner hose.</p>
+    <p>The inside of the trachea also keeps itself clean. It is lined with two kinds of cell. <strong>Goblet cells</strong> release sticky <strong>mucus</strong> that traps dust and germs. <strong>Ciliated epithelial cells</strong> are covered in <strong>cilia</strong> — tiny hairs that sweep the dirty mucus UP and OUT towards your throat, where it is swallowed or coughed away. ('Epithelial' just means a surface cell.)</p>
+    <p>So the two work as a team: mucus <strong>traps</strong> the dirt, and cilia <strong>sweep</strong> it away — keeping the airway clean.</p>
+
+    <div class="keywords">
+      <h4>Keywords for Part 2</h4>
+      <dl>
+        <dt>Cartilage</dt>
+        <dd>Tough, flexible tissue. Forms rings that hold the trachea open.</dd>
+        <dt>Cilia</dt>
+        <dd>Tiny hairs on the cells lining the trachea. They sweep mucus (with trapped dust and germs) up and out.</dd>
+        <dt>Goblet cells</dt>
+        <dd>Cells that release the sticky mucus which traps dust and germs.</dd>
+      </dl>
+    </div>
+
+    <div class="watch-out">
+      <h4>⚠ Watch out — "we only breathe in oxygen"</h4>
+      <p>A common mistake. The air you breathe in is a <strong>mixture</strong> — mostly nitrogen (about 78%), plus oxygen (about 21%) and a few others. Oxygen is the gas your body actually <strong>uses</strong>, but it is not the only gas you take in.</p>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">What is the job of the cilia in the trachea?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>to make mucus</span></li>
+        <li><span class="letter">B</span><span>to sweep mucus, dust and germs up and out</span></li>
+        <li><span class="letter">C</span><span>to hold the trachea open</span></li>
+        <li><span class="letter">D</span><span>to exchange gases</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>B — to sweep mucus, dust and germs up and out.</strong> Cilia are the tiny sweeping hairs. <em>A is the trap — it's the goblet cells that MAKE the mucus. The cilia don't make it, they move it. (C is the job of the cartilage rings.)</em></div>
+      </details>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <h3 class="quiz-head">Test <em>yourself</em></h3>
+    <p class="quiz-sub">7 questions · click to reveal each answer</p>
+    <ol>
+      <li><details>
+        <summary>What is ventilation?</summary>
+        <div class="ans">The movement of <strong>air (gases) into and out of the lungs</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>List, in order, the parts air passes through into the lungs.</summary>
+        <div class="ans"><strong>Nose → trachea → bronchi → bronchioles → alveoli</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>What is the function of the cartilage rings in the trachea?</summary>
+        <div class="ans">To <strong>hold the trachea open</strong> so it does not collapse under pressure.</div>
+      </details></li>
+      <li><details>
+        <summary>Name the two types of cell that line the trachea.</summary>
+        <div class="ans"><strong>Ciliated epithelial cells</strong> and <strong>goblet cells</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>How do the cells lining the trachea work together to remove dust and bacteria?</summary>
+        <div class="ans">Goblet cells make <strong>mucus</strong> that traps dust and germs; <strong>cilia</strong> sweep the mucus up and out. Together they keep the airway clean.</div>
+      </details></li>
+      <li><details>
+        <summary>A student says "we only breathe in oxygen." Why are they wrong?</summary>
+        <div class="ans">We breathe in a <strong>mixture</strong> — mostly nitrogen (~78%), plus oxygen (~21%) and other gases. Oxygen is just the gas we use.</div>
+      </details></li>
+      <li><details>
+        <summary>STRETCH: Suggest why a smoker, whose cilia are damaged, gets a "smoker's cough."</summary>
+        <div class="ans">With the cilia damaged, mucus is <strong>not swept away</strong>, so it builds up — the body coughs to try to clear it.</div>
+      </details></li>
+    </ol>
+    <button class="done-btn" data-lesson-done="1">Mark this topic complete</button>
+  </div>
+</section>
+
+<!-- ===================================================================== -->
+<!-- TOPIC 2 — HOW DO THE LUNGS WORK?                                        -->
+<!-- ===================================================================== -->
+<section class="lesson" id="lesson-2">
+  <div class="lesson-head">
+    <div class="lesson-num">Topic 02 · B4 · Gas exchange</div>
+    <h2 class="lesson-title">How do the <em>lungs work</em>?</h2>
+    <p class="lesson-promise">By the end of this topic you'll be able to explain how changing the volume of your chest changes the pressure inside — and how that makes air rush in and get forced out.</p>
+  </div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 1</span>The lungs can't move themselves</h3>
+    <p>Here is the surprise: your lungs have <strong>no muscles of their own</strong>. They cannot pull air in by themselves. So what makes air rush IN when you breathe in? The answer is a change in <strong>volume</strong> and <strong>pressure</strong>, driven by two sets of muscles around the lungs.</p>
+    <p>Those two muscles are the <strong>intercostal muscles</strong> (between the ribs) and the <strong>diaphragm</strong> (the sheet of muscle under the lungs). When they move, they change the size of the chest — and that changes everything.</p>
+    <p>The key rule to lock in: <strong>a bigger space holds gas at a LOWER pressure; a smaller space holds gas at a HIGHER pressure.</strong> And air always flows from HIGH pressure to LOW pressure.</p>
+
+    <div class="keywords">
+      <h4>Keywords for Part 1</h4>
+      <dl>
+        <dt>Intercostal muscles</dt>
+        <dd>The muscles between the ribs. They move the ribcage up/out or down/in.</dd>
+        <dt>Diaphragm</dt>
+        <dd>A large flat sheet of muscle below the lungs. It flattens down or domes up to change the chest volume.</dd>
+        <dt>Pressure</dt>
+        <dd>How hard the air pushes. In a bigger space the same air is more spread out, so the pressure is lower.</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 2</span>Breathing IN and breathing OUT</h3>
+    <p>When you breathe <strong>IN</strong>: the intercostal muscles and diaphragm <strong>CONTRACT</strong>. The ribcage moves UP and OUT, and the diaphragm flattens DOWN. This makes the chest <strong>volume INCREASE</strong>. A bigger volume means the <strong>pressure inside DROPS</strong> — below the pressure outside. So air rushes <strong>IN</strong>, from high pressure outside to low pressure inside.</p>
+    <p>When you breathe <strong>OUT</strong>: the same muscles <strong>RELAX</strong>. The ribcage drops down and in, and the diaphragm domes back up. The chest <strong>volume DECREASES</strong>, so the <strong>pressure inside RISES</strong> — above the pressure outside. So air is forced <strong>OUT</strong>.</p>
+    <p>It is the change in chest <strong>VOLUME</strong> that changes the <strong>PRESSURE</strong> — and the difference in pressure is what moves the air.</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 560 240" xmlns="http://www.w3.org/2000/svg">
+        <!-- BREATHE IN -->
+        <g>
+          <text x="140" y="24" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" font-weight="700" fill="#1E2761" letter-spacing="1">BREATHING IN</text>
+          <!-- chest box (large) -->
+          <rect x="60" y="40" width="160" height="120" rx="8" fill="#EDF2FA" stroke="#1E2761" stroke-width="2"/>
+          <text x="140" y="76" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="12" font-weight="700" fill="#1E2761">volume UP</text>
+          <text x="140" y="98" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="12" font-weight="700" fill="#B85042">pressure DOWN</text>
+          <!-- diaphragm flat -->
+          <line x1="70" y1="150" x2="210" y2="150" stroke="#B85042" stroke-width="3"/>
+          <text x="140" y="146" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="9" fill="#5C6370">diaphragm flattens (contracts)</text>
+          <!-- air arrow in -->
+          <line x1="140" y1="14" x2="140" y2="40" stroke="#C8A24A" stroke-width="3"/>
+          <path d="M 133 32 L 140 42 L 147 32 Z" fill="#C8A24A"/>
+          <text x="140" y="186" text-anchor="middle" font-family="Instrument Serif,serif" font-style="italic" font-size="13" fill="#5C6370">air rushes IN</text>
+        </g>
+        <!-- divider -->
+        <line x1="280" y1="40" x2="280" y2="190" stroke="#CFD8E3" stroke-width="1"/>
+        <!-- BREATHE OUT -->
+        <g>
+          <text x="420" y="24" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" font-weight="700" fill="#1E2761" letter-spacing="1">BREATHING OUT</text>
+          <!-- chest box (smaller) -->
+          <rect x="350" y="60" width="140" height="90" rx="8" fill="#F4DAD7" stroke="#1E2761" stroke-width="2"/>
+          <text x="420" y="92" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="12" font-weight="700" fill="#1E2761">volume DOWN</text>
+          <text x="420" y="114" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="12" font-weight="700" fill="#B85042">pressure UP</text>
+          <!-- diaphragm domed -->
+          <path d="M 358 150 Q 420 128 482 150" fill="none" stroke="#B85042" stroke-width="3"/>
+          <text x="420" y="166" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="9" fill="#5C6370">diaphragm domes up (relaxes)</text>
+          <!-- air arrow out -->
+          <line x1="420" y1="60" x2="420" y2="34" stroke="#C8A24A" stroke-width="3"/>
+          <path d="M 413 42 L 420 32 L 427 42 Z" fill="#C8A24A"/>
+          <text x="420" y="186" text-anchor="middle" font-family="Instrument Serif,serif" font-style="italic" font-size="13" fill="#5C6370">air forced OUT</text>
+        </g>
+        <text x="280" y="222" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9" font-weight="700" fill="#5C6370" letter-spacing="2">VOLUME CHANGES PRESSURE · PRESSURE MOVES THE AIR</text>
+      </svg>
+      <div class="caption">In: volume UP → pressure DOWN → air IN. Out: volume DOWN → pressure UP → air OUT</div>
+    </div>
+
+    <div class="embed-slot" id="embed-breathing-model">
+      <div class="embed-slot-inner">
+        <span class="embed-tag">Interactive · drop-in</span>
+        <h4>Breathing — the thorax in motion</h4>
+        <p>Toggle inhale and exhale (or drag the diaphragm) to watch the ribcage lift and widen, the diaphragm flatten and drop, and the lungs inflate — with the volume and pressure readouts changing live.</p>
+        <div class="embed-canvas"><iframe src="interactives/breathing-model.html" title="Breathing mechanism — the thorax" loading="lazy" style="width:100%;height:430px;border:0;display:block;border-radius:2px"></iframe></div>
+        <div class="embed-note"><a href="interactives/breathing-model.html" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none">Open this interactive in a new tab ↗</a></div>
+      </div>
+    </div>
+
+    <div class="watch-out">
+      <h4>⚠ Watch out — the lungs have no muscles of their own</h4>
+      <p>It is tempting to say "the lungs pull the air in." They don't — they can't. It is the <strong>diaphragm and intercostal muscles</strong> that move, changing the chest volume. The lungs just follow the pressure change. A bell-jar model shows this well, but remember it's only a model — it has no intercostal muscles, the ribcage doesn't move, and it shows no gas exchange.</p>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">When we breathe IN, what does the diaphragm do?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>relaxes and moves up</span></li>
+        <li><span class="letter">B</span><span>contracts and flattens (moves down)</span></li>
+        <li><span class="letter">C</span><span>stays still</span></li>
+        <li><span class="letter">D</span><span>makes mucus</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>B — contracts and flattens (moves down).</strong> This increases the chest volume, which lowers the pressure inside, so air rushes in. <em>A describes what the diaphragm does when you breathe OUT — relaxing and doming back up.</em></div>
+      </details>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">Why does air rush into the lungs when we breathe in?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>the lungs pull it in with muscles</span></li>
+        <li><span class="letter">B</span><span>the chest volume increases, lowering the pressure inside</span></li>
+        <li><span class="letter">C</span><span>the pressure inside rises</span></li>
+        <li><span class="letter">D</span><span>the diaphragm relaxes</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>B — the chest volume increases, lowering the pressure inside.</strong> A bigger volume gives a lower pressure inside than outside, so air flows in from high to low pressure. <em>A is the classic misconception — the lungs have no muscles of their own and cannot pull. C and D are what happen when you breathe OUT.</em></div>
+      </details>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <h3 class="quiz-head">Test <em>yourself</em></h3>
+    <p class="quiz-sub">7 questions · click to reveal each answer</p>
+    <ol>
+      <li><details>
+        <summary>What happens to the diaphragm when we inhale?</summary>
+        <div class="ans">It <strong>contracts and flattens</strong> (moves down).</div>
+      </details></li>
+      <li><details>
+        <summary>What happens to the intercostal muscles when we inhale?</summary>
+        <div class="ans">They <strong>contract</strong>, pulling the ribcage up and out.</div>
+      </details></li>
+      <li><details>
+        <summary>What happens to chest volume and pressure when we inhale?</summary>
+        <div class="ans">Volume <strong>increases</strong>; pressure inside <strong>drops</strong> (below the outside pressure).</div>
+      </details></li>
+      <li><details>
+        <summary>What happens to the diaphragm, volume and pressure when we exhale?</summary>
+        <div class="ans">The diaphragm <strong>relaxes and domes up</strong>; volume <strong>decreases</strong>; pressure <strong>rises</strong> — so air is forced out.</div>
+      </details></li>
+      <li><details>
+        <summary>In a bell-jar model, what do the rubber sheet, the balloons and the jar represent?</summary>
+        <div class="ans">Rubber sheet = the <strong>diaphragm</strong>; balloons = the <strong>lungs</strong>; jar = the <strong>ribcage</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>When do the lungs have higher pressure: inhaling or exhaling?</summary>
+        <div class="ans"><strong>Exhaling</strong> — smaller volume means higher pressure, which forces air out.</div>
+      </details></li>
+      <li><details>
+        <summary>STRETCH: Explain, step by step, why air is forced out when we exhale.</summary>
+        <div class="ans">Muscles <strong>relax</strong> → chest volume <strong>falls</strong> → pressure inside <strong>rises above</strong> the outside pressure → air is pushed <strong>out</strong>.</div>
+      </details></li>
+    </ol>
+    <button class="done-btn" data-lesson-done="2">Mark this topic complete</button>
+  </div>
+</section>
+
+<!-- ===================================================================== -->
+<!-- TOPIC 3 — INHALED AND EXHALED AIR                                       -->
+<!-- ===================================================================== -->
+<section class="lesson" id="lesson-3">
+  <div class="lesson-head">
+    <div class="lesson-num">Topic 03 · B4 · Gas exchange</div>
+    <h2 class="lesson-title">Inhaled &amp; <em>exhaled air</em></h2>
+    <p class="lesson-promise">By the end of this topic you'll know exactly what changes — and what doesn't — between the air you breathe in and the air you breathe out.</p>
+  </div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 1</span>What's actually in a breath</h3>
+    <p>People often say "we breathe in oxygen and breathe out carbon dioxide." That's a neat story, but it isn't quite right. Most of every breath — IN and OUT — is a gas your body never uses at all: <strong>nitrogen</strong>, about 78%. It goes in and comes straight back out, unchanged.</p>
+    <p>Only two gases change much between inhaled and exhaled air:</p>
+    <p><strong>Oxygen FALLS</strong> from about 21% to about 16%. You only use about 5% of each breath's oxygen — but that's enough to live on. <strong>Carbon dioxide RISES</strong> from about 0.04% to about 4% — that's roughly <strong>1000 times more</strong> than you breathed in. You also breathe out <strong>more water vapour</strong> than you breathe in (which is why your breath mists a cold mirror).</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 560 250" xmlns="http://www.w3.org/2000/svg">
+        <!-- Axis labels -->
+        <text x="120" y="24" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" font-weight="700" fill="#1E2761" letter-spacing="1">INHALED</text>
+        <text x="400" y="24" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" font-weight="700" fill="#1E2761" letter-spacing="1">EXHALED</text>
+        <!-- Inhaled stacked bar -->
+        <g>
+          <rect x="80" y="40" width="80" height="140" fill="#1E2761"/>
+          <text x="120" y="115" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="11" font-weight="700" fill="#fff">N2 78%</text>
+          <rect x="80" y="180" width="80" height="38" fill="#C8A24A"/>
+          <text x="120" y="203" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="10" font-weight="700" fill="#1E2761">O2 21%</text>
+          <rect x="80" y="218" width="80" height="2" fill="#B85042"/>
+        </g>
+        <!-- Exhaled stacked bar -->
+        <g>
+          <rect x="360" y="40" width="80" height="140" fill="#1E2761"/>
+          <text x="400" y="115" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="11" font-weight="700" fill="#fff">N2 78%</text>
+          <rect x="360" y="180" width="80" height="29" fill="#C8A24A"/>
+          <text x="400" y="199" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="10" font-weight="700" fill="#1E2761">O2 16%</text>
+          <rect x="360" y="209" width="80" height="9" fill="#B85042"/>
+          <text x="400" y="216.5" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="7" font-weight="700" fill="#fff">CO2 4%</text>
+        </g>
+        <!-- arrows showing change -->
+        <g>
+          <text x="240" y="160" text-anchor="middle" font-family="Instrument Serif,serif" font-style="italic" font-size="14" fill="#B85042">O2 falls (used)</text>
+          <text x="240" y="196" text-anchor="middle" font-family="Instrument Serif,serif" font-style="italic" font-size="14" fill="#B85042">CO2 rises (~1000×)</text>
+          <text x="240" y="110" text-anchor="middle" font-family="Instrument Serif,serif" font-style="italic" font-size="14" fill="#5C6370">N2 unchanged</text>
+        </g>
+        <text x="280" y="244" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9" font-weight="700" fill="#5C6370" letter-spacing="2">ONLY OXYGEN AND CARBON DIOXIDE CHANGE MUCH</text>
+      </svg>
+      <div class="caption">Nitrogen stays at 78% · oxygen 21%→16% · carbon dioxide 0.04%→4%</div>
+    </div>
+
+    <div class="embed-slot" id="embed-air-composition">
+      <div class="embed-slot-inner">
+        <span class="embed-tag">Interactive · drop-in</span>
+        <h4>Inhaled vs exhaled bar chart</h4>
+        <p>Toggle between inhaled and exhaled air and watch the bars for nitrogen, oxygen and carbon dioxide grow and shrink — with the exact percentages.</p>
+        <div class="embed-canvas"><iframe src="interactives/air-composition.html" title="Inhaled vs exhaled bar chart" loading="lazy" style="width:100%;height:380px;border:0;display:block;border-radius:2px"></iframe></div>
+        <div class="embed-note"><a href="interactives/air-composition.html" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none">Open this interactive in a new tab ↗</a></div>
+      </div>
+    </div>
+
+    <div class="keywords">
+      <h4>The four gases to remember</h4>
+      <dl>
+        <dt>Nitrogen — 78% → 78%</dt>
+        <dd>The most common gas. Your body does not use it, so it stays the same in and out.</dd>
+        <dt>Oxygen — 21% → 16%</dt>
+        <dd>Falls by about 5%, the part your body uses each breath. Plenty is still breathed back out.</dd>
+        <dt>Carbon dioxide — 0.04% → 4%</dt>
+        <dd>Rises about 1000 times. It is the waste gas your body removes.</dd>
+        <dt>Water vapour — a little → more</dt>
+        <dd>You breathe out more water vapour than you breathe in.</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 2</span>Why the air changes</h3>
+    <p>Why is there LESS oxygen in exhaled air? Because about 5% of the oxygen has <strong>diffused into your blood</strong> to be used by your cells. Why is there MORE carbon dioxide? Because your body makes CO2 as a waste product, and it is breathed out. The nitrogen doesn't change because your body never touches it.</p>
+    <p>This is why exhaled air is still good enough for the "kiss of life" — rescue breaths. It still contains about 16% oxygen, which is enough to keep another person's cells supplied.</p>
+
+    <div class="watch-out">
+      <h4>⚠ Watch out — exhaled air still has ~16% oxygen</h4>
+      <p>It is wrong to think you "take in all the oxygen you inhale." You only use about <strong>5%</strong> — so roughly <strong>16% oxygen is still there</strong> in the air you breathe out. That leftover oxygen is exactly why rescue breaths work.</p>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">Which gas makes up the highest percentage of the air we breathe?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>oxygen</span></li>
+        <li><span class="letter">B</span><span>carbon dioxide</span></li>
+        <li><span class="letter">C</span><span>nitrogen</span></li>
+        <li><span class="letter">D</span><span>water vapour</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>C — nitrogen.</strong> It's about 78% of the air, far more than oxygen (21%). <em>Oxygen feels like it should be the answer because it's the gas we care about — but our bodies don't use the nitrogen at all, even though there's the most of it.</em></div>
+      </details>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">Why is there LESS oxygen in exhaled air than inhaled air?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>the body destroys oxygen</span></li>
+        <li><span class="letter">B</span><span>some oxygen has diffused into the blood to be used</span></li>
+        <li><span class="letter">C</span><span>oxygen turns into nitrogen</span></li>
+        <li><span class="letter">D</span><span>we breathe out only carbon dioxide</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>B — some oxygen has diffused into the blood to be used.</strong> About 5% of each breath's oxygen crosses into the blood for the cells, so exhaled air has ~16% left. <em>D is wrong — exhaled air is NOT just carbon dioxide; it's still mostly nitrogen and still has plenty of oxygen. C breaks the rules of chemistry — one element can't turn into another by breathing.</em></div>
+      </details>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <h3 class="quiz-head">Test <em>yourself</em></h3>
+    <p class="quiz-sub">8 questions · click to reveal each answer</p>
+    <ol>
+      <li><details>
+        <summary>What percentage of inhaled air is oxygen? What about exhaled air?</summary>
+        <div class="ans">Inhaled: about <strong>21%</strong>. Exhaled: about <strong>16%</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>What percentage of air (in AND out) is nitrogen?</summary>
+        <div class="ans">About <strong>78%</strong>, unchanged.</div>
+      </details></li>
+      <li><details>
+        <summary>What percentage of exhaled air is carbon dioxide?</summary>
+        <div class="ans">About <strong>4%</strong> (up from about 0.04% inhaled).</div>
+      </details></li>
+      <li><details>
+        <summary>Give two differences and one similarity between inhaled and exhaled air.</summary>
+        <div class="ans">Differences: oxygen <strong>falls</strong> (21%→16%); carbon dioxide <strong>rises</strong> (0.04%→4%) (also more water vapour out). Similarity: <strong>nitrogen is the same</strong> (78%).</div>
+      </details></li>
+      <li><details>
+        <summary>Why does exhaled air still contain a lot of oxygen?</summary>
+        <div class="ans">We only use about <strong>5%</strong> of each breath's oxygen, so ~16% is still breathed back out.</div>
+      </details></li>
+      <li><details>
+        <summary>Why is exhaled air good enough for the "kiss of life"?</summary>
+        <div class="ans">It still contains about <strong>16% oxygen</strong> — enough for another person's cells to use.</div>
+      </details></li>
+      <li><details>
+        <summary>Do we breathe out more or less water vapour than we breathe in? How could you prove the CO2 change?</summary>
+        <div class="ans"><strong>More</strong> water vapour. To prove the extra CO2, bubble exhaled air through <strong>limewater</strong> — it turns cloudy faster than room air does.</div>
+      </details></li>
+      <li><details>
+        <summary>STRETCH: By roughly how many times does carbon dioxide increase from inhaled to exhaled air?</summary>
+        <div class="ans">About <strong>1000 times</strong> (from 0.04% to 4%).</div>
+      </details></li>
+    </ol>
+    <button class="done-btn" data-lesson-done="3">Mark this topic complete</button>
+  </div>
+</section>
+
+<!-- ===================================================================== -->
+<!-- TOPIC 4 — HOW DOES GAS EXCHANGE HAPPEN?                                 -->
+<!-- ===================================================================== -->
+<section class="lesson" id="lesson-4">
+  <div class="lesson-head">
+    <div class="lesson-num">Topic 04 · B4 · Gas exchange</div>
+    <h2 class="lesson-title">How does <em>gas exchange</em> happen?</h2>
+    <p class="lesson-promise">By the end of this topic you'll be able to explain how oxygen and carbon dioxide swap over in the alveoli — by diffusion, and without using any energy.</p>
+  </div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 1</span>The swap in the alveoli</h3>
+    <p>The air you breathe IN is rich in oxygen but low in carbon dioxide. The blood arriving at your lungs is the opposite: low in oxygen, high in carbon dioxide. In the tiny air sacs — the <strong>alveoli</strong> — the two swap over.</p>
+    <p>Each alveolus is wrapped in tiny blood vessels called <strong>capillaries</strong>. Here is the rule:</p>
+    <p><strong>Oxygen</strong> is HIGH in the alveolus and LOW in the blood, so oxygen diffuses <strong>INTO the blood</strong>. <strong>Carbon dioxide</strong> is HIGH in the blood and LOW in the alveolus, so carbon dioxide diffuses <strong>OUT OF the blood</strong>, into the alveolus, to be breathed out.</p>
+    <p>Both gases move by <strong>diffusion</strong> — the net movement of particles from a HIGH to a LOW concentration. And diffusion is <strong>passive</strong>: it needs NO energy.</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 560 240" xmlns="http://www.w3.org/2000/svg">
+        <!-- Alveolus -->
+        <circle cx="170" cy="120" r="90" fill="#EDF2FA" stroke="#1E2761" stroke-width="2"/>
+        <text x="170" y="80" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="13" font-weight="700" fill="#1E2761">ALVEOLUS</text>
+        <text x="170" y="98" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="10" fill="#5C6370">air sac</text>
+        <text x="170" y="128" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="11" font-weight="700" fill="#B85042">HIGH oxygen</text>
+        <text x="170" y="148" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="11" font-weight="700" fill="#1E2761">low CO2</text>
+        <!-- Capillary -->
+        <rect x="300" y="60" width="200" height="120" rx="14" fill="#F4DAD7" stroke="#1E2761" stroke-width="2"/>
+        <text x="400" y="90" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="13" font-weight="700" fill="#1E2761">CAPILLARY</text>
+        <text x="400" y="108" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="10" fill="#5C6370">blood</text>
+        <text x="400" y="132" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="11" font-weight="700" fill="#1E2761">low oxygen</text>
+        <text x="400" y="152" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="11" font-weight="700" fill="#B85042">HIGH CO2</text>
+        <!-- O2 arrow into blood -->
+        <line x1="260" y1="100" x2="298" y2="100" stroke="#C8A24A" stroke-width="3"/>
+        <path d="M 290 93 L 302 100 L 290 107 Z" fill="#C8A24A"/>
+        <text x="278" y="88" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" font-weight="700" fill="#C8A24A">O2</text>
+        <!-- CO2 arrow into alveolus -->
+        <line x1="300" y1="150" x2="262" y2="150" stroke="#B85042" stroke-width="3"/>
+        <path d="M 270 143 L 258 150 L 270 157 Z" fill="#B85042"/>
+        <text x="282" y="170" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" font-weight="700" fill="#B85042">CO2</text>
+        <text x="280" y="226" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9" font-weight="700" fill="#5C6370" letter-spacing="2">BOTH GASES MOVE BY DIFFUSION · HIGH → LOW</text>
+      </svg>
+      <div class="caption">O2 diffuses alveolus → blood · CO2 diffuses blood → alveolus</div>
+    </div>
+
+    <div class="embed-slot" id="embed-alveolus-diffusion">
+      <div class="embed-slot-inner">
+        <span class="embed-tag">Interactive · drop-in</span>
+        <h4>Alveolus diffusion animation</h4>
+        <p>Watch oxygen particles drift from the alveolus into the blood, and carbon dioxide particles drift the other way — both moving from high to low concentration.</p>
+        <div class="embed-canvas"><iframe src="interactives/alveolus-diffusion.html" title="Alveolus diffusion animation" loading="lazy" style="width:100%;height:560px;border:0;display:block;border-radius:2px"></iframe></div>
+        <div class="embed-note"><a href="interactives/alveolus-diffusion.html" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none">Open this interactive in a new tab ↗</a></div>
+      </div>
+    </div>
+
+    <div class="keywords">
+      <h4>Keywords for Part 1</h4>
+      <dl>
+        <dt>Diffusion</dt>
+        <dd>The net (overall) movement of particles from a HIGH to a LOW concentration. It needs no energy.</dd>
+        <dt>Alveoli</dt>
+        <dd>The tiny air sacs in the lungs where gas exchange happens (one is an alveolus).</dd>
+        <dt>Capillary</dt>
+        <dd>A tiny blood vessel. A network of them wraps around each alveolus.</dd>
+        <dt>Concentration</dt>
+        <dd>How much of a gas there is in a space. Diffusion always runs from high to low concentration.</dd>
+      </dl>
+    </div>
+
+    <div class="watch-out">
+      <h4>⚠ Watch out — not every gas "diffuses into the blood"</h4>
+      <p>A student might say "all the gases we inhale diffuse into our blood." Not so. Only <strong>oxygen</strong> diffuses across in useful amounts. The nitrogen and other gases are mostly just breathed back out. And the gases move by <strong>diffusion</strong> — not by "breathing," not by active transport, and not by osmosis (osmosis is for water).</p>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">Which gas diffuses FROM the alveolus INTO the blood?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>carbon dioxide</span></li>
+        <li><span class="letter">B</span><span>oxygen</span></li>
+        <li><span class="letter">C</span><span>nitrogen</span></li>
+        <li><span class="letter">D</span><span>water vapour</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>B — oxygen.</strong> Oxygen is high in the alveolus and low in the blood, so it diffuses into the blood. <em>A (carbon dioxide) moves the OTHER way — it's high in the blood and low in the alveolus, so it diffuses out of the blood.</em></div>
+      </details>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">By what process do oxygen and carbon dioxide move in the lungs?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>active transport</span></li>
+        <li><span class="letter">B</span><span>osmosis</span></li>
+        <li><span class="letter">C</span><span>diffusion</span></li>
+        <li><span class="letter">D</span><span>breathing</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>C — diffusion.</strong> Both gases move from a high to a low concentration, needing no energy. <em>A (active transport) needs energy and works against the gradient — the opposite of what's happening here. B (osmosis) is the movement of water, not gases.</em></div>
+      </details>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 2</span>Writing the 6-mark answer</h3>
+    <p>A common exam question asks you to explain the whole swap using concentration and diffusion. Here is a full-mark answer, with each <strong>(1)</strong> showing where a mark is earned.</p>
+
+    <div class="worked">
+      <h4>6-mark model answer</h4>
+      <p class="q">Explain how oxygen gets from the air in an alveolus into the blood, and how carbon dioxide is removed. Use the idea of concentration and diffusion. <strong>[6 marks]</strong></p>
+      <div class="step"><div class="label">Mark 1</div><div class="v">Gas exchange takes place in the alveoli (air sacs) of the lungs, which are surrounded by capillaries. (1)</div></div>
+      <div class="step"><div class="label">Mark 2</div><div class="v">The oxygen concentration is higher in the alveolus than in the blood arriving from the body. (1)</div></div>
+      <div class="step"><div class="label">Mark 3</div><div class="v">So oxygen diffuses from the alveolus (high) into the blood (low), down the concentration gradient. (1)</div></div>
+      <div class="step"><div class="label">Mark 4</div><div class="v">Carbon dioxide is at a higher concentration in the blood than in the alveolus. (1)</div></div>
+      <div class="step"><div class="label">Mark 5</div><div class="v">So carbon dioxide diffuses from the blood into the alveolus and is breathed out. (1)</div></div>
+      <div class="step answer"><div class="label">Mark 6</div><div class="v">Both gases move by diffusion, which needs no energy. (1)</div></div>
+    </div>
+
+    <div class="watch-out">
+      <h4>⚠ Mark-scheme note</h4>
+      <p>One mark each for: alveoli + capillaries; oxygen higher in the alveolus; oxygen diffuses into the blood; carbon dioxide higher in the blood; carbon dioxide diffuses into the alveolus; both move by diffusion. <strong>Maximum 6 marks.</strong> The examiner wants the <strong>direction</strong> AND the <strong>reason</strong> (the concentration difference) every time — never just "oxygen goes in."</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <h3 class="quiz-head">Test <em>yourself</em></h3>
+    <p class="quiz-sub">8 questions · click to reveal each answer</p>
+    <ol>
+      <li><details>
+        <summary>Where does gas exchange happen, and what surrounds each alveolus?</summary>
+        <div class="ans">In the <strong>alveoli</strong> of the lungs; each one is surrounded by a network of <strong>capillaries</strong> (blood).</div>
+      </details></li>
+      <li><details>
+        <summary>Which gas diffuses into the blood, and which diffuses out of the blood?</summary>
+        <div class="ans"><strong>Oxygen</strong> diffuses into the blood; <strong>carbon dioxide</strong> diffuses out of the blood.</div>
+      </details></li>
+      <li><details>
+        <summary>Why does oxygen diffuse INTO the blood?</summary>
+        <div class="ans">Oxygen is at a <strong>higher concentration</strong> in the alveolus than in the blood, so it diffuses from high to low.</div>
+      </details></li>
+      <li><details>
+        <summary>Why does carbon dioxide diffuse INTO the alveolus?</summary>
+        <div class="ans">Carbon dioxide is at a <strong>higher concentration</strong> in the blood than in the alveolus, so it diffuses out of the blood.</div>
+      </details></li>
+      <li><details>
+        <summary>Does gas exchange use energy? Explain.</summary>
+        <div class="ans"><strong>No</strong> — it happens by diffusion, which is passive (high to low concentration, no energy needed).</div>
+      </details></li>
+      <li><details>
+        <summary>What is diffusion?</summary>
+        <div class="ans">The <strong>net movement of particles from a high to a low concentration</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>Where does the oxygen go after it enters the blood?</summary>
+        <div class="ans">It is carried in the blood to the <strong>body cells</strong> to be used. (At the cells, oxygen diffuses out of the blood, because the cells are low in oxygen.)</div>
+      </details></li>
+      <li><details>
+        <summary>STRETCH: Why does keeping the blood flowing help gas exchange continue?</summary>
+        <div class="ans">Flowing blood carries the oxygen away, keeping its concentration in the capillary <strong>low</strong> — so the difference stays big and oxygen keeps diffusing in.</div>
+      </details></li>
+    </ol>
+    <button class="done-btn" data-lesson-done="4">Mark this topic complete</button>
+  </div>
+</section>
+
+<!-- ===================================================================== -->
+<!-- TOPIC 5 — ADAPTATIONS OF THE GAS EXCHANGE SYSTEM                        -->
+<!-- ===================================================================== -->
+<section class="lesson" id="lesson-5">
+  <div class="lesson-head">
+    <div class="lesson-num">Topic 05 · B4 · Gas exchange</div>
+    <h2 class="lesson-title">Adaptations of the <em>alveoli</em></h2>
+    <p class="lesson-promise">By the end of this topic you'll know the four features that make the alveoli brilliant at their job — and exactly how each one speeds up diffusion.</p>
+  </div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 1</span>Four features, one goal: FASTER diffusion</h3>
+    <p>An adult has around <strong>300 million</strong> tiny alveoli. Spread flat, they would cover about half a tennis court. Their walls are just one cell thick, and they are always kept moist. Why does that matter? Because every one of these features makes diffusion <strong>FASTER</strong>. Here are the four to learn:</p>
+    <p><strong>1. Large surface area.</strong> Millions of folded alveoli give a huge area, so more gas can diffuse across at once.<br>
+    <strong>2. Thin walls (one cell thick).</strong> The alveolus and capillary walls are one cell thick, giving a SHORT diffusion pathway — gases cross quickly.<br>
+    <strong>3. Good blood supply.</strong> A network of capillaries carries gases away, keeping the concentration difference BIG so diffusion keeps going.<br>
+    <strong>4. Moist surface.</strong> Gases dissolve in the moisture and diffuse faster.</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 560 230" xmlns="http://www.w3.org/2000/svg">
+        <!-- central alveolus cluster -->
+        <circle cx="280" cy="115" r="46" fill="#EDF2FA" stroke="#1E2761" stroke-width="2"/>
+        <circle cx="240" cy="90" r="22" fill="#EDF2FA" stroke="#1E2761" stroke-width="1.5"/>
+        <circle cx="322" cy="92" r="20" fill="#EDF2FA" stroke="#1E2761" stroke-width="1.5"/>
+        <circle cx="246" cy="146" r="20" fill="#EDF2FA" stroke="#1E2761" stroke-width="1.5"/>
+        <circle cx="320" cy="146" r="18" fill="#EDF2FA" stroke="#1E2761" stroke-width="1.5"/>
+        <text x="280" y="120" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="10" font-weight="700" fill="#1E2761">alveoli</text>
+        <!-- four labels -->
+        <g font-family="IBM Plex Sans,sans-serif" font-size="11" font-weight="700" fill="#1E2761">
+          <text x="20" y="44">1 · Large surface area</text>
+          <text x="380" y="44">2 · Thin walls</text>
+          <text x="20" y="206">3 · Good blood supply</text>
+          <text x="395" y="206">4 · Moist surface</text>
+        </g>
+        <g font-family="IBM Plex Sans,sans-serif" font-size="9" fill="#5C6370">
+          <text x="20" y="58">millions of folded sacs</text>
+          <text x="380" y="58">one cell → short pathway</text>
+          <text x="20" y="220">keeps the gradient big</text>
+          <text x="395" y="220">gases dissolve, diffuse</text>
+        </g>
+        <!-- connector lines -->
+        <g stroke="#C8A24A" stroke-width="1.5">
+          <line x1="120" y1="62" x2="235" y2="92"/>
+          <line x1="440" y1="62" x2="324" y2="92"/>
+          <line x1="120" y1="188" x2="244" y2="146"/>
+          <line x1="440" y1="188" x2="320" y2="146"/>
+        </g>
+      </svg>
+      <div class="caption">Every adaptation makes diffusion of O2 and CO2 FASTER</div>
+    </div>
+
+    <div class="keywords">
+      <h4>Keywords for Part 1</h4>
+      <dl>
+        <dt>Surface area</dt>
+        <dd>The total area available for diffusion. Bigger = more gas crosses at once.</dd>
+        <dt>Diffusion pathway</dt>
+        <dd>The distance a gas has to travel. Thin walls give a short pathway, so diffusion is fast.</dd>
+        <dt>Concentration difference</dt>
+        <dd>The gap in concentration between two places (also called the gradient). A bigger gap = faster diffusion.</dd>
+      </dl>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">Why are the alveoli walls only one cell thick?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>to store more air</span></li>
+        <li><span class="letter">B</span><span>to give a short diffusion pathway so gases cross quickly</span></li>
+        <li><span class="letter">C</span><span>to make mucus</span></li>
+        <li><span class="letter">D</span><span>to hold the lungs open</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>B — to give a short diffusion pathway so gases cross quickly.</strong> A one-cell-thick wall means a very short distance for gases to travel, so diffusion is fast. <em>The alveoli aren't about storing air (A) — they're about swapping gases as quickly as possible.</em></div>
+      </details>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">How does a good blood supply help gas exchange?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>it warms the air</span></li>
+        <li><span class="letter">B</span><span>it keeps the concentration difference big so diffusion continues</span></li>
+        <li><span class="letter">C</span><span>it makes the walls thicker</span></li>
+        <li><span class="letter">D</span><span>it removes mucus</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>B — it keeps the concentration difference big so diffusion continues.</strong> Flowing blood carries oxygen away and brings carbon dioxide, keeping the gradient steep so diffusion keeps going. <em>C is the opposite of what you'd want — thicker walls would SLOW diffusion, not help it.</em></div>
+      </details>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 2</span>Writing the 6-mark answer</h3>
+    <p>This is a classic exam question. Name at least three adaptations and link each one to faster diffusion. Here's the full-mark version with each <strong>(1)</strong> marked.</p>
+
+    <div class="worked">
+      <h4>6-mark model answer</h4>
+      <p class="q">Explain how the alveoli are adapted to allow efficient gas exchange. Give at least three adaptations and link each to faster diffusion. <strong>[6 marks]</strong></p>
+      <div class="step"><div class="label">Mark 1</div><div class="v">The alveoli have a large surface area because there are millions of tiny folded sacs, giving more room for diffusion. (1)</div></div>
+      <div class="step"><div class="label">Mark 2</div><div class="v">The walls are only one cell thick, which gives a short diffusion pathway so gases cross quickly. (1)</div></div>
+      <div class="step"><div class="label">Mark 3</div><div class="v">There is a good blood supply (a network of capillaries) which keeps the concentration difference big. (1)</div></div>
+      <div class="step"><div class="label">Mark 4</div><div class="v">The alveoli are moist, so gases dissolve and diffuse faster. (1)</div></div>
+      <div class="step"><div class="label">Mark 5</div><div class="v">Each feature is correctly linked to a faster rate of diffusion. (1)</div></div>
+      <div class="step answer"><div class="label">Mark 6</div><div class="v">Together these adaptations make gas exchange fast and efficient. (1)</div></div>
+    </div>
+
+    <div class="watch-out">
+      <h4>⚠ Mark-scheme note</h4>
+      <p>One mark each for: large surface area (millions/folded); thin walls = short pathway; good blood supply = keeps the gradient; moist surface; linking features to faster diffusion; overall efficiency. <strong>Maximum 6 marks.</strong> Naming a feature is only half a mark's worth — you must say <strong>what it does</strong> and <strong>link it to diffusion</strong>.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <h3 class="quiz-head">Test <em>yourself</em></h3>
+    <p class="quiz-sub">7 questions · click to reveal each answer</p>
+    <ol>
+      <li><details>
+        <summary>Name four adaptations of the alveoli.</summary>
+        <div class="ans"><strong>Large surface area</strong>, <strong>thin walls</strong> (one cell thick), <strong>good blood supply</strong>, <strong>moist surface</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>How does a large surface area help?</summary>
+        <div class="ans">It gives <strong>more room for gases to diffuse across at once</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>How do thin walls help?</summary>
+        <div class="ans">They give a <strong>short diffusion pathway</strong>, so gases cross quickly.</div>
+      </details></li>
+      <li><details>
+        <summary>How does a moist surface help?</summary>
+        <div class="ans">Gases <strong>dissolve in the moisture</strong> and diffuse faster.</div>
+      </details></li>
+      <li><details>
+        <summary>Roughly how many alveoli does an adult have, and what gives the big surface area?</summary>
+        <div class="ans">About <strong>300 million</strong>. The surface area comes from millions of tiny, highly <strong>folded</strong> sacs.</div>
+      </details></li>
+      <li><details>
+        <summary>Name three factors that affect the rate of gas exchange.</summary>
+        <div class="ans"><strong>Surface area</strong>, <strong>diffusion distance</strong> (wall thickness), and <strong>concentration difference</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>STRETCH: Why are the alveoli and the small intestine's villi adapted in similar ways?</summary>
+        <div class="ans">Both are <strong>exchange surfaces</strong>, so both have a large, thin, moist, well-supplied surface to absorb substances quickly.</div>
+      </details></li>
+    </ol>
+    <button class="done-btn" data-lesson-done="5">Mark this topic complete</button>
+  </div>
+</section>
+
+<!-- ===================================================================== -->
+<!-- TOPIC 6 — EXERCISE AND ASTHMA                                           -->
+<!-- ===================================================================== -->
+<section class="lesson" id="lesson-6">
+  <div class="lesson-head">
+    <div class="lesson-num">Topic 06 · B4 · Gas exchange</div>
+    <h2 class="lesson-title">Exercise &amp; <em>asthma</em></h2>
+    <p class="lesson-promise">By the end of this topic you'll know why exercise makes you breathe faster, and what goes wrong with the airways in asthma.</p>
+  </div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 1</span>Why exercise speeds up breathing</h3>
+    <p>After a sprint you pant hard for a minute or two, then your breathing settles. Why? During exercise your muscles work harder, so they need <strong>much more oxygen</strong>. They also produce <strong>much more carbon dioxide</strong> as waste. To cope, your <strong>breathing rate RISES</strong> — you breathe faster and deeper to take in oxygen and remove the extra CO2.</p>
+    <p>When you stop, your breathing stays fast for a while, until the extra carbon dioxide has been cleared out. A <strong>fitter</strong> person's breathing rate returns to normal more quickly afterwards — so a recovery graph can tell you who is fitter. (And when you're asleep, with your muscles resting, your breathing rate is LOWER than at rest.)</p>
+
+    <div class="embed-slot" id="embed-breathing-rate">
+      <div class="embed-slot-inner">
+        <span class="embed-tag">Interactive · drop-in</span>
+        <h4>Breathing rate vs exercise grapher</h4>
+        <p>Slide the exercise intensity up and down and watch a live graph plot the breathing rate — then see how a fitter person's line recovers faster.</p>
+        <div class="embed-canvas"><iframe src="interactives/breathing-rate.html" title="Breathing rate vs exercise grapher" loading="lazy" style="width:100%;height:560px;border:0;display:block;border-radius:2px"></iframe></div>
+        <div class="embed-note"><a href="interactives/breathing-rate.html" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none">Open this interactive in a new tab ↗</a></div>
+      </div>
+    </div>
+
+    <div class="keywords">
+      <h4>Keywords for Part 1</h4>
+      <dl>
+        <dt>Breathing rate</dt>
+        <dd>How many breaths you take per minute. It rises with exercise and falls during sleep.</dd>
+        <dt>Recovery</dt>
+        <dd>The time taken for breathing to return to normal after exercise. Shorter recovery = fitter.</dd>
+      </dl>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">Why does breathing rate increase during exercise?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>to cool the body down</span></li>
+        <li><span class="letter">B</span><span>to take in more oxygen and remove more carbon dioxide</span></li>
+        <li><span class="letter">C</span><span>to make more mucus</span></li>
+        <li><span class="letter">D</span><span>to slow the heart</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>B — to take in more oxygen and remove more carbon dioxide.</strong> Exercising muscles need more oxygen and make more CO2, so breathing speeds up to supply one and remove the other. <em>A is tempting because exercise does make you hot — but you cool down mainly by sweating, not by breathing faster.</em></div>
+      </details>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 2</span>What asthma does to the airways</h3>
+    <p>Someone having an asthma attack can struggle to breathe even sitting still. Asthma is a <strong>condition</strong> where the lining of the airways becomes irritated and <strong>inflamed</strong>. Three things then happen at once: the muscles around the airways <strong>contract</strong> (tightening them), the swollen lining narrows them further, and <strong>extra mucus</strong> is made. The result: the airways become <strong>NARROWER</strong>, so <strong>LESS</strong> air can move in and out — making it hard to breathe.</p>
+    <p>Asthma has <strong>no cure</strong>. But it can be managed: an <strong>inhaler</strong> reduces the swelling and relaxes the muscles, <strong>widening</strong> the airways again. Common triggers include pollen, dust, smoke, cold air and exercise.</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 560 200" xmlns="http://www.w3.org/2000/svg">
+        <!-- Normal airway (wide) -->
+        <g>
+          <text x="150" y="30" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" font-weight="700" fill="#1E2761" letter-spacing="1">NORMAL AIRWAY</text>
+          <circle cx="150" cy="105" r="62" fill="#EDF2FA" stroke="#1E2761" stroke-width="3"/>
+          <circle cx="150" cy="105" r="44" fill="#FCFAF4" stroke="#1E2761" stroke-width="1"/>
+          <text x="150" y="110" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="11" font-weight="700" fill="#1E2761">wide open</text>
+          <text x="150" y="184" text-anchor="middle" font-family="Instrument Serif,serif" font-style="italic" font-size="13" fill="#5C6370">plenty of air gets through</text>
+        </g>
+        <!-- arrow -->
+        <line x1="240" y1="105" x2="320" y2="105" stroke="#B85042" stroke-width="2"/>
+        <path d="M 312 98 L 324 105 L 312 112 Z" fill="#B85042"/>
+        <text x="280" y="96" text-anchor="middle" font-family="Instrument Serif,serif" font-style="italic" font-size="12" fill="#B85042">attack</text>
+        <!-- Asthma airway (narrow) -->
+        <g>
+          <text x="410" y="30" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" font-weight="700" fill="#1E2761" letter-spacing="1">AIRWAY IN ASTHMA</text>
+          <circle cx="410" cy="105" r="62" fill="#F4DAD7" stroke="#1E2761" stroke-width="3"/>
+          <!-- thick inflamed wall -->
+          <circle cx="410" cy="105" r="46" fill="#B85042" opacity="0.35"/>
+          <circle cx="410" cy="105" r="18" fill="#FCFAF4" stroke="#1E2761" stroke-width="1"/>
+          <text x="410" y="109" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="9" font-weight="700" fill="#1E2761">narrow</text>
+          <text x="410" y="184" text-anchor="middle" font-family="Instrument Serif,serif" font-style="italic" font-size="13" fill="#5C6370">inflamed + mucus → less air</text>
+        </g>
+      </svg>
+      <div class="caption">In asthma the airways narrow, so less air moves in and out</div>
+    </div>
+
+    <div class="keywords">
+      <h4>Keywords for Part 2</h4>
+      <dl>
+        <dt>Asthma</dt>
+        <dd>A condition where the airways become inflamed and narrow, making breathing hard.</dd>
+        <dt>Inflamed</dt>
+        <dd>Swollen and irritated. The swollen airway lining narrows the airway.</dd>
+        <dt>Inhaler</dt>
+        <dd>A device that reduces swelling and widens the airways to relieve symptoms. It manages asthma — it does not cure it.</dd>
+      </dl>
+    </div>
+
+    <div class="watch-out">
+      <h4>⚠ Watch out — an inhaler relieves, it does not cure</h4>
+      <p>"Asthma can be cured with an inhaler" is <strong>false</strong>. There is no cure. An inhaler only <strong>manages or relieves</strong> the symptoms by widening the airways. Some people with asthma even take their inhaler <strong>before</strong> exercise to keep the airways open in advance.</p>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">What happens to the airways during an asthma attack?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>they widen</span></li>
+        <li><span class="letter">B</span><span>they become inflamed and narrow, with extra mucus</span></li>
+        <li><span class="letter">C</span><span>they make more cilia</span></li>
+        <li><span class="letter">D</span><span>they fill with oxygen</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>B — they become inflamed and narrow, with extra mucus.</strong> The lining swells, the surrounding muscles contract, and extra mucus is made — so the airway narrows and less air gets through. <em>A is the opposite of what happens — widening is what an inhaler does to RELIEVE an attack.</em></div>
+      </details>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <h3 class="quiz-head">Test <em>yourself</em></h3>
+    <p class="quiz-sub">8 questions · click to reveal each answer</p>
+    <ol>
+      <li><details>
+        <summary>What happens to breathing rate during exercise, and why?</summary>
+        <div class="ans">It <strong>increases</strong> — the muscles need more oxygen and more carbon dioxide must be removed.</div>
+      </details></li>
+      <li><details>
+        <summary>What gas builds up in exercising cells?</summary>
+        <div class="ans"><strong>Carbon dioxide</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>What does breathing rate do during sleep?</summary>
+        <div class="ans">It <strong>decreases</strong> (lower than at rest).</div>
+      </details></li>
+      <li><details>
+        <summary>Why does breathing stay fast for a while after exercise stops?</summary>
+        <div class="ans">To <strong>remove the extra carbon dioxide</strong> that built up during the exercise.</div>
+      </details></li>
+      <li><details>
+        <summary>What is asthma, and name two things that narrow the airways in an attack.</summary>
+        <div class="ans">A condition where the airways become <strong>inflamed and narrow</strong>. Narrowing comes from the <strong>muscles contracting</strong> and <strong>extra mucus</strong> being made (plus the swollen lining).</div>
+      </details></li>
+      <li><details>
+        <summary>Name two asthma triggers, and explain how an inhaler helps.</summary>
+        <div class="ans">Any two: <strong>pollen, dust, smoke, cold air, exercise</strong>. An inhaler <strong>reduces swelling and widens the airways</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>Can asthma be cured? How can you tell who is fitter from a recovery graph?</summary>
+        <div class="ans"><strong>No</strong> — it can only be managed, not cured. On a recovery graph, the <strong>fitter person's breathing rate returns to normal faster</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>STRETCH: Suggest why exercise can be harder for someone with asthma.</summary>
+        <div class="ans">Their airways are already <strong>narrowed</strong>, which limits airflow — so it is harder to get enough oxygen when active.</div>
+      </details></li>
+    </ol>
+    <button class="done-btn" data-lesson-done="6">Mark this topic complete</button>
+  </div>
+</section>
+
+<!-- ===================================================================== -->
+<!-- TOPIC 7 — HOW SMOKING AFFECTS BREATHING                                 -->
+<!-- ===================================================================== -->
+<section class="lesson" id="lesson-7">
+  <div class="lesson-head">
+    <div class="lesson-num">Topic 07 · B4 · Gas exchange</div>
+    <h2 class="lesson-title">How <em>smoking</em> affects breathing</h2>
+    <p class="lesson-promise">By the end of this topic you'll be able to explain the damage cigarette smoke does to every part of the gas exchange system, and why it leaves the body short of oxygen.</p>
+  </div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 1</span>Damage to the airways and alveoli</h3>
+    <p>Cigarette smoke is hot and contains <strong>tar</strong>, <strong>nicotine</strong> and <strong>carbon monoxide</strong>. It damages the gas exchange system at every point you've learned about.</p>
+    <p>Smoke <strong>damages the cilia</strong> — the tiny sweeping hairs in the airways. With the cilia damaged, mucus is no longer swept away, so it builds up and the body coughs to clear it: the <strong>"smoker's cough."</strong> Hot smoke and tar also damage and inflame the <strong>bronchi</strong>, causing <strong>bronchitis</strong>.</p>
+    <p>Deeper down, the folded <strong>alveoli</strong> membranes break down, leaving larger air spaces. This means a <strong>SMALLER surface area</strong> — and a smaller surface area means slower, <strong>less efficient gas exchange</strong>. On top of all this, the <strong>tar</strong> is a <strong>carcinogen</strong> — a cancer-causing chemical that can lead to mouth, throat or lung cancer.</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg">
+        <!-- trachea -->
+        <rect x="60" y="30" width="22" height="60" rx="6" fill="#EDF2FA" stroke="#1E2761" stroke-width="2"/>
+        <text x="100" y="44" font-family="IBM Plex Sans,sans-serif" font-size="11" font-weight="700" fill="#1E2761">Cilia</text>
+        <text x="100" y="58" font-family="IBM Plex Sans,sans-serif" font-size="9" fill="#B85042">damaged → smoker's cough</text>
+        <!-- bronchi -->
+        <line x1="71" y1="90" x2="50" y2="115" stroke="#1E2761" stroke-width="5" stroke-linecap="round"/>
+        <line x1="71" y1="90" x2="92" y2="115" stroke="#1E2761" stroke-width="5" stroke-linecap="round"/>
+        <text x="120" y="105" font-family="IBM Plex Sans,sans-serif" font-size="11" font-weight="700" fill="#1E2761">Bronchi</text>
+        <text x="120" y="119" font-family="IBM Plex Sans,sans-serif" font-size="9" fill="#B85042">damaged by tar/heat → bronchitis</text>
+        <!-- alveoli broken -->
+        <circle cx="60" cy="150" r="14" fill="#F4DAD7" stroke="#1E2761" stroke-width="1.5" stroke-dasharray="3 3"/>
+        <circle cx="88" cy="160" r="16" fill="#F4DAD7" stroke="#1E2761" stroke-width="1.5" stroke-dasharray="3 3"/>
+        <text x="130" y="156" font-family="IBM Plex Sans,sans-serif" font-size="11" font-weight="700" fill="#1E2761">Alveoli</text>
+        <text x="130" y="170" font-family="IBM Plex Sans,sans-serif" font-size="9" fill="#B85042">break down → smaller surface area</text>
+        <!-- chemicals box -->
+        <rect x="330" y="40" width="200" height="150" rx="8" fill="#EDF2FA" stroke="#1E2761" stroke-width="2"/>
+        <text x="430" y="62" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" font-weight="700" fill="#1E2761" letter-spacing="1">CHEMICALS IN SMOKE</text>
+        <g font-family="IBM Plex Sans,sans-serif" font-size="10" fill="#1A1A1A">
+          <text x="345" y="92" font-weight="700" fill="#B85042">Tar</text>
+          <text x="345" y="106">carcinogen → cancer</text>
+          <text x="345" y="132" font-weight="700" fill="#B85042">Nicotine</text>
+          <text x="345" y="146">addictive → heart disease</text>
+          <text x="345" y="172" font-weight="700" fill="#B85042">Carbon monoxide</text>
+          <text x="345" y="186">takes O2's place in blood</text>
+        </g>
+      </svg>
+      <div class="caption">Smoking damages cilia, bronchi and alveoli — and adds harmful chemicals</div>
+    </div>
+
+    <div class="keywords">
+      <h4>Keywords for Part 1</h4>
+      <dl>
+        <dt>Tar</dt>
+        <dd>A sticky carcinogen (cancer-causing chemical) that coats the lungs.</dd>
+        <dt>Carcinogen</dt>
+        <dd>A chemical that can cause cancer.</dd>
+        <dt>Bronchitis</dt>
+        <dd>Inflammation of the bronchi, caused here by hot smoke and tar.</dd>
+      </dl>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">Why does smoking lead to a "smoker's cough"?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>it widens the airways</span></li>
+        <li><span class="letter">B</span><span>it damages the cilia, so mucus is not swept away and the body coughs to clear it</span></li>
+        <li><span class="letter">C</span><span>it adds oxygen to the lungs</span></li>
+        <li><span class="letter">D</span><span>it makes the alveoli bigger</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>B — it damages the cilia, so mucus is not swept away and the body coughs to clear it.</strong> Normally cilia sweep dirty mucus out; once they're damaged, mucus builds up and the body coughs. <em>D is wrong in a sneaky way — smoking does damage the alveoli, but it makes the surface area SMALLER (membranes break down), it doesn't help.</em></div>
+      </details>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 2</span>The chemicals in smoke</h3>
+    <p>Three named chemicals do the harm. <strong>Tar</strong> is the sticky carcinogen that coats the lungs and causes cancer. <strong>Nicotine</strong> is the <strong>addictive</strong> chemical; it raises heart rate and blood pressure, leading to heart disease. <strong>Carbon monoxide</strong> is a gas that takes oxygen's place on red blood cells — so the blood carries <strong>LESS oxygen</strong> around the body.</p>
+    <p>So smoking harms both the <strong>lungs</strong> (less gas exchange) and the <strong>heart and blood</strong> (less oxygen carried). That double hit is why a smoker can become breathless even climbing stairs.</p>
+
+    <div class="watch-out">
+      <h4>⚠ Watch out — carbon monoxide doesn't damage the lungs, it sabotages the blood</h4>
+      <p>Carbon monoxide doesn't break down the alveoli — that's tar and heat. Instead it <strong>binds to red blood cells in place of oxygen</strong>, so even if your lungs worked perfectly, your blood would carry <strong>less oxygen</strong>. This is also why smoking is especially harmful for someone with asthma: their airways are already narrowed and inflamed, and the smoke makes both the airflow AND the oxygen-carrying worse.</p>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">How does carbon monoxide in smoke harm the body?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>it makes mucus</span></li>
+        <li><span class="letter">B</span><span>it takes oxygen's place in red blood cells, so less oxygen is carried</span></li>
+        <li><span class="letter">C</span><span>it widens the airways</span></li>
+        <li><span class="letter">D</span><span>it cures bronchitis</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>B — it takes oxygen's place in red blood cells, so less oxygen is carried.</strong> Carbon monoxide binds to red blood cells instead of oxygen, leaving the blood carrying less oxygen around the body. <em>A is the job of goblet cells, not a poison; C and D get it backwards — smoke harms the airways, it doesn't widen or heal them.</em></div>
+      </details>
+    </div>
+  </div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 3</span>Writing the 6-mark answer</h3>
+    <p>Putting it all together — how smoking damages gas exchange AND cuts the oxygen reaching your cells. Each <strong>(1)</strong> marks a scoring point.</p>
+
+    <div class="worked">
+      <h4>6-mark model answer</h4>
+      <p class="q">Explain how smoking damages the gas exchange system and reduces the amount of oxygen reaching the body's cells. <strong>[6 marks]</strong></p>
+      <div class="step"><div class="label">Mark 1</div><div class="v">Smoke damages the cilia, so mucus (with dust and germs) is not swept away — leading to a smoker's cough and infections. (1)</div></div>
+      <div class="step"><div class="label">Mark 2</div><div class="v">The hot smoke and tar damage the bronchi (causing bronchitis) and break down the folded alveoli membranes. (1)</div></div>
+      <div class="step"><div class="label">Mark 3</div><div class="v">A smaller alveoli surface area means less gas exchange, so less oxygen diffuses into the blood. (1)</div></div>
+      <div class="step"><div class="label">Mark 4</div><div class="v">Carbon monoxide in the smoke takes oxygen's place on red blood cells, so the blood carries less oxygen. (1)</div></div>
+      <div class="step"><div class="label">Mark 5</div><div class="v">Tar is also a carcinogen that can cause lung cancer. (1)</div></div>
+      <div class="step answer"><div class="label">Mark 6</div><div class="v">Nicotine raises heart rate and blood pressure, raising the risk of heart disease. (1)</div></div>
+    </div>
+
+    <div class="watch-out">
+      <h4>⚠ Mark-scheme note</h4>
+      <p>One mark each for: cilia damaged → cough; bronchi/alveoli damaged; smaller surface area → less gas exchange; carbon monoxide reduces oxygen carried; tar/nicotine harm. <strong>Maximum 6 marks.</strong> Notice the answer covers <strong>both</strong> halves of the question — the damage to the lungs AND the drop in oxygen carried by the blood.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <h3 class="quiz-head">Test <em>yourself</em></h3>
+    <p class="quiz-sub">8 questions · click to reveal each answer</p>
+    <ol>
+      <li><details>
+        <summary>Name four effects of smoking on the lungs.</summary>
+        <div class="ans">Any four: <strong>damaged cilia; bronchitis; alveoli break down; smaller surface area; cancer; smoker's cough</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>How does smoking cause a smoker's cough?</summary>
+        <div class="ans">Damaged cilia can't sweep mucus away, so mucus <strong>builds up</strong> and the body coughs to clear it.</div>
+      </details></li>
+      <li><details>
+        <summary>What happens to a smoker's alveoli, and how does it affect gas exchange?</summary>
+        <div class="ans">The folded membranes <strong>break down</strong>, leaving larger air spaces — a <strong>smaller surface area</strong>, so slower, less efficient gas exchange.</div>
+      </details></li>
+      <li><details>
+        <summary>What is tar, and what can it cause?</summary>
+        <div class="ans">A <strong>carcinogen</strong> (cancer-causing chemical) — it can cause mouth, throat or lung cancer.</div>
+      </details></li>
+      <li><details>
+        <summary>What does nicotine do? What does carbon monoxide do?</summary>
+        <div class="ans"><strong>Nicotine</strong> is addictive and raises heart rate and blood pressure (heart disease). <strong>Carbon monoxide</strong> takes oxygen's place on red blood cells, so less oxygen is carried.</div>
+      </details></li>
+      <li><details>
+        <summary>Why does smoking increase a person's breathing rate over time?</summary>
+        <div class="ans">A smaller alveoli surface area means <strong>less oxygen is absorbed</strong>, so breathing speeds up to compensate.</div>
+      </details></li>
+      <li><details>
+        <summary>Why is smoking especially harmful for someone with asthma?</summary>
+        <div class="ans">Their airways are already <strong>narrowed and inflamed</strong>; smoke worsens this and reduces gas exchange even further.</div>
+      </details></li>
+      <li><details>
+        <summary>STRETCH: Explain why a smoker may get breathless climbing stairs.</summary>
+        <div class="ans">A smaller surface area means <strong>less oxygen absorbed</strong>, and carbon monoxide means <strong>less oxygen carried</strong> — so the muscles get less oxygen and tire quickly.</div>
+      </details></li>
+    </ol>
+    <button class="done-btn" data-lesson-done="7">Mark this topic complete</button>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="sig">⁂</div>
+  <p>Year 8 · KS3 Science · B4 Gas exchange</p>
+  <p>A revision booklet</p>
+</footer>
+
+<script>
+(function(){
+  var STORAGE_KEY = 'b4-gas-exchange-done';
+  var done = {};
+  try {
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) done = JSON.parse(raw);
+  } catch(e) {}
+
+  function save(){
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(done)); } catch(e){}
+  }
+
+  function refresh(){
+    document.querySelectorAll('[data-lesson-done]').forEach(function(btn){
+      var n = btn.getAttribute('data-lesson-done');
+      if (done[n]){
+        btn.classList.add('is-done');
+        btn.textContent = '✓ Done — nice work';
+      }
+    });
+    document.querySelectorAll('.nav-pill').forEach(function(pill){
+      var n = pill.getAttribute('data-lesson');
+      if (done[n]) pill.classList.add('done');
+      else pill.classList.remove('done');
+    });
+  }
+
+  document.querySelectorAll('[data-lesson-done]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var n = btn.getAttribute('data-lesson-done');
+      if (done[n]) return;
+      done[n] = true;
+      save();
+      refresh();
+    });
+  });
+
+  refresh();
+})();
+</script>
+
+<script>
+/* For printing / "Save as PDF": questions stay in place; all answers are gathered into a separate "Answers" section at the end (grouped by topic). Removed again after printing so the on-screen booklet is unchanged. */
+(function(){
+  var sec=null;
+  function build(){
+    if(sec) return;
+    var main=document.querySelector('main'); if(!main) return;
+    sec=document.createElement('section'); sec.className='answers-print';
+    sec.innerHTML='<h2 class="answers-print-title">Answers</h2><p class="answers-print-sub">Check your work — grouped by topic, in order</p>';
+    document.querySelectorAll('.lesson').forEach(function(lesson){
+      var t=lesson.querySelector('.lesson-title'), nu=lesson.querySelector('.lesson-num');
+      var qc=[], qz=[];
+      lesson.querySelectorAll('.hinge .reveal-body').forEach(function(a){ qc.push(a.innerHTML.trim()); });
+      lesson.querySelectorAll('.quiz li details').forEach(function(d){
+        var q=d.querySelector('summary'), a=d.querySelector('.ans');
+        if(a) qz.push({q:q?q.textContent.trim():'', a:a.innerHTML.trim()});
+      });
+      if(!qc.length && !qz.length) return;
+      var b=document.createElement('div'); b.className='answers-block';
+      var h='<h3 class="answers-topic">'+((nu?nu.textContent.trim()+' · ':'')+(t?t.textContent.trim():''))+'</h3>';
+      qc.forEach(function(a){ h+='<p class="answers-qc"><strong>Quick check.</strong> '+a+'</p>'; });
+      if(qz.length){ h+='<ol class="answers-list">'; qz.forEach(function(it){ h+='<li><span class="aq">'+it.q+'</span><span class="aa">'+it.a+'</span></li>'; }); h+='</ol>'; }
+      b.innerHTML=h; sec.appendChild(b);
+    });
+    main.appendChild(sec);
+  }
+  function teardown(){ if(sec){ sec.remove(); sec=null; } }
+  window.__buildPrintLayout=build;
+  window.addEventListener('beforeprint',build);
+  window.addEventListener('afterprint',teardown);
+})();
+</script>
+
+</body>
+</html>

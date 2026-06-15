@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evaluate: Embryo Screening (PGD vs CVS)</title>
+<style>
+  :root{
+    --navy:#14254d; --navy-2:#1e3a6e; --navy-soft:#eef2f9;
+    --accent:#f4b400; --good:#1f8a4c; --good-soft:#e6f4ec;
+    --bad:#c0392b; --bad-soft:#fbeae8; --ink:#14254d;
+    --muted:#5b6b8c; --line:#cdd6e8; --paper:#ffffff;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{font-family:Arial,Helvetica,sans-serif;background:var(--navy-soft);color:var(--ink);
+    font-size:20px;line-height:1.45;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 18px 60px;}
+
+  header{background:var(--navy);color:#fff;padding:18px 0 0;box-shadow:0 4px 14px rgba(20,37,77,0.18);}
+  .head-inner{max-width:1180px;margin:0 auto;padding:0 18px;}
+  header h1{margin:0;font-size:28px;letter-spacing:0.2px;}
+  header .lo{margin:6px 0 14px;font-size:18px;color:#cfe0ff;}
+  header .lo strong{color:var(--accent);}
+  .tabs{display:flex;flex-wrap:wrap;gap:3px;}
+  .tab{background:transparent;color:#aebfe0;border:none;cursor:pointer;font-family:inherit;
+    font-size:13px;font-weight:bold;padding:9px 11px;border-radius:8px 8px 0 0;}
+  .tab:hover{color:#fff;background:var(--navy-2);}
+  .tab.active{background:var(--navy-soft);color:var(--navy);}
+
+  .section{display:none;background:var(--paper);border-radius:0 0 14px 14px;
+    padding:30px 34px;box-shadow:0 8px 24px rgba(20,37,77,0.10);margin-bottom:24px;}
+  .section.active{display:block;}
+  .kicker{font-size:14px;font-weight:bold;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);}
+  h2{font-size:30px;margin:6px 0 4px;}
+  .sub{color:var(--muted);font-size:17px;margin:0 0 22px;}
+
+  .btn{font-family:inherit;cursor:pointer;border:none;border-radius:10px;font-weight:bold;
+    font-size:18px;padding:12px 20px;transition:transform .08s ease;}
+  .btn:active{transform:translateY(1px);}
+  .btn-primary{background:var(--navy);color:#fff;}
+  .btn-primary:hover{background:var(--navy-2);}
+  .btn-ghost{background:#fff;color:var(--navy);border:2px solid var(--line);}
+  .btn-ghost:hover{border-color:var(--navy);}
+
+  /* reveal cards (Do Now, Pre-teach words, Read check, Fix it) */
+  .grid-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+  .grid-cards.three{grid-template-columns:repeat(3,1fr);}
+  .qcard{border:2px solid var(--line);border-radius:12px;padding:18px 20px;background:#fff;}
+  .qcard .q{font-weight:bold;font-size:20px;}
+  .reveal-link{margin-top:14px;}
+  .revealbox{margin-top:14px;border-radius:8px;padding:12px 14px;font-size:18px;display:none;}
+  .qcard.show .revealbox{display:block;animation:fade .25s ease;}
+  .revealbox.good{background:var(--good-soft);border-left:5px solid var(--good);color:#13502e;}
+  .revealbox.bad{background:var(--bad-soft);border-left:5px solid var(--bad);color:#7a241b;}
+  .revealbox.tip{background:var(--navy-soft);border-left:5px solid var(--navy);color:var(--navy);}
+  @keyframes fade{from{opacity:0;transform:translateY(-4px);}to{opacity:1;transform:none;}}
+
+  /* primer / model highlights */
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin:14px 0 10px;font-size:15px;}
+  .legend span{padding:3px 8px;border-radius:4px;}
+  .hl-compare{background:#dbeafe;border-radius:4px;padding:0 3px;}
+  .hl-weigh{background:#fde9c8;border-radius:4px;padding:0 3px;}
+  .hl-conclude{background:var(--good-soft);border-radius:4px;padding:0 3px;font-weight:bold;}
+  .model{font-size:19px;line-height:1.7;border:2px solid var(--line);border-radius:12px;padding:22px 24px;}
+  .ingredients{display:flex;gap:12px;flex-wrap:wrap;margin:0 0 18px;}
+  .ing{background:var(--navy);color:#fff;border-radius:10px;padding:10px 16px;font-size:16px;font-weight:bold;}
+  .ing b{color:var(--accent);}
+
+  /* stimulus + glossary (glossary pinned ABOVE passage) */
+  .gloss-box{background:var(--navy);color:#fff;border-radius:12px;padding:0 22px;overflow:hidden;
+    max-height:0;transition:max-height .25s ease,padding .25s ease;margin-bottom:16px;}
+  .gloss-box.show{max-height:220px;padding:18px 22px;}
+  .gloss-box .gt{color:var(--accent);font-weight:bold;font-size:20px;}
+  .stimulus{font-size:20px;line-height:1.6;}
+  .stimulus p{margin:0 0 16px;}
+  .term{background:var(--accent);color:var(--navy);font-weight:bold;border-radius:5px;padding:0 5px;
+    cursor:pointer;border-bottom:2px solid #c98f00;}
+  .term:hover{filter:brightness(1.05);}
+
+  /* comparison grid */
+  table.compare{width:100%;border-collapse:collapse;margin-top:10px;}
+  table.compare th,table.compare td{border:2px solid var(--line);padding:0;vertical-align:top;}
+  table.compare thead th{background:var(--navy);color:#fff;font-size:20px;padding:14px;}
+  table.compare thead th:first-child{background:var(--navy-2);}
+  .crit{background:var(--navy-soft);font-weight:bold;padding:16px;font-size:19px;width:22%;}
+  td.cell{position:relative;}
+  td.cell button{width:100%;height:100%;min-height:90px;border:none;background:#fff;cursor:pointer;
+    font-family:inherit;font-size:18px;color:var(--muted);padding:16px;text-align:left;}
+  td.cell button:hover{background:#f6f9ff;}
+  td.cell.revealed button{background:#fff;color:var(--ink);cursor:default;font-size:20px;line-height:1.45;}
+  td.cell.revealed.pgd{background:#f3f7ff;}
+  td.cell .tap{font-style:italic;color:#9aa8c4;}
+  .grid-tools{margin:16px 0 8px;display:flex;gap:10px;align-items:center;}
+  .prompt{margin-top:14px;background:var(--navy-soft);border-radius:10px;padding:14px 18px;font-size:18px;}
+  .prompt strong{color:var(--navy);}
+
+  /* MCQ */
+  .mcq{border:2px solid var(--line);border-radius:12px;padding:20px 22px;margin-bottom:20px;}
+  .mcq .stem{font-weight:bold;font-size:20px;margin-bottom:14px;}
+  .opt{display:block;width:100%;text-align:left;font-family:inherit;font-size:18px;border:2px solid var(--line);
+    background:#fff;border-radius:10px;padding:13px 16px;margin-bottom:10px;cursor:pointer;color:var(--ink);}
+  .opt:hover{border-color:var(--navy);}
+  .opt.correct{background:var(--good-soft);border-color:var(--good);color:#13502e;font-weight:bold;}
+  .opt.wrong{background:var(--bad-soft);border-color:var(--bad);color:#7a241b;}
+  .opt.correct::before{content:"\2713\00a0\00a0";font-weight:bold;}
+  .opt.wrong::before{content:"\2717\00a0\00a0";font-weight:bold;}
+  .why{display:none;margin-top:8px;background:var(--navy);color:#fff;border-radius:10px;padding:14px 18px;font-size:18px;}
+  .why.show{display:block;animation:fade .25s ease;}
+  .why b{color:var(--accent);}
+
+  /* strips, levels, exit */
+  .strip{background:var(--navy-soft);border-left:5px solid var(--navy);border-radius:8px;
+    padding:14px 18px;margin:10px 0;font-size:19px;}
+  .strip .blank{background:#fff;border-bottom:2px dashed var(--muted);padding:0 26px;}
+  .levels .lvl{border:2px solid var(--line);border-radius:12px;padding:16px 20px;margin-bottom:12px;}
+  .levels .lvl b{font-size:20px;}
+  .levels .l3{border-color:var(--good);background:var(--good-soft);}
+  .exit{background:var(--navy);color:#fff;border-radius:14px;padding:26px 28px;font-size:22px;}
+  .exit .stem{margin-top:14px;background:#fff;color:var(--navy);border-radius:10px;padding:14px 18px;font-size:20px;}
+  .exit .blank,.exit .stem .blank{border-bottom:2px dashed var(--navy);padding:0 34px;}
+
+  .nav{display:flex;justify-content:space-between;align-items:center;gap:16px;
+    position:sticky;bottom:0;background:var(--navy-soft);padding:14px 0;}
+  .nav .pos{color:var(--muted);font-size:15px;font-weight:bold;}
+  .nav .spacer{flex:1;}
+
+  @media (max-width:820px){
+    .grid-cards,.grid-cards.three{grid-template-columns:1fr;}
+    body{font-size:18px;}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="head-inner">
+    <h1>Evaluate Question &mdash; Embryo Screening</h1>
+    <p class="lo"><strong>Objective:</strong> Evaluate the benefits of PGD and CVS, and reach a <strong>justified conclusion</strong>.</p>
+    <div class="tabs" id="tabs"></div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- PRE-TEACH -->
+  <section class="section active" data-name="Pre-teach">
+    <div class="kicker">Before we start &middot; Load the words &amp; the structure</div>
+    <h2>Two things to fix first</h2>
+    <p class="sub">If these aren&rsquo;t solid, the rest of the lesson collapses. Spend real time here.</p>
+
+    <h2 style="font-size:22px;">1. Six words you&rsquo;ll need</h2>
+    <p class="sub">Say each word, get a guess, then reveal.</p>
+    <div class="grid-cards three">
+      <div class="qcard"><div class="q">Evaluate</div>
+        <button class="btn btn-ghost reveal-link" onclick="this.parentElement.classList.add('show')">Reveal</button>
+        <div class="revealbox good">Weigh up the good and bad points, then <b>reach a judgement</b> &mdash; decide which is better.</div></div>
+      <div class="qcard"><div class="q">Embryo</div>
+        <button class="btn btn-ghost reveal-link" onclick="this.parentElement.classList.add('show')">Reveal</button>
+        <div class="revealbox good">A ball of cells in the earliest stage of development, before it becomes a foetus.</div></div>
+      <div class="qcard"><div class="q">Implant</div>
+        <button class="btn btn-ghost reveal-link" onclick="this.parentElement.classList.add('show')">Reveal</button>
+        <div class="revealbox good">To place an embryo into the woman&rsquo;s uterus (womb) so a pregnancy can begin.</div></div>
+      <div class="qcard"><div class="q">Terminate</div>
+        <button class="btn btn-ghost reveal-link" onclick="this.parentElement.classList.add('show')">Reveal</button>
+        <div class="revealbox good">To end a pregnancy.</div></div>
+      <div class="qcard"><div class="q">Miscarriage</div>
+        <button class="btn btn-ghost reveal-link" onclick="this.parentElement.classList.add('show')">Reveal</button>
+        <div class="revealbox good">When a pregnancy is lost.</div></div>
+      <div class="qcard"><div class="q">Ethical</div>
+        <button class="btn btn-ghost reveal-link" onclick="this.parentElement.classList.add('show')">Reveal</button>
+        <div class="revealbox good">To do with what people think is right or wrong.</div></div>
+    </div>
+
+    <h2 style="font-size:22px;margin-top:30px;">2. What &ldquo;evaluate&rdquo; looks like &mdash; on something easy</h2>
+    <p class="sub">Same three moves you&rsquo;ll use on the science. Learn the shape here, where it&rsquo;s obvious.</p>
+    <div class="legend">
+      <span class="hl-compare">compare a benefit</span>
+      <span class="hl-weigh">weigh the other side</span>
+      <span class="hl-conclude">judge + justify + for whom</span>
+    </div>
+    <div class="model"><b>Q: Takeaway pizza or making your own &mdash; which is better?</b><br><br>
+      <span class="hl-compare">A benefit of takeaway is that it&rsquo;s much faster and you don&rsquo;t have to clean up, so it&rsquo;s better on a busy night.</span>
+      <span class="hl-weigh">However, making your own is far cheaper and you control what goes in it, so it&rsquo;s healthier.</span>
+      <span class="hl-conclude">Overall, making your own is better if you have time and want to save money, because it costs a fraction of the price &mdash; but takeaway wins when you&rsquo;re in a rush.</span></div>
+    <div class="prompt" style="margin-top:18px;"><strong>Point at it:</strong> notice the conclusion doesn&rsquo;t say &ldquo;both are good.&rdquo; It picks one, says why, and says <em>when</em>. That exact move earns the marks later.</div>
+  </section>
+
+  <!-- DO NOW -->
+  <section class="section" data-name="Do Now">
+    <div class="kicker">Do Now &middot; Retrieval</div>
+    <h2>What do we already know?</h2>
+    <p class="sub">Whiteboards up. Answer all four, then we reveal.</p>
+    <div class="grid-cards">
+      <div class="qcard"><div class="q">1. What is a <u>gene</u>?</div>
+        <button class="btn btn-ghost reveal-link" onclick="this.parentElement.classList.add('show')">Reveal</button>
+        <div class="revealbox good">A section of DNA that codes for a particular characteristic (a protein).</div></div>
+      <div class="qcard"><div class="q">2. How many pairs of chromosomes are in a human body cell?</div>
+        <button class="btn btn-ghost reveal-link" onclick="this.parentElement.classList.add('show')">Reveal</button>
+        <div class="revealbox good">23 pairs (46 chromosomes in total).</div></div>
+      <div class="qcard"><div class="q">3. What causes an inherited genetic disorder?</div>
+        <button class="btn btn-ghost reveal-link" onclick="this.parentElement.classList.add('show')">Reveal</button>
+        <div class="revealbox good">A faulty allele (a faulty version of a gene) passed from parent to child.</div></div>
+      <div class="qcard"><div class="q">4. Two carriers of a recessive disorder have a child (Cc &times; Cc). What is the chance the child is affected?</div>
+        <button class="btn btn-ghost reveal-link" onclick="this.parentElement.classList.add('show')">Reveal</button>
+        <div class="revealbox good">1 in 4 (25%) &mdash; only the <em>cc</em> combination is affected.</div></div>
+    </div>
+  </section>
+
+  <!-- READ IT -->
+  <section class="section" data-name="Read it">
+    <div class="kicker">Step 1 &middot; Decode the question</div>
+    <h2>Read the information together</h2>
+    <p class="sub">Tap any <span class="term">highlighted word</span> &mdash; its meaning appears in the blue box below.</p>
+    <div class="gloss-box" id="gloss">
+      <div class="gt" id="gloss-term"></div>
+      <div id="gloss-def"></div>
+    </div>
+    <div class="stimulus" id="stim">
+      <p>Embryo screening can be used to screen embryos for certain inherited disorders. Two ways of doing this are through <span class="term" data-g="pgd">PGD</span> (pre-implantation genetic diagnosis) and <span class="term" data-g="cvs">CVS</span> (chorionic villus sampling).</p>
+      <p><b>PGD</b> involves <span class="term" data-g="ivf">IVF</span> (in vitro fertilisation) of a few eggs, then taking a cell from each embryo when it is 3 days old. The DNA in the cell can then be tested. An unaffected embryo can be <span class="term" data-g="implant">implanted</span> in the woman&rsquo;s uterus. The possibility of a <span class="term" data-g="fp">false positive</span> result is around 1 in 6. The procedure costs about &pound;6000. Affected embryos would be <span class="term" data-g="discard">discarded</span>. Extra unaffected embryos might be frozen and kept for later implantation. Alternatively, the extra embryos might be used in scientific research.</p>
+      <p><b>CVS</b> involves taking a sample of blood from the placenta a few weeks into pregnancy. DNA from white blood cells can then be tested. If an affected embryo is detected, the parents then have to decide whether to terminate the pregnancy or allow it to continue. CVS has a 1 percent chance of giving an incorrect result and a 0.9 percent chance of causing a <span class="term" data-g="misc">miscarriage</span>. CVS costs about &pound;600.</p>
+    </div>
+  </section>
+
+  <!-- READ CHECK (NEW comprehension) -->
+  <section class="section" data-name="Read check">
+    <div class="kicker">Step 2 &middot; Did they actually read it?</div>
+    <h2>Quick literal check</h2>
+    <p class="sub">Before any evaluating. If they can&rsquo;t answer these, they misread the passage &mdash; go back.</p>
+    <div class="grid-cards three">
+      <div class="qcard"><div class="q">Which method happens <u>before</u> pregnancy begins?</div>
+        <button class="btn btn-ghost reveal-link" onclick="this.parentElement.classList.add('show')">Reveal</button>
+        <div class="revealbox good"><b>PGD</b> &mdash; the embryo is tested in the lab, then only an unaffected one is implanted.</div></div>
+      <div class="qcard"><div class="q">Which method is <u>cheaper</u>?</div>
+        <button class="btn btn-ghost reveal-link" onclick="this.parentElement.classList.add('show')">Reveal</button>
+        <div class="revealbox good"><b>CVS</b> &mdash; about &pound;600, versus &pound;6000 for PGD.</div></div>
+      <div class="qcard"><div class="q">Which method carries a risk of causing a <u>miscarriage</u>?</div>
+        <button class="btn btn-ghost reveal-link" onclick="this.parentElement.classList.add('show')">Reveal</button>
+        <div class="revealbox good"><b>CVS</b> &mdash; a 0.9% chance.</div></div>
+    </div>
+  </section>
+
+  <!-- COMPARE -->
+  <section class="section" data-name="Compare">
+    <div class="kicker">Step 3 &middot; Build the comparison</div>
+    <h2>Pull the facts out of the passage</h2>
+    <p class="sub">Ask the class for each fact first &mdash; <em>then</em> click the box to check. Don&rsquo;t reveal early.</p>
+    <table class="compare">
+      <thead><tr><th>Criterion</th><th>PGD</th><th>CVS</th></tr></thead>
+      <tbody id="grid"></tbody>
+    </table>
+    <div class="grid-tools">
+      <button class="btn btn-primary" onclick="revealAllCells()">Reveal all</button>
+      <button class="btn btn-ghost" onclick="hideAllCells()">Hide all</button>
+    </div>
+    <div class="prompt"><strong>Talk:</strong> on each row, which method &ldquo;wins&rdquo; &mdash; and <em>for whom</em>? A method can be better for one family and worse for another.</div>
+  </section>
+
+  <!-- MCQ -->
+  <section class="section" data-name="Good answer?">
+    <div class="kicker">Step 4 &middot; Spot the good writing</div>
+    <h2>What does a good answer actually look like?</h2>
+    <p class="sub">A, B or C on whiteboards. These test the <em>writing</em>, not the facts.</p>
+    <div id="mcqs"></div>
+  </section>
+
+  <!-- MODEL (I do) -->
+  <section class="section" data-name="Model">
+    <div class="kicker">Step 5 &middot; I do</div>
+    <h2>A Level 3 answer &mdash; and how it&rsquo;s built</h2>
+    <div class="legend">
+      <span class="hl-compare">compare a benefit</span>
+      <span class="hl-weigh">weigh the other side</span>
+      <span class="hl-conclude">justified conclusion</span>
+    </div>
+    <div class="model">
+      <span class="hl-compare">A benefit of CVS is that it is far cheaper &mdash; about &pound;600 compared with &pound;6000 &mdash; so it is available to more families, and it is more accurate, with only a 1% chance of an incorrect result against a 1 in 6 false positive rate for PGD.</span>
+      <span class="hl-weigh">However, a major benefit of PGD is that screening happens before pregnancy, so only an unaffected embryo is implanted and parents avoid the difficult decision about ending a pregnancy. PGD also avoids the 0.9% miscarriage risk that CVS carries. On the other hand, PGD requires IVF and means affected embryos are discarded, which some people object to.</span>
+      <span class="hl-conclude">Overall, PGD is the better method for parents who can afford it and who want to avoid the miscarriage risk and a termination decision, because it screens before pregnancy begins &mdash; but for families who cannot afford &pound;6000, CVS is the more realistic and more accurate choice.</span>
+    </div>
+  </section>
+
+  <!-- FIX IT (we do) -->
+  <section class="section" data-name="Fix it">
+    <div class="kicker">Step 6 &middot; We do &middot; The conclusion is where marks are lost</div>
+    <h2>Fix these conclusions together</h2>
+    <p class="sub">The question literally says &ldquo;include a conclusion.&rdquo; A real conclusion needs all three:</p>
+    <div class="ingredients">
+      <div class="ing"><b>1</b> &nbsp;a clear choice</div>
+      <div class="ing"><b>2</b> &nbsp;a reason (because&hellip;)</div>
+      <div class="ing"><b>3</b> &nbsp;who it&rsquo;s best for</div>
+    </div>
+    <div class="grid-cards">
+      <div class="qcard"><div class="q">&ldquo;Overall, both methods have good and bad points.&rdquo;<br><span style="font-weight:normal;color:var(--muted);">Why does this score nothing?</span></div>
+        <button class="btn btn-ghost reveal-link" onclick="this.parentElement.classList.add('show')">Reveal</button>
+        <div class="revealbox bad">No choice and no reason &mdash; it just says it&rsquo;s complicated. Missing all three ingredients.</div></div>
+      <div class="qcard"><div class="q">&ldquo;Overall, PGD is the best.&rdquo;<br><span style="font-weight:normal;color:var(--muted);">Better &mdash; but what&rsquo;s still missing?</span></div>
+        <button class="btn btn-ghost reveal-link" onclick="this.parentElement.classList.add('show')">Reveal</button>
+        <div class="revealbox bad">It makes a choice (ingredient 1) but gives no reason and no &ldquo;for whom.&rdquo; Still Level 1&ndash;2.</div></div>
+    </div>
+    <div class="qcard" style="margin-top:16px;border-color:var(--navy);">
+      <div class="q">Your turn: rewrite &ldquo;PGD is the best&rdquo; on whiteboards so it has all three ingredients.</div>
+      <button class="btn btn-primary reveal-link" onclick="this.parentElement.classList.add('show')">Reveal a strong version</button>
+      <div class="revealbox good">&ldquo;Overall, PGD is better <u>for parents who can afford it</u> and want to avoid a termination decision, <u>because</u> it screens before pregnancy begins.&rdquo; &mdash; choice + reason + for whom = Level 3.</div>
+    </div>
+  </section>
+
+  <!-- WRITE (you do) -->
+  <section class="section" data-name="Write">
+    <div class="kicker">Step 7 &middot; You do</div>
+    <h2>Now write the full answer</h2>
+    <p class="sub">On paper, in full sentences. These are sentence starters &mdash; finish each one in your own words. You don&rsquo;t have to use them all, and you can write more.</p>
+    <div class="strip">One benefit of PGD is&hellip;</div>
+    <div class="strip">One benefit of CVS is&hellip;</div>
+    <div class="strip">This is better than the other method because&hellip;</div>
+    <div class="strip">However, a benefit of the other method is&hellip;</div>
+    <div class="strip">Overall, the better method is&hellip;</div>
+  </section>
+
+  <!-- MARK IT -->
+  <section class="section" data-name="Mark it">
+    <div class="kicker">Step 8 &middot; Self / peer assessment</div>
+    <h2>Which level is your answer?</h2>
+    <p class="sub">Swap books. Tick the highest level that is <em>fully</em> true. (Teacher: still read a sample yourself &mdash; KS3 self-marking runs generous.)</p>
+    <div class="levels">
+      <div class="lvl l3"><b>Level 3 (5&ndash;6 marks)</b><br>Compares <u>both</u> methods using facts from the passage, <u>and</u> a conclusion that makes a choice and says why.</div>
+      <div class="lvl"><b>Level 2 (3&ndash;4 marks)</b><br>Gives some benefits, but mostly of one method, <em>or</em> the conclusion doesn&rsquo;t really justify the choice.</div>
+      <div class="lvl"><b>Level 1 (1&ndash;2 marks)</b><br>Describes the methods but doesn&rsquo;t really compare them or conclude.</div>
+    </div>
+    <div class="prompt"><strong>Stretch (top group):</strong> now write the <em>opposite</em> conclusion &mdash; argue CVS is better &mdash; and make it just as convincing.</div>
+  </section>
+
+  <!-- EXIT -->
+  <section class="section" data-name="Exit">
+    <div class="kicker">Exit ticket</div>
+    <h2>One sentence to leave on</h2>
+    <div class="exit">
+      Which method would you recommend, <u>when</u>, and <u>why</u>?
+      <div class="stem">I would recommend <span class="blank"></span> when <span class="blank"></span> because <span class="blank"></span>.</div>
+    </div>
+  </section>
+
+  <div class="nav">
+    <button class="btn btn-ghost" id="backBtn" onclick="go(-1)">&larr; Back</button>
+    <span class="pos" id="pos"></span>
+    <span class="spacer"></span>
+    <button class="btn btn-primary" id="nextBtn" onclick="go(1)">Next &rarr;</button>
+  </div>
+</div>
+
+<script>
+  const sections=Array.from(document.querySelectorAll('.section'));
+  const tabsEl=document.getElementById('tabs');
+  let cur=0;
+  sections.forEach((s,i)=>{
+    const t=document.createElement('button');
+    t.className='tab'+(i===0?' active':'');
+    t.textContent=(i+1)+'. '+s.dataset.name;
+    t.onclick=()=>show(i);
+    tabsEl.appendChild(t);
+  });
+  function show(i){
+    cur=Math.max(0,Math.min(sections.length-1,i));
+    sections.forEach((s,idx)=>s.classList.toggle('active',idx===cur));
+    Array.from(tabsEl.children).forEach((t,idx)=>t.classList.toggle('active',idx===cur));
+    document.getElementById('pos').textContent='Section '+(cur+1)+' of '+sections.length+' \u00b7 '+sections[cur].dataset.name;
+    document.getElementById('backBtn').style.visibility=cur===0?'hidden':'visible';
+    document.getElementById('nextBtn').style.visibility=cur===sections.length-1?'hidden':'visible';
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  function go(d){show(cur+d);}
+  document.addEventListener('keydown',e=>{
+    if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA')return;
+    if(e.key==='ArrowRight')go(1);
+    if(e.key==='ArrowLeft')go(-1);
+  });
+
+  const glossary={
+    pgd:['PGD','Pre-implantation genetic diagnosis: testing an embryo\u2019s DNA in the lab BEFORE it is put into the womb.'],
+    cvs:['CVS','Chorionic villus sampling: taking a sample from the placenta DURING pregnancy to test the baby\u2019s DNA.'],
+    ivf:['IVF','In vitro fertilisation: egg and sperm are joined outside the body, in a lab.'],
+    implant:['Implanted','Placed into the woman\u2019s uterus (womb) so a pregnancy can begin.'],
+    fp:['False positive','The test says the embryo IS affected when really it is not.'],
+    discard:['Discarded','Thrown away / not used.'],
+    misc:['Miscarriage','The pregnancy is lost.']
+  };
+  const gloss=document.getElementById('gloss');
+  document.querySelectorAll('.term[data-g]').forEach(t=>{
+    t.onclick=()=>{
+      const g=glossary[t.dataset.g];
+      document.getElementById('gloss-term').textContent=g[0];
+      document.getElementById('gloss-def').textContent=g[1];
+      gloss.classList.add('show');
+    };
+  });
+
+  const rows=[
+    {c:'Cost',pgd:'About \u00a36000 \u2014 expensive.',cvs:'About \u00a3600 \u2014 about ten times cheaper.'},
+    {c:'How accurate?',pgd:'False positive of about 1 in 6 (~17%).',cvs:'1% chance of an incorrect result \u2014 more accurate.'},
+    {c:'Physical risk',pgd:'Needs IVF (invasive), but no risk to an existing pregnancy.',cvs:'0.9% chance of causing a miscarriage.'},
+    {c:'Timing &amp; decision',pgd:'Before pregnancy \u2014 only an unaffected embryo is implanted, so no termination decision.',cvs:'Weeks into pregnancy \u2014 parents may have to decide whether to terminate.'},
+    {c:'Ethical issues',pgd:'Affected embryos are discarded; spares frozen or used in research.',cvs:'May lead to terminating an established pregnancy.'}
+  ];
+  const gridEl=document.getElementById('grid');
+  rows.forEach(r=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML='<td class="crit">'+r.c+'</td>'+
+      '<td class="cell pgd" data-text="'+r.pgd+'"><button><span class="tap">click to reveal</span></button></td>'+
+      '<td class="cell cvs" data-text="'+r.cvs+'"><button><span class="tap">click to reveal</span></button></td>';
+    gridEl.appendChild(tr);
+  });
+  document.querySelectorAll('td.cell').forEach(c=>{
+    c.querySelector('button').onclick=()=>{
+      if(c.classList.contains('revealed'))return;
+      c.classList.add('revealed');
+      c.querySelector('button').innerHTML=c.dataset.text;
+    };
+  });
+  function revealAllCells(){document.querySelectorAll('td.cell').forEach(c=>{c.classList.add('revealed');c.querySelector('button').innerHTML=c.dataset.text;});}
+  function hideAllCells(){document.querySelectorAll('td.cell').forEach(c=>{c.classList.remove('revealed');c.querySelector('button').innerHTML='<span class="tap">click to reveal</span>';});}
+
+  const mcqData=[
+    {stem:'Which sentence actually EVALUATES, rather than just describing?',
+     opts:['PGD costs \u00a36000 and CVS costs \u00a3600.',
+           'CVS is much cheaper than PGD, which makes it available to more families.',
+           'CVS takes a sample from the placenta.'],
+     correct:1,
+     why:'B compares the two AND says why it matters. A and C only state facts \u2014 that is description, not evaluation.'},
+    {stem:'Which answer would LOSE marks on this question?',
+     opts:['An answer that compares both methods and gives a justified conclusion.',
+           'An answer that only describes PGD and never mentions CVS.',
+           'An answer that weighs cost against risk for both methods.'],
+     correct:1,
+     why:'The question asks you to evaluate BOTH methods. A one-sided answer is capped at a low level.'},
+    {stem:'Which is a proper conclusion?',
+     opts:['Overall, both methods have advantages and disadvantages.',
+           'Overall, PGD is the best one.',
+           'Overall, PGD is better for parents who can afford it and want to avoid a termination decision, because it screens before pregnancy.'],
+     correct:2,
+     why:'C makes a choice, gives a reason (because\u2026) and a condition (for whom). A makes no choice; B makes a choice but never justifies it.'}
+  ];
+  const mcqWrap=document.getElementById('mcqs');
+  mcqData.forEach((m,mi)=>{
+    const div=document.createElement('div');
+    div.className='mcq';
+    let html='<div class="stem">'+(mi+1)+'. '+m.stem+'</div>';
+    m.opts.forEach((o,oi)=>{html+='<button class="opt" data-mi="'+mi+'" data-oi="'+oi+'">'+String.fromCharCode(65+oi)+') '+o+'</button>';});
+    html+='<div class="why" id="why'+mi+'"><b>Why:</b> '+m.why+'</div>';
+    div.innerHTML=html;
+    mcqWrap.appendChild(div);
+  });
+  document.querySelectorAll('.opt').forEach(b=>{
+    b.onclick=()=>{
+      const mi=+b.dataset.mi,oi=+b.dataset.oi,correct=mcqData[mi].correct;
+      if(oi===correct){b.classList.add('correct');}
+      else{b.classList.add('wrong');
+        document.querySelectorAll('.opt[data-mi="'+mi+'"]').forEach(x=>{if(+x.dataset.oi===correct)x.classList.add('correct');});}
+      document.getElementById('why'+mi).classList.add('show');
+    };
+  });
+
+  show(0);
+</script>
+</body>
+</html>

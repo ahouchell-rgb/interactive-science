@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Osmosis — AQA GCSE Combined Science (Foundation)</title>
+<style>
+  :root{
+    --navy:#0C3B5A;
+    --navy-d:#072636;
+    --teal:#16A39C;
+    --teal-d:#0F7A75;
+    --teal-l:#D6F0EE;
+    --water:#4FB6E0;
+    --water-d:#2E8FBF;
+    --sugar:#E8943A;
+    --sugar-d:#C9742A;
+    --bg:#EEF3F5;
+    --card:#FFFFFF;
+    --ink:#0C3B5A;
+    --muted:#5B7283;
+    --green:#2E9E5B;
+    --green-l:#E1F3E8;
+    --red:#D1495B;
+    --red-l:#F8E3E6;
+    --line:#D9E2E8;
+    --head:'Century Gothic','Futura','Trebuchet MS',Arial,sans-serif;
+    --body:Arial,Helvetica,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:var(--body);
+    background:var(--bg);
+    color:var(--ink);
+    line-height:1.5;
+    padding:18px;
+  }
+  .wrap{max-width:860px;margin:0 auto;}
+
+  header{
+    background:linear-gradient(135deg,var(--navy),var(--navy-d));
+    color:#fff;border-radius:16px;padding:22px 26px;
+    box-shadow:0 6px 18px rgba(7,38,54,.22);
+  }
+  header h1{font-family:var(--head);font-size:30px;letter-spacing:.5px;font-weight:700;}
+  header .sub{color:var(--teal-l);font-size:14px;margin-top:4px;letter-spacing:.3px;}
+  .pill{display:inline-block;background:var(--teal);color:#fff;font-size:12px;
+        font-weight:700;padding:4px 12px;border-radius:30px;margin-top:12px;letter-spacing:.4px;}
+
+  .card{background:var(--card);border-radius:16px;padding:20px 22px;margin-top:18px;
+        box-shadow:0 3px 12px rgba(12,59,90,.08);border:1px solid var(--line);}
+
+  h2{font-family:var(--head);color:var(--teal-d);font-size:20px;margin-bottom:6px;}
+  .defn{background:var(--teal-l);border-left:6px solid var(--teal);border-radius:10px;
+        padding:14px 16px;font-size:16px;}
+  .defn b{color:var(--teal-d);}
+
+  /* Visualiser */
+  .vis-shell{position:relative;width:100%;background:#F7FBFC;border:1px solid var(--line);
+             border-radius:12px;overflow:hidden;}
+  canvas{display:block;width:100%;height:auto;}
+  .svgbox{display:none;width:100%;}
+  .svgbox svg{display:block;width:100%;height:auto;}
+
+  .controls{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px;align-items:center;}
+  button.ctrl{font-family:var(--body);font-size:14px;font-weight:700;border:none;cursor:pointer;
+        padding:10px 16px;border-radius:10px;background:var(--teal);color:#fff;transition:.15s;}
+  button.ctrl:hover{background:var(--teal-d);}
+  button.ctrl.sec{background:#fff;color:var(--navy);border:2px solid var(--line);}
+  button.ctrl.sec:hover{border-color:var(--teal);}
+  button.ctrl.sec.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:12px;font-size:13px;color:var(--muted);}
+  .legend span{display:inline-flex;align-items:center;gap:7px;}
+  .dot{width:13px;height:13px;border-radius:50%;display:inline-block;}
+  .dot.w{background:var(--water);border:1px solid var(--water-d);}
+  .dot.s{background:var(--sugar);border:1px solid var(--sugar-d);}
+
+  /* Quiz */
+  .qhead{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;}
+  .progress{height:8px;background:var(--line);border-radius:6px;overflow:hidden;margin-top:12px;}
+  .progress>i{display:block;height:100%;background:var(--teal);width:0;transition:.3s;}
+  .qmeta{font-size:13px;color:var(--muted);font-weight:700;}
+  .qtag{font-size:11px;font-weight:700;letter-spacing:.5px;padding:3px 10px;border-radius:20px;
+        background:var(--navy);color:#fff;}
+  .qimg{margin:14px 0;display:flex;justify-content:center;}
+  .qimg svg{max-width:340px;width:100%;height:auto;border:1px solid var(--line);border-radius:10px;background:#fff;}
+  .qtext{font-size:18px;font-weight:700;margin:10px 0 14px;color:var(--navy);}
+  .opts{display:flex;flex-direction:column;gap:10px;}
+  .opt{text-align:left;font-family:var(--body);font-size:15px;border:2px solid var(--line);
+       background:#fff;border-radius:10px;padding:12px 14px;cursor:pointer;transition:.12s;color:var(--ink);}
+  .opt:hover:not(:disabled){border-color:var(--teal);background:var(--teal-l);}
+  .opt:disabled{cursor:default;}
+  .opt.correct{border-color:var(--green);background:var(--green-l);font-weight:700;}
+  .opt.wrong{border-color:var(--red);background:var(--red-l);}
+  .opt .mk{font-weight:700;margin-right:8px;color:var(--teal-d);}
+  .fb{margin-top:14px;border-radius:10px;padding:13px 15px;font-size:14px;display:none;}
+  .fb.show{display:block;}
+  .fb.right{background:var(--green-l);border-left:5px solid var(--green);}
+  .fb.wrongbox{background:var(--red-l);border-left:5px solid var(--red);}
+  .fb b{display:block;margin-bottom:3px;}
+  .nextrow{margin-top:16px;text-align:right;}
+  .hidden{display:none;}
+
+  /* Results */
+  .result{text-align:center;padding:10px 0;}
+  .scorebig{font-family:var(--head);font-size:52px;color:var(--teal-d);font-weight:700;}
+  .scoremsg{font-size:16px;color:var(--muted);margin:6px 0 18px;}
+  footer{text-align:center;color:var(--muted);font-size:12px;margin:22px 0 6px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>Osmosis</h1>
+    <div class="sub">AQA GCSE Combined Science: Trilogy &middot; Biology &middot; Foundation tier</div>
+    <span class="pill">B1 — Cell biology &middot; Transport in cells</span>
+  </header>
+
+  <!-- DEFINITION -->
+  <section class="card">
+    <h2>The big idea</h2>
+    <div class="defn">
+      <b>Osmosis</b> is the diffusion of <b>water</b> from a <b>dilute solution</b>
+      (high water concentration) to a <b>concentrated solution</b> (low water concentration)
+      through a <b>partially permeable membrane</b>.
+    </div>
+  </section>
+
+  <!-- VISUALISER -->
+  <section class="card">
+    <h2>Watch it happen</h2>
+    <p style="color:var(--muted);font-size:14px;margin-bottom:12px;">
+      Small <b style="color:var(--water-d)">water</b> molecules slip through the membrane.
+      Large <b style="color:var(--sugar-d)">sugar</b> molecules are too big to pass. The net
+      result: water moves into the concentrated (sugary) side.
+    </p>
+
+    <div class="vis-shell">
+      <canvas id="cv" width="760" height="380"></canvas>
+      <div class="svgbox" id="diagram">
+        <!-- labelled exam-style diagram injected by JS -->
+      </div>
+    </div>
+
+    <div class="controls">
+      <button class="ctrl" id="playBtn">⏸ Pause</button>
+      <button class="ctrl sec" id="resetBtn">↺ Reset</button>
+      <button class="ctrl sec" id="diagramBtn">🔖 Show labelled diagram</button>
+    </div>
+    <div class="legend">
+      <span><i class="dot w"></i> Water molecule (small — can cross)</span>
+      <span><i class="dot s"></i> Sugar molecule (large — cannot cross)</span>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section class="card" id="quizCard">
+    <div class="qhead">
+      <h2 style="margin:0;">Check your understanding</h2>
+      <span class="qmeta" id="qcounter">Question 1 of 10</span>
+    </div>
+    <div class="progress"><i id="progBar"></i></div>
+
+    <div id="quizBody">
+      <div style="margin-top:14px;">
+        <span class="qtag" id="qtag">PICTURE</span>
+      </div>
+      <div class="qimg" id="qimg"></div>
+      <div class="qtext" id="qtext"></div>
+      <div class="opts" id="opts"></div>
+      <div class="fb" id="fb"></div>
+      <div class="nextrow">
+        <button class="ctrl hidden" id="nextBtn">Next →</button>
+      </div>
+    </div>
+
+    <div id="resultBody" class="result hidden">
+      <div class="scorebig" id="scoreBig">0 / 10</div>
+      <div class="scoremsg" id="scoreMsg"></div>
+      <button class="ctrl" id="restartBtn">↺ Try again</button>
+    </div>
+  </section>
+
+  <footer>Interactive science resource · built for the classroom</footer>
+</div>
+
+<script>
+/* ============================================================
+   OSMOSIS PARTICLE ANIMATION
+   ============================================================ */
+const cv = document.getElementById('cv');
+const ctx = cv.getContext('2d');
+const W = cv.width, H = cv.height;
+const MEM = W/2;                 // membrane x position
+const wallL = 70, wallR = W-70;  // beaker inner walls
+const topY = 40, botY = H-30;    // beaker rim / base
+const restY = 120;               // starting water surface (headroom below the rim)
+
+let running = true;
+let transfer = 0;                // 0..1 net water transferred (drives water level)
+const MAXLEVEL = 55;             // px the level shifts each way (stays inside the beaker)
+
+// particle setup: water (small) both sides, sugar (large) mostly right
+const particles = [];
+function makeParticles(){
+  particles.length = 0;
+  // water — distributed both sides
+  for(let i=0;i<46;i++){
+    const left = i < 23;
+    particles.push({
+      type:'water',
+      x: left ? rand(wallL+10, MEM-10) : rand(MEM+10, wallR-10),
+      y: rand(restY+12, botY-10),
+      vx: rand(-1,1)||.6, vy: rand(-1,1)||.5, r:4
+    });
+  }
+  // sugar — many on the right (concentrated), few on the left (dilute)
+  for(let i=0;i<14;i++){
+    const left = i < 3;
+    particles.push({
+      type:'sugar',
+      x: left ? rand(wallL+14, MEM-14) : rand(MEM+14, wallR-14),
+      y: rand(restY+16, botY-14),
+      vx: rand(-.7,.7)||.4, vy: rand(-.7,.7)||.4, r:8
+    });
+  }
+}
+function rand(a,b){return a+Math.random()*(b-a);}
+
+function levelLeft(){ return restY + transfer*MAXLEVEL; }   // dilute side drops (y grows)
+function levelRight(){ return restY - transfer*MAXLEVEL; }  // concentrated side rises, stays below rim
+
+function step(){
+  // advance net transfer slowly toward equilibrium
+  if(transfer < 1) transfer += 0.0009;
+
+  for(const p of particles){
+    p.x += p.vx; p.y += p.vy;
+
+    // floor/ceiling per side (respect rising/falling water surface)
+    const onLeft = p.x < MEM;
+    const surf = onLeft ? levelLeft() : levelRight();
+    if(p.y < surf + p.r){ p.y = surf + p.r; p.vy = Math.abs(p.vy); }
+    if(p.y > botY - p.r){ p.y = botY - p.r; p.vy = -Math.abs(p.vy); }
+
+    // outer walls
+    if(p.x < wallL + p.r){ p.x = wallL + p.r; p.vx = Math.abs(p.vx); }
+    if(p.x > wallR - p.r){ p.x = wallR - p.r; p.vx = -Math.abs(p.vx); }
+
+    // membrane interaction
+    const crossingRight = p.vx > 0 && p.x + p.r > MEM && p.x - p.r < MEM;
+    const crossingLeft  = p.vx < 0 && p.x - p.r < MEM && p.x + p.r > MEM;
+    if(crossingRight || crossingLeft){
+      if(p.type === 'sugar'){
+        // too big — bounce back
+        p.vx = -p.vx;
+        p.x += p.vx;
+      } else {
+        // water: free to cross rightward; biased (harder) leftward => net flow right
+        if(crossingLeft && Math.random() > 0.42){
+          p.vx = -p.vx;       // reflected back to the right side
+          p.x += p.vx;
+        }
+        // otherwise passes through
+      }
+    }
+  }
+}
+
+function drawBeaker(){
+  ctx.clearRect(0,0,W,H);
+
+  // water fills (translucent)
+  ctx.fillStyle = 'rgba(79,182,224,0.18)';
+  ctx.fillRect(wallL, levelLeft(), MEM-wallL, botY-levelLeft());
+  ctx.fillStyle = 'rgba(79,182,224,0.30)';
+  ctx.fillRect(MEM, levelRight(), wallR-MEM, botY-levelRight());
+
+  // surface lines
+  ctx.strokeStyle = 'rgba(46,143,191,.6)'; ctx.lineWidth=2;
+  ctx.beginPath(); ctx.moveTo(wallL,levelLeft()); ctx.lineTo(MEM,levelLeft()); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(MEM,levelRight()); ctx.lineTo(wallR,levelRight()); ctx.stroke();
+
+  // beaker walls + base
+  ctx.strokeStyle = '#0C3B5A'; ctx.lineWidth=3;
+  ctx.beginPath();
+  ctx.moveTo(wallL, topY-6); ctx.lineTo(wallL, botY);
+  ctx.lineTo(wallR, botY);   ctx.lineTo(wallR, topY-6);
+  ctx.stroke();
+
+  // membrane (dashed) with pore gaps
+  ctx.strokeStyle = '#16A39C'; ctx.lineWidth=4; ctx.setLineDash([10,9]);
+  ctx.beginPath(); ctx.moveTo(MEM, topY-6); ctx.lineTo(MEM, botY); ctx.stroke();
+  ctx.setLineDash([]);
+
+  // side labels
+  ctx.fillStyle = '#5B7283'; ctx.font = 'bold 15px Arial'; ctx.textAlign='center';
+  ctx.fillText('Dilute solution', (wallL+MEM)/2, topY-14);
+  ctx.fillText('Concentrated solution', (MEM+wallR)/2, topY-14);
+
+  // particles
+  for(const p of particles){
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.r,0,7);
+    if(p.type==='water'){ ctx.fillStyle='#4FB6E0'; ctx.strokeStyle='#2E8FBF'; }
+    else { ctx.fillStyle='#E8943A'; ctx.strokeStyle='#C9742A'; }
+    ctx.lineWidth=1.5; ctx.fill(); ctx.stroke();
+  }
+
+  // net movement arrow
+  ctx.fillStyle='#0C3B5A'; ctx.font='bold 13px Arial';
+  const ay = botY+18;
+  ctx.fillText('net movement of water  →', MEM, ay > H-6 ? H-6 : ay);
+}
+
+function loop(){
+  if(running){ step(); }
+  drawBeaker();
+  requestAnimationFrame(loop);
+}
+makeParticles();
+loop();
+
+/* controls */
+const playBtn = document.getElementById('playBtn');
+const resetBtn = document.getElementById('resetBtn');
+const diagramBtn = document.getElementById('diagramBtn');
+const diagram = document.getElementById('diagram');
+
+playBtn.onclick = ()=>{
+  running = !running;
+  playBtn.textContent = running ? '⏸ Pause' : '▶ Play';
+};
+resetBtn.onclick = ()=>{
+  transfer = 0; makeParticles();
+  running = true; playBtn.textContent='⏸ Pause';
+};
+let showingDiagram = false;
+diagramBtn.onclick = ()=>{
+  showingDiagram = !showingDiagram;
+  if(showingDiagram){
+    diagram.style.display='block';
+    cv.style.display='none';
+    diagramBtn.classList.add('active');
+    diagramBtn.textContent='🎬 Show animation';
+    playBtn.disabled = true; resetBtn.disabled = true;
+    playBtn.style.opacity=.4; resetBtn.style.opacity=.4;
+  } else {
+    diagram.style.display='none';
+    cv.style.display='block';
+    diagramBtn.classList.remove('active');
+    diagramBtn.textContent='🔖 Show labelled diagram';
+    playBtn.disabled = false; resetBtn.disabled = false;
+    playBtn.style.opacity=1; resetBtn.style.opacity=1;
+  }
+};
+
+/* labelled exam-style diagram (SVG) */
+diagram.innerHTML = `
+<svg viewBox="0 0 760 420" xmlns="http://www.w3.org/2000/svg" font-family="Arial">
+  <!-- water fills -->
+  <rect x="80" y="150" width="290" height="200" fill="#4FB6E0" opacity="0.18"/>
+  <rect x="370" y="110" width="290" height="240" fill="#4FB6E0" opacity="0.30"/>
+  <!-- beaker -->
+  <path d="M80 70 L80 350 L660 350 L660 70" fill="none" stroke="#0C3B5A" stroke-width="4"/>
+  <!-- membrane -->
+  <line x1="370" y1="70" x2="370" y2="350" stroke="#16A39C" stroke-width="5" stroke-dasharray="11 9"/>
+  <!-- molecules left (dilute) -->
+  <circle cx="150" cy="200" r="6" fill="#4FB6E0" stroke="#2E8FBF"/>
+  <circle cx="220" cy="260" r="6" fill="#4FB6E0" stroke="#2E8FBF"/>
+  <circle cx="180" cy="310" r="6" fill="#4FB6E0" stroke="#2E8FBF"/>
+  <circle cx="280" cy="220" r="6" fill="#4FB6E0" stroke="#2E8FBF"/>
+  <circle cx="310" cy="300" r="6" fill="#4FB6E0" stroke="#2E8FBF"/>
+  <circle cx="130" cy="290" r="10" fill="#E8943A" stroke="#C9742A"/>
+  <!-- molecules right (concentrated) -->
+  <circle cx="430" cy="180" r="10" fill="#E8943A" stroke="#C9742A"/>
+  <circle cx="510" cy="240" r="10" fill="#E8943A" stroke="#C9742A"/>
+  <circle cx="590" cy="200" r="10" fill="#E8943A" stroke="#C9742A"/>
+  <circle cx="470" cy="310" r="10" fill="#E8943A" stroke="#C9742A"/>
+  <circle cx="560" cy="300" r="10" fill="#E8943A" stroke="#C9742A"/>
+  <circle cx="620" cy="280" r="6" fill="#4FB6E0" stroke="#2E8FBF"/>
+  <circle cx="450" cy="250" r="6" fill="#4FB6E0" stroke="#2E8FBF"/>
+  <!-- net arrow through membrane -->
+  <line x1="300" y1="120" x2="445" y2="120" stroke="#0C3B5A" stroke-width="4"/>
+  <polygon points="445,112 465,120 445,128" fill="#0C3B5A"/>
+  <text x="372" y="105" text-anchor="middle" font-size="15" font-weight="bold" fill="#0C3B5A">net movement of water</text>
+  <!-- labels -->
+  <text x="225" y="55" text-anchor="middle" font-size="16" font-weight="bold" fill="#0F7A75">DILUTE solution</text>
+  <text x="225" y="378" text-anchor="middle" font-size="13" fill="#5B7283">(high water concentration)</text>
+  <text x="515" y="55" text-anchor="middle" font-size="16" font-weight="bold" fill="#0F7A75">CONCENTRATED solution</text>
+  <text x="515" y="378" text-anchor="middle" font-size="13" fill="#5B7283">(low water concentration)</text>
+  <!-- membrane callout -->
+  <line x1="370" y1="395" x2="370" y2="360" stroke="#16A39C" stroke-width="2"/>
+  <text x="372" y="412" text-anchor="middle" font-size="14" font-weight="bold" fill="#16A39C">partially permeable membrane</text>
+</svg>`;
+
+/* ============================================================
+   QUIZ ENGINE
+   ============================================================ */
+// reusable mini SVGs for picture questions
+function miniBeaker(leftSugar, rightSugar, arrow){
+  let s = `<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" font-family="Arial">
+    <rect x="30" y="60" width="110" height="120" fill="#4FB6E0" opacity="0.16"/>
+    <rect x="160" y="60" width="110" height="120" fill="#4FB6E0" opacity="0.28"/>
+    <path d="M30 30 L30 180 L270 180 L270 30" fill="none" stroke="#0C3B5A" stroke-width="3"/>
+    <line x1="150" y1="30" x2="150" y2="180" stroke="#16A39C" stroke-width="4" stroke-dasharray="8 7"/>
+    <text x="85" y="22" text-anchor="middle" font-size="12" font-weight="bold" fill="#0F7A75">dilute</text>
+    <text x="210" y="22" text-anchor="middle" font-size="12" font-weight="bold" fill="#0F7A75">concentrated</text>`;
+  const lx=[60,100,75], ly=[100,140,90];
+  for(let i=0;i<leftSugar;i++) s+=`<circle cx="${lx[i%3]}" cy="${ly[i%3]}" r="9" fill="#E8943A" stroke="#C9742A"/>`;
+  const rx=[185,230,205,250,215], ry=[90,120,150,95,160];
+  for(let i=0;i<rightSugar;i++) s+=`<circle cx="${rx[i%5]}" cy="${ry[i%5]}" r="9" fill="#E8943A" stroke="#C9742A"/>`;
+  // some water dots
+  s+=`<circle cx="115" cy="160" r="4" fill="#4FB6E0" stroke="#2E8FBF"/>
+      <circle cx="50" cy="70" r="4" fill="#4FB6E0" stroke="#2E8FBF"/>
+      <circle cx="195" cy="70" r="4" fill="#4FB6E0" stroke="#2E8FBF"/>`;
+  if(arrow) s+=`<line x1="120" y1="45" x2="175" y2="45" stroke="#0C3B5A" stroke-width="3"/>
+                <polygon points="175,39 192,45 175,51" fill="#0C3B5A"/>`;
+  return s+`</svg>`;
+}
+
+const questions = [
+  // ---------- PICTURE QUESTIONS ----------
+  { type:'PICTURE',
+    img: miniBeaker(0,5,false),
+    q:"Look at the two sides. In which direction is the NET movement of water?",
+    opts:["From the dilute side into the concentrated side",
+          "From the concentrated side into the dilute side",
+          "There is no net movement of water",
+          "The sugar moves, not the water"],
+    ans:0,
+    exp:"Water moves from the dilute solution (lots of water) to the concentrated solution (lots of sugar) through the partially permeable membrane."
+  },
+  { type:'PICTURE',
+    img:`<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg" font-family="Arial">
+          <line x1="150" y1="20" x2="150" y2="180" stroke="#16A39C" stroke-width="5" stroke-dasharray="9 8"/>
+          <text x="150" y="195" text-anchor="middle" font-size="12" font-weight="bold" fill="#16A39C">partially permeable membrane</text>
+          <circle cx="70" cy="60" r="5" fill="#4FB6E0" stroke="#2E8FBF"/>
+          <circle cx="100" cy="110" r="5" fill="#4FB6E0" stroke="#2E8FBF"/>
+          <circle cx="60" cy="150" r="5" fill="#4FB6E0" stroke="#2E8FBF"/>
+          <circle cx="110" cy="70" r="11" fill="#E8943A" stroke="#C9742A"/>
+          <circle cx="80" cy="110" r="11" fill="#E8943A" stroke="#C9742A"/>
+          <circle cx="230" cy="90" r="5" fill="#4FB6E0" stroke="#2E8FBF"/>
+          <text x="80" y="30" text-anchor="middle" font-size="11" fill="#5B7283">small = water</text>
+          <text x="80" y="180" text-anchor="middle" font-size="11" fill="#5B7283">large = sugar</text>
+        </svg>`,
+    q:"Through a partially permeable membrane, which particles can pass through?",
+    opts:["Only the small water molecules",
+          "Only the large sugar molecules",
+          "Both the water and the sugar, equally",
+          "Neither — nothing can pass through"],
+    ans:0,
+    exp:"‘Partially permeable’ means only small molecules (water) fit through the tiny gaps. The larger sugar molecules are blocked."
+  },
+  { type:'PICTURE',
+    img:`<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg" font-family="Arial">
+          <rect x="30" y="50" width="100" height="120" fill="#4FB6E0" opacity="0.2"/>
+          <path d="M30 50 L30 170 L130 170 L130 50" fill="none" stroke="#0C3B5A" stroke-width="3"/>
+          <circle cx="70" cy="120" r="9" fill="#E8943A" stroke="#C9742A"/>
+          <text x="80" y="190" text-anchor="middle" font-size="13" font-weight="bold" fill="#0C3B5A">Beaker A</text>
+          <rect x="190" y="50" width="100" height="120" fill="#4FB6E0" opacity="0.2"/>
+          <path d="M190 50 L190 170 L290 170 L290 50" fill="none" stroke="#0C3B5A" stroke-width="3"/>
+          <circle cx="215" cy="80" r="9" fill="#E8943A" stroke="#C9742A"/>
+          <circle cx="260" cy="100" r="9" fill="#E8943A" stroke="#C9742A"/>
+          <circle cx="225" cy="140" r="9" fill="#E8943A" stroke="#C9742A"/>
+          <circle cx="265" cy="150" r="9" fill="#E8943A" stroke="#C9742A"/>
+          <text x="240" y="190" text-anchor="middle" font-size="13" font-weight="bold" fill="#0C3B5A">Beaker B</text>
+        </svg>`,
+    q:"Each orange circle is a sugar molecule. Which beaker holds the MORE concentrated solution?",
+    opts:["Beaker A","Beaker B","They are the same","You cannot tell"],
+    ans:1,
+    exp:"More sugar molecules in the same volume = more concentrated, and therefore a lower water concentration. Beaker B is more concentrated."
+  },
+  { type:'PICTURE',
+    img:`<svg viewBox="0 0 320 210" xmlns="http://www.w3.org/2000/svg" font-family="Arial">
+          <text x="80" y="18" text-anchor="middle" font-size="12" font-weight="bold" fill="#5B7283">BEFORE</text>
+          <path d="M30 40 L30 180 L130 180 L130 40" fill="none" stroke="#0C3B5A" stroke-width="3"/>
+          <line x1="80" y1="40" x2="80" y2="180" stroke="#16A39C" stroke-width="3" stroke-dasharray="6 5"/>
+          <rect x="30" y="70" width="50" height="110" fill="#4FB6E0" opacity="0.22"/>
+          <rect x="80" y="70" width="50" height="110" fill="#4FB6E0" opacity="0.22"/>
+          <text x="240" y="18" text-anchor="middle" font-size="12" font-weight="bold" fill="#5B7283">AFTER</text>
+          <path d="M190 40 L190 180 L290 180 L290 40" fill="none" stroke="#0C3B5A" stroke-width="3"/>
+          <line x1="240" y1="40" x2="240" y2="180" stroke="#16A39C" stroke-width="3" stroke-dasharray="6 5"/>
+          <rect x="190" y="100" width="50" height="80" fill="#4FB6E0" opacity="0.22"/>
+          <rect x="240" y="55" width="50" height="125" fill="#4FB6E0" opacity="0.30"/>
+          <text x="215" y="200" text-anchor="middle" font-size="11" fill="#5B7283">dilute</text>
+          <text x="265" y="200" text-anchor="middle" font-size="11" fill="#5B7283">conc.</text>
+        </svg>`,
+    q:"The water levels change from BEFORE to AFTER. What has happened?",
+    opts:["Water moved from the dilute side to the concentrated side by osmosis",
+          "Sugar moved from the concentrated side to the dilute side",
+          "The water evaporated into the air",
+          "Nothing — the levels are unchanged"],
+    ans:0,
+    exp:"The level dropped on the dilute side and rose on the concentrated side. Water has crossed the membrane into the concentrated solution — that is osmosis."
+  },
+  { type:'PICTURE',
+    img:`<svg viewBox="0 0 300 210" xmlns="http://www.w3.org/2000/svg" font-family="Arial">
+          <rect x="20" y="40" width="260" height="150" fill="#4FB6E0" opacity="0.14"/>
+          <path d="M20 40 L20 190 L280 190 L280 40" fill="none" stroke="#0C3B5A" stroke-width="3"/>
+          <text x="150" y="30" text-anchor="middle" font-size="13" font-weight="bold" fill="#2E8FBF">pure water (very dilute)</text>
+          <ellipse cx="150" cy="115" rx="55" ry="48" fill="#D6F0EE" stroke="#16A39C" stroke-width="3"/>
+          <circle cx="135" cy="100" r="8" fill="#E8943A" stroke="#C9742A"/>
+          <circle cx="165" cy="110" r="8" fill="#E8943A" stroke="#C9742A"/>
+          <circle cx="150" cy="135" r="8" fill="#E8943A" stroke="#C9742A"/>
+          <circle cx="130" cy="130" r="8" fill="#E8943A" stroke="#C9742A"/>
+          <text x="150" y="180" text-anchor="middle" font-size="12" font-weight="bold" fill="#0F7A75">cell (concentrated inside)</text>
+        </svg>`,
+    q:"A cell with a concentrated inside is placed in pure water. Which way does water move?",
+    opts:["Into the cell","Out of the cell","No movement at all","The sugar leaves the cell"],
+    ans:0,
+    exp:"Outside is dilute (high water concentration); inside is concentrated (low water concentration). Water moves from outside to inside — into the cell."
+  },
+  // ---------- WORD QUESTIONS ----------
+  { type:'WORDS',
+    q:"Complete the definition: “Osmosis is the diffusion of water from a ______ solution to a ______ solution.”",
+    opts:["dilute … concentrated","concentrated … dilute","warm … cold","salty … sugary"],
+    ans:0,
+    exp:"Water always nets from dilute → concentrated. Memorise this direction — reversing it is the most common Foundation error."
+  },
+  { type:'WORDS',
+    q:"Which substance actually moves during osmosis?",
+    opts:["Water","Sugar","Salt","Oxygen"],
+    ans:0,
+    exp:"Osmosis is specifically the movement of water. The solute (sugar/salt) does not move through the membrane."
+  },
+  { type:'WORDS',
+    q:"Does osmosis need energy from respiration?",
+    opts:["No — it is a passive process, like diffusion",
+          "Yes — it always needs energy",
+          "Only inside animal cells",
+          "Only when the solution is warm"],
+    ans:0,
+    exp:"Osmosis is passive — no energy needed. (Active transport is the process that DOES require energy — don’t mix them up.)"
+  },
+  { type:'WORDS',
+    q:"A DILUTE solution contains…",
+    opts:["a high concentration of water",
+          "a low concentration of water",
+          "no water at all",
+          "a large amount of sugar"],
+    ans:0,
+    exp:"Dilute = lots of water, little solute = high water concentration. Concentrated is the opposite."
+  },
+  { type:'WORDS',
+    q:"What best describes a partially permeable membrane?",
+    opts:["It lets small molecules (like water) through but not larger ones",
+          "Nothing can pass through it",
+          "Everything can pass through it freely",
+          "It is a solid, waterproof wall"],
+    ans:0,
+    exp:"‘Partially’ permeable = only some things get through. Small water molecules pass; large solute molecules are blocked."
+  }
+];
+
+let qi = 0, score = 0, answered = false;
+const qtag=document.getElementById('qtag'),
+      qimgEl=document.getElementById('qimg'),
+      qtextEl=document.getElementById('qtext'),
+      optsEl=document.getElementById('opts'),
+      fbEl=document.getElementById('fb'),
+      nextBtn=document.getElementById('nextBtn'),
+      counter=document.getElementById('qcounter'),
+      progBar=document.getElementById('progBar'),
+      quizBody=document.getElementById('quizBody'),
+      resultBody=document.getElementById('resultBody');
+
+const letters=['A','B','C','D'];
+
+function renderQ(){
+  answered=false;
+  const Q=questions[qi];
+  qtag.textContent = Q.type;
+  qtag.style.background = Q.type==='PICTURE' ? '#16A39C' : '#0C3B5A';
+  qimgEl.innerHTML = Q.img ? Q.img : '';
+  qimgEl.style.display = Q.img ? 'flex' : 'none';
+  qtextEl.textContent = Q.q;
+  optsEl.innerHTML='';
+  Q.opts.forEach((o,i)=>{
+    const b=document.createElement('button');
+    b.className='opt';
+    b.innerHTML=`<span class="mk">${letters[i]}</span>${o}`;
+    b.onclick=()=>choose(i,b);
+    optsEl.appendChild(b);
+  });
+  fbEl.className='fb';
+  fbEl.innerHTML='';
+  nextBtn.classList.add('hidden');
+  counter.textContent=`Question ${qi+1} of ${questions.length}`;
+  progBar.style.width=`${(qi/questions.length)*100}%`;
+}
+
+function choose(i,btn){
+  if(answered) return;
+  answered=true;
+  const Q=questions[qi];
+  const buttons=optsEl.querySelectorAll('.opt');
+  buttons.forEach(b=>b.disabled=true);
+  buttons[Q.ans].classList.add('correct');
+  if(i===Q.ans){
+    score++;
+    fbEl.className='fb show right';
+    fbEl.innerHTML=`<b>✓ Correct</b>${Q.exp}`;
+  } else {
+    btn.classList.add('wrong');
+    fbEl.className='fb show wrongbox';
+    fbEl.innerHTML=`<b>✗ Not quite — the answer is ${letters[Q.ans]}</b>${Q.exp}`;
+  }
+  nextBtn.textContent = qi===questions.length-1 ? 'See results →' : 'Next →';
+  nextBtn.classList.remove('hidden');
+  progBar.style.width=`${((qi+1)/questions.length)*100}%`;
+}
+
+nextBtn.onclick=()=>{
+  if(qi<questions.length-1){ qi++; renderQ(); }
+  else { showResults(); }
+};
+
+function showResults(){
+  quizBody.classList.add('hidden');
+  resultBody.classList.remove('hidden');
+  counter.textContent='Complete';
+  progBar.style.width='100%';
+  document.getElementById('scoreBig').textContent=`${score} / ${questions.length}`;
+  let msg;
+  const pct=score/questions.length;
+  if(pct===1) msg="Full marks — you’ve nailed osmosis. 🎉";
+  else if(pct>=0.7) msg="Strong work. Re-read the ones you missed and you’re there.";
+  else if(pct>=0.4) msg="Getting there — focus on the DIRECTION (dilute → concentrated) and have another go.";
+  else msg="Let’s build it back up. Re-watch the animation, read the definition, then try again.";
+  document.getElementById('scoreMsg').textContent=msg;
+}
+
+document.getElementById('restartBtn').onclick=()=>{
+  qi=0; score=0;
+  resultBody.classList.add('hidden');
+  quizBody.classList.remove('hidden');
+  renderQ();
+};
+
+renderQ();
+</script>
+</body>
+</html>

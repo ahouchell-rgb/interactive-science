@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gas exchange in the alveolus</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1E2761;--navy-soft:#2a3478;--warm:#F8F4EC;--warm-deep:#EFE8D6;
+  --paper:#FCFAF4;--soft-blue:#EDF2FA;--ink:#1A1A1A;--muted:#5C6370;
+  --rule:#CFD8E3;--accent:#B85042;--accent-soft:#F4DAD7;--success:#2C5F2D;
+  --success-soft:#DDEBDD;--gold:#C8A24A;--gold-soft:#F2E6BD;
+  --display:'Instrument Serif',Georgia,serif;
+  --body:'IBM Plex Sans',system-ui,sans-serif;
+  --mono:'IBM Plex Mono','Courier New',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{margin:0;background:var(--paper);font-family:var(--body);color:var(--ink);font-weight:300}
+.wrap{padding:16px;max-width:700px;margin:0 auto}
+.instruction{font-family:var(--mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.stage{position:relative}
+svg{width:100%;height:auto;display:block;max-width:480px;margin:0 auto}
+.lbl{font-family:var(--mono);font-size:8.5px;letter-spacing:.06em;text-transform:uppercase;fill:var(--muted)}
+.bigl{font-family:var(--display);font-style:italic;font-size:16px}
+.gas{font-family:var(--mono);font-size:11px;font-weight:600}
+.controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px}
+button{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:500;
+  background:var(--navy);color:var(--warm);border:0;padding:9px 14px;cursor:pointer;transition:background .2s;border-radius:2px}
+button:hover{background:var(--accent)}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-left:auto;font-family:var(--mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink)}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.dot{width:11px;height:11px;border-radius:50%;display:inline-block}
+.counts{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap}
+.cnt{background:var(--soft-blue);border:1px solid #C9D7ED;border-left:3px solid var(--navy);padding:8px 12px;flex:1 1 120px}
+.cnt .k{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.cnt .v{font-family:var(--display);font-size:22px;color:var(--navy);line-height:1.1}
+.statement{background:var(--gold-soft);border:1px solid var(--gold);padding:9px 12px;margin-top:11px;font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--navy);text-align:center}
+.takeaway{font-family:var(--display);font-style:italic;font-size:17px;color:var(--muted);margin-top:13px;line-height:1.35;border-top:1px solid var(--rule);padding-top:10px}
+.takeaway b{color:var(--accent);font-style:normal;font-weight:400}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="instruction">A single alveolus wrapped by a blood capillary — watch the gases diffuse across the thin wall</p>
+  <div class="stage">
+    <svg id="svg" viewBox="0 0 460 256" role="img" aria-label="Anatomical diagram of an alveolus air sac surrounded by a blood capillary, with oxygen diffusing into the blood and carbon dioxide diffusing out into the alveolus">
+      <defs>
+        <linearGradient id="blood" gradientUnits="userSpaceOnUse" x1="330" y1="220" x2="330" y2="36">
+          <stop offset="0" stop-color="#7a3340"/>
+          <stop offset="1" stop-color="#C2503F"/>
+        </linearGradient>
+        <radialGradient id="air" cx="42%" cy="40%" r="65%">
+          <stop offset="0" stop-color="#FFFCF2"/>
+          <stop offset="1" stop-color="#F4E8C9"/>
+        </radialGradient>
+      </defs>
+
+      <!-- ===== neighbouring alveoli (the cluster) ===== -->
+      <ellipse cx="58" cy="56" rx="42" ry="40" fill="url(#air)" stroke="var(--gold)" stroke-width="1.5" opacity="0.5"/>
+      <ellipse cx="50" cy="200" rx="44" ry="42" fill="url(#air)" stroke="var(--gold)" stroke-width="1.5" opacity="0.5"/>
+      <ellipse cx="120" cy="232" rx="34" ry="26" fill="url(#air)" stroke="var(--gold)" stroke-width="1.5" opacity="0.4"/>
+
+      <!-- ===== bronchiole / alveolar duct ===== -->
+      <path d="M0 116 C 18 110 34 110 52 118 L 52 150 C 34 158 18 158 0 152 Z" fill="#EBDBB4" stroke="var(--gold)" stroke-width="1.5"/>
+
+      <!-- ===== capillary (blood vessel) wrapping the alveolus ===== -->
+      <!-- border then blood fill = a tube with a thin wall -->
+      <path d="M312 222 C 352 196 360 152 338 128 C 360 104 352 60 312 34" fill="none" stroke="#9a3f3a" stroke-width="46" stroke-linecap="round"/>
+      <path id="vessel" d="M312 222 C 352 196 360 152 338 128 C 360 104 352 60 312 34" fill="none" stroke="url(#blood)" stroke-width="40" stroke-linecap="round"/>
+      <g id="rbcs"></g>
+
+      <!-- ===== main alveolus (in focus) ===== -->
+      <ellipse cx="150" cy="128" rx="120" ry="106" fill="url(#air)" stroke="var(--gold)" stroke-width="2.5"/>
+
+      <!-- ===== thin shared wall (exchange surface) ===== -->
+      <path d="M272 80 Q 285 128 272 176" fill="none" stroke="var(--accent)" stroke-width="1.4" stroke-dasharray="3 3" opacity="0.85"/>
+      <line x1="276" y1="178" x2="258" y2="236" stroke="var(--rule)" stroke-width="1"/>
+      <text class="lbl" x="246" y="248" text-anchor="middle">thin wall &middot; one cell thick</text>
+
+      <!-- ===== diffusion direction arrows ===== -->
+      <g>
+        <line x1="250" y1="104" x2="300" y2="104" stroke="var(--gold)" stroke-width="2.4"/>
+        <polygon points="300,104 291,99.5 291,108.5" fill="var(--gold)"/>
+        <text class="gas" style="fill:var(--gold)" x="262" y="96">O&#8322;</text>
+      </g>
+      <g>
+        <line x1="300" y1="152" x2="250" y2="152" stroke="var(--accent)" stroke-width="2.4"/>
+        <polygon points="250,152 259,147.5 259,156.5" fill="var(--accent)"/>
+        <text class="gas" style="fill:var(--accent)" x="266" y="166">CO&#8322;</text>
+      </g>
+
+      <!-- ===== labels ===== -->
+      <text class="lbl" x="4" y="112">from bronchiole &rarr;</text>
+      <text class="bigl" style="fill:#a9842f" x="150" y="22" text-anchor="middle">Alveolus (air sac)</text>
+      <text class="lbl" x="150" y="150" text-anchor="middle">air &middot; high O&#8322; &middot; low CO&#8322;</text>
+      <text class="bigl" style="fill:var(--accent)" x="356" y="22" text-anchor="middle">Capillary</text>
+      <text class="lbl" x="366" y="126">low O&#8322;</text>
+      <text class="lbl" x="366" y="139">high CO&#8322;</text>
+      <text class="lbl" x="366" y="176">red blood cells</text>
+      <line x1="364" y1="172" x2="344" y2="158" stroke="var(--rule)" stroke-width="1"/>
+
+      <!-- gas particles drawn on top -->
+      <g id="particles"></g>
+    </svg>
+  </div>
+  <div class="controls">
+    <button id="play" aria-label="Play or pause the animation">&#10073;&#10073; Pause</button>
+    <button id="reset" aria-label="Reset the animation">Reset</button>
+    <div class="legend">
+      <span><i class="dot" style="background:var(--gold)"></i>Oxygen (O&#8322;)</span>
+      <span><i class="dot" style="background:var(--accent)"></i>Carbon dioxide (CO&#8322;)</span>
+    </div>
+  </div>
+  <div class="counts">
+    <div class="cnt"><div class="k">O&#8322; moved into blood</div><div class="v" id="o2c">0</div></div>
+    <div class="cnt"><div class="k">CO&#8322; moved into alveolus</div><div class="v" id="co2c">0</div></div>
+  </div>
+  <div class="statement">Diffusion: high &rarr; low concentration &middot; no energy needed</div>
+  <p class="takeaway"><b>O&#8322; in, CO&#8322; out</b> &mdash; both move by diffusion, across a wall just one cell thick.</p>
+</div>
+<script>
+(function(){
+  var svgNS='http://www.w3.org/2000/svg';
+  var g=document.getElementById('particles');
+  var rbcLayer=document.getElementById('rbcs');
+  var vessel=document.getElementById('vessel');
+  var o2c=document.getElementById('o2c'),co2c=document.getElementById('co2c');
+  var playBtn=document.getElementById('play');
+  var running=true,raf=null,particles=[],rbcs=[],o2done=0,co2done=0;
+  var vlen=vessel.getTotalLength();
+  function rnd(a,b){return a+Math.random()*(b-a);}
+
+  // ---- red blood cells flowing along the capillary ----
+  function hex(c){return [parseInt(c.substr(1,2),16),parseInt(c.substr(3,2),16),parseInt(c.substr(5,2),16)];}
+  function lerpCol(a,b,t){var A=hex(a),B=hex(b);return 'rgb('+Math.round(A[0]+(B[0]-A[0])*t)+','+Math.round(A[1]+(B[1]-A[1])*t)+','+Math.round(A[2]+(B[2]-A[2])*t)+')';}
+  function makeRBC(frac){
+    var grp=document.createElementNS(svgNS,'g');
+    var e1=document.createElementNS(svgNS,'ellipse');
+    e1.setAttribute('rx','10');e1.setAttribute('ry','6.2');
+    e1.setAttribute('stroke','#5e2630');e1.setAttribute('stroke-width','0.6');
+    var e2=document.createElementNS(svgNS,'ellipse');
+    e2.setAttribute('rx','4.3');e2.setAttribute('ry','2.6');e2.setAttribute('fill','rgba(255,255,255,0.32)');
+    grp.appendChild(e1);grp.appendChild(e2);rbcLayer.appendChild(grp);
+    return {grp:grp,body:e1,len:frac*vlen};
+  }
+  function placeRBC(r){
+    if(r.len>vlen)r.len-=vlen; if(r.len<0)r.len+=vlen;
+    var p=vessel.getPointAtLength(r.len);
+    var p2=vessel.getPointAtLength((r.len+1)%vlen);
+    var ang=Math.atan2(p2.y-p.y,p2.x-p.x)*180/Math.PI;
+    r.grp.setAttribute('transform','translate('+p.x.toFixed(1)+','+p.y.toFixed(1)+') rotate('+ang.toFixed(1)+')');
+    r.body.setAttribute('fill',lerpCol('#7a3340','#C0392B',r.len/vlen)); // deoxygenated (in) -> oxygenated (out)
+  }
+
+  // ---- diffusing gas particles ----
+  function make(type){
+    var c=document.createElementNS(svgNS,'circle');
+    c.setAttribute('r',type==='o2'?4:4.3);
+    c.setAttribute('fill',type==='o2'?'var(--gold)':'var(--accent)');
+    c.setAttribute('stroke',type==='o2'?'#9a7a2a':'#8a3a30');c.setAttribute('stroke-width','0.6');
+    g.appendChild(c);
+    if(type==='o2')return {el:c,type:type,x:rnd(55,225),y:rnd(60,196),vx:rnd(0.3,0.7),vy:rnd(-0.4,0.4)};
+    var p=vessel.getPointAtLength(rnd(0.15,0.85)*vlen);
+    return {el:c,type:type,x:p.x+rnd(-8,8),y:p.y+rnd(-8,8),vx:-rnd(0.3,0.7),vy:rnd(-0.4,0.4)};
+  }
+  function spawn(){
+    particles=[];g.innerHTML='';rbcs=[];rbcLayer.innerHTML='';
+    o2done=0;co2done=0;o2c.textContent='0';co2c.textContent='0';
+    for(var k=0;k<5;k++){var r=makeRBC(k/5);rbcs.push(r);placeRBC(r);}
+    for(var i=0;i<8;i++)particles.push(make('o2'));
+    for(var j=0;j<8;j++)particles.push(make('co2'));
+    draw();
+  }
+  function draw(){particles.forEach(function(p){p.el.setAttribute('cx',p.x);p.el.setAttribute('cy',p.y);});}
+  function step(){
+    rbcs.forEach(function(r){r.len+=0.55;placeRBC(r);});
+    particles.forEach(function(p){
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.y<40){p.y=40;p.vy*=-1;}if(p.y>212){p.y=212;p.vy*=-1;}
+      p.vy+=rnd(-0.06,0.06);if(p.vy>0.6)p.vy=0.6;if(p.vy<-0.6)p.vy=-0.6;
+      if(p.type==='o2'&&p.x>=262){ // crossed the wall into the blood
+        o2done++;o2c.textContent=o2done;
+        p.x=rnd(55,140);p.y=rnd(70,190);p.vx=rnd(0.3,0.7);
+      }
+      if(p.type==='co2'&&p.x<=244){ // crossed the wall into the alveolus
+        co2done++;co2c.textContent=co2done;
+        var q=vessel.getPointAtLength(rnd(0.15,0.85)*vlen);
+        p.x=q.x+rnd(-8,8);p.y=q.y+rnd(-8,8);p.vx=-rnd(0.3,0.7);
+      }
+    });
+    draw();
+    if(running)raf=requestAnimationFrame(step);
+  }
+  playBtn.addEventListener('click',function(){
+    running=!running;
+    playBtn.innerHTML=running?'&#10073;&#10073; Pause':'&#9654; Play';
+    if(running)raf=requestAnimationFrame(step);else if(raf)cancelAnimationFrame(raf);
+  });
+  document.getElementById('reset').addEventListener('click',function(){
+    if(raf)cancelAnimationFrame(raf);spawn();running=true;
+    playBtn.innerHTML='&#10073;&#10073; Pause';raf=requestAnimationFrame(step);
+  });
+  spawn();raf=requestAnimationFrame(step);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The fire triangle</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1E2761;--navy-soft:#2a3478;--warm:#F8F4EC;--warm-deep:#EFE8D6;--paper:#FCFAF4;
+  --soft-blue:#EDF2FA;--ink:#1A1A1A;--muted:#5C6370;--rule:#CFD8E3;--accent:#B85042;
+  --accent-soft:#F4DAD7;--success:#2C5F2D;--success-soft:#DDEBDD;--gold:#C8A24A;--gold-soft:#F2E6BD;
+  --display:'Instrument Serif',Georgia,serif;--body:'IBM Plex Sans',system-ui,sans-serif;--mono:'IBM Plex Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--body);background:var(--paper);color:var(--ink);padding:16px;font-weight:300}
+.wrap{max-width:700px;margin:0 auto}
+.instr{font-size:14px;color:var(--muted);margin-bottom:10px;line-height:1.4}
+.instr strong{color:var(--navy);font-weight:600}
+.stage{display:flex;gap:18px;align-items:center;flex-wrap:wrap;justify-content:center}
+.triangle{position:relative;width:240px;height:210px;flex:0 0 auto}
+svg{width:100%;height:100%;overflow:visible}
+.side{stroke-width:14;stroke-linecap:round;cursor:pointer;transition:stroke .25s,opacity .25s}
+.side.on{stroke:var(--navy)}
+.side.off{stroke:var(--rule);opacity:.55}
+.sidelabel{cursor:pointer}
+.sidelabel text{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;fill:var(--warm);pointer-events:none}
+.sidelabel rect{transition:fill .25s}
+.flame{font-size:46px;transition:opacity .35s,transform .35s;transform-origin:center bottom}
+.flame.out{opacity:.18;transform:scale(.7)}
+.controls{flex:1;min-width:200px}
+.toggle{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 12px;border:1px solid var(--rule);border-radius:4px;margin-bottom:8px;background:var(--warm)}
+.toggle .nm{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;color:var(--navy)}
+.toggle button{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-weight:500;
+  border:1px solid var(--navy);border-radius:3px;padding:7px 12px;cursor:pointer;transition:all .18s;min-width:64px}
+.toggle button.on{background:var(--success);border-color:var(--success);color:var(--warm)}
+.toggle button.off{background:var(--paper);border-color:var(--accent);color:var(--accent)}
+.toggle button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.status{margin:12px 0 0;border-radius:4px;padding:12px 14px;font-size:14px;line-height:1.45;border:1px solid var(--rule)}
+.status.lit{background:var(--gold-soft);border-color:var(--gold)}
+.status.outm{background:var(--accent-soft);border-color:var(--accent)}
+.status b{font-weight:600}
+.status .head{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;display:block;margin-bottom:4px}
+.lit .head{color:var(--gold)} .outm .head{color:var(--accent)}
+.reset{margin-top:10px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:500;
+  background:var(--navy);color:var(--warm);border:1px solid var(--navy);padding:9px 14px;border-radius:3px;cursor:pointer;transition:all .18s}
+.reset:hover{background:var(--accent);border-color:var(--accent)}
+.reset:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.take{font-family:var(--display);font-style:italic;font-size:17px;color:var(--navy);line-height:1.35;margin-top:12px;padding-top:10px;border-top:1px solid var(--rule)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="instr">Combustion needs three things. <strong>Toggle a side off</strong> to remove it — see what happens to the flame.</p>
+  <div class="stage">
+    <div class="triangle">
+      <svg viewBox="0 0 240 210" role="img" aria-label="Fire triangle: fuel, oxygen and heat">
+        <!-- sides: FUEL (left), OXYGEN (right), HEAT (bottom) -->
+        <line class="side on" id="s-fuel" x1="120" y1="20" x2="28" y2="180"/>
+        <line class="side on" id="s-oxygen" x1="120" y1="20" x2="212" y2="180"/>
+        <line class="side on" id="s-heat" x1="28" y1="180" x2="212" y2="180"/>
+        <g class="sidelabel" data-side="fuel" tabindex="0" role="button" aria-pressed="false" aria-label="Toggle fuel">
+          <rect x="34" y="86" width="56" height="22" rx="3" fill="var(--navy)"/>
+          <text x="62" y="101" text-anchor="middle">Fuel</text>
+        </g>
+        <g class="sidelabel" data-side="oxygen" tabindex="0" role="button" aria-pressed="false" aria-label="Toggle oxygen">
+          <rect x="150" y="86" width="76" height="22" rx="3" fill="var(--navy)"/>
+          <text x="188" y="101" text-anchor="middle">Oxygen</text>
+        </g>
+        <g class="sidelabel" data-side="heat" tabindex="0" role="button" aria-pressed="false" aria-label="Toggle heat">
+          <rect x="92" y="169" width="56" height="22" rx="3" fill="var(--navy)"/>
+          <text x="120" y="184" text-anchor="middle">Heat</text>
+        </g>
+        <foreignObject x="92" y="92" width="56" height="64">
+          <div xmlns="http://www.w3.org/1999/xhtml" style="height:100%;display:flex;align-items:center;justify-content:center">
+            <span class="flame" id="flame" aria-hidden="true">🔥</span>
+          </div>
+        </foreignObject>
+      </svg>
+    </div>
+    <div class="controls">
+      <div class="toggle"><span class="nm">Fuel</span><button class="on" data-t="fuel" aria-pressed="true">Present</button></div>
+      <div class="toggle"><span class="nm">Oxygen</span><button class="on" data-t="oxygen" aria-pressed="true">Present</button></div>
+      <div class="toggle"><span class="nm">Heat</span><button class="on" data-t="heat" aria-pressed="true">Present</button></div>
+      <button class="reset" id="reset">Relight (restore all)</button>
+    </div>
+  </div>
+  <div class="status lit" id="status" aria-live="polite"></div>
+  <p class="take">Combustion needs fuel + oxygen + heat — remove any one and it stops.</p>
+</div>
+<script>
+"use strict";
+const present={fuel:true,oxygen:true,heat:true};
+const NAMES={fuel:'Fuel',oxygen:'Oxygen',heat:'Heat'};
+const REASON={
+  fuel:'No fuel → there is nothing left to burn, so the fire goes out.',
+  oxygen:'No oxygen → the fire is smothered, so it cannot keep burning.',
+  heat:'No heat → the temperature drops below the point needed to burn, so the fire goes out.'
+};
+const $=id=>document.getElementById(id);
+function render(){
+  ['fuel','oxygen','heat'].forEach(k=>{
+    const line=$('s-'+k);
+    line.classList.toggle('on',present[k]);
+    line.classList.toggle('off',!present[k]);
+    const btn=document.querySelector('button[data-t="'+k+'"]');
+    btn.classList.toggle('on',present[k]);
+    btn.classList.toggle('off',!present[k]);
+    btn.textContent=present[k]?'Present':'Removed';
+    btn.setAttribute('aria-pressed',present[k]);
+    const lbl=document.querySelector('.sidelabel[data-side="'+k+'"]');
+    lbl.querySelector('rect').setAttribute('fill',present[k]?'var(--navy)':'var(--muted)');
+    lbl.setAttribute('aria-pressed',(!present[k]).toString());
+  });
+  const lit=present.fuel&&present.oxygen&&present.heat;
+  $('flame').classList.toggle('out',!lit);
+  const st=$('status');
+  if(lit){
+    st.className='status lit';
+    st.innerHTML='<span class="head">Burning</span>All three are present, so the fire <b>keeps burning</b>.';
+  }else{
+    const missing=['fuel','oxygen','heat'].filter(k=>!present[k]);
+    st.className='status outm';
+    const list=missing.map(k=>NAMES[k]).join(' and ');
+    const reason=missing.length===1?REASON[missing[0]]:'With '+list+' missing, the fire cannot burn.';
+    st.innerHTML='<span class="head">Fire out</span><b>'+list+' removed.</b> '+reason;
+  }
+}
+function toggle(k){present[k]=!present[k];render();}
+document.querySelectorAll('button[data-t]').forEach(b=>b.addEventListener('click',()=>toggle(b.dataset.t)));
+document.querySelectorAll('.sidelabel').forEach(g=>{
+  g.addEventListener('click',()=>toggle(g.dataset.side));
+  g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle(g.dataset.side);}});
+});
+$('reset').addEventListener('click',()=>{present.fuel=present.oxygen=present.heat=true;render();});
+render();
+</script>
+</body>
+</html>

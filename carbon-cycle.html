@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Carbon Cycle — AQA Combined Science</title>
+<style>
+  :root {
+    --navy: #1e3a5f;
+    --navy-dark: #0f2540;
+    --navy-light: #2c5282;
+    --accent: #2563eb;
+    --bg: #f4f7fb;
+    --panel: #ffffff;
+    --text: #1a202c;
+    --muted: #64748b;
+    --border: #d6dee9;
+    --sky: #cfe1f0;
+    --sky-deep: #9dbfd9;
+    --ground: #8b6a3f;
+    --ground-deep: #5a4226;
+    --rock: #3d3530;
+    --coal: #1a1a1a;
+    --plant: #2d7a3e;
+    --plant-dark: #1e5a2c;
+    --animal: #8b6f47;
+    --decomposer: #a16341;
+    --factory: #5a6470;
+    --photo: #16a34a;
+    --resp: #ea580c;
+    --feed: #ca8a04;
+    --decomp: #92400e;
+    --fossil: #475569;
+    --comb: #dc2626;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    height: 100vh;
+    overflow: hidden;
+  }
+  body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--navy);
+    color: white;
+    padding: 14px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 4px solid var(--navy-dark);
+    flex-shrink: 0;
+  }
+  header h1 {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+  }
+  .header-meta {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-size: 13px;
+  }
+  .spec-tag {
+    background: rgba(255,255,255,0.12);
+    padding: 5px 12px;
+    border-radius: 4px;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+  }
+  .stage-indicator {
+    font-weight: 700;
+    background: var(--accent);
+    padding: 5px 14px;
+    border-radius: 4px;
+    min-width: 110px;
+    text-align: center;
+  }
+
+  /* MAIN LAYOUT */
+  main {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 0;
+    overflow: hidden;
+    min-height: 0;
+  }
+
+  .diagram-wrap {
+    background: linear-gradient(180deg, #d9e8f3 0%, #cfe1f0 30%, #b7d2e6 60%, #9dbfd9 60.5%, #87a8c4 65%);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  svg.diagram {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  /* SIDE PANEL */
+  aside.info-panel {
+    background: var(--panel);
+    border-left: 1px solid var(--border);
+    padding: 28px 26px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+  .panel-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .panel-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 14px;
+    line-height: 1.15;
+  }
+  .panel-description {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text);
+    margin-bottom: 18px;
+  }
+  .equation-box {
+    background: var(--bg);
+    border-left: 4px solid var(--accent);
+    padding: 12px 16px;
+    border-radius: 4px;
+    margin-bottom: 18px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--navy-dark);
+    letter-spacing: 0.2px;
+  }
+  .equation-box .label {
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .teacher-note {
+    background: #fff8e6;
+    border: 1px solid #f4d68a;
+    padding: 14px 16px;
+    border-radius: 6px;
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: #5b4612;
+  }
+  .teacher-note strong {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #8a6914;
+    margin-bottom: 6px;
+  }
+  .keyterms {
+    margin-top: 18px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .keyterm {
+    background: var(--navy);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+  }
+
+  /* CONTROLS */
+  footer.controls {
+    background: var(--navy-dark);
+    padding: 12px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    flex-shrink: 0;
+    border-top: 1px solid #000;
+  }
+  .control-group {
+    display: flex;
+    gap: 10px;
+  }
+  button {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 10px 22px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.05s;
+    letter-spacing: 0.3px;
+  }
+  button:active { transform: translateY(1px); }
+  button.primary {
+    background: var(--accent);
+    color: white;
+  }
+  button.primary:hover { background: #1d4ed8; }
+  button.primary:disabled { background: #475569; cursor: not-allowed; opacity: 0.55; }
+  button.secondary {
+    background: #475569;
+    color: white;
+  }
+  button.secondary:hover { background: #334155; }
+  button.secondary:disabled { background: #2d3748; cursor: not-allowed; opacity: 0.55; }
+  button.tertiary {
+    background: transparent;
+    color: #cbd5e1;
+    border: 1px solid #475569;
+  }
+  button.tertiary:hover { background: #1e293b; }
+
+  .hint {
+    color: #94a3b8;
+    font-size: 12px;
+    letter-spacing: 0.4px;
+  }
+  .hint kbd {
+    background: #1e293b;
+    border: 1px solid #475569;
+    color: #cbd5e1;
+    padding: 1px 7px;
+    border-radius: 3px;
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    margin: 0 2px;
+  }
+
+  /* SVG STYLING */
+  .reservoir-label {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    fill: var(--navy-dark);
+    letter-spacing: 0.3px;
+    text-anchor: middle;
+  }
+  .atmosphere-label {
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    fill: var(--navy-dark);
+    letter-spacing: 1.2px;
+    text-anchor: start;
+  }
+  .co2-text {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    fill: var(--navy-dark);
+  }
+  .carbon-atom {
+    fill: #1e293b;
+    stroke: white;
+    stroke-width: 1.5;
+  }
+  .carbon-atom-text {
+    font-family: Arial, sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    fill: white;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+  }
+
+  .flow-arrow {
+    fill: none;
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .flow-arrow.visible {
+    opacity: 1;
+  }
+  .flow-label {
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    text-anchor: middle;
+    opacity: 0;
+    transition: opacity 0.4s;
+    letter-spacing: 0.3px;
+  }
+  .flow-label.visible {
+    opacity: 1;
+  }
+
+  /* reservoir illustrations */
+  .tree-trunk { fill: #5c3a1e; }
+  .tree-leaves { fill: var(--plant); }
+  .tree-leaves-dark { fill: var(--plant-dark); }
+  .animal-body { fill: var(--animal); }
+  .animal-detail { fill: #6b563a; }
+  .mushroom-stem { fill: #e6d5b8; }
+  .mushroom-cap { fill: var(--decomposer); }
+  .mushroom-spot { fill: #f4e4c8; }
+  .factory-body { fill: var(--factory); }
+  .factory-chimney { fill: #424b56; }
+  .factory-stripe { fill: #2d3540; }
+  .smoke { fill: #6b7280; opacity: 0; transition: opacity 0.5s; }
+  .smoke.visible { opacity: 0.7; }
+
+  @media (max-width: 900px) {
+    main { grid-template-columns: 1fr; grid-template-rows: 1fr auto; }
+    aside.info-panel { border-left: none; border-top: 1px solid var(--border); }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>The Carbon Cycle</h1>
+  <div class="header-meta">
+    <span class="spec-tag">AQA COMBINED SCIENCE • BIOLOGY</span>
+    <span class="stage-indicator" id="stageIndicator">Start</span>
+  </div>
+</header>
+
+<main>
+  <div class="diagram-wrap">
+    <svg class="diagram" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet">
+
+      <!-- ATMOSPHERE BAND -->
+      <rect x="0" y="0" width="1000" height="115" fill="url(#skyGradient)"/>
+      <defs>
+        <linearGradient id="skyGradient" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#dceaf3"/>
+          <stop offset="100%" stop-color="#b7d2e6"/>
+        </linearGradient>
+        <linearGradient id="groundGradient" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#8b6a3f"/>
+          <stop offset="100%" stop-color="#6b4f2a"/>
+        </linearGradient>
+        <linearGradient id="rockGradient" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#4a423d"/>
+          <stop offset="100%" stop-color="#2a2520"/>
+        </linearGradient>
+      </defs>
+
+      <!-- Atmosphere label -->
+      <text x="30" y="38" class="atmosphere-label">ATMOSPHERE</text>
+
+      <!-- Static CO2 molecules floating in atmosphere -->
+      <g id="atmosphereCO2">
+        <g transform="translate(180, 55)">
+          <circle r="13" class="carbon-atom"/>
+          <text class="carbon-atom-text">CO₂</text>
+        </g>
+        <g transform="translate(320, 75)">
+          <circle r="13" class="carbon-atom"/>
+          <text class="carbon-atom-text">CO₂</text>
+        </g>
+        <g transform="translate(460, 50)">
+          <circle r="13" class="carbon-atom"/>
+          <text class="carbon-atom-text">CO₂</text>
+        </g>
+        <g transform="translate(600, 80)">
+          <circle r="13" class="carbon-atom"/>
+          <text class="carbon-atom-text">CO₂</text>
+        </g>
+        <g transform="translate(740, 55)">
+          <circle r="13" class="carbon-atom"/>
+          <text class="carbon-atom-text">CO₂</text>
+        </g>
+        <g transform="translate(880, 78)">
+          <circle r="13" class="carbon-atom"/>
+          <text class="carbon-atom-text">CO₂</text>
+        </g>
+      </g>
+
+      <!-- Sun for visual warmth -->
+      <circle cx="935" cy="55" r="32" fill="#fde047" opacity="0.85"/>
+      <circle cx="935" cy="55" r="22" fill="#facc15"/>
+
+      <!-- LAND SURFACE -->
+      <rect x="0" y="115" width="1000" height="300" fill="#e8f0db"/>
+      <!-- Grass line -->
+      <path d="M 0 415 L 1000 415" stroke="#3d6428" stroke-width="3"/>
+      <!-- Subtle hills -->
+      <path d="M 0 415 Q 250 380 500 410 T 1000 405 L 1000 420 L 0 420 Z" fill="#a4c47a" opacity="0.6"/>
+
+      <!-- UNDERGROUND -->
+      <rect x="0" y="415" width="1000" height="55" fill="url(#groundGradient)"/>
+      <rect x="0" y="470" width="1000" height="130" fill="url(#rockGradient)"/>
+      <!-- Soil texture flecks -->
+      <g opacity="0.4">
+        <circle cx="80" cy="440" r="3" fill="#5a4226"/>
+        <circle cx="220" cy="455" r="2.5" fill="#5a4226"/>
+        <circle cx="380" cy="445" r="3" fill="#5a4226"/>
+        <circle cx="540" cy="458" r="2.5" fill="#5a4226"/>
+        <circle cx="700" cy="442" r="3" fill="#5a4226"/>
+        <circle cx="860" cy="455" r="2.5" fill="#5a4226"/>
+      </g>
+
+      <!-- FOSSIL FUEL LAYER (coal seams) -->
+      <g id="fossilFuelLayer">
+        <path d="M 50 510 Q 150 495 250 510 Q 350 525 450 510 Q 550 500 650 515 Q 750 525 850 510 Q 920 505 970 515 L 970 545 Q 920 555 850 545 Q 750 540 650 555 Q 550 555 450 545 Q 350 540 250 555 Q 150 555 50 545 Z" fill="var(--coal)"/>
+        <path d="M 100 575 Q 200 565 300 580 Q 400 590 500 575 Q 600 570 700 585 Q 800 590 900 575" stroke="var(--coal)" stroke-width="8" fill="none" opacity="0.8"/>
+        <text x="500" y="540" text-anchor="middle" font-family="Arial" font-size="13" font-weight="700" fill="#cbd5e1" letter-spacing="2">FOSSIL FUELS (COAL, OIL, GAS)</text>
+      </g>
+
+      <!-- ============== PLANTS (tree) ============== -->
+      <g id="plants" transform="translate(160, 0)">
+        <!-- Trunk -->
+        <rect x="-8" y="335" width="16" height="80" class="tree-trunk"/>
+        <!-- Crown - layered circles -->
+        <circle cx="0" cy="290" r="55" class="tree-leaves-dark"/>
+        <circle cx="-25" cy="310" r="42" class="tree-leaves"/>
+        <circle cx="25" cy="305" r="45" class="tree-leaves"/>
+        <circle cx="0" cy="270" r="40" class="tree-leaves"/>
+        <circle cx="-15" cy="275" r="32" class="tree-leaves-dark" opacity="0.7"/>
+        <text x="0" y="445" class="reservoir-label">PLANTS</text>
+        <text x="0" y="462" text-anchor="middle" font-family="Arial" font-size="11" fill="var(--muted)">producers</text>
+      </g>
+
+      <!-- ============== ANIMALS (stylised herbivore) ============== -->
+      <g id="animals" transform="translate(440, 0)">
+        <!-- body -->
+        <ellipse cx="0" cy="370" rx="55" ry="28" class="animal-body"/>
+        <!-- head -->
+        <circle cx="48" cy="345" r="22" class="animal-body"/>
+        <!-- ear -->
+        <path d="M 52 322 L 58 308 L 62 326 Z" class="animal-body"/>
+        <!-- legs -->
+        <rect x="-35" y="392" width="9" height="22" class="animal-detail"/>
+        <rect x="-10" y="392" width="9" height="22" class="animal-detail"/>
+        <rect x="15" y="392" width="9" height="22" class="animal-detail"/>
+        <rect x="35" y="392" width="9" height="22" class="animal-detail"/>
+        <!-- eye -->
+        <circle cx="55" cy="343" r="2.5" fill="#1a1a1a"/>
+        <!-- tail -->
+        <path d="M -55 360 Q -68 358 -62 372" stroke="var(--animal-detail)" stroke-width="6" fill="none" stroke-linecap="round"/>
+        <text x="0" y="445" class="reservoir-label">ANIMALS</text>
+        <text x="0" y="462" text-anchor="middle" font-family="Arial" font-size="11" fill="var(--muted)">consumers</text>
+      </g>
+
+      <!-- ============== DECOMPOSERS (mushroom cluster) ============== -->
+      <g id="decomposers" transform="translate(670, 0)">
+        <!-- mushroom 1 (large) -->
+        <rect x="-6" y="375" width="12" height="35" class="mushroom-stem" rx="2"/>
+        <ellipse cx="0" cy="375" rx="28" ry="14" class="mushroom-cap"/>
+        <path d="M -28 375 Q 0 355 28 375 L 28 380 Q 0 372 -28 380 Z" class="mushroom-cap"/>
+        <circle cx="-8" cy="370" r="2.5" class="mushroom-spot"/>
+        <circle cx="6" cy="365" r="2" class="mushroom-spot"/>
+        <circle cx="14" cy="372" r="1.8" class="mushroom-spot"/>
+        <!-- mushroom 2 (small left) -->
+        <rect x="-30" y="395" width="8" height="15" class="mushroom-stem" rx="2"/>
+        <ellipse cx="-26" cy="395" rx="16" ry="8" class="mushroom-cap"/>
+        <circle cx="-30" cy="392" r="1.5" class="mushroom-spot"/>
+        <circle cx="-22" cy="395" r="1.5" class="mushroom-spot"/>
+        <!-- mushroom 3 (small right) -->
+        <rect x="22" y="397" width="7" height="13" class="mushroom-stem" rx="2"/>
+        <ellipse cx="26" cy="397" rx="14" ry="7" class="mushroom-cap"/>
+        <circle cx="22" cy="395" r="1.3" class="mushroom-spot"/>
+        <text x="0" y="445" class="reservoir-label">DECOMPOSERS</text>
+        <text x="0" y="462" text-anchor="middle" font-family="Arial" font-size="11" fill="var(--muted)">bacteria &amp; fungi</text>
+      </g>
+
+      <!-- ============== FACTORY (combustion) ============== -->
+      <g id="factory" transform="translate(870, 0)">
+        <!-- smoke (initially hidden) -->
+        <g id="factorySmoke" class="smoke">
+          <circle cx="-12" cy="220" r="14"/>
+          <circle cx="-2" cy="200" r="18"/>
+          <circle cx="-15" cy="180" r="16"/>
+          <circle cx="0" cy="160" r="20"/>
+          <circle cx="-10" cy="135" r="22"/>
+        </g>
+        <!-- chimney -->
+        <rect x="-18" y="230" width="20" height="90" class="factory-chimney"/>
+        <rect x="-22" y="225" width="28" height="10" class="factory-chimney"/>
+        <!-- main building -->
+        <rect x="-55" y="320" width="100" height="95" class="factory-body"/>
+        <!-- roof line -->
+        <rect x="-58" y="316" width="106" height="8" class="factory-stripe"/>
+        <!-- windows -->
+        <rect x="-45" y="335" width="14" height="14" fill="#fbbf24"/>
+        <rect x="-22" y="335" width="14" height="14" fill="#fbbf24"/>
+        <rect x="2" y="335" width="14" height="14" fill="#fbbf24"/>
+        <rect x="26" y="335" width="14" height="14" fill="#fbbf24"/>
+        <rect x="-45" y="360" width="14" height="14" fill="#fbbf24" opacity="0.5"/>
+        <rect x="-22" y="360" width="14" height="14" fill="#fbbf24" opacity="0.5"/>
+        <rect x="2" y="360" width="14" height="14" fill="#fbbf24" opacity="0.5"/>
+        <rect x="26" y="360" width="14" height="14" fill="#fbbf24" opacity="0.5"/>
+        <!-- door -->
+        <rect x="-12" y="385" width="22" height="30" class="factory-stripe"/>
+        <text x="0" y="445" class="reservoir-label">COMBUSTION</text>
+        <text x="0" y="462" text-anchor="middle" font-family="Arial" font-size="11" fill="var(--muted)">power stations, vehicles</text>
+      </g>
+
+      <!-- ============== FLOW PATHS (arrows) ============== -->
+      <!-- Each path id is referenced by carbon atom animations; markers are drawn at end -->
+      <defs>
+        <marker id="arrowPhoto" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--photo)"/>
+        </marker>
+        <marker id="arrowResp" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--resp)"/>
+        </marker>
+        <marker id="arrowFeed" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--feed)"/>
+        </marker>
+        <marker id="arrowDecomp" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--decomp)"/>
+        </marker>
+        <marker id="arrowFossil" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--fossil)"/>
+        </marker>
+        <marker id="arrowComb" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--comb)"/>
+        </marker>
+      </defs>
+
+      <!-- 1. Photosynthesis: atmosphere → plant (curved down-left) -->
+      <path id="path-photo" class="flow-arrow" data-process="photo"
+            d="M 220 110 Q 200 200 175 240"
+            stroke="var(--photo)" marker-end="url(#arrowPhoto)"/>
+      <text id="label-photo" class="flow-label" x="115" y="180" fill="var(--photo)">PHOTOSYNTHESIS</text>
+
+      <!-- 2. Plant respiration: plant → atmosphere (curved up) -->
+      <path id="path-plant-resp" class="flow-arrow" data-process="resp"
+            d="M 100 280 Q 70 180 110 110"
+            stroke="var(--resp)" marker-end="url(#arrowResp)"/>
+      <text id="label-plant-resp" class="flow-label" x="55" y="220" fill="var(--resp)">RESPIRATION</text>
+
+      <!-- 3. Feeding: plant → animal (rightward) -->
+      <path id="path-feed" class="flow-arrow" data-process="feed"
+            d="M 240 340 Q 340 320 380 360"
+            stroke="var(--feed)" marker-end="url(#arrowFeed)"/>
+      <text id="label-feed" class="flow-label" x="310" y="318" fill="var(--feed)">FEEDING</text>
+
+      <!-- 4. Animal respiration: animal → atmosphere (curved up) -->
+      <path id="path-animal-resp" class="flow-arrow" data-process="resp"
+            d="M 470 340 Q 480 220 425 110"
+            stroke="var(--resp)" marker-end="url(#arrowResp)"/>
+      <text id="label-animal-resp" class="flow-label" x="500" y="220" fill="var(--resp)">RESPIRATION</text>
+
+      <!-- 5. Death + decomposition: animal → decomposer → atmosphere -->
+      <path id="path-death" class="flow-arrow" data-process="decomp"
+            d="M 510 380 Q 580 400 640 388"
+            stroke="var(--decomp)" marker-end="url(#arrowDecomp)"/>
+      <text id="label-death" class="flow-label" x="575" y="418" fill="var(--decomp)">DEATH</text>
+
+      <path id="path-decomp" class="flow-arrow" data-process="decomp"
+            d="M 700 370 Q 730 220 680 110"
+            stroke="var(--decomp)" marker-end="url(#arrowDecomp)"/>
+      <text id="label-decomp" class="flow-label" x="755" y="220" fill="var(--decomp)">DECOMPOSITION</text>
+
+      <!-- 6. Fossilisation: decomposer → fossil fuel (downward) -->
+      <path id="path-fossil" class="flow-arrow" data-process="fossil"
+            d="M 670 415 Q 650 460 600 510"
+            stroke="var(--fossil)" stroke-dasharray="6 4" marker-end="url(#arrowFossil)"/>
+      <text id="label-fossil" class="flow-label" x="555" y="475" fill="var(--fossil)">FOSSILISATION</text>
+
+      <!-- 7. Combustion: fossil fuel → factory → atmosphere -->
+      <path id="path-combustion" class="flow-arrow" data-process="comb"
+            d="M 800 520 Q 870 480 870 420"
+            stroke="var(--comb)" marker-end="url(#arrowComb)"/>
+      <path id="path-combustion-out" class="flow-arrow" data-process="comb"
+            d="M 858 230 Q 870 170 880 110"
+            stroke="var(--comb)" marker-end="url(#arrowComb)"/>
+      <text id="label-combustion" class="flow-label" x="940" y="260" fill="var(--comb)">COMBUSTION</text>
+
+      <!-- ============== ANIMATED CARBON ATOMS (created by JS) ============== -->
+      <g id="atomLayer"></g>
+
+    </svg>
+  </div>
+
+  <aside class="info-panel">
+    <div class="panel-eyebrow" id="panelEyebrow">Introduction</div>
+    <h2 class="panel-title" id="panelTitle">The Carbon Cycle</h2>
+    <p class="panel-description" id="panelDescription">
+      Carbon is constantly recycled between the <strong>atmosphere</strong>, <strong>living organisms</strong>, and <strong>fossil fuels</strong>. Click <strong>Next</strong> to step through each process that moves carbon between these stores.
+    </p>
+    <div class="equation-box" id="equationBox" style="display:none;">
+      <span class="label">Word / symbol equation</span>
+      <div id="equationText"></div>
+    </div>
+    <div class="teacher-note" id="teacherNote">
+      <strong>Teacher note</strong>
+      Set the scene: every carbon atom in a student's body has been around for ~4.5 billion years and has cycled through countless plants, animals, and atmosphere over time. The cycle isn't a one-way trip — it's a balance.
+    </div>
+    <div class="keyterms" id="keyterms">
+      <span class="keyterm">Atmosphere</span>
+      <span class="keyterm">CO₂</span>
+      <span class="keyterm">Biomass</span>
+      <span class="keyterm">Fossil fuels</span>
+    </div>
+  </aside>
+</main>
+
+<footer class="controls">
+  <div class="control-group">
+    <button class="secondary" id="prevBtn" disabled>← Previous</button>
+    <button class="tertiary" id="resetBtn">⟲ Reset</button>
+  </div>
+  <span class="hint">Use <kbd>←</kbd> <kbd>→</kbd> to navigate &nbsp;•&nbsp; <kbd>R</kbd> to reset</span>
+  <div class="control-group">
+    <button class="primary" id="nextBtn">Next →</button>
+  </div>
+</footer>
+
+<script>
+(function() {
+  'use strict';
+
+  // ============ STAGE DEFINITIONS ============
+  const stages = [
+    {
+      id: 'intro',
+      indicator: 'Start',
+      eyebrow: 'Introduction',
+      title: 'The Carbon Cycle',
+      description: 'Carbon is constantly recycled between the <strong>atmosphere</strong>, <strong>living organisms</strong>, and <strong>fossil fuels</strong>. Click <strong>Next</strong> to step through each process that moves carbon between these stores.',
+      equation: null,
+      teacherNote: 'Set the scene: every carbon atom in a student\'s body has been around for ~4.5 billion years and has cycled through countless plants, animals, and atmosphere over time. The cycle is not a one-way trip — it is a balance.',
+      keyterms: ['Atmosphere', 'CO₂', 'Biomass', 'Fossil fuels'],
+      pathsVisible: [],
+      flow: null
+    },
+    {
+      id: 'photosynthesis',
+      indicator: '1 / 7',
+      eyebrow: 'Stage 1 — Carbon enters the biosphere',
+      title: 'Photosynthesis',
+      description: 'Plants <strong>absorb CO₂ from the atmosphere</strong> through their leaves. Using <strong>light energy</strong>, they convert CO₂ and water into <strong>glucose</strong> — locking carbon into their biomass.',
+      equation: '6CO<sub>2</sub> + 6H<sub>2</sub>O &nbsp;→&nbsp; C<sub>6</sub>H<sub>12</sub>O<sub>6</sub> + 6O<sub>2</sub>',
+      teacherNote: 'This is the <em>only</em> process on the cycle that removes CO₂ from the atmosphere. Everything else returns it. Misconception watch: plants do not "eat" CO₂ as food — the glucose <em>is</em> the food they make.',
+      keyterms: ['Photosynthesis', 'Glucose', 'Light energy', 'Producer'],
+      pathsVisible: ['path-photo'],
+      labelsVisible: ['label-photo'],
+      flow: { path: 'path-photo', label: 'CO₂', count: 4 }
+    },
+    {
+      id: 'plant-respiration',
+      indicator: '2 / 7',
+      eyebrow: 'Stage 2 — Plants also respire',
+      title: 'Respiration in Plants',
+      description: 'Plants <strong>respire 24 hours a day</strong> to release energy from glucose. This <strong>returns CO₂ to the atmosphere</strong>. Photosynthesis only happens in daylight; respiration is constant.',
+      equation: 'C<sub>6</sub>H<sub>12</sub>O<sub>6</sub> + 6O<sub>2</sub> &nbsp;→&nbsp; 6CO<sub>2</sub> + 6H<sub>2</sub>O',
+      teacherNote: 'Critical misconception fix: many students believe plants only photosynthesise and animals only respire. Plants do <strong>both</strong>. In daylight, photosynthesis usually exceeds respiration so the net effect is CO₂ absorption.',
+      keyterms: ['Respiration', 'Aerobic', 'Energy release'],
+      pathsVisible: ['path-photo', 'path-plant-resp'],
+      labelsVisible: ['label-photo', 'label-plant-resp'],
+      flow: { path: 'path-plant-resp', label: 'CO₂', count: 3 }
+    },
+    {
+      id: 'feeding',
+      indicator: '3 / 7',
+      eyebrow: 'Stage 3 — Carbon moves up the food chain',
+      title: 'Feeding',
+      description: 'When animals <strong>eat plants</strong> (or other animals), the carbon stored in biomass — as carbohydrates, fats and proteins — is <strong>transferred along the food chain</strong>.',
+      equation: null,
+      teacherNote: 'Carbon does not change form here — it just moves between living things. Useful link: this is also where the biology food chain / energy transfer content joins up with the carbon cycle.',
+      keyterms: ['Food chain', 'Consumer', 'Biomass', 'Transfer'],
+      pathsVisible: ['path-photo', 'path-plant-resp', 'path-feed'],
+      labelsVisible: ['label-photo', 'label-plant-resp', 'label-feed'],
+      flow: { path: 'path-feed', label: 'C', count: 3 }
+    },
+    {
+      id: 'animal-respiration',
+      indicator: '4 / 7',
+      eyebrow: 'Stage 4 — Animals release CO₂',
+      title: 'Respiration in Animals',
+      description: 'Animals <strong>respire</strong> to release energy for movement, growth and warmth. Just like plants, this releases <strong>CO₂ back into the atmosphere</strong>.',
+      equation: 'C<sub>6</sub>H<sub>12</sub>O<sub>6</sub> + 6O<sub>2</sub> &nbsp;→&nbsp; 6CO<sub>2</sub> + 6H<sub>2</sub>O',
+      teacherNote: 'You can quickly check understanding: "How is the CO₂ I am breathing out right now connected to the apple I had at break?" Tracks carbon from photosynthesis → plant → digestion → respiration → breath.',
+      keyterms: ['Respiration', 'Exhalation', 'Energy', 'Consumer'],
+      pathsVisible: ['path-photo', 'path-plant-resp', 'path-feed', 'path-animal-resp'],
+      labelsVisible: ['label-photo', 'label-plant-resp', 'label-feed', 'label-animal-resp'],
+      flow: { path: 'path-animal-resp', label: 'CO₂', count: 3 }
+    },
+    {
+      id: 'decomposition',
+      indicator: '5 / 7',
+      eyebrow: 'Stage 5 — Death and decay',
+      title: 'Death &amp; Decomposition',
+      description: 'When plants and animals die, <strong>decomposers</strong> (bacteria and fungi) break down their bodies. The decomposers <strong>respire</strong> as they do this — releasing CO₂ back to the atmosphere.',
+      equation: null,
+      teacherNote: 'Two-step process: <strong>(1)</strong> dead matter is fed on by decomposers, <strong>(2)</strong> decomposers respire. Conditions for fast decay: warm, moist, oxygen-rich. Cold/dry/anaerobic conditions slow it down — which matters for the next stage.',
+      keyterms: ['Decomposer', 'Microorganism', 'Decay', 'Bacteria &amp; fungi'],
+      pathsVisible: ['path-photo', 'path-plant-resp', 'path-feed', 'path-animal-resp', 'path-death', 'path-decomp'],
+      labelsVisible: ['label-photo', 'label-plant-resp', 'label-feed', 'label-animal-resp', 'label-death', 'label-decomp'],
+      flow: { path: 'path-decomp', label: 'CO₂', count: 3, secondaryPath: 'path-death', secondaryLabel: 'C', secondaryCount: 2 }
+    },
+    {
+      id: 'fossilisation',
+      indicator: '6 / 7',
+      eyebrow: 'Stage 6 — Carbon locked away for millions of years',
+      title: 'Fossilisation',
+      description: 'Sometimes dead organisms do <strong>not</strong> fully decompose — usually because of <strong>anaerobic conditions</strong> (no oxygen). Over <strong>millions of years</strong>, heat and pressure turn them into <strong>fossil fuels</strong> — coal, oil and natural gas.',
+      equation: null,
+      teacherNote: 'Timescale is the key idea: photosynthesis happens in seconds, fossilisation in millions of years. This is why the dashed arrow is used. Coal forms from plants in swamps; oil and gas from marine microorganisms on the seabed.',
+      keyterms: ['Fossilisation', 'Anaerobic', 'Coal', 'Oil', 'Gas', 'Millions of years'],
+      pathsVisible: ['path-photo', 'path-plant-resp', 'path-feed', 'path-animal-resp', 'path-death', 'path-decomp', 'path-fossil'],
+      labelsVisible: ['label-photo', 'label-plant-resp', 'label-feed', 'label-animal-resp', 'label-death', 'label-decomp', 'label-fossil'],
+      flow: { path: 'path-fossil', label: 'C', count: 3, slow: true }
+    },
+    {
+      id: 'combustion',
+      indicator: '7 / 7',
+      eyebrow: 'Stage 7 — Carbon returns rapidly',
+      title: 'Combustion',
+      description: 'When fossil fuels are <strong>burned</strong> in power stations and vehicles, they react with oxygen. This releases <strong>CO₂ that has been locked away for millions of years</strong> — quickly returning it to the atmosphere.',
+      equation: 'fuel (C) + O<sub>2</sub> &nbsp;→&nbsp; CO<sub>2</sub>',
+      teacherNote: 'The link to climate change: combustion of fossil fuels adds CO₂ to the atmosphere <em>faster</em> than photosynthesis and oceans can absorb it. This unbalances the cycle — atmospheric CO₂ rises. Plant a flag here without going off-spec.',
+      keyterms: ['Combustion', 'Fossil fuel', 'Oxidation', 'Greenhouse gas'],
+      pathsVisible: ['path-photo', 'path-plant-resp', 'path-feed', 'path-animal-resp', 'path-death', 'path-decomp', 'path-fossil', 'path-combustion', 'path-combustion-out'],
+      labelsVisible: ['label-photo', 'label-plant-resp', 'label-feed', 'label-animal-resp', 'label-death', 'label-decomp', 'label-fossil', 'label-combustion'],
+      flow: { path: 'path-combustion', label: 'C', count: 3, follow: 'path-combustion-out', followLabel: 'CO₂' },
+      smoke: true
+    },
+    {
+      id: 'complete',
+      indicator: 'Recap',
+      eyebrow: 'The Complete Cycle',
+      title: 'Carbon in Balance',
+      description: 'The carbon cycle keeps atmospheric CO₂ <strong>roughly constant</strong> — what plants absorb is returned by respiration, decomposition and combustion. Human activity (especially burning fossil fuels and deforestation) is now <strong>disturbing this balance</strong>.',
+      equation: null,
+      teacherNote: 'Use this view for the recap. Ask cold-call questions: "Which arrow shows the only process that <em>removes</em> CO₂ from the air?" / "Why does cutting down forests increase atmospheric CO₂?" / "Why is burning fossil fuels different from burning wood?" Good exit-ticket prompts.',
+      keyterms: ['Cycle', 'Balance', 'Carbon sink', 'Carbon source', 'Climate change'],
+      pathsVisible: ['path-photo', 'path-plant-resp', 'path-feed', 'path-animal-resp', 'path-death', 'path-decomp', 'path-fossil', 'path-combustion', 'path-combustion-out'],
+      labelsVisible: ['label-photo', 'label-plant-resp', 'label-feed', 'label-animal-resp', 'label-death', 'label-decomp', 'label-fossil', 'label-combustion'],
+      flow: null,
+      smoke: true
+    }
+  ];
+
+  // ============ STATE ============
+  let currentStage = 0;
+  const atomLayer = document.getElementById('atomLayer');
+  const svg = document.querySelector('svg.diagram');
+
+  // ============ RENDER STAGE ============
+  function renderStage(idx) {
+    const stage = stages[idx];
+
+    // Update panel
+    document.getElementById('stageIndicator').textContent = stage.indicator;
+    document.getElementById('panelEyebrow').textContent = stage.eyebrow;
+    document.getElementById('panelTitle').innerHTML = stage.title;
+    document.getElementById('panelDescription').innerHTML = stage.description;
+
+    const eqBox = document.getElementById('equationBox');
+    if (stage.equation) {
+      eqBox.style.display = 'block';
+      document.getElementById('equationText').innerHTML = stage.equation;
+    } else {
+      eqBox.style.display = 'none';
+    }
+
+    document.getElementById('teacherNote').innerHTML = '<strong>Teacher note</strong>' + stage.teacherNote;
+
+    const ktContainer = document.getElementById('keyterms');
+    ktContainer.innerHTML = '';
+    stage.keyterms.forEach(k => {
+      const span = document.createElement('span');
+      span.className = 'keyterm';
+      span.innerHTML = k;
+      ktContainer.appendChild(span);
+    });
+
+    // Show / hide arrows + labels
+    document.querySelectorAll('.flow-arrow').forEach(arrow => {
+      if (stage.pathsVisible && stage.pathsVisible.includes(arrow.id)) {
+        arrow.classList.add('visible');
+      } else {
+        arrow.classList.remove('visible');
+      }
+    });
+    document.querySelectorAll('.flow-label').forEach(label => {
+      if (stage.labelsVisible && stage.labelsVisible.includes(label.id)) {
+        label.classList.add('visible');
+      } else {
+        label.classList.remove('visible');
+      }
+    });
+
+    // Factory smoke
+    const smoke = document.getElementById('factorySmoke');
+    if (stage.smoke) smoke.classList.add('visible');
+    else smoke.classList.remove('visible');
+
+    // Clear existing animated atoms
+    atomLayer.innerHTML = '';
+
+    // Animate carbon flow if defined
+    if (stage.flow) {
+      animateFlow(stage.flow);
+    }
+
+    // Update controls
+    document.getElementById('prevBtn').disabled = idx === 0;
+    document.getElementById('nextBtn').disabled = idx === stages.length - 1;
+    document.getElementById('nextBtn').textContent = (idx === stages.length - 1) ? 'End' : 'Next →';
+  }
+
+  // ============ ANIMATION ============
+  function animateFlow(flow) {
+    const pathEl = document.getElementById(flow.path);
+    if (!pathEl) return;
+    const duration = flow.slow ? 3500 : 1800;
+    const count = flow.count || 3;
+    const label = flow.label || 'C';
+
+    for (let i = 0; i < count; i++) {
+      setTimeout(() => {
+        const g = createAtom(label);
+        atomLayer.appendChild(g);
+        animateAlongPath(g, pathEl, duration, () => {
+          // If there's a follow-on path (e.g. combustion: fuel → factory → atmosphere)
+          if (flow.follow) {
+            const followPath = document.getElementById(flow.follow);
+            if (followPath) {
+              if (flow.followLabel) {
+                g.querySelector('text').textContent = flow.followLabel;
+                g.querySelector('circle').setAttribute('r', '13');
+              }
+              animateAlongPath(g, followPath, duration * 0.8, () => {
+                fadeOut(g);
+              });
+              return;
+            }
+          }
+          fadeOut(g);
+        });
+      }, i * 280);
+    }
+
+    // Secondary flow (e.g. death + decomposition in same stage)
+    if (flow.secondaryPath) {
+      const secPath = document.getElementById(flow.secondaryPath);
+      if (secPath) {
+        const secCount = flow.secondaryCount || 2;
+        const secLabel = flow.secondaryLabel || 'C';
+        for (let i = 0; i < secCount; i++) {
+          setTimeout(() => {
+            const g = createAtom(secLabel);
+            atomLayer.appendChild(g);
+            animateAlongPath(g, secPath, duration, () => fadeOut(g));
+          }, i * 280);
+        }
+      }
+    }
+  }
+
+  function createAtom(labelText) {
+    const ns = 'http://www.w3.org/2000/svg';
+    const g = document.createElementNS(ns, 'g');
+    g.setAttribute('transform', 'translate(-100,-100)');
+    const r = labelText.length > 1 ? 13 : 10;
+    const circle = document.createElementNS(ns, 'circle');
+    circle.setAttribute('r', r);
+    circle.setAttribute('cx', 0);
+    circle.setAttribute('cy', 0);
+    circle.setAttribute('class', 'carbon-atom');
+    const text = document.createElementNS(ns, 'text');
+    text.setAttribute('class', 'carbon-atom-text');
+    text.setAttribute('x', 0);
+    text.setAttribute('y', 0);
+    text.textContent = labelText;
+    g.appendChild(circle);
+    g.appendChild(text);
+    return g;
+  }
+
+  function animateAlongPath(g, pathEl, duration, onComplete) {
+    const totalLength = pathEl.getTotalLength();
+    const startTime = performance.now();
+    function frame(now) {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      // ease-in-out
+      const eased = progress < 0.5
+        ? 2 * progress * progress
+        : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+      const point = pathEl.getPointAtLength(eased * totalLength);
+      g.setAttribute('transform', `translate(${point.x}, ${point.y})`);
+      if (progress < 1) {
+        requestAnimationFrame(frame);
+      } else {
+        if (onComplete) onComplete();
+      }
+    }
+    requestAnimationFrame(frame);
+  }
+
+  function fadeOut(g) {
+    let opacity = 1;
+    const fadeStart = performance.now();
+    const fadeDuration = 600;
+    function step(now) {
+      const t = (now - fadeStart) / fadeDuration;
+      if (t >= 1) {
+        if (g.parentNode) g.parentNode.removeChild(g);
+        return;
+      }
+      g.setAttribute('opacity', 1 - t);
+      requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  // ============ NAVIGATION ============
+  function next() {
+    if (currentStage < stages.length - 1) {
+      currentStage++;
+      renderStage(currentStage);
+    }
+  }
+  function prev() {
+    if (currentStage > 0) {
+      currentStage--;
+      renderStage(currentStage);
+    }
+  }
+  function reset() {
+    currentStage = 0;
+    renderStage(currentStage);
+  }
+
+  document.getElementById('nextBtn').addEventListener('click', next);
+  document.getElementById('prevBtn').addEventListener('click', prev);
+  document.getElementById('resetBtn').addEventListener('click', reset);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); next(); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
+    else if (e.key === 'r' || e.key === 'R') { e.preventDefault(); reset(); }
+  });
+
+  // Initial render
+  renderStage(0);
+})();
+</script>
+</body>
+</html>

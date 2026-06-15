@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Genetics — rebuilding the picture (Year 8 reteach)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Spline+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F4F0E6;
+    --paper2:#EDE7D8;
+    --ink:#1B1813;
+    --muted:#7A7263;
+    --line:#CFC7B4;
+    --teal:#0F756A;       /* structure axis */
+    --teal-soft:#D7E8E4;
+    --red:#C23A22;        /* variation axis */
+    --red-soft:#F3DBD2;
+    --amber:#D89A2C;      /* the gene = the hinge */
+    --green:#2E7D32;
+    --disp:"Bricolage Grotesque", Georgia, serif;
+    --body:"Spline Sans", "Segoe UI", system-ui, sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;}
+  body{
+    font-family:var(--body);
+    color:var(--ink);
+    background:
+      radial-gradient(1200px 600px at 80% -10%, rgba(15,117,106,.07), transparent 60%),
+      radial-gradient(1000px 500px at 0% 110%, rgba(194,58,34,.06), transparent 60%),
+      var(--paper);
+    height:100vh;overflow:hidden;
+    display:flex;flex-direction:column;
+  }
+  .grain{position:fixed;inset:0;pointer-events:none;opacity:.035;z-index:9;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+
+  /* ---------- header ---------- */
+  header{
+    display:flex;align-items:center;gap:1.2rem;
+    padding:.7rem 1.6rem;border-bottom:2px solid var(--ink);
+    background:var(--paper2);flex:0 0 auto;
+  }
+  .brand{font-family:var(--disp);font-weight:800;font-size:1.15rem;letter-spacing:-.01em;white-space:nowrap;}
+  .brand small{display:block;font-family:var(--body);font-weight:500;font-size:.72rem;color:var(--muted);letter-spacing:.02em;}
+  .tabs{display:flex;gap:.4rem;margin-left:auto;flex-wrap:wrap;}
+  .tab{
+    font-family:var(--body);font-weight:600;font-size:.82rem;
+    padding:.34rem .7rem;border:1.5px solid var(--line);border-radius:999px;
+    background:transparent;color:var(--muted);cursor:pointer;transition:.18s;white-space:nowrap;
+  }
+  .tab:hover{border-color:var(--ink);color:var(--ink);}
+  .tab.active{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+
+  /* ---------- diagram ---------- */
+  .stage{flex:1 1 auto;display:flex;flex-direction:column;min-height:0;}
+  .diagram{
+    flex:1 1 58%;min-height:0;display:flex;align-items:center;justify-content:center;
+    padding:.4rem 1.2rem 0;position:relative;
+  }
+  svg.schema{width:100%;height:100%;max-height:100%;}
+  .node{opacity:.18;transition:opacity .5s ease;}
+  .node.on{opacity:1;}
+  .card-bg{fill:#FFFDF7;stroke:var(--muted);stroke-width:2;}
+  .node.struct.on .card-bg{stroke:var(--teal);}
+  .node.vary.on   .card-bg{stroke:var(--red);}
+  .node.hinge.on  .card-bg{stroke:var(--amber);stroke-width:4;}
+  .node.pulse .card-bg{filter:drop-shadow(0 0 0 rgba(216,154,44,.0));animation:pulse 1.4s ease infinite;}
+  @keyframes pulse{0%,100%{stroke-width:4;}50%{stroke-width:7;}}
+  .word{font-family:var(--disp);font-weight:800;fill:var(--ink);}
+  .sub{font-family:var(--body);font-weight:600;fill:var(--muted);}
+  .ico{fill:none;stroke-linecap:round;stroke-linejoin:round;}
+  .node.struct .ico{stroke:var(--teal);}
+  .node.vary   .ico{stroke:var(--red);}
+  .node.hinge  .ico{stroke:var(--amber);}
+  .link{fill:none;stroke:var(--line);stroke-width:2.4;opacity:.2;transition:opacity .5s ease, stroke .5s ease;}
+  .link.on{opacity:1;}
+  .link.struct.on{stroke:var(--teal);}
+  .link.vary.on{stroke:var(--red);}
+  .axislbl{font-family:var(--body);font-weight:600;font-size:13px;fill:var(--muted);letter-spacing:.04em;text-transform:uppercase;opacity:.2;transition:opacity .5s;}
+  .axislbl.on{opacity:.85;}
+
+  /* ---------- teaching panel ---------- */
+  .panel{
+    flex:1 1 42%;min-height:0;overflow:auto;
+    border-top:2px solid var(--ink);background:var(--paper2);
+    padding:1rem 1.8rem 1rem;display:flex;flex-direction:column;gap:.5rem;
+  }
+  .ptitle{font-family:var(--disp);font-weight:700;font-size:clamp(1.05rem,2.1vw,1.5rem);color:var(--teal);letter-spacing:-.01em;}
+  .ptitle.vary{color:var(--red);}
+  .predict{font-size:clamp(1.25rem,2.7vw,2rem);font-weight:600;line-height:1.18;max-width:60ch;}
+  .predict .blank{border-bottom:3px solid var(--amber);padding:0 .8em;}
+  .reveal{
+    font-size:clamp(1.05rem,2.2vw,1.55rem);line-height:1.32;font-weight:500;max-width:64ch;
+    background:#FFFDF7;border-left:6px solid var(--teal);border-radius:0 10px 10px 0;
+    padding:.7rem 1rem;display:none;
+  }
+  .reveal.vary{border-left-color:var(--red);}
+  .reveal.show{display:block;animation:rise .35s ease;}
+  .reveal b{font-weight:700;}
+  .reveal .q{font-family:var(--body);font-weight:700;color:var(--muted);font-size:.85em;}
+  @keyframes rise{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+
+  /* activity cards */
+  .activity{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:.2rem;}
+  .acard{
+    border:2px solid var(--line);background:#FFFDF7;border-radius:12px;
+    padding:.55rem .85rem;min-width:130px;cursor:pointer;text-align:center;transition:.15s;
+    font-weight:600;font-size:clamp(.95rem,1.7vw,1.15rem);user-select:none;
+  }
+  .acard:hover{border-color:var(--ink);}
+  .acard .lab{font-family:var(--disp);font-weight:800;font-size:1.15em;display:block;}
+  .acard .guess{display:block;font-size:.8rem;color:var(--muted);margin-top:.2rem;min-height:1rem;font-weight:600;}
+  .acard.correct{border-color:var(--green);background:#EAF4EA;}
+  .acard.correct .guess{color:var(--green);}
+  .acard.wrong{border-color:var(--red);background:var(--red-soft);}
+  .acard.wrong .guess{color:var(--red);}
+
+  /* ---------- footer ---------- */
+  footer{
+    flex:0 0 auto;display:flex;align-items:center;gap:1rem;
+    padding:.6rem 1.6rem;border-top:2px solid var(--ink);background:var(--paper);
+  }
+  .hint{font-size:.78rem;color:var(--muted);font-weight:500;}
+  .hint kbd{font-family:var(--body);background:#fff;border:1.5px solid var(--line);border-bottom-width:3px;border-radius:6px;padding:.05rem .4rem;font-size:.72rem;font-weight:600;}
+  .nav{margin-left:auto;display:flex;gap:.55rem;}
+  .btn{
+    font-family:var(--body);font-weight:700;font-size:1rem;cursor:pointer;
+    padding:.55rem 1.3rem;border-radius:10px;border:2px solid var(--ink);transition:.15s;
+  }
+  .btn.ghost{background:transparent;color:var(--ink);}
+  .btn.ghost:hover{background:var(--ink);color:var(--paper);}
+  .btn.go{background:var(--ink);color:var(--paper);}
+  .btn.go:hover{background:var(--teal);border-color:var(--teal);}
+  .btn:disabled{opacity:.3;cursor:not-allowed;}
+  .progress{position:fixed;left:0;bottom:0;height:4px;background:var(--amber);transition:width .35s ease;z-index:8;}
+
+  /* ---------- cover ---------- */
+  .cover{
+    position:fixed;inset:0;z-index:20;background:var(--paper);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.4rem;
+    text-align:center;padding:2rem;
+    background-image:
+      radial-gradient(1200px 600px at 80% -10%, rgba(15,117,106,.10), transparent 60%),
+      radial-gradient(1000px 500px at 10% 110%, rgba(194,58,34,.08), transparent 60%);
+  }
+  .cover .eyebrow{font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);font-size:.85rem;}
+  .cover h1{font-family:var(--disp);font-weight:800;font-size:clamp(2.4rem,7vw,5rem);line-height:.98;letter-spacing:-.02em;max-width:16ch;}
+  .cover h1 .a{color:var(--teal);}
+  .cover h1 .b{color:var(--red);}
+  .cover p{max-width:54ch;font-size:clamp(1rem,2.2vw,1.35rem);color:var(--ink);font-weight:500;}
+  .legend{display:flex;gap:1.4rem;flex-wrap:wrap;justify-content:center;color:var(--muted);font-size:.9rem;font-weight:600;}
+  .legend span{display:inline-flex;align-items:center;gap:.4rem;}
+  .legend kbd{font-family:var(--body);background:#fff;border:1.5px solid var(--line);border-bottom-width:3px;border-radius:6px;padding:.1rem .45rem;font-weight:600;}
+  .cover.hide{display:none;}
+</style>
+</head>
+<body>
+<div class="grain"></div>
+
+<!-- ===== COVER ===== -->
+<div class="cover" id="cover">
+  <div class="eyebrow">Year 8 Science · post-assessment reteach</div>
+  <h1>Rebuilding the <span class="a">genetics</span> <span class="b">picture</span></h1>
+  <p>The words weren't wrong by accident — they were floating loose. Today we connect them into one map, hinged on the <b>gene</b>.</p>
+  <div class="legend">
+    <span><kbd>Space</kbd> / <kbd>&rarr;</kbd> predict &amp; reveal</span>
+    <span><kbd>&larr;</kbd> step back</span>
+    <span>click the cards with the class</span>
+  </div>
+  <button class="btn go" id="beginBtn" style="font-size:1.25rem;padding:.8rem 2.4rem;">Begin &rarr;</button>
+</div>
+
+<!-- ===== HEADER ===== -->
+<header>
+  <div class="brand">Genetics · the connected schema<small>Year 8 reteach — drive it, don't narrate it</small></div>
+  <nav class="tabs" id="tabs"></nav>
+</header>
+
+<!-- ===== STAGE ===== -->
+<div class="stage">
+  <div class="diagram">
+    <svg class="schema" viewBox="0 0 1000 470" preserveAspectRatio="xMidYMid meet" id="schema">
+      <!-- axis labels -->
+      <text class="axislbl" id="ax-struct" x="500" y="26" text-anchor="middle">zoom out  ·  the structure</text>
+      <text class="axislbl" id="ax-vary" x="120" y="252" text-anchor="start">zoom in at the gene  ·  the variation</text>
+
+      <!-- structure links -->
+      <path class="link struct" id="l-dna-gene"     d="M192,118 H260"/>
+      <path class="link struct" id="l-gene-chrom"   d="M420,118 H530"/>
+      <path class="link struct" id="l-chrom-genome" d="M692,118 H788"/>
+      <!-- variation links -->
+      <path class="link vary" id="l-gene-allele"      d="M340,166 C340,230 250,232 250,292"/>
+      <path class="link vary" id="l-allele-genotype"  d="M335,340 H475"/>
+      <path class="link vary" id="l-genotype-phenotype" d="M645,340 H755"/>
+
+      <!-- ===== STRUCTURE NODES ===== -->
+      <!-- DNA -->
+      <g class="node struct" id="n-dna">
+        <rect class="card-bg" x="32" y="70" width="160" height="96" rx="14"/>
+        <g class="ico" stroke-width="3.4" transform="translate(72,90)">
+          <path d="M2,4 C18,16 18,28 2,40 M30,4 C14,16 14,28 30,40"/>
+          <path d="M4,10 H28 M3,20 H29 M4,30 H28"/>
+        </g>
+        <text class="word" x="148" y="120" text-anchor="middle" font-size="26">DNA</text>
+      </g>
+      <!-- GENE (hinge) -->
+      <g class="node struct hinge" id="n-gene">
+        <rect class="card-bg" x="260" y="70" width="160" height="96" rx="14"/>
+        <g class="ico" stroke-width="4" transform="translate(298,98)">
+          <path d="M0,12 H64" stroke-width="3" opacity=".5"/>
+          <rect x="22" y="2" width="22" height="20" rx="5" fill="none"/>
+        </g>
+        <text class="word" x="340" y="124" text-anchor="middle" font-size="26">GENE</text>
+      </g>
+      <!-- CHROMOSOME -->
+      <g class="node struct" id="n-chrom">
+        <rect class="card-bg" x="530" y="70" width="162" height="96" rx="14"/>
+        <g class="ico" stroke-width="6" transform="translate(556,92)">
+          <path d="M2,2 L26,40 M26,2 L2,40"/>
+        </g>
+        <text class="word" x="618" y="122" text-anchor="middle" font-size="22">CHROMOSOME</text>
+      </g>
+      <!-- GENOME -->
+      <g class="node struct" id="n-genome">
+        <rect class="card-bg" x="788" y="70" width="180" height="96" rx="14"/>
+        <g class="ico" stroke-width="3" transform="translate(812,86)">
+          <rect x="0" y="0" width="48" height="48" rx="14" fill="none"/>
+          <path d="M8,12 L18,30 M18,12 L8,30 M30,12 L40,30 M40,12 L30,30 M19,34 L29,52 M29,34 L19,52" stroke-width="3.4"/>
+        </g>
+        <text class="word" x="892" y="122" text-anchor="middle" font-size="24">GENOME</text>
+      </g>
+
+      <!-- ===== VARIATION NODES ===== -->
+      <!-- ALLELES -->
+      <g class="node vary" id="n-allele">
+        <rect class="card-bg" x="160" y="292" width="178" height="96" rx="14"/>
+        <g transform="translate(184,330)">
+          <circle cx="14" cy="6" r="16" fill="#C23A22"/>
+          <text x="14" y="12" text-anchor="middle" font-size="18" font-family="Bricolage Grotesque,serif" font-weight="800" fill="#fff">R</text>
+          <circle cx="52" cy="6" r="16" fill="none" stroke="#C23A22" stroke-width="3"/>
+          <text x="52" y="12" text-anchor="middle" font-size="18" font-family="Bricolage Grotesque,serif" font-weight="800" fill="#C23A22">r</text>
+        </g>
+        <text class="word" x="285" y="338" text-anchor="middle" font-size="20">ALLELES</text>
+      </g>
+      <!-- GENOTYPE -->
+      <g class="node vary" id="n-genotype">
+        <rect class="card-bg" x="475" y="292" width="170" height="96" rx="14"/>
+        <text class="word" x="560" y="332" text-anchor="middle" font-size="22">GENOTYPE</text>
+        <text class="sub" x="560" y="362" text-anchor="middle" font-size="20">RR · Rr · rr</text>
+      </g>
+      <!-- PHENOTYPE -->
+      <g class="node vary" id="n-phenotype">
+        <rect class="card-bg" x="755" y="292" width="180" height="96" rx="14"/>
+        <g transform="translate(782,322)">
+          <g fill="#C23A22" stroke="none">
+            <circle cx="0" cy="-8" r="6"/><circle cx="8" cy="0" r="6"/><circle cx="0" cy="8" r="6"/><circle cx="-8" cy="0" r="6"/>
+            <circle cx="0" cy="0" r="4" fill="#D89A2C"/>
+          </g>
+          <g fill="none" stroke="#C23A22" stroke-width="2.4" transform="translate(40,0)">
+            <circle cx="0" cy="-8" r="6"/><circle cx="8" cy="0" r="6"/><circle cx="0" cy="8" r="6"/><circle cx="-8" cy="0" r="6"/>
+            <circle cx="0" cy="0" r="4" stroke="#D89A2C"/>
+          </g>
+        </g>
+        <text class="word" x="845" y="372" text-anchor="middle" font-size="20">PHENOTYPE</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- teaching panel -->
+  <div class="panel" id="panel">
+    <div class="ptitle" id="ptitle"></div>
+    <div class="predict" id="predict"></div>
+    <div class="activity" id="activity"></div>
+    <div class="reveal" id="reveal"></div>
+  </div>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="hint"><kbd>Space</kbd>/<kbd>&rarr;</kbd> reveal &amp; advance &nbsp;·&nbsp; <kbd>&larr;</kbd> back &nbsp;·&nbsp; <span id="posn"></span></div>
+  <div class="nav">
+    <button class="btn ghost" id="backBtn">&larr; Back</button>
+    <button class="btn go" id="nextBtn">Reveal &rarr;</button>
+  </div>
+</footer>
+<div class="progress" id="bar"></div>
+
+<script>
+const STAGES = [
+  // ---------- PART 1: STRUCTURE ----------
+  { part:0, title:"Start with the molecule",
+    predict:"What is the molecule that stores all the genetic instructions?",
+    reveal:"<b>DNA.</b> It stores the code as a long sequence of bases. Everything else today is built from it.",
+    on:["n-dna"] },
+  { part:0, title:"What a gene is",
+    predict:"A gene is a <span class='blank'>?</span> of DNA.",
+    reveal:"A gene is a <b>section of DNA</b> that codes for one characteristic — e.g. flower colour. This is the hinge of the whole map.",
+    on:["l-dna-gene","n-gene","ax-struct"], pulse:"n-gene" },
+  { part:0, title:"Zoom out — the chromosome",
+    predict:"Which is bigger: a gene, or a chromosome?",
+    reveal:"A <b>chromosome</b> — it's tightly coiled DNA carrying <b>many genes</b>. So a gene is <i>part of</i> a chromosome.",
+    on:["l-gene-chrom","n-chrom"] },
+  { part:0, title:"Zoom out fully — the genome",
+    predict:"What do we call <b>all</b> of an organism's genetic material together?",
+    reveal:"The <b>genome</b> — every chromosome, all the DNA, the whole lot. <span class='q'>(This was Q15.)</span>",
+    on:["l-chrom-genome","n-genome"] },
+  { part:0, title:"Lock in the size order",
+    predict:"Click each card with the class, then reveal. Order them smallest &rarr; largest.",
+    reveal:"<b>Gene &rarr; chromosome &rarr; genome.</b> A gene sits inside a chromosome; chromosomes together make the genome.",
+    on:[],
+    activity:{ options:["1st","2nd","3rd"], items:[
+      {label:"CHROMOSOME", correct:"2nd"},
+      {label:"GENOME", correct:"3rd"},
+      {label:"GENE", correct:"1st"} ] } },
+
+  // ---------- PART 2: VARIATION ----------
+  { part:1, title:"Back to the gene — it has versions",
+    predict:"A gene can exist in different versions. What is <b>one version</b> called?",
+    reveal:"An <b>allele.</b> Example: the flower-colour gene has <b>R</b> (red, dominant) and <b>r</b> (white, recessive).",
+    on:["l-gene-allele","n-allele","ax-vary"] },
+  { part:1, title:"The pair you inherit",
+    predict:"You inherit <b>two</b> alleles per gene — one from each parent. What's the pair called?",
+    reveal:"Your <b>genotype</b> — written RR, Rr or rr.",
+    on:["l-allele-genotype","n-genotype"] },
+  { part:1, title:"Homozygous or heterozygous?",
+    predict:"Click each genotype: same two alleles = homozygous, different = heterozygous.",
+    reveal:"<b>RR &amp; rr = homozygous</b> (same two). <b>Rr = heterozygous</b> (different). It has <i>nothing to do</i> with which allele is dominant. <span class='q'>(Q7: 'both recessive' rr is HOMOzygous.)</span>",
+    on:[],
+    activity:{ options:["homozygous","heterozygous"], items:[
+      {label:"RR", correct:"homozygous"},
+      {label:"Rr", correct:"heterozygous"},
+      {label:"rr", correct:"homozygous"} ] } },
+  { part:1, title:"What you actually see",
+    predict:"The characteristic that actually shows — red flower or white flower — is called your <span class='blank'>?</span>",
+    reveal:"Your <b>phenotype.</b> <span class='q'>(Q11 — the expressed characteristic is the PHENOTYPE, not 'heterozygous'.)</span>",
+    on:["l-genotype-phenotype","n-phenotype"], pulse:"n-phenotype" },
+  { part:1, title:"Which phenotype shows?",
+    predict:"R is dominant, r is recessive. What colour flower is RR? Rr? rr?",
+    reveal:"<b>RR &rarr; red · Rr &rarr; red</b> (one R is enough — it masks the r) <b>· rr &rarr; white.</b> The recessive phenotype only shows when <i>both</i> alleles are recessive.",
+    on:["n-phenotype"] },
+  { part:1, title:"The three traps — named",
+    predict:"Why is it wrong to call an <b>Rr</b> plant 'recessive'?",
+    reveal:"<b>Rr is heterozygous.</b> 'Recessive' describes an <i>allele</i>, not the pairing <span class='q'>(Q9)</span>. The trait you see is the <b>phenotype</b> <span class='q'>(Q11)</span>. And <b>rr</b> (both recessive) is <b>homozygous</b> <span class='q'>(Q7)</span>.",
+    on:["n-gene","n-allele","n-genotype","n-phenotype"] },
+
+  // ---------- PART 3: PURPOSE ----------
+  { part:2, title:"Why map the genome?",
+    predict:"Now you know what a genome <b>is</b>. Give one reason scientists study it.",
+    reveal:"Real reasons: <b>find genes linked to diseases · treat inherited disorders · trace human migration.</b>",
+    on:["n-genome"], pulse:"n-genome" },
+  { part:2, title:"Reason, or not a reason?",
+    predict:"Click each card REASON / NOT — then reveal.",
+    reveal:"The first three are genuine reasons. <b>Making a clone is NOT a reason to study the genome.</b> <span class='q'>(Q12 — and finding disease genes definitely counts.)</span>",
+    on:[],
+    activity:{ options:["reason","not a reason"], items:[
+      {label:"Find a disease-causing gene", correct:"reason"},
+      {label:"Trace ancient human migration", correct:"reason"},
+      {label:"Target a medicine to a gene", correct:"reason"},
+      {label:"Make an identical clone of an animal", correct:"not a reason"} ] } },
+
+  // ---------- PART 4: WHOLE ----------
+  { part:3, title:"The whole picture",
+    predict:"Every word you mixed up now lives somewhere on this map. Where does <b>'gene'</b> sit?",
+    reveal:"The <b>gene is the hinge.</b> Zoom OUT: DNA &rarr; gene &rarr; chromosome &rarr; genome. Zoom IN: alleles &rarr; genotype &rarr; phenotype. One connected schema — not seven loose words.",
+    on:["n-dna","l-dna-gene","n-gene","l-gene-chrom","n-chrom","l-chrom-genome","n-genome",
+        "l-gene-allele","n-allele","l-allele-genotype","n-genotype","l-genotype-phenotype","n-phenotype",
+        "ax-struct","ax-vary"] }
+];
+const PARTS = ["1 · Structure","2 · Variation","3 · Purpose","4 · The map"];
+
+let idx = 0, phase = 0; // phase 0 = predict, 1 = revealed
+const $ = id => document.getElementById(id);
+const guesses = {}; // activity guesses keyed by stage index
+
+// build part tabs
+PARTS.forEach((p,i)=>{
+  const b=document.createElement('button'); b.className='tab'; b.textContent=p;
+  b.onclick=()=>{ const first=STAGES.findIndex(s=>s.part===i); if(first>=0){idx=first;phase=0;render();} };
+  $('tabs').appendChild(b);
+});
+
+function activeIds(){
+  const set=new Set();
+  for(let i=0;i<=idx;i++){
+    const reached = i<idx || (i===idx && phase===1);
+    if(reached) (STAGES[i].on||[]).forEach(x=>set.add(x));
+  }
+  return set;
+}
+
+function renderActivity(stage){
+  const wrap=$('activity'); wrap.innerHTML='';
+  if(!stage.activity){return;}
+  const g = guesses[idx] || (guesses[idx]={});
+  stage.activity.items.forEach((it,i)=>{
+    const c=document.createElement('div'); c.className='acard';
+    const opts=stage.activity.options;
+    const lab=document.createElement('span'); lab.className='lab'; lab.textContent=it.label;
+    const gs=document.createElement('span'); gs.className='guess';
+    c.appendChild(lab); c.appendChild(gs);
+    function paint(){
+      c.classList.remove('correct','wrong');
+      if(phase===1){
+        gs.textContent='✓ '+it.correct;
+        if(g[i] && g[i]!==it.correct){ c.classList.add('wrong'); gs.textContent='✗ you: '+g[i]+'  →  '+it.correct; }
+        else c.classList.add('correct');
+      } else {
+        gs.textContent = g[i] ? g[i] : '— tap to guess';
+      }
+    }
+    c.onclick=()=>{
+      if(phase===1) return;
+      const cur = g[i]; const oi = opts.indexOf(cur);
+      g[i] = opts[(oi+1)%opts.length];
+      paint();
+    };
+    paint();
+    wrap.appendChild(c);
+  });
+}
+
+function render(){
+  const s=STAGES[idx];
+  const vary = s.part===1;
+  $('ptitle').textContent = s.title;
+  $('ptitle').className = 'ptitle'+(vary?' vary':'');
+  $('predict').innerHTML = s.predict;
+  $('reveal').innerHTML = s.reveal;
+  $('reveal').className = 'reveal'+(vary?' vary':'')+(phase===1?' show':'');
+  renderActivity(s);
+
+  // diagram nodes
+  const act=activeIds();
+  document.querySelectorAll('.node').forEach(n=>n.classList.toggle('on',act.has(n.id)));
+  document.querySelectorAll('.link').forEach(n=>n.classList.toggle('on',act.has(n.id)));
+  document.querySelectorAll('.axislbl').forEach(n=>n.classList.toggle('on',act.has(n.id)));
+  // pulse
+  document.querySelectorAll('.pulse').forEach(n=>n.classList.remove('pulse'));
+  if(phase===1 && s.pulse){ const p=$(s.pulse); if(p) p.classList.add('pulse'); }
+
+  // tabs
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',i===s.part));
+  // controls
+  $('nextBtn').textContent = phase===0 ? 'Reveal →' : (idx===STAGES.length-1 ? 'Done' : 'Next →');
+  $('nextBtn').disabled = (phase===1 && idx===STAGES.length-1);
+  $('backBtn').disabled = (idx===0 && phase===0);
+  $('posn').textContent = 'Step '+(idx+1)+' / '+STAGES.length;
+  $('bar').style.width = (((idx + (phase===1?1:0.5)) / STAGES.length)*100)+'%';
+}
+
+function next(){
+  if(phase===0){ phase=1; render(); return; }
+  if(idx<STAGES.length-1){ idx++; phase=0; render(); }
+}
+function back(){
+  if(phase===1){ phase=0; render(); return; }
+  if(idx>0){ idx--; phase=1; render(); }
+}
+
+$('nextBtn').onclick=next;
+$('backBtn').onclick=back;
+$('beginBtn').onclick=()=>{ $('cover').classList.add('hide'); render(); };
+
+document.addEventListener('keydown',e=>{
+  if(!$('cover').classList.contains('hide')){
+    if(e.key==='Enter'||e.key===' '){ $('cover').classList.add('hide'); render(); e.preventDefault(); }
+    return;
+  }
+  if(e.key===' '||e.key==='ArrowRight'){ e.preventDefault(); next(); }
+  else if(e.key==='ArrowLeft'){ e.preventDefault(); back(); }
+  else if(e.key==='Home'){ idx=0;phase=0;render(); }
+});
+
+render();
+</script>
+</body>
+</html>

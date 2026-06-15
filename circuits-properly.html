@@ -1,0 +1,2253 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Circuits, properly — series, parallel, and resistance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Bricolage+Grotesque:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f1e7;
+    --paper-dark: #ebe3d2;
+    --ink: #1e1d1a;
+    --ink-soft: #555148;
+    --ink-faint: #a19b8c;
+    --rule: #c9c0ab;
+    --shadow: 0 1px 0 rgba(30,29,26,0.08), 0 4px 12px rgba(30,29,26,0.06);
+
+    --electron: #2c5f8d;
+    --electron-light: #5fb3d9;
+    --proton: #b54d28;
+    --proton-light: #d97a3c;
+    --pos-charge: #c23a2a;
+    --neg-charge: #1b3a63;
+    --efield: #c23a2a;
+    --bfield: #5b3a8c;
+    --poynting: #c9952a;
+    --poynting-glow: #f4c430;
+    --wire: #b08456;
+    --wire-dark: #7a5a38;
+    --bulb-on: #f4d04a;
+    --accent: #1b3a63;
+    --accent-soft: #dce5f0;
+
+    --heat-cool: #3a4a6e;
+    --heat-warm: #b54d28;
+    --heat-hot: #e65a1f;
+    --heat-glow: #ffb84a;
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    font-family: 'Bricolage Grotesque', system-ui, sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  body {
+    background-image:
+      linear-gradient(var(--paper-dark) 1px, transparent 1px),
+      linear-gradient(90deg, var(--paper-dark) 1px, transparent 1px);
+    background-size: 40px 40px;
+    background-position: -1px -1px;
+    min-height: 100vh;
+  }
+  .page { max-width: 1320px; margin: 0 auto; padding: 20px 24px 40px; }
+
+  header.masthead {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--ink);
+    margin-bottom: 18px;
+  }
+  .masthead h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(28px, 4vw, 40px);
+    letter-spacing: -0.02em;
+    margin: 0; line-height: 1;
+  }
+  .masthead h1 em { font-style: italic; font-weight: 400; color: var(--accent); }
+  .masthead .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-soft);
+    text-align: right; line-height: 1.6;
+  }
+
+  /* Walkthrough banner */
+  .walkthrough {
+    background: var(--accent);
+    color: var(--paper);
+    padding: 14px 18px;
+    margin-bottom: 14px;
+    border: 1.5px solid var(--ink);
+    box-shadow: var(--shadow);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 16px;
+    align-items: center;
+  }
+  .walkthrough.hidden { display: none; }
+  .walk-stage-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--poynting-glow);
+    margin-bottom: 4px;
+  }
+  .walk-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 22px;
+    letter-spacing: -0.01em;
+    margin: 0 0 6px;
+    color: white;
+  }
+  .walk-title em { font-style: italic; font-weight: 400; color: var(--poynting-glow); }
+  .walk-narrative {
+    font-size: 13.5px; line-height: 1.5;
+    margin: 0; color: rgba(255,255,255,0.86);
+    max-width: 720px;
+  }
+  .walk-controls {
+    display: flex; flex-direction: column;
+    gap: 8px; align-items: stretch;
+    min-width: 180px;
+  }
+  .walk-controls button {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-weight: 600; font-size: 13px;
+    padding: 8px 14px;
+    border: 1.5px solid var(--paper);
+    background: transparent; color: var(--paper);
+    cursor: pointer; transition: all 0.12s;
+  }
+  .walk-controls button:hover { background: var(--paper); color: var(--ink); }
+  .walk-controls button.primary { background: var(--paper); color: var(--ink); }
+  .walk-controls button.primary:hover { background: var(--poynting-glow); border-color: var(--poynting-glow); }
+  .walk-controls button.skip { font-size: 11px; padding: 6px 10px; opacity: 0.85; }
+  .walk-controls button:disabled { opacity: 0.35; cursor: not-allowed; }
+
+  /* Control rows */
+  .controls {
+    display: flex; gap: 14px 18px; flex-wrap: wrap; align-items: center;
+    padding: 10px 14px;
+    background: white;
+    border: 1.5px solid var(--ink);
+    box-shadow: var(--shadow);
+    margin-bottom: 14px;
+  }
+  .control-group { display: flex; align-items: center; gap: 10px; }
+  .control-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--ink-soft);
+    font-weight: 700;
+  }
+  .seg-toggle {
+    display: flex;
+    border: 1.5px solid var(--ink);
+    background: var(--paper);
+  }
+  .seg-toggle button {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 12.5px; font-weight: 500;
+    padding: 6px 11px;
+    background: transparent; border: none;
+    border-right: 1px solid var(--rule);
+    color: var(--ink); cursor: pointer;
+    transition: all 0.12s; white-space: nowrap;
+  }
+  .seg-toggle button:last-child { border-right: none; }
+  .seg-toggle button:hover { background: var(--paper-dark); }
+  .seg-toggle button.active { background: var(--ink); color: var(--paper); }
+
+  .layer-toggle {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 11px;
+    border: 1.5px solid var(--ink);
+    background: var(--paper);
+    cursor: pointer; user-select: none;
+    font-size: 12.5px; font-weight: 500; color: var(--ink);
+    transition: all 0.12s;
+  }
+  .layer-toggle:hover { background: var(--paper-dark); }
+  .layer-toggle input { display: none; }
+  .layer-toggle.active { background: var(--ink); color: var(--paper); }
+  .layer-toggle .swatch {
+    width: 14px; height: 14px;
+    border: 1px solid currentColor;
+    flex-shrink: 0;
+  }
+  .layer-toggle.surface .swatch {
+    background: linear-gradient(90deg, var(--pos-charge) 50%, var(--neg-charge) 50%);
+    border: none;
+  }
+  .layer-toggle.efield .swatch { background: var(--efield); border: none; }
+  .layer-toggle.bfield .swatch { background: var(--bfield); border: none; }
+  .layer-toggle.poynting .swatch { background: var(--poynting-glow); border: none; }
+
+  .spacer { flex: 1; }
+
+  .scene-control {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 13px; font-weight: 600;
+    padding: 7px 13px;
+    border: 1.5px solid var(--ink);
+    background: white; color: var(--ink);
+    cursor: pointer; transition: all 0.12s;
+  }
+  .scene-control:hover { background: var(--paper-dark); }
+  .scene-control.closed { background: var(--ink); color: var(--paper); }
+  .scene-control.accent {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+  .scene-control.accent:hover { background: var(--accent); color: white; }
+
+  /* Sliders for resistance scene */
+  .slider-control {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12px;
+  }
+  .slider-control label {
+    font-weight: 600; color: var(--ink-soft);
+    min-width: 80px;
+  }
+  .slider-control input[type="range"] {
+    width: 90px;
+    accent-color: var(--accent);
+  }
+  .slider-val {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700; color: var(--ink);
+    min-width: 36px;
+    text-align: right;
+  }
+
+  .scene-only { display: none; }
+  .scene-only.show { display: flex; }
+
+  /* Workspace */
+  .workspace {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 16px;
+    align-items: start;
+  }
+  .stage-frame {
+    background: white;
+    border: 1.5px solid var(--ink);
+    box-shadow: var(--shadow);
+    position: relative;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+  }
+  canvas#stage { display: block; width: 100%; height: 100%; }
+
+  .scene-label {
+    position: absolute;
+    top: 12px; left: 14px;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--ink);
+    background: rgba(255,255,255,0.92);
+    padding: 4px 10px;
+    border: 1px solid var(--rule);
+    pointer-events: none;
+  }
+
+  .readouts {
+    position: absolute;
+    bottom: 12px; right: 14px;
+    background: rgba(255,255,255,0.95);
+    border: 1px solid var(--rule);
+    padding: 8px 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    line-height: 1.6;
+    color: var(--ink);
+    pointer-events: none;
+  }
+  .readouts .lbl { color: var(--ink-soft); font-weight: 500; }
+  .readouts .val { color: var(--ink); font-weight: 700; }
+  .readouts .accent { color: var(--accent); }
+
+  /* Side panel */
+  .side {
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .info-card {
+    background: white;
+    border: 1.5px solid var(--ink);
+    padding: 14px 16px;
+    box-shadow: var(--shadow);
+  }
+  .info-card.gold {
+    background: #fdf5dc;
+    border-color: var(--poynting);
+  }
+  .info-card.accent {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+  }
+  .info-card h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--ink-soft); margin: 0 0 8px;
+  }
+  .info-card p { margin: 0 0 8px; line-height: 1.5; font-size: 13px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card strong { color: var(--accent); }
+
+  .legend-list {
+    display: flex; flex-direction: column;
+    gap: 6px;
+    font-size: 12.5px; line-height: 1.4;
+  }
+  .legend-list .row { display: flex; align-items: center; gap: 8px; }
+  .legend-list .swatch { width: 14px; height: 14px; flex-shrink: 0; }
+
+  .restart-walk-btn {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 12.5px; font-weight: 600;
+    padding: 7px 12px;
+    border: 1.5px solid var(--accent);
+    background: white; color: var(--accent);
+    cursor: pointer;
+  }
+  .restart-walk-btn:hover { background: var(--accent-soft); }
+
+  @media (max-width: 1000px) {
+    .workspace { grid-template-columns: 1fr; }
+    .walkthrough { grid-template-columns: 1fr; }
+    .walk-controls { flex-direction: row; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="masthead">
+    <h1>Circuits, <em>properly</em></h1>
+    <div class="meta">
+      <div>How series, parallel and resistance actually work</div>
+      <div id="metaScene">Resistance — microscopic</div>
+    </div>
+  </header>
+
+  <!-- Walkthrough -->
+  <div class="walkthrough" id="walkthrough">
+    <div>
+      <div class="walk-stage-label" id="walkStageLabel">Stage 1 of 7</div>
+      <h2 class="walk-title" id="walkTitle">Loading…</h2>
+      <p class="walk-narrative" id="walkNarrative">Loading…</p>
+    </div>
+    <div class="walk-controls">
+      <button class="primary" id="walkNext">Next →</button>
+      <button id="walkPrev">← Prev</button>
+      <button class="skip" id="walkSkip">Skip → free explore</button>
+    </div>
+  </div>
+
+  <!-- Scene + layer controls -->
+  <div class="controls">
+    <div class="control-group">
+      <span class="control-label">Scene</span>
+      <div class="seg-toggle" id="sceneToggle">
+        <button data-val="resistance" class="active">Resistance (micro)</button>
+        <button data-val="series">Series circuit</button>
+        <button data-val="parallel">Parallel circuit</button>
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+    <button class="restart-walk-btn" id="restartWalkBtn" style="display:none">↺ Restart walkthrough</button>
+  </div>
+
+  <!-- Layer toggles (only relevant for series/parallel scenes) -->
+  <div class="controls scene-only" id="layerControls">
+    <span class="control-label">Show layers</span>
+    <label class="layer-toggle active" id="layerElectronsLbl">
+      <span class="swatch" style="background: var(--electron)"></span>
+      <input type="checkbox" id="layerElectrons" checked>Electrons
+    </label>
+    <label class="layer-toggle surface" id="layerSurfaceLbl">
+      <span class="swatch"></span>
+      <input type="checkbox" id="layerSurface">Surface charges
+    </label>
+    <label class="layer-toggle efield" id="layerEFieldLbl">
+      <span class="swatch"></span>
+      <input type="checkbox" id="layerEField">E&nbsp;field
+    </label>
+    <label class="layer-toggle bfield" id="layerBFieldLbl">
+      <span class="swatch"></span>
+      <input type="checkbox" id="layerBField">B&nbsp;field
+    </label>
+    <label class="layer-toggle poynting" id="layerPoyntingLbl">
+      <span class="swatch"></span>
+      <input type="checkbox" id="layerPoynting">Energy flow
+    </label>
+  </div>
+
+  <!-- Resistance-only controls -->
+  <div class="controls scene-only" id="resistanceControls">
+    <div class="control-group">
+      <span class="control-label">Field</span>
+      <button class="scene-control closed" id="rFieldBtn">E field: ON</button>
+    </div>
+
+    <div class="slider-control">
+      <label>Temperature</label>
+      <input type="range" id="rTemp" min="0.2" max="2.5" step="0.1" value="1">
+      <span class="slider-val" id="rTempVal">1.0</span>
+    </div>
+
+    <div class="slider-control">
+      <label>Impurities</label>
+      <input type="range" id="rImpurity" min="0" max="1" step="0.05" value="0">
+      <span class="slider-val" id="rImpurityVal">0%</span>
+    </div>
+
+    <div class="control-group">
+      <span class="control-label">Show</span>
+      <label class="layer-toggle active" id="rShowFlashesLbl">
+        <span class="swatch" style="background:#e65a1f"></span>
+        <input type="checkbox" id="rShowFlashes" checked>Collision flashes
+      </label>
+      <label class="layer-toggle active" id="rShowHeatLbl">
+        <span class="swatch" style="background:var(--heat-glow)"></span>
+        <input type="checkbox" id="rShowHeat" checked>Heat
+      </label>
+    </div>
+  </div>
+
+  <!-- Series/parallel-only controls -->
+  <div class="controls scene-only" id="circuitControls">
+    <div class="slider-control">
+      <label>Bulb 1 (R)</label>
+      <input type="range" id="bulb1R" min="1" max="8" step="0.5" value="4">
+      <span class="slider-val" id="bulb1RVal">4 Ω</span>
+    </div>
+    <div class="slider-control">
+      <label>Bulb 2 (R)</label>
+      <input type="range" id="bulb2R" min="1" max="8" step="0.5" value="4">
+      <span class="slider-val" id="bulb2RVal">4 Ω</span>
+    </div>
+    <div class="control-group">
+      <span class="control-label">Speed</span>
+      <div class="seg-toggle" id="speedToggle">
+        <button data-val="0.25">0.25×</button>
+        <button data-val="1" class="active">1×</button>
+        <button data-val="2">2×</button>
+      </div>
+    </div>
+    <div class="spacer"></div>
+    <button class="scene-control closed" id="switchBtn">Switch: closed</button>
+  </div>
+
+  <div class="workspace">
+    <div class="stage-frame">
+      <canvas id="stage"></canvas>
+      <div class="scene-label" id="sceneLabel">Resistance — microscopic</div>
+      <div class="readouts" id="readouts" style="display:none"></div>
+    </div>
+
+    <aside class="side">
+      <div class="info-card gold" id="takeawayCard">
+        <h3 id="takeawayTitle">Key idea</h3>
+        <p id="takeawayBody">…</p>
+      </div>
+
+      <div class="info-card" id="legendCard">
+        <h3>Legend</h3>
+        <div class="legend-list" id="legendList"></div>
+      </div>
+
+      <div class="info-card accent">
+        <h3>Where this gets you</h3>
+        <p>Three views of the same physics. Resistance is fundamentally about electron-ion scattering. Series and parallel circuits behave the way they do because surface charges arrange themselves to set up exactly the field needed.</p>
+        <p>Arrows are illustrative — direction and approximate magnitude, not Maxwell-precise.</p>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<script>
+"use strict";
+
+/* ============================================================
+   STATE
+   ============================================================ */
+const state = {
+  mode: 'walkthrough',
+  stage: 1,
+  scene: 'resistance',  // 'resistance' | 'series' | 'parallel'
+
+  // Macro layer toggles (series/parallel)
+  showElectrons: true,
+  showSurfaceCharges: false,
+  showEField: false,
+  showBField: false,
+  showPoynting: false,
+
+  // Resistance scene
+  rFieldOn: true,
+  rTemp: 1.0,        // 0.2 - 2.5 (multiplies thermal vibration)
+  rImpurity: 0.0,    // 0 - 1
+  rShowFlashes: true,
+  rShowHeat: true,
+
+  // Circuit scene
+  switchClosed: true,
+  simSpeed: 1.0,
+  bulb1R: 4,
+  bulb2R: 4,
+  cellEMF: 6,        // V
+
+  time: 0,
+  W: 0, H: 0,
+};
+
+/* ============================================================
+   WALKTHROUGH STAGES
+   ============================================================ */
+const STAGES = [
+  {
+    title: "Inside a resistor: <em>electrons and ions</em>",
+    narrative: "Zoom into a wire. A lattice of positive ions sits in place, vibrating from thermal energy. Free electrons drift through the lattice. Without an applied field, electrons move in random thermal directions — average velocity is zero, no current.",
+    scene: 'resistance',
+    config: { rFieldOn: false, rTemp: 1.0, rImpurity: 0 },
+    takeaway: "Metals contain a sea of free electrons in a fixed positive lattice. <strong>No field, no current — just thermal motion.</strong>"
+  },
+  {
+    title: "E field drives electrons; the lattice <em>scatters</em> them",
+    narrative: "Switch the field on. Electrons accelerate in one direction — but they keep bumping into vibrating ions. Each collision randomises their velocity. The result is a small <em>net</em> drift on top of large random motion. That drift IS the current.",
+    scene: 'resistance',
+    config: { rFieldOn: true, rTemp: 1.0, rImpurity: 0 },
+    takeaway: "Drift velocity emerges from the accelerate–scatter cycle. <strong>Resistance is how often you scatter</strong> — short mean free time = high resistance."
+  },
+  {
+    title: "Where the energy goes: <em>heat</em>",
+    narrative: "Each collision dumps some of the electron's kinetic energy into the ion, making it vibrate harder. Vigorous lattice vibration = thermal energy = heat. Push more current through and the ions get hotter. That's why resistors warm up — and why filaments glow.",
+    scene: 'resistance',
+    config: { rFieldOn: true, rTemp: 1.0, rImpurity: 0 },
+    takeaway: "Energy chain: <strong>field → electron KE → ion vibration → heat</strong>. Try the temperature slider after the walkthrough — hotter ions scatter electrons more."
+  },
+  {
+    title: "Series: <em>same current</em>, voltages add",
+    narrative: "Two bulbs in a single loop. Current is the same everywhere — there's only one path for charge to flow. The cell's EMF is divided between the components. A larger-resistance component takes a larger share of the voltage.",
+    scene: 'series',
+    config: { showElectrons: true, showSurfaceCharges: false, showEField: false, showBField: false, showPoynting: false, switchClosed: true },
+    takeaway: "<strong>I is constant around the loop. V₁ + V₂ = EMF.</strong> R<sub>total</sub> = R₁ + R₂."
+  },
+  {
+    title: "Series: <em>why</em> voltages add",
+    narrative: "Surface charges arrange themselves around the loop so the E field inside each component is exactly what's needed to drive the same current through it. A higher-R bulb gets a steeper E field — and ∫E·dl across it (the voltage) is bigger. That's the mechanism.",
+    scene: 'series',
+    config: { showElectrons: true, showSurfaceCharges: true, showEField: true, showBField: false, showPoynting: true, switchClosed: true },
+    takeaway: "Surface charges set up <strong>exactly</strong> the field needed everywhere. Energy flows through the surrounding space into each component (Poynting), proportional to its resistance."
+  },
+  {
+    title: "Parallel: <em>same voltage</em>, currents add",
+    narrative: "Two branches between the same two nodes. Both branches feel the same potential difference, so each has its own current set by Ohm's law. The total current splits at the junction: more goes through the lower-resistance branch.",
+    scene: 'parallel',
+    config: { showElectrons: true, showSurfaceCharges: false, showEField: false, showBField: false, showPoynting: false, switchClosed: true },
+    takeaway: "<strong>V is the same across both branches. I<sub>total</sub> = I₁ + I₂.</strong> 1/R<sub>total</sub> = 1/R₁ + 1/R₂."
+  },
+  {
+    title: "Parallel: <em>why</em> currents add",
+    narrative: "Each junction is a single node — surface charges there fix one common potential, so both branches see the same V. Charge can't pile up: what flows in must flow out. Each branch behaves as its own little circuit, independently driven. Removing one branch doesn't affect the other.",
+    scene: 'parallel',
+    config: { showElectrons: true, showSurfaceCharges: true, showEField: true, showBField: false, showPoynting: true, switchClosed: true },
+    takeaway: "Junctions enforce charge conservation: <strong>I_in = I_out</strong>. Each branch is independent. Adding more branches lowers the total resistance."
+  }
+];
+
+/* ============================================================
+   CANVAS
+   ============================================================ */
+const canvas = document.getElementById('stage');
+const ctx = canvas.getContext('2d');
+function fitCanvas() {
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  canvas.width  = Math.round(rect.width * dpr);
+  canvas.height = Math.round(rect.height * dpr);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  state.W = rect.width;
+  state.H = rect.height;
+}
+window.addEventListener('resize', () => {
+  fitCanvas();
+  rebuildAll();
+});
+
+/* ============================================================
+   GENERIC HELPERS
+   ============================================================ */
+function drawArrow(x1, y1, x2, y2, color, width, headSize) {
+  ctx.strokeStyle = color;
+  ctx.lineWidth = width;
+  ctx.beginPath();
+  ctx.moveTo(x1, y1);
+  ctx.lineTo(x2, y2);
+  ctx.stroke();
+  drawArrowhead(x1, y1, x2, y2, color, headSize || 6);
+}
+function drawArrowhead(x1, y1, x2, y2, color, size) {
+  const ang = Math.atan2(y2 - y1, x2 - x1);
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  ctx.moveTo(x2, y2);
+  ctx.lineTo(x2 - size * Math.cos(ang - 0.45), y2 - size * Math.sin(ang - 0.45));
+  ctx.lineTo(x2 - size * Math.cos(ang + 0.45), y2 - size * Math.sin(ang + 0.45));
+  ctx.closePath();
+  ctx.fill();
+}
+
+/* ============================================================
+   ============== RESISTANCE SCENE ============================
+   ============================================================ */
+
+let rIons = [];
+let rImpurities = [];
+let rElectrons = [];
+let rDriftSamples = [];
+let rCollisionCount = 0;
+let rLastCountTime = 0;
+let rCollisionRate = 0;
+
+const R_AREA = { x: 60, y: 60, w: 0, h: 0 };  // computed in rebuild
+
+class RIon {
+  constructor(x, y) {
+    this.x0 = x; this.y0 = y;
+    this.phase = Math.random() * Math.PI * 2;
+    this.freq = 0.005 + Math.random() * 0.003;
+    this.energy = 0;       // accumulates from collisions; decays
+  }
+  pos(t, temp) {
+    const amp = 1.5 + temp * 2.5 + this.energy * 4;
+    return {
+      x: this.x0 + amp * Math.cos(t * this.freq + this.phase),
+      y: this.y0 + amp * Math.sin(t * this.freq * 1.3 + this.phase * 1.7)
+    };
+  }
+}
+class RImpurity {
+  constructor(x, y) { this.x = x; this.y = y; }
+}
+class RElectron {
+  constructor(x, y) {
+    this.x = x; this.y = y;
+    this.vx = (Math.random() - 0.5) * 0.08;
+    this.vy = (Math.random() - 0.5) * 0.08;
+    this.tauCountdown = 0;
+    this.flash = 0;
+    this.trail = [];
+    this.scheduleNextScatter();
+  }
+  scheduleNextScatter() {
+    // Exponential mean free time, depends on temperature & impurities
+    const tempFactor = 1 + (state.rTemp - 1) * 0.7;
+    const impurityFactor = 1 + state.rImpurity * 2.0;
+    const baseTau = 110;   // ms
+    const tau = baseTau / (tempFactor * impurityFactor);
+    // sample from exponential
+    this.tauCountdown = -Math.log(Math.random() + 0.001) * tau;
+  }
+}
+
+function rebuildResistance() {
+  R_AREA.x = 60;
+  R_AREA.y = 70;
+  R_AREA.w = state.W - 120;
+  R_AREA.h = state.H - 140;
+
+  rIons = [];
+  const spacing = 56;
+  const rows = Math.floor(R_AREA.h / spacing);
+  const cols = Math.floor(R_AREA.w / spacing);
+  const offsetX = R_AREA.x + (R_AREA.w - cols * spacing) / 2 + spacing / 2;
+  const offsetY = R_AREA.y + (R_AREA.h - rows * spacing) / 2 + spacing / 2;
+  for (let i = 0; i < cols; i++) {
+    for (let j = 0; j < rows; j++) {
+      const stagger = (j % 2) * spacing * 0.5;  // hex-ish pattern
+      rIons.push(new RIon(offsetX + i * spacing + stagger, offsetY + j * spacing));
+    }
+  }
+
+  rebuildImpurities();
+  rebuildElectrons();
+}
+
+function rebuildImpurities() {
+  rImpurities = [];
+  const target = Math.floor(state.rImpurity * 18);
+  for (let i = 0; i < target; i++) {
+    rImpurities.push(new RImpurity(
+      R_AREA.x + 20 + Math.random() * (R_AREA.w - 40),
+      R_AREA.y + 20 + Math.random() * (R_AREA.h - 40)
+    ));
+  }
+}
+
+function rebuildElectrons() {
+  rElectrons = [];
+  const N = 60;
+  for (let i = 0; i < N; i++) {
+    rElectrons.push(new RElectron(
+      R_AREA.x + Math.random() * R_AREA.w,
+      R_AREA.y + Math.random() * R_AREA.h
+    ));
+  }
+}
+
+function findNearestScatterPoint(ex, ey, t) {
+  // returns {x, y, isImpurity}
+  let best = null, bestD2 = Infinity;
+  for (const ion of rIons) {
+    const p = ion.pos(t, state.rTemp);
+    const dx = p.x - ex, dy = p.y - ey;
+    const d2 = dx*dx + dy*dy;
+    if (d2 < bestD2) { bestD2 = d2; best = { x: p.x, y: p.y, ion }; }
+  }
+  for (const imp of rImpurities) {
+    const dx = imp.x - ex, dy = imp.y - ey;
+    const d2 = dx*dx + dy*dy;
+    if (d2 < bestD2) { bestD2 = d2; best = { x: imp.x, y: imp.y, isImpurity: true }; }
+  }
+  return best;
+}
+
+function updateResistance(dt) {
+  state.time += dt;
+  const t = state.time;
+
+  // E field acceleration (rightward)
+  const a = state.rFieldOn ? 0.00045 : 0;
+
+  // Decay ion energies
+  for (const ion of rIons) {
+    ion.energy *= Math.pow(0.9985, dt / 16.7);
+  }
+
+  for (const e of rElectrons) {
+    e.vx += a * dt;
+    // small constant drag to avoid runaway from random walk
+    e.vx *= Math.pow(0.998, dt / 16.7);
+    e.vy *= Math.pow(0.998, dt / 16.7);
+
+    e.x += e.vx * dt;
+    e.y += e.vy * dt;
+
+    // periodic-ish boundaries (wrap horizontally; bounce vertically)
+    if (e.x > R_AREA.x + R_AREA.w) e.x -= R_AREA.w;
+    if (e.x < R_AREA.x) e.x += R_AREA.w;
+    if (e.y > R_AREA.y + R_AREA.h) { e.y = R_AREA.y + R_AREA.h - 2; e.vy *= -0.6; }
+    if (e.y < R_AREA.y) { e.y = R_AREA.y + 2; e.vy *= -0.6; }
+
+    // scattering countdown
+    e.tauCountdown -= dt;
+    if (e.tauCountdown <= 0) {
+      // Pick nearest scatter point as the visual collision target
+      const pt = findNearestScatterPoint(e.x, e.y, t);
+      if (pt && pt.ion) pt.ion.energy += 0.06 * (Math.abs(e.vx) + Math.abs(e.vy));
+
+      // Randomise velocity direction; speed = thermal speed (with small contribution from current vx)
+      const thermal = 0.06 + state.rTemp * 0.05;
+      const angle = Math.random() * Math.PI * 2;
+      const speed = thermal * (0.7 + 0.6 * Math.random());
+      e.vx = speed * Math.cos(angle);
+      e.vy = speed * Math.sin(angle);
+
+      e.flash = 1.0;
+      e.scheduleNextScatter();
+      rCollisionCount++;
+    }
+
+    if (e.flash > 0) e.flash -= dt / 200;
+
+    // record trail
+    if (e.trail.length === 0 || e.trail[e.trail.length - 1].x !== e.x) {
+      e.trail.push({ x: e.x, y: e.y });
+      if (e.trail.length > 6) e.trail.shift();
+    }
+  }
+
+  // Sample drift velocity
+  if (state.time - rLastCountTime > 200) {
+    let sumVx = 0;
+    for (const e of rElectrons) sumVx += e.vx;
+    const meanVx = sumVx / rElectrons.length;
+    rDriftSamples.push(meanVx);
+    if (rDriftSamples.length > 25) rDriftSamples.shift();
+    rCollisionRate = rCollisionCount / ((state.time - rLastCountTime) / 1000);
+    rCollisionCount = 0;
+    rLastCountTime = state.time;
+  }
+}
+
+function drawResistance() {
+  const t = state.time;
+
+  // background of the "metal interior"
+  ctx.fillStyle = '#fffaf0';
+  ctx.fillRect(R_AREA.x, R_AREA.y, R_AREA.w, R_AREA.h);
+  ctx.strokeStyle = '#7a5a38';
+  ctx.lineWidth = 2;
+  ctx.strokeRect(R_AREA.x, R_AREA.y, R_AREA.w, R_AREA.h);
+
+  // wire context label
+  ctx.fillStyle = '#7a5a38';
+  ctx.font = "italic 12px 'Fraunces', serif";
+  ctx.textAlign = 'left';
+  ctx.fillText('zoomed view: inside the metal', R_AREA.x + 6, R_AREA.y - 8);
+
+  // E field arrow at top of region
+  if (state.rFieldOn) {
+    const cy = R_AREA.y - 30;
+    const x1 = R_AREA.x + R_AREA.w * 0.35;
+    const x2 = R_AREA.x + R_AREA.w * 0.65;
+    drawArrow(x1, cy, x2, cy, '#c23a2a', 2.5, 9);
+    ctx.fillStyle = '#c23a2a';
+    ctx.font = "italic 600 12px 'Fraunces', serif";
+    ctx.textAlign = 'center';
+    ctx.fillText('E field', (x1 + x2) / 2, cy - 8);
+  }
+
+  // ions
+  for (const ion of rIons) {
+    const p = ion.pos(t, state.rTemp);
+    drawIonHeated(p.x, p.y, ion.energy);
+  }
+
+  // impurities
+  for (const imp of rImpurities) {
+    ctx.fillStyle = '#5b3a8c';
+    ctx.beginPath();
+    ctx.arc(imp.x, imp.y, 8, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = '#3a2566';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    ctx.fillStyle = 'white';
+    ctx.font = "700 10px sans-serif";
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('?', imp.x, imp.y);
+    ctx.textBaseline = 'alphabetic';
+  }
+
+  // electrons + trails + flashes
+  for (const e of rElectrons) {
+    // trail
+    if (e.trail.length > 1) {
+      ctx.strokeStyle = 'rgba(44, 95, 141, 0.20)';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(e.trail[0].x, e.trail[0].y);
+      for (let i = 1; i < e.trail.length; i++) ctx.lineTo(e.trail[i].x, e.trail[i].y);
+      ctx.lineTo(e.x, e.y);
+      ctx.stroke();
+    }
+    // flash
+    if (state.rShowFlashes && e.flash > 0) {
+      ctx.fillStyle = `rgba(230, 90, 31, ${0.55 * e.flash})`;
+      ctx.beginPath();
+      ctx.arc(e.x, e.y, 9, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    // body
+    ctx.fillStyle = '#2c5f8d';
+    ctx.beginPath();
+    ctx.arc(e.x, e.y, 4.5, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(95, 179, 217, 0.6)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  }
+
+  // legend is on the side panel — no canvas legend needed
+
+  // readouts
+  updateResistanceReadouts();
+}
+
+function drawIonHeated(x, y, energy) {
+  const e = Math.min(1, energy);
+  // base color rust (cool) → orange-yellow (hot)
+  const r = Math.round(181 + e * (230 - 181));
+  const g = Math.round(77 + e * (180 - 77));
+  const b = Math.round(40 + e * (60 - 40));
+  if (state.rShowHeat && e > 0.05) {
+    // glow
+    const gr = ctx.createRadialGradient(x, y, 2, x, y, 14 + e * 10);
+    gr.addColorStop(0, `rgba(255, 184, 74, ${0.5 * e})`);
+    gr.addColorStop(1, 'rgba(255, 184, 74, 0)');
+    ctx.fillStyle = gr;
+    ctx.fillRect(x - 24, y - 24, 48, 48);
+  }
+  ctx.fillStyle = `rgb(${r},${g},${b})`;
+  ctx.beginPath();
+  ctx.arc(x, y, 7, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(94,45,20,0.6)';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+  // small + sign
+  ctx.fillStyle = 'rgba(255,255,255,0.85)';
+  ctx.font = "700 9px sans-serif";
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('+', x, y);
+  ctx.textBaseline = 'alphabetic';
+}
+
+function drawResistanceLegend() {
+  const y = state.H - 50;
+  ctx.font = "11px 'Bricolage Grotesque', sans-serif";
+  ctx.textAlign = 'left';
+  ctx.fillStyle = '#555148';
+  let x = 60;
+  const items = [
+    { color: '#b54d28', label: 'positive ion (+ lattice)' },
+    { color: '#2c5f8d', label: 'free electron' },
+    { color: '#5b3a8c', label: 'impurity (extra scattering)' },
+    { color: '#e65a1f', label: 'collision' },
+    { color: '#ffb84a', label: 'heat' },
+  ];
+  for (const it of items) {
+    ctx.fillStyle = it.color;
+    ctx.beginPath(); ctx.arc(x, y, 5, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#555148';
+    ctx.fillText(it.label, x + 10, y + 4);
+    x += ctx.measureText(it.label).width + 30;
+  }
+}
+
+function updateResistanceReadouts() {
+  const r = document.getElementById('readouts');
+  r.style.display = 'block';
+  let avg = 0;
+  if (rDriftSamples.length > 0) {
+    for (const v of rDriftSamples) avg += v;
+    avg /= rDriftSamples.length;
+  }
+  // Resistance proxy: inverse of drift per unit field
+  const driftPx = Math.abs(avg).toFixed(3);
+  const driftDir = avg >= 0 ? '→' : '←';
+  const collRate = Math.round(rCollisionRate);
+  r.innerHTML = `
+    <div><span class="lbl">drift v</span> <span class="val accent">${driftDir} ${driftPx}</span> px/ms</div>
+    <div><span class="lbl">collisions/s</span> <span class="val">${collRate}</span></div>
+    <div><span class="lbl">temp</span> <span class="val">${state.rTemp.toFixed(1)}×</span></div>
+    <div><span class="lbl">impurities</span> <span class="val">${(state.rImpurity*100).toFixed(0)}%</span></div>
+  `;
+}
+
+/* ============================================================
+   ============== SERIES & PARALLEL CIRCUITS ==================
+   ============================================================ */
+
+/* GEOMETRY for series and parallel scenes */
+function seriesGeom() {
+  const W = state.W, H = state.H;
+  return {
+    left: 180, right: W - 180,
+    top: 110, bottom: H - 100,
+    cellY: H / 2,
+    bulb1Y: H * 0.32,    // upper bulb on right wire
+    bulb2Y: H * 0.68,    // lower bulb on right wire
+  };
+}
+function parallelGeom() {
+  const W = state.W, H = state.H;
+  return {
+    left: 180, right: W - 180,
+    top: 130, bottom: H - 100,
+    cellX: 200,
+    cellY: H / 2,
+    junctionLeft: 360,
+    junctionRight: W - 200,
+    branch1Y: H * 0.32,    // upper branch
+    branch2Y: H * 0.68,    // lower branch
+    bulb1X: 0,             // computed: midpoint
+    bulb2X: 0,
+  };
+}
+
+/* ============================================================
+   PATH SYSTEM for circuit electrons
+   - path is a parametric function of s ∈ [0,1)
+   - returns {x, y, dx, dy} at parameter s
+   - drift speed varies with local resistance & current
+   ============================================================ */
+
+class CircuitElectron {
+  constructor(s) {
+    this.s = s;
+    this.tphase = Math.random() * Math.PI * 2;
+  }
+}
+
+let circuitElectrons = [];
+let parallelBranchElectrons = { b1: [], b2: [] };
+let mainTrunkElectrons = [];
+
+function rebuildCircuitElectrons() {
+  // Series: single loop with N electrons
+  circuitElectrons = [];
+  const N = 84;
+  for (let i = 0; i < N; i++) {
+    circuitElectrons.push(new CircuitElectron(i / N));
+  }
+  // Parallel: separate populations on the two branches and on the trunk wires
+  parallelBranchElectrons.b1 = [];
+  parallelBranchElectrons.b2 = [];
+  mainTrunkElectrons = [];
+  // each branch has electrons distributed along it (s ∈ [0,1])
+  for (let i = 0; i < 30; i++) {
+    parallelBranchElectrons.b1.push(new CircuitElectron(i / 30));
+    parallelBranchElectrons.b2.push(new CircuitElectron(i / 30));
+  }
+  // trunk (cell + return) electrons
+  for (let i = 0; i < 36; i++) {
+    mainTrunkElectrons.push(new CircuitElectron(i / 36));
+  }
+}
+
+/* ============================================================
+   SERIES PATH
+   Loop CW: top → right (with two bulbs) → bottom → left (cell)
+   s parameterisation:
+     0.00..0.25  top wire L→R
+     0.25..0.40  right side: top → bulb 1 area
+     0.40..0.45  through bulb 1
+     0.45..0.55  between bulbs
+     0.55..0.60  through bulb 2
+     0.60..0.75  right side: bulb 2 area → bottom-right corner
+     0.75..0.95  bottom wire R→L → bottom-left corner (and up)
+     wait — let me redo cleanly.
+   Cleaner:
+     0.00..0.25  top wire L→R
+     0.25..0.50  right side T→B (bulb 1 at s≈0.32, bulb 2 at s≈0.42)
+     0.50..0.75  bottom wire R→L
+     0.75..1.00  left side B→T (cell at s≈0.875)
+   Electrons travel in increasing s direction (CW). Conventional current is CCW.
+============================================================ */
+function seriesPathPoint(s) {
+  s = ((s % 1) + 1) % 1;
+  const g = seriesGeom();
+  let x, y, dx, dy;
+  if (s < 0.25) {
+    const t = s / 0.25;
+    x = g.left + t * (g.right - g.left);
+    y = g.top; dx = 1; dy = 0;
+  } else if (s < 0.50) {
+    const t = (s - 0.25) / 0.25;
+    x = g.right;
+    y = g.top + t * (g.bottom - g.top);
+    dx = 0; dy = 1;
+  } else if (s < 0.75) {
+    const t = (s - 0.50) / 0.25;
+    x = g.right - t * (g.right - g.left);
+    y = g.bottom; dx = -1; dy = 0;
+  } else {
+    const t = (s - 0.75) / 0.25;
+    x = g.left;
+    y = g.bottom - t * (g.bottom - g.top);
+    dx = 0; dy = -1;
+  }
+  return { x, y, dx, dy };
+}
+
+/* ============================================================
+   PARALLEL PATH SYSTEM
+   We use three "loops" of electrons:
+     - Trunk: cell side. Goes from cell − terminal up the left column, top wire to junctionLeft, then BACK down to cell + terminal (via the bottom wire). I.e., the part of the circuit that is shared.
+     - Branch 1: junctionLeft → upper branch → junctionRight (and back via right column to bottom of trunk... but that's also trunk).
+
+   Cleanest: think of parallel circuit as
+     LEFT junction (top-left area) and RIGHT junction (top-right area)
+     - Trunk path: cell + → bottom wire → bottom of right wire → right column → up to RIGHT junction → and from LEFT junction → down left column → back to cell −
+       Actually let me re-architect.
+
+   New layout (more natural):
+       Cell on left middle, vertical
+        + (bottom) connects to bottom wire
+        − (top)    connects to top wire
+       Both branches sit between two vertical "rails" — the trunk goes from cell up, splits at LEFT junction, recombines at RIGHT junction, comes back to cell.
+
+   Specifically:
+       - Cell at (200, H/2)
+       - Cell + (bottom of cell) → wire goes RIGHT to bottom-left node, then UP the LEFT junction column to the LEFT junction at top
+       - Cell − (top of cell) → wire goes RIGHT and UP into the same LEFT column
+       Hmm this is messy.
+
+   Simpler architecture (let's use this):
+       - Cell on far left, vertical, centred
+       - From cell + (bottom): wire right to LEFT junction (at junctionLeft, branch1Y)... no, let me try again
+
+   FINAL GEOMETRY:
+       cell at (cellX, cellY) vertical
+       + terminal (cell bottom): wire right to bottom-left corner area, then up to LEFT junction at (junctionLeft, midY)
+       Two branches diverge from LEFT junction:
+         - Branch 1 goes RIGHT at branch1Y to RIGHT junction at (junctionRight, midY)  via bulb 1
+         - Branch 2 goes RIGHT at branch2Y to RIGHT junction via bulb 2
+       From RIGHT junction: wire left down to BOTTOM right-bottom area, back to cell − (top of cell)
+
+   That's awkward. Let me just go with straight horizontal branches:
+
+       - Cell (vertical) at (cellX, cellY)
+       - From cell + (bottom of cell, y=cellY+12): wire goes DOWN then RIGHT along bottom of canvas to (junctionRight, bottom)
+                                                    then UP to RIGHT junction  
+         BUT: this doesn't read well visually.
+
+   Cleanest VISUAL layout:
+       - Cell on left, vertical, mid-height
+       - LEFT junction at x=junctionLeft, mid-height
+       - RIGHT junction at x=junctionRight, mid-height
+       - Two horizontal branches between junctions:
+         - branch 1 (upper): goes UP from LEFT junction to branch1Y, RIGHT to bulb1, RIGHT to (junctionRight, branch1Y), DOWN to RIGHT junction
+         - branch 2 (lower): mirror, going DOWN
+       - Cell connects to LEFT junction via left wire (cellX, cellY) → (junctionLeft, cellY)
+       - Cell − (top) connects via... OK look this is getting tangled.
+
+   Let me just pick a natural layout: a rectangular outer loop with the two parallel branches BETWEEN top and bottom wires (like rungs of a ladder).
+
+   FINAL FINAL:
+     Outer rectangle: cell on left (vertical), but the cell is REPLACED with a horizontal cell at the bottom centre. Then two parallel branches go horizontally on top.
+
+   No — let me just stop and use a proper schematic layout:
+
+     +-----+--[bulb1]--+-----+
+     |     |           |     |
+     |     +--[bulb2]--+     |
+     |                       |
+    CELL                     |
+     |                       |
+     +-----------------------+
+
+   That is: cell on far left bottom, then up the left column to a node, then two parallel branches across the top going to a node on the right, then down the right column, back across the bottom to the cell.
+
+   This is the natural way schematics show parallel.
+
+   Let me code this layout:
+     - Cell vertical at (cellX, cellY) where cellY = H * 0.65 (lower part)
+     - Top-left node: (junctionLeft, top)
+     - Top-right node: (junctionRight, top)
+     - Bottom-right corner: (junctionRight, bottom)
+     - Wires:
+       cell + (bottom of cell) → bottom-left-corner → bottom wire → bottom-right corner → up right wire → top-right node
+       cell − (top of cell) → up left wire → top-left node
+       branches between top-left and top-right nodes:
+         branch 1: top-left → goes right along TOP wire → bulb 1 → top-right
+         branch 2: top-left → drops to mid → goes right → bulb 2 → drops to top-right (or similar)
+
+   Hmm "drops to mid" is awkward. Let me use:
+     - Two parallel HORIZONTAL branches between top-left node and top-right node
+     - Branch 1 along the top wire: (junctionLeft, top) → bulb 1 → (junctionRight, top)
+     - Branch 2 lower: (junctionLeft, top) drops to (junctionLeft, branch2Y), goes right with bulb 2, rises back to (junctionRight, top)
+
+   That works visually like:
+        +---------+--[bulb1]--+---------+
+        |         |           |         |
+        |         +---[bulb2]-+         |
+        |                               |
+       CELL                             |
+        |                               |
+        +-------------------------------+
+============================================================ */
+
+function parallelLayout() {
+  const W = state.W, H = state.H;
+  return {
+    cellX: 200,
+    cellY: H * 0.62,
+    nodeLeft:  { x: 200, y: 130 },          // top-left: where cell − meets the branches
+    nodeRight: { x: W - 200, y: 130 },      // top-right: where branches recombine
+    bottomRight: { x: W - 200, y: H - 100 },  // corner
+    bottomLeft:  { x: 200, y: H - 100 },      // (cell + connects here via short wire)
+    branch1Y: 130,   // top wire = branch 1 path
+    branch2Y: 220,   // lower branch
+    bulb1X: 0,       // computed
+    bulb2X: 0,
+    get bulb1XPos() { return (this.nodeLeft.x + this.nodeRight.x) / 2; },
+    get bulb2XPos() { return (this.nodeLeft.x + this.nodeRight.x) / 2; },
+  };
+}
+
+/* PARALLEL ELECTRON PATHS
+   We give each population its own parametric s ∈ [0,1).
+
+   Trunk path (CW direction = increasing s):
+     s = 0   at cell − (top of cell)
+     up left column → nodeLeft
+     [enters branch system; trunk path "ends" at nodeLeft for outgoing,
+      and "begins" at nodeRight for incoming]
+     at nodeRight → down right column → bottomRight → bottom wire →
+     bottomLeft (just to right of cell) → up to cell + (bottom of cell)
+     s = 1 at cell + (bottom).
+
+   Actually a trunk loop is a single loop. Let me just have:
+     Trunk: cell− → leftCol → nodeLeft (s=0..0.3)
+            (skip the branches)
+            nodeRight → rightCol → bottomRight → bottom → cell+ (s=0.3..1)
+
+   And two branches:
+     Branch 1: nodeLeft → branch1 path with bulb1 → nodeRight  (s=0..1)
+     Branch 2: nodeLeft → drop → branch2 path with bulb2 → rise → nodeRight  (s=0..1)
+
+============================================================ */
+
+function trunkPathPoint(s) {
+  s = ((s % 1) + 1) % 1;
+  const L = parallelLayout();
+  // Segment lengths (for proportional s):
+  // A: cellY−12 → nodeLeft.y up the left column (length L.cellY-12 - L.nodeLeft.y)
+  const segA_len = (L.cellY - 12) - L.nodeLeft.y;
+  // B: nodeRight.y → bottomRight.y (down right column)
+  const segB_len = L.bottomRight.y - L.nodeRight.y;
+  // C: bottomRight.x → bottomLeft.x (right→left along bottom)
+  const segC_len = L.bottomRight.x - L.bottomLeft.x;
+  // D: bottomLeft.y → cellY+12 (up to cell + terminal)
+  const segD_len = L.bottomLeft.y - (L.cellY + 12);
+
+  const total = segA_len + segB_len + segC_len + segD_len;
+  const dist = s * total;
+
+  if (dist < segA_len) {
+    // up left column
+    const t = dist / segA_len;
+    return { x: L.cellX, y: (L.cellY - 12) - t * segA_len, dx: 0, dy: -1 };
+  }
+  let d = dist - segA_len;
+  if (d < segB_len) {
+    const t = d / segB_len;
+    return { x: L.nodeRight.x, y: L.nodeRight.y + t * segB_len, dx: 0, dy: 1 };
+  }
+  d -= segB_len;
+  if (d < segC_len) {
+    const t = d / segC_len;
+    return { x: L.bottomRight.x - t * segC_len, y: L.bottomRight.y, dx: -1, dy: 0 };
+  }
+  d -= segC_len;
+  const t = d / segD_len;
+  return { x: L.bottomLeft.x, y: L.bottomLeft.y - t * segD_len, dx: 0, dy: -1 };
+}
+
+function branch1PathPoint(s) {
+  // Top branch: nodeLeft → straight RIGHT along branch1Y → nodeRight
+  s = ((s % 1) + 1) % 1;
+  const L = parallelLayout();
+  const x = L.nodeLeft.x + s * (L.nodeRight.x - L.nodeLeft.x);
+  return { x, y: L.branch1Y, dx: 1, dy: 0 };
+}
+function branch2PathPoint(s) {
+  // Lower branch: nodeLeft → drop to branch2Y → RIGHT → rise to nodeRight
+  s = ((s % 1) + 1) % 1;
+  const L = parallelLayout();
+  const dropLen = L.branch2Y - L.nodeLeft.y;
+  const horizLen = L.nodeRight.x - L.nodeLeft.x;
+  const total = 2 * dropLen + horizLen;
+  const dist = s * total;
+  if (dist < dropLen) {
+    return { x: L.nodeLeft.x, y: L.nodeLeft.y + dist, dx: 0, dy: 1 };
+  } else if (dist < dropLen + horizLen) {
+    const d = dist - dropLen;
+    return { x: L.nodeLeft.x + d, y: L.branch2Y, dx: 1, dy: 0 };
+  } else {
+    const d = dist - dropLen - horizLen;
+    return { x: L.nodeRight.x, y: L.branch2Y - d, dx: 0, dy: -1 };
+  }
+}
+
+/* ============================================================
+   UPDATE for series & parallel
+   - Drift speed depends on:
+       series: same throughout (constrained by total resistance)
+       parallel:
+         branch 1 carries I1 = V/R1
+         branch 2 carries I2 = V/R2
+         trunk carries I_total = I1 + I2
+   ============================================================ */
+
+function updateSeries(dt) {
+  state.time += dt;
+  if (!state.switchClosed) return;
+  // Same current everywhere: I = EMF / (R1 + R2 + small wire R)
+  const I = state.cellEMF / (state.bulb1R + state.bulb2R + 0.5);
+  // Drift speed proportional to I; calibrated so 1A = 0.00010 s/ms
+  const ds = 0.00010 * I;
+  for (const e of circuitElectrons) {
+    e.s = (e.s + ds * dt) % 1;
+    e.tphase += dt * 0.001;
+  }
+}
+
+function updateParallel(dt) {
+  state.time += dt;
+  if (!state.switchClosed) return;
+  // V across each branch = EMF (assuming no trunk resistance for simplicity)
+  // I1 = V/R1, I2 = V/R2, I_total = I1 + I2
+  const I1 = state.cellEMF / state.bulb1R;
+  const I2 = state.cellEMF / state.bulb2R;
+  const Itot = I1 + I2;
+
+  const k = 0.000045;   // drift calibration
+  const ds_b1 = k * I1;
+  const ds_b2 = k * I2;
+  const ds_trunk = k * Itot;
+
+  for (const e of parallelBranchElectrons.b1) {
+    e.s = (e.s + ds_b1 * dt) % 1;
+    e.tphase += dt * 0.001;
+  }
+  for (const e of parallelBranchElectrons.b2) {
+    e.s = (e.s + ds_b2 * dt) % 1;
+    e.tphase += dt * 0.001;
+  }
+  for (const e of mainTrunkElectrons) {
+    e.s = (e.s + ds_trunk * dt) % 1;
+    e.tphase += dt * 0.001;
+  }
+}
+
+/* ============================================================
+   DRAW: Series scene
+   ============================================================ */
+function drawSeries() {
+  const g = seriesGeom();
+  drawSeriesWires(g);
+  if (state.showSurfaceCharges) drawSeriesSurfaceCharges(g);
+  if (state.showBField) drawSeriesBField(g);
+  if (state.showEField) drawSeriesEField(g);
+  if (state.showPoynting) drawSeriesPoynting(g);
+  drawCell(g.left, g.cellY, state.cellEMF);
+  drawBulb(g.right, g.bulb1Y, computeSeriesPower(1), state.bulb1R, 'B₁');
+  drawBulb(g.right, g.bulb2Y, computeSeriesPower(2), state.bulb2R, 'B₂');
+  drawSeriesSwitch(g);
+  if (state.showElectrons) drawSeriesElectrons();
+  drawSeriesReadouts(g);
+}
+
+function drawSeriesWires(g) {
+  // gap regions for cell, bulbs, switch
+  const cellTop = g.cellY - 12, cellBot = g.cellY + 12;
+  const bulb1Top = g.bulb1Y - 22, bulb1Bot = g.bulb1Y + 22;
+  const bulb2Top = g.bulb2Y - 22, bulb2Bot = g.bulb2Y + 22;
+  const switchX = (g.left + g.right) / 2 - 70;
+
+  function strokeAll(color, w) {
+    ctx.strokeStyle = color; ctx.lineWidth = w; ctx.lineCap = 'butt';
+    // top wire L→R
+    ctx.beginPath(); ctx.moveTo(g.left, g.top); ctx.lineTo(g.right, g.top); ctx.stroke();
+    // right wire (top → bulb1Top)
+    ctx.beginPath(); ctx.moveTo(g.right, g.top); ctx.lineTo(g.right, bulb1Top); ctx.stroke();
+    // right wire (bulb1Bot → bulb2Top)
+    ctx.beginPath(); ctx.moveTo(g.right, bulb1Bot); ctx.lineTo(g.right, bulb2Top); ctx.stroke();
+    // right wire (bulb2Bot → bottom)
+    ctx.beginPath(); ctx.moveTo(g.right, bulb2Bot); ctx.lineTo(g.right, g.bottom); ctx.stroke();
+    // bottom wire R → switch
+    ctx.beginPath(); ctx.moveTo(g.right, g.bottom); ctx.lineTo(switchX + 22, g.bottom); ctx.stroke();
+    // bottom wire switch → L
+    ctx.beginPath(); ctx.moveTo(switchX - 22, g.bottom); ctx.lineTo(g.left, g.bottom); ctx.stroke();
+    // left wire bottom → cellBot
+    ctx.beginPath(); ctx.moveTo(g.left, g.bottom); ctx.lineTo(g.left, cellBot); ctx.stroke();
+    // left wire cellTop → top
+    ctx.beginPath(); ctx.moveTo(g.left, cellTop); ctx.lineTo(g.left, g.top); ctx.stroke();
+  }
+  strokeAll('rgba(122,90,56,0.20)', 16);
+  strokeAll('#b08456', 11);
+  strokeAll('#d8b388', 4);
+}
+
+function computeSeriesPower(which) {
+  if (!state.switchClosed) return 0;
+  const I = state.cellEMF / (state.bulb1R + state.bulb2R + 0.5);
+  const R = which === 1 ? state.bulb1R : state.bulb2R;
+  // Power = I² R, normalised against typical max (≈ 5 W per bulb)
+  const P = I * I * R;
+  return Math.min(1, P / 4);
+}
+
+function drawSeriesSurfaceCharges(g) {
+  // Three V zones in series:
+  //   high-V zone (between cell + and bulb 2): + charges
+  //   mid-V zone (between bulb 2 and bulb 1): + charges (less density, depending on R distribution) — for visual clarity, label as "neutral" / very weak
+  //   low-V zone (between bulb 1 and cell -): − charges
+  // Position the boundaries at the bulbs.
+  const charges = [];
+  const step = 26;
+  // Top wire — − (above the cut between bulbs and cell)
+  for (let x = g.left + 16; x < g.right - 16; x += step)
+    charges.push({ x, y: g.top - 12, sign: -1 });
+  // Bottom wire — +
+  for (let x = g.left + 16; x < g.right - 16; x += step)
+    charges.push({ x, y: g.bottom + 12, sign: +1 });
+  // Left side: above cell = − ; below cell = +
+  for (let y = g.top + 16; y < g.bottom - 16; y += step) {
+    if (Math.abs(y - g.cellY) < 36) continue;
+    charges.push({ x: g.left - 12, y, sign: y < g.cellY ? -1 : +1 });
+  }
+  // Right side: three zones
+  for (let y = g.top + 16; y < g.bottom - 16; y += step) {
+    if (Math.abs(y - g.bulb1Y) < 30 || Math.abs(y - g.bulb2Y) < 30) continue;
+    let sign;
+    if (y < g.bulb1Y) sign = -1;
+    else if (y > g.bulb2Y) sign = +1;
+    else {
+      // between the bulbs — proportional based on relative R: if R1 large, this zone is closer to + side
+      // Just use 0/very faint; visualise as a small marker
+      const ratio = state.bulb2R / (state.bulb1R + state.bulb2R);
+      sign = (Math.random() < ratio) ? +1 : -1;
+    }
+    charges.push({ x: g.right + 12, y, sign });
+  }
+
+  for (const c of charges) drawSurfaceChargeMark(c.x, c.y, c.sign);
+}
+
+function drawSurfaceChargeMark(x, y, sign) {
+  ctx.fillStyle = sign > 0 ? '#c23a2a' : '#1b3a63';
+  ctx.beginPath();
+  ctx.arc(x, y, 7, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = 'white';
+  ctx.font = "700 9px sans-serif";
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(sign > 0 ? '+' : '−', x, y);
+  ctx.textBaseline = 'alphabetic';
+}
+
+function drawSeriesEField(g) {
+  // Inside-wire arrows: small inside wires (low R), large inside bulbs (high R, larger E for same current)
+  // Convention: E = J / σ. In wires σ huge → E tiny. In bulbs σ small → E large.
+  // We show E along conventional current direction (CCW).
+
+  // Total V across the whole loop is EMF. V across each component proportional to R.
+  // E inside bulb is bigger if R is bigger (conceptually because the bulb is a short region with most of the V drop).
+  // Visual: arrow length proportional to E (normalised so max bulb E shows as ~30 px).
+
+  const R1 = state.bulb1R, R2 = state.bulb2R;
+  const Rtot = R1 + R2 + 0.5;
+  // E in wires: small (~0.05 of typical bulb E)
+  const wireE = 0.15;
+  // E in bulbs: proportional to R / (length of bulb region) — but bulb region is small, so we just use R as proxy
+  const bulb1E = 0.6 + (R1 / Rtot) * 0.8;
+  const bulb2E = 0.6 + (R2 / Rtot) * 0.8;
+
+  // top wire — leftward (CCW)
+  drawWireFieldArrows(g.left, g.top, g.right, g.top, -1, 0, wireE, 5);
+  // bottom wire — rightward (CCW)
+  drawWireFieldArrows(g.left, g.bottom, g.right, g.bottom, 1, 0, wireE, 5);
+  // left side — downward (CCW)
+  drawWireFieldArrows(g.left, g.top, g.left, g.bottom, 0, 1, wireE, 4, g.cellY);
+  // right side — upward (CCW). Three segments around bulbs.
+  const bulb1Top = g.bulb1Y - 22, bulb1Bot = g.bulb1Y + 22;
+  const bulb2Top = g.bulb2Y - 22, bulb2Bot = g.bulb2Y + 22;
+  // bulb 1: BIG arrow inside the bulb itself (upward, since current is up through right wire)
+  drawBulbFieldArrow(g.right, g.bulb1Y, bulb1E);
+  drawBulbFieldArrow(g.right, g.bulb2Y, bulb2E);
+  // wire segments outside the bulbs on right side (upward)
+  drawWireFieldArrows(g.right, g.bottom, g.right, bulb2Bot, 0, -1, wireE, 2);
+  drawWireFieldArrows(g.right, bulb2Top, g.right, bulb1Bot, 0, -1, wireE, 1);
+  drawWireFieldArrows(g.right, bulb1Top, g.right, g.top, 0, -1, wireE, 2);
+}
+
+function drawWireFieldArrows(x1, y1, x2, y2, dx, dy, mag, count, skipMidY) {
+  const arrowLen = mag * 14;
+  const len = Math.hypot(x2 - x1, y2 - y1);
+  for (let i = 0; i < count; i++) {
+    const t = (i + 0.5) / count;
+    const cx = x1 + (x2 - x1) * t;
+    const cy = y1 + (y2 - y1) * t;
+    if (skipMidY !== undefined && Math.abs(cy - skipMidY) < 30) continue;
+    drawArrow(
+      cx - dx * arrowLen / 2, cy - dy * arrowLen / 2,
+      cx + dx * arrowLen / 2, cy + dy * arrowLen / 2,
+      '#c23a2a', 2.0, 6
+    );
+  }
+}
+
+function drawBulbFieldArrow(cx, cy, mag) {
+  // big upward arrow inside the bulb area
+  const len = Math.min(38, 16 + mag * 16);
+  drawArrow(cx, cy + len / 2, cx, cy - len / 2, '#c23a2a', 2.8, 9);
+}
+
+function drawSeriesBField(g) {
+  // Out-of-page inside loop, into-page outside (faint) — same as EM tool
+  const gridStep = 50;
+  for (let x = gridStep / 2; x < state.W; x += gridStep) {
+    for (let y = gridStep / 2; y < state.H; y += gridStep) {
+      const inside = (x > g.left + 14 && x < g.right - 14 && y > g.top + 14 && y < g.bottom - 14);
+      if (inside) {
+        const cx = (g.left + g.right) / 2;
+        const cy = (g.top + g.bottom) / 2;
+        const dxN = Math.abs(x - cx) / ((g.right - g.left) / 2);
+        const dyN = Math.abs(y - cy) / ((g.bottom - g.top) / 2);
+        const b = 0.85 * (1 - 0.3 * Math.max(dxN, dyN));
+        drawBSymbol(x, y, b);
+      } else {
+        // distance-based fringe outside
+        const dxOut = Math.max(g.left - x, 0, x - g.right);
+        const dyOut = Math.max(g.top - y, 0, y - g.bottom);
+        const d = Math.sqrt(dxOut * dxOut + dyOut * dyOut);
+        if (d > 50) continue;
+        const b = -0.4 * Math.exp(-d / 25);
+        if (Math.abs(b) > 0.05) drawBSymbol(x, y, b);
+      }
+    }
+  }
+}
+function drawBSymbol(x, y, b) {
+  const r = 5 + Math.abs(b) * 4;
+  ctx.lineWidth = 1.5;
+  ctx.strokeStyle = '#5b3a8c';
+  ctx.fillStyle = `rgba(91,58,140,${b > 0 ? 0.10 : 0.08})`;
+  ctx.beginPath();
+  ctx.arc(x, y, r, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.stroke();
+  if (b > 0) {
+    ctx.fillStyle = '#5b3a8c';
+    ctx.beginPath(); ctx.arc(x, y, 1.8, 0, Math.PI * 2); ctx.fill();
+  } else {
+    ctx.beginPath();
+    ctx.moveTo(x - r * 0.55, y - r * 0.55); ctx.lineTo(x + r * 0.55, y + r * 0.55);
+    ctx.moveTo(x + r * 0.55, y - r * 0.55); ctx.lineTo(x - r * 0.55, y + r * 0.55);
+    ctx.stroke();
+  }
+}
+
+function drawSeriesPoynting(g) {
+  // Energy flux from cell into bulbs. Strongest where bulbs are — gold arrows
+  // pointing INTO each bulb (proportional to its share of power).
+  const dashOffset = -(state.time * 0.05) % 40;
+  const R1 = state.bulb1R, R2 = state.bulb2R;
+  const total = R1 + R2;
+
+  // Inside loop interior — rightward arrows (energy flowing toward bulbs)
+  // sample positions and draw arrows
+  const gridStep = 70;
+  for (let x = g.left + 60; x < g.right - 30; x += gridStep) {
+    for (let y = g.top + 30; y < g.bottom - 30; y += gridStep) {
+      // weighted toward each bulb based on y-position
+      const len = 36;
+      drawPoyntingArrow(x - len / 2, y, x + len / 2, y, 0.6, dashOffset);
+    }
+  }
+
+  // Specifically: arrows entering each bulb
+  const targetX = g.right - 60;
+  const arrLen = 50;
+  // bulb 1 — proportional to R1
+  drawPoyntingArrow(targetX - arrLen, g.bulb1Y, targetX, g.bulb1Y, 0.5 + 0.7 * (R1 / total), dashOffset);
+  drawPoyntingArrow(targetX - arrLen, g.bulb1Y - 24, targetX, g.bulb1Y - 24, 0.5 + 0.5 * (R1 / total), dashOffset);
+  drawPoyntingArrow(targetX - arrLen, g.bulb1Y + 24, targetX, g.bulb1Y + 24, 0.5 + 0.5 * (R1 / total), dashOffset);
+  // bulb 2 — proportional to R2
+  drawPoyntingArrow(targetX - arrLen, g.bulb2Y, targetX, g.bulb2Y, 0.5 + 0.7 * (R2 / total), dashOffset);
+  drawPoyntingArrow(targetX - arrLen, g.bulb2Y - 24, targetX, g.bulb2Y - 24, 0.5 + 0.5 * (R2 / total), dashOffset);
+  drawPoyntingArrow(targetX - arrLen, g.bulb2Y + 24, targetX, g.bulb2Y + 24, 0.5 + 0.5 * (R2 / total), dashOffset);
+}
+
+function drawPoyntingArrow(x1, y1, x2, y2, mag, dashOffset) {
+  ctx.strokeStyle = `rgba(244, 196, 48, ${0.45 * Math.min(1, mag)})`;
+  ctx.lineWidth = 8;
+  ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+  ctx.strokeStyle = '#b88018';
+  ctx.lineWidth = 2.4;
+  ctx.setLineDash([8, 6]);
+  ctx.lineDashOffset = dashOffset;
+  ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+  ctx.setLineDash([]);
+  drawArrowhead(x1, y1, x2, y2, '#b88018', 9);
+}
+
+function drawCell(cx, cy, V) {
+  ctx.strokeStyle = '#1e1d1a';
+  ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  ctx.moveTo(cx - 14, cy - 12); ctx.lineTo(cx + 14, cy - 12);
+  ctx.stroke();
+  ctx.lineWidth = 4;
+  ctx.beginPath();
+  ctx.moveTo(cx - 22, cy + 12); ctx.lineTo(cx + 22, cy + 12);
+  ctx.stroke();
+  ctx.fillStyle = '#1e1d1a';
+  ctx.font = "700 18px 'JetBrains Mono', monospace";
+  ctx.textAlign = 'left';
+  ctx.fillText('−', cx + 28, cy - 6);
+  ctx.fillText('+', cx + 28, cy + 22);
+  ctx.font = "700 13px 'JetBrains Mono', monospace";
+  ctx.fillStyle = '#1b3a63';
+  ctx.textAlign = 'right';
+  ctx.fillText(V.toFixed(0) + ' V', cx - 30, cy + 4);
+}
+
+function drawBulb(cx, cy, power, R, label) {
+  if (power > 0.04) {
+    const r = 90;
+    const gr = ctx.createRadialGradient(cx, cy, 6, cx, cy, r);
+    gr.addColorStop(0, `rgba(244,208,74,${0.55 * power})`);
+    gr.addColorStop(1, 'rgba(244,208,74,0)');
+    ctx.fillStyle = gr;
+    ctx.fillRect(cx - r, cy - r, 2*r, 2*r);
+  }
+  ctx.fillStyle = power > 0.04 ? `rgba(255, 240, 130, ${0.55 + 0.45 * power})` : '#ece4cd';
+  ctx.beginPath();
+  ctx.arc(cx, cy, 22, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.strokeStyle = '#1e1d1a';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(cx - 13, cy - 13); ctx.lineTo(cx + 13, cy + 13);
+  ctx.moveTo(cx + 13, cy - 13); ctx.lineTo(cx - 13, cy + 13);
+  ctx.stroke();
+  ctx.lineWidth = 8;
+  ctx.strokeStyle = '#b08456';
+  ctx.beginPath();
+  ctx.moveTo(cx, cy - 22); ctx.lineTo(cx, cy - 26);
+  ctx.moveTo(cx, cy + 22); ctx.lineTo(cx, cy + 26);
+  ctx.stroke();
+  ctx.lineWidth = 2;
+
+  // label
+  if (label) {
+    ctx.fillStyle = '#1e1d1a';
+    ctx.font = "700 13px 'JetBrains Mono', monospace";
+    ctx.textAlign = 'left';
+    ctx.fillText(label, cx + 32, cy - 3);
+    ctx.font = "500 11px 'JetBrains Mono', monospace";
+    ctx.fillStyle = '#555148';
+    ctx.fillText(R.toFixed(1) + ' Ω', cx + 32, cy + 12);
+  }
+}
+
+function drawSeriesSwitch(g) {
+  const cx = (g.left + g.right) / 2 - 70;
+  const cy = g.bottom;
+  ctx.fillStyle = '#1e1d1a';
+  ctx.beginPath();
+  ctx.arc(cx - 22, cy, 4, 0, Math.PI * 2);
+  ctx.arc(cx + 22, cy, 4, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.strokeStyle = '#1e1d1a';
+  ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  ctx.moveTo(cx - 22, cy);
+  if (state.switchClosed) ctx.lineTo(cx + 22, cy);
+  else ctx.lineTo(cx + 14, cy - 22);
+  ctx.stroke();
+}
+
+function drawSeriesElectrons() {
+  for (const e of circuitElectrons) {
+    const p = seriesPathPoint(e.s);
+    const px = -p.dy, py = p.dx;
+    const wob = Math.sin(state.time * 0.008 + e.tphase * 3) * 4;
+    const x = p.x + px * wob, y = p.y + py * wob;
+    drawElectronDot(x, y);
+  }
+}
+
+function drawElectronDot(x, y) {
+  ctx.fillStyle = '#2c5f8d';
+  ctx.beginPath();
+  ctx.arc(x, y, 4, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(95, 179, 217, 0.6)';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+}
+
+function drawSeriesReadouts(g) {
+  if (!state.switchClosed) {
+    document.getElementById('readouts').innerHTML =
+      `<div><span class="lbl">switch</span> <span class="val">OPEN</span></div>
+       <div><span class="lbl">current</span> <span class="val">0 A</span></div>`;
+    document.getElementById('readouts').style.display = 'block';
+    return;
+  }
+  const I = state.cellEMF / (state.bulb1R + state.bulb2R + 0.5);
+  const V1 = I * state.bulb1R;
+  const V2 = I * state.bulb2R;
+  const Rtot = state.bulb1R + state.bulb2R;
+  const r = document.getElementById('readouts');
+  r.style.display = 'block';
+  r.innerHTML = `
+    <div><span class="lbl">R<sub>total</sub></span> <span class="val accent">${Rtot.toFixed(1)} Ω</span></div>
+    <div><span class="lbl">I (everywhere)</span> <span class="val accent">${I.toFixed(2)} A</span></div>
+    <div><span class="lbl">V across B₁</span> <span class="val">${V1.toFixed(2)} V</span></div>
+    <div><span class="lbl">V across B₂</span> <span class="val">${V2.toFixed(2)} V</span></div>
+    <div><span class="lbl">V₁ + V₂</span> <span class="val">${(V1 + V2).toFixed(2)} V (= EMF)</span></div>
+  `;
+}
+
+/* ============================================================
+   DRAW: Parallel scene
+   ============================================================ */
+function drawParallel() {
+  const L = parallelLayout();
+
+  drawParallelWires(L);
+  if (state.showSurfaceCharges) drawParallelSurfaceCharges(L);
+  if (state.showBField) drawParallelBField(L);
+  if (state.showEField) drawParallelEField(L);
+  if (state.showPoynting) drawParallelPoynting(L);
+  drawCell(L.cellX, L.cellY, state.cellEMF);
+  drawBulb(L.bulb1XPos, L.branch1Y, computeParallelPower(1), state.bulb1R, 'B₁');
+  drawBulb(L.bulb2XPos, L.branch2Y, computeParallelPower(2), state.bulb2R, 'B₂');
+  drawJunctionDots(L);
+  drawParallelSwitch(L);
+  if (state.showElectrons) drawParallelElectrons(L);
+  drawParallelReadouts();
+}
+
+function drawParallelWires(L) {
+  function strokeAll(color, w) {
+    ctx.strokeStyle = color; ctx.lineWidth = w; ctx.lineCap = 'butt';
+    // Trunk: cell − up to nodeLeft
+    ctx.beginPath(); ctx.moveTo(L.cellX, L.cellY - 12); ctx.lineTo(L.nodeLeft.x, L.nodeLeft.y); ctx.stroke();
+    // Trunk: nodeRight down to bottomRight
+    ctx.beginPath(); ctx.moveTo(L.nodeRight.x, L.nodeRight.y); ctx.lineTo(L.bottomRight.x, L.bottomRight.y); ctx.stroke();
+    // Trunk: bottom wire R → L
+    ctx.beginPath(); ctx.moveTo(L.bottomRight.x, L.bottomRight.y); ctx.lineTo(L.bottomLeft.x, L.bottomLeft.y); ctx.stroke();
+    // Trunk: bottomLeft → cell + (bottom of cell)
+    ctx.beginPath(); ctx.moveTo(L.bottomLeft.x, L.bottomLeft.y); ctx.lineTo(L.cellX, L.cellY + 12); ctx.stroke();
+    // Branch 1: nodeLeft → bulb 1 → nodeRight (along branch1Y)
+    ctx.beginPath();
+    ctx.moveTo(L.nodeLeft.x, L.branch1Y);
+    ctx.lineTo(L.bulb1XPos - 22, L.branch1Y);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(L.bulb1XPos + 22, L.branch1Y);
+    ctx.lineTo(L.nodeRight.x, L.branch1Y);
+    ctx.stroke();
+    // Branch 2: nodeLeft → drop → bulb 2 → rise → nodeRight
+    ctx.beginPath();
+    ctx.moveTo(L.nodeLeft.x, L.nodeLeft.y);
+    ctx.lineTo(L.nodeLeft.x, L.branch2Y);
+    ctx.lineTo(L.bulb2XPos - 22, L.branch2Y);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(L.bulb2XPos + 22, L.branch2Y);
+    ctx.lineTo(L.nodeRight.x, L.branch2Y);
+    ctx.lineTo(L.nodeRight.x, L.nodeRight.y);
+    ctx.stroke();
+  }
+  strokeAll('rgba(122,90,56,0.20)', 16);
+  strokeAll('#b08456', 11);
+  strokeAll('#d8b388', 4);
+}
+
+function computeParallelPower(which) {
+  if (!state.switchClosed) return 0;
+  const V = state.cellEMF;
+  const R = which === 1 ? state.bulb1R : state.bulb2R;
+  const I = V / R;
+  const P = I * V;
+  return Math.min(1, P / 12);
+}
+
+function drawJunctionDots(L) {
+  ctx.fillStyle = '#1e1d1a';
+  for (const node of [L.nodeLeft, L.nodeRight]) {
+    ctx.beginPath();
+    ctx.arc(node.x, node.y, 5, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+function drawParallelSwitch(L) {
+  // place switch on the bottom trunk wire
+  const cx = (L.bottomLeft.x + L.bottomRight.x) / 2;
+  const cy = L.bottomLeft.y;
+  ctx.fillStyle = '#1e1d1a';
+  ctx.beginPath();
+  ctx.arc(cx - 22, cy, 4, 0, Math.PI * 2);
+  ctx.arc(cx + 22, cy, 4, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.strokeStyle = '#1e1d1a';
+  ctx.lineWidth = 2.5;
+  ctx.beginPath();
+  ctx.moveTo(cx - 22, cy);
+  if (state.switchClosed) ctx.lineTo(cx + 22, cy);
+  else ctx.lineTo(cx + 14, cy - 22);
+  ctx.stroke();
+}
+
+function drawParallelSurfaceCharges(L) {
+  // Both branches have the same V (= EMF). + on the LEFT (nodeLeft side, closer to cell +),
+  // − on the RIGHT (nodeRight side, closer to cell −).
+  // Wait, we need to think about which terminal is which for parallel.
+  // Cell + terminal (bottom) connects to the bottom-trunk going right → up → nodeRight.
+  // Cell − terminal (top) connects up to nodeLeft.
+  // So nodeLeft is at − potential; nodeRight is at + potential? Let me re-check.
+  // Actually conventional current flows OUT of cell + (bottom). It goes:
+  //   cell + (bottom) → wire up to bottomLeft area → bottom wire RIGHT → bottomRight → up → nodeRight.
+  //   nodeRight → branches LEFT → nodeLeft.
+  //   nodeLeft → wire DOWN to cell − (top of cell).
+  // So:
+  //   nodeRight is at HIGHER potential (closer to + terminal via the trunk path).
+  //   nodeLeft is at LOWER potential (closer to − terminal).
+  // Surface charges:
+  //   + side: trunk path from cell + to nodeRight, plus a bit into each branch up to where it crosses bulb.
+  //   − side: from nodeLeft back to cell −, and the branches up to where they cross bulb.
+  // Visualisation: branches each transition + → − across their bulb. nodeRight side = +, nodeLeft side = −.
+
+  const charges = [];
+  const step = 28;
+  // Trunk left column (cell − to nodeLeft): − charges
+  for (let y = L.nodeLeft.y + 8; y < L.cellY - 18; y += step)
+    charges.push({ x: L.cellX - 12, y, sign: -1 });
+  // Trunk right column (nodeRight to bottomRight): + charges
+  for (let y = L.nodeRight.y + 8; y < L.bottomRight.y - 8; y += step)
+    charges.push({ x: L.nodeRight.x + 12, y, sign: +1 });
+  // Bottom wire: + charges
+  for (let x = L.bottomLeft.x + 16; x < L.bottomRight.x - 16; x += step)
+    charges.push({ x, y: L.bottomRight.y + 12, sign: +1 });
+  // Cell + (bottom-left short): + charges
+  for (let y = L.cellY + 18; y < L.bottomLeft.y - 8; y += step)
+    charges.push({ x: L.cellX - 12, y, sign: +1 });
+
+  // Branch 1: + on nodeRight side, − on nodeLeft side, transitioning at bulb 1
+  for (let x = L.nodeLeft.x + 16; x < L.nodeRight.x - 16; x += step) {
+    if (Math.abs(x - L.bulb1XPos) < 30) continue;
+    const sign = x > L.bulb1XPos ? +1 : -1;
+    charges.push({ x, y: L.branch1Y - 12, sign });
+  }
+  // Branch 2 horizontal segment
+  for (let x = L.nodeLeft.x + 16; x < L.nodeRight.x - 16; x += step) {
+    if (Math.abs(x - L.bulb2XPos) < 30) continue;
+    const sign = x > L.bulb2XPos ? +1 : -1;
+    charges.push({ x, y: L.branch2Y + 12, sign });
+  }
+  // Branch 2 verticals (both sides drop down from nodes — sign matches the node's sign)
+  for (let y = L.nodeLeft.y + 8; y < L.branch2Y - 8; y += step) {
+    charges.push({ x: L.nodeLeft.x - 12, y, sign: -1 });
+    charges.push({ x: L.nodeRight.x + 12, y, sign: +1 });
+  }
+
+  for (const c of charges) drawSurfaceChargeMark(c.x, c.y, c.sign);
+}
+
+function drawParallelEField(L) {
+  // E field directions: along conventional current.
+  // Trunk: cell + → bottomLeft → bottomRight → up to nodeRight: so along this direction
+  //        Specifically: bottom wire L→R, right column UP, ...
+  // wait, conventional current exits cell + (bottom), goes RIGHT along bottom wire, UP the right column, into the branches RIGHT-TO-LEFT (since current enters from nodeRight side), through bulbs, to nodeLeft, then DOWN to cell −.
+  //
+  // Let me re-examine: the trunk path I drew has cell + → bottomLeft → bottomRight (rightward bottom wire) → up to nodeRight. So conventional current goes that way. Then current enters branches from nodeRight side → left across each branch → exits at nodeLeft → down to cell −.
+  //
+  // So in branch 1: conventional current is RIGHT-TO-LEFT (from nodeRight to nodeLeft).
+  // Inside bulb 1: E points right-to-left (along current).
+  //
+  // In branch 2 (with the dropdowns): conventional current goes nodeRight DOWN, then RIGHT-TO-LEFT, then UP. Inside bulb 2: same right-to-left.
+  //
+  // E field magnitude: smaller in wires (low R), larger in bulbs (high R).
+  //
+  // Let me draw this.
+
+  const wireE = 0.15;
+  const R1 = state.bulb1R, R2 = state.bulb2R;
+
+  // For parallel: V across each branch is the same (= EMF). E inside each bulb is V/length.
+  // If lengths are similar, E in bulb is proportional to V (same for each); but in the wires it's smaller.
+  // The CURRENT in each branch differs: I1 = V/R1, I2 = V/R2. But that's about charge flux, not E.
+
+  // Let's say E inside both bulbs is ~equal (both same length, same V across).
+  const bulbE = 0.95;
+
+  // Trunk: bottom wire R direction is L→R (current from cell + to bottomRight)
+  drawWireFieldArrows(L.bottomLeft.x, L.bottomLeft.y, L.bottomRight.x, L.bottomRight.y, 1, 0, wireE, 5);
+  // Right column UP
+  drawWireFieldArrows(L.bottomRight.x, L.bottomRight.y, L.nodeRight.x, L.nodeRight.y, 0, -1, wireE, 3);
+  // Branch 1: RIGHT → LEFT (current enters from nodeRight)
+  // arrows along upper branch pointing leftward
+  drawWireFieldArrows(L.nodeLeft.x + 30, L.branch1Y, L.bulb1XPos - 22, L.branch1Y, -1, 0, wireE, 2);
+  drawWireFieldArrows(L.bulb1XPos + 22, L.branch1Y, L.nodeRight.x - 30, L.branch1Y, -1, 0, wireE, 2);
+  // bulb 1 inner arrow leftward
+  drawArrow(L.bulb1XPos + 16, L.branch1Y, L.bulb1XPos - 16, L.branch1Y, '#c23a2a', 2.8, 9);
+  // Branch 2: vertical segments: nodeRight drop DOWN, then RIGHT→LEFT, then UP at nodeLeft
+  drawWireFieldArrows(L.nodeRight.x, L.nodeRight.y + 8, L.nodeRight.x, L.branch2Y - 4, 0, 1, wireE, 1);
+  drawWireFieldArrows(L.nodeLeft.x + 30, L.branch2Y, L.bulb2XPos - 22, L.branch2Y, -1, 0, wireE, 2);
+  drawWireFieldArrows(L.bulb2XPos + 22, L.branch2Y, L.nodeRight.x - 30, L.branch2Y, -1, 0, wireE, 2);
+  drawArrow(L.bulb2XPos + 16, L.branch2Y, L.bulb2XPos - 16, L.branch2Y, '#c23a2a', 2.8, 9);
+  drawWireFieldArrows(L.nodeLeft.x, L.branch2Y - 4, L.nodeLeft.x, L.nodeLeft.y + 8, 0, -1, wireE, 1);
+  // Trunk return: nodeLeft → cell − (top of cell), DOWN
+  drawWireFieldArrows(L.cellX, L.nodeLeft.y, L.cellX, L.cellY - 18, 0, 1, wireE, 2);
+}
+
+function drawParallelBField(L) {
+  // Crude — just put dots/crosses near the wire perimeter.
+  // Skip detailed Maxwell-correct drawing (this is illustrative only).
+  // We'll show:
+  //   Inside enclosed regions: out of page
+  //   The two branches enclose two sub-loops with the trunk; both can be marked OUT inside.
+  // For simplicity: mark dots inside the rectangle bounded by trunk and either branch.
+  const gridStep = 60;
+  for (let x = L.cellX + 30; x < L.nodeRight.x - 8; x += gridStep) {
+    for (let y = L.nodeLeft.y + 10; y < L.bottomRight.y - 10; y += gridStep) {
+      // skip near wires
+      if (Math.abs(y - L.branch1Y) < 14) continue;
+      if (Math.abs(y - L.branch2Y) < 14) continue;
+      if (Math.abs(y - L.bottomRight.y) < 14) continue;
+      drawBSymbol(x, y, 0.7);
+    }
+  }
+}
+
+function drawParallelPoynting(L) {
+  // Energy enters each branch from the surrounding field.
+  // Inside the loop interior, gold arrows from cell side → bulb regions.
+  const dashOffset = -(state.time * 0.05) % 40;
+  const I1 = state.cellEMF / state.bulb1R;
+  const I2 = state.cellEMF / state.bulb2R;
+  // P = V·I, but for Poynting magnitude visualisation, scale with branch power
+  const total = I1 + I2;
+  const mag1 = 0.6 + 0.5 * (I1 / total);
+  const mag2 = 0.6 + 0.5 * (I2 / total);
+
+  // Arrows entering bulb 1
+  const arrLen = 50;
+  drawPoyntingArrow(L.bulb1XPos - arrLen - 18, L.branch1Y, L.bulb1XPos - 22, L.branch1Y, mag1, dashOffset);
+  drawPoyntingArrow(L.bulb1XPos - arrLen - 18, L.branch1Y - 22, L.bulb1XPos - 22, L.branch1Y - 22, mag1 * 0.85, dashOffset);
+  drawPoyntingArrow(L.bulb1XPos - arrLen - 18, L.branch1Y + 22, L.bulb1XPos - 22, L.branch1Y + 22, mag1 * 0.85, dashOffset);
+  // Arrows entering bulb 2
+  drawPoyntingArrow(L.bulb2XPos - arrLen - 18, L.branch2Y, L.bulb2XPos - 22, L.branch2Y, mag2, dashOffset);
+  drawPoyntingArrow(L.bulb2XPos - arrLen - 18, L.branch2Y - 22, L.bulb2XPos - 22, L.branch2Y - 22, mag2 * 0.85, dashOffset);
+  drawPoyntingArrow(L.bulb2XPos - arrLen - 18, L.branch2Y + 22, L.bulb2XPos - 22, L.branch2Y + 22, mag2 * 0.85, dashOffset);
+}
+
+function drawParallelElectrons(L) {
+  // Electrons travel CCW in the trunk. In each branch, they travel from nodeRight to nodeLeft (since electron flow opposite to conventional current).
+  // We use 3 populations.
+
+  // Trunk: parametric path described in trunkPathPoint(s)
+  for (const e of mainTrunkElectrons) {
+    const p = trunkPathPoint(e.s);
+    const px = -p.dy, py = p.dx;
+    const wob = Math.sin(state.time * 0.008 + e.tphase * 3) * 4;
+    drawElectronDot(p.x + px * wob, p.y + py * wob);
+  }
+  // Branch 1: branch1PathPoint goes nodeLeft→nodeRight in increasing s.
+  // Conventional current flows nodeRight → nodeLeft (right → left), so ELECTRONS
+  // flow the OPPOSITE way: nodeLeft → nodeRight (left → right) — matching path direction.
+  // No flip needed.
+  for (const e of parallelBranchElectrons.b1) {
+    const p = branch1PathPoint(e.s);
+    const px = -p.dy, py = p.dx;
+    const wob = Math.sin(state.time * 0.008 + e.tphase * 3) * 4;
+    drawElectronDot(p.x + px * wob, p.y + py * wob);
+  }
+  for (const e of parallelBranchElectrons.b2) {
+    const p = branch2PathPoint(e.s);
+    const px = -p.dy, py = p.dx;
+    const wob = Math.sin(state.time * 0.008 + e.tphase * 3) * 4;
+    drawElectronDot(p.x + px * wob, p.y + py * wob);
+  }
+}
+
+function drawParallelReadouts() {
+  if (!state.switchClosed) {
+    document.getElementById('readouts').innerHTML =
+      `<div><span class="lbl">switch</span> <span class="val">OPEN</span></div>
+       <div><span class="lbl">all currents</span> <span class="val">0 A</span></div>`;
+    document.getElementById('readouts').style.display = 'block';
+    return;
+  }
+  const V = state.cellEMF;
+  const I1 = V / state.bulb1R;
+  const I2 = V / state.bulb2R;
+  const Itot = I1 + I2;
+  const Rtot = 1 / (1/state.bulb1R + 1/state.bulb2R);
+  const r = document.getElementById('readouts');
+  r.style.display = 'block';
+  r.innerHTML = `
+    <div><span class="lbl">V (each branch)</span> <span class="val accent">${V.toFixed(1)} V</span></div>
+    <div><span class="lbl">I₁</span> <span class="val">${I1.toFixed(2)} A</span></div>
+    <div><span class="lbl">I₂</span> <span class="val">${I2.toFixed(2)} A</span></div>
+    <div><span class="lbl">I<sub>total</sub></span> <span class="val accent">${Itot.toFixed(2)} A</span></div>
+    <div><span class="lbl">R<sub>total</sub></span> <span class="val">${Rtot.toFixed(2)} Ω</span></div>
+  `;
+}
+
+/* ============================================================
+   ROUTER
+   ============================================================ */
+function update(dt) {
+  if (state.scene === 'resistance') updateResistance(dt);
+  else if (state.scene === 'series') updateSeries(dt);
+  else if (state.scene === 'parallel') updateParallel(dt);
+}
+function draw() {
+  ctx.clearRect(0, 0, state.W, state.H);
+  ctx.fillStyle = '#fbf7ec';
+  ctx.fillRect(0, 0, state.W, state.H);
+  ctx.fillStyle = 'rgba(30,29,26,0.06)';
+  for (let x = 20; x < state.W; x += 22)
+    for (let y = 20; y < state.H; y += 22)
+      ctx.fillRect(x, y, 1, 1);
+
+  if (state.scene === 'resistance') drawResistance();
+  else if (state.scene === 'series') drawSeries();
+  else if (state.scene === 'parallel') drawParallel();
+}
+
+/* ============================================================
+   WALKTHROUGH CONTROL
+   ============================================================ */
+function applyStage(idx) {
+  state.stage = idx;
+  const stg = STAGES[idx - 1];
+  state.scene = stg.scene;
+
+  // Apply config from stage
+  if (stg.config) {
+    for (const k in stg.config) state[k] = stg.config[k];
+  }
+
+  // Default layer values for circuit stages if not set
+  if (state.scene !== 'resistance' && stg.config && !('showElectrons' in stg.config)) {
+    state.showElectrons = true;
+  }
+
+  document.getElementById('walkStageLabel').textContent = `Stage ${idx} of ${STAGES.length}`;
+  document.getElementById('walkTitle').innerHTML = stg.title;
+  document.getElementById('walkNarrative').textContent = stg.narrative;
+  document.getElementById('takeawayTitle').textContent = `Stage ${idx} — key idea`;
+  document.getElementById('takeawayBody').innerHTML = stg.takeaway;
+
+  document.getElementById('walkPrev').disabled = (idx === 1);
+  document.getElementById('walkNext').textContent = (idx === STAGES.length) ? 'Finish → free explore' : 'Next →';
+
+  syncAll();
+}
+
+function syncAll() {
+  // Show/hide control panels based on current scene
+  const isRes = state.scene === 'resistance';
+  document.getElementById('layerControls').classList.toggle('show', !isRes);
+  document.getElementById('resistanceControls').classList.toggle('show', isRes);
+  document.getElementById('circuitControls').classList.toggle('show', !isRes);
+
+  // Scene toggle
+  document.querySelectorAll('#sceneToggle button').forEach(b => {
+    b.classList.toggle('active', b.dataset.val === state.scene);
+  });
+  // Scene label
+  const labels = {
+    resistance: 'Resistance — microscopic',
+    series: 'Series — surface charges & field',
+    parallel: 'Parallel — surface charges & field',
+  };
+  document.getElementById('sceneLabel').textContent = labels[state.scene];
+  document.getElementById('metaScene').textContent = labels[state.scene];
+
+  // Layer toggles
+  const map = [
+    ['layerElectrons', 'showElectrons', 'layerElectronsLbl'],
+    ['layerSurface',   'showSurfaceCharges', 'layerSurfaceLbl'],
+    ['layerEField',    'showEField', 'layerEFieldLbl'],
+    ['layerBField',    'showBField', 'layerBFieldLbl'],
+    ['layerPoynting',  'showPoynting', 'layerPoyntingLbl'],
+  ];
+  for (const [chk, key, lbl] of map) {
+    document.getElementById(chk).checked = state[key];
+    document.getElementById(lbl).classList.toggle('active', state[key]);
+  }
+
+  // Switch UI
+  const swBtn = document.getElementById('switchBtn');
+  swBtn.classList.toggle('closed', state.switchClosed);
+  swBtn.textContent = 'Switch: ' + (state.switchClosed ? 'closed' : 'open');
+
+  // Resistance UI
+  const rField = document.getElementById('rFieldBtn');
+  rField.classList.toggle('closed', state.rFieldOn);
+  rField.textContent = 'E field: ' + (state.rFieldOn ? 'ON' : 'OFF');
+  document.getElementById('rTemp').value = state.rTemp;
+  document.getElementById('rTempVal').textContent = state.rTemp.toFixed(1);
+  document.getElementById('rImpurity').value = state.rImpurity;
+  document.getElementById('rImpurityVal').textContent = (state.rImpurity * 100).toFixed(0) + '%';
+  document.getElementById('rShowFlashes').checked = state.rShowFlashes;
+  document.getElementById('rShowFlashesLbl').classList.toggle('active', state.rShowFlashes);
+  document.getElementById('rShowHeat').checked = state.rShowHeat;
+  document.getElementById('rShowHeatLbl').classList.toggle('active', state.rShowHeat);
+
+  // Bulb sliders
+  document.getElementById('bulb1R').value = state.bulb1R;
+  document.getElementById('bulb1RVal').textContent = state.bulb1R.toFixed(1) + ' Ω';
+  document.getElementById('bulb2R').value = state.bulb2R;
+  document.getElementById('bulb2RVal').textContent = state.bulb2R.toFixed(1) + ' Ω';
+
+  // Legend update per scene
+  updateLegend();
+
+  // Hide readouts initially for resistance until first sample taken
+  if (isRes) {
+    // shown via updateResistanceReadouts()
+  }
+}
+
+function updateLegend() {
+  const list = document.getElementById('legendList');
+  if (state.scene === 'resistance') {
+    list.innerHTML = `
+      <div class="row"><span class="swatch" style="background:#b54d28; border-radius:50%"></span>positive ion (lattice)</div>
+      <div class="row"><span class="swatch" style="background:#2c5f8d; border-radius:50%"></span>free electron</div>
+      <div class="row"><span class="swatch" style="background:#5b3a8c; border-radius:50%"></span>impurity (extra scattering)</div>
+      <div class="row"><span class="swatch" style="background:#e65a1f; border-radius:50%"></span>collision flash</div>
+      <div class="row"><span class="swatch" style="background:var(--heat-glow); border-radius:50%"></span>heat (vibrating ions)</div>
+    `;
+  } else {
+    list.innerHTML = `
+      <div class="row"><span class="swatch" style="background:#2c5f8d; border-radius:50%"></span>electron (drifts in wire)</div>
+      <div class="row"><span class="swatch" style="background:linear-gradient(90deg,var(--pos-charge) 50%,var(--neg-charge) 50%)"></span>surface charge (+ / −)</div>
+      <div class="row"><span class="swatch" style="background:var(--efield)"></span>E field (along current)</div>
+      <div class="row"><span class="swatch" style="background:var(--bfield)"></span>B field (around wire)</div>
+      <div class="row"><span class="swatch" style="background:var(--poynting-glow)"></span>energy flow (Poynting)</div>
+    `;
+  }
+}
+
+function exitWalkthrough() {
+  state.mode = 'free';
+  document.getElementById('walkthrough').classList.add('hidden');
+  document.getElementById('restartWalkBtn').style.display = 'inline-block';
+  // Default exploration values per scene
+  if (state.scene !== 'resistance') {
+    state.showElectrons = true;
+    state.showSurfaceCharges = true;
+    state.showEField = true;
+    state.showBField = true;
+    state.showPoynting = true;
+  }
+  document.getElementById('takeawayTitle').textContent = 'Free exploration';
+  document.getElementById('takeawayBody').innerHTML = 'Switch scenes, toggle layers, and play with the resistance / temperature / bulb sliders.';
+  syncAll();
+}
+function restartWalkthrough() {
+  state.mode = 'walkthrough';
+  document.getElementById('walkthrough').classList.remove('hidden');
+  document.getElementById('restartWalkBtn').style.display = 'none';
+  applyStage(1);
+}
+
+/* ============================================================
+   EVENT WIRING
+   ============================================================ */
+function setupSegToggle(id, key, parser) {
+  parser = parser || ((v) => v);
+  const t = document.getElementById(id);
+  t.querySelectorAll('button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      t.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      state[key] = parser(btn.dataset.val);
+      if (key === 'scene') syncAll();
+    });
+  });
+}
+setupSegToggle('sceneToggle', 'scene');
+setupSegToggle('speedToggle', 'simSpeed', parseFloat);
+
+function bindLayer(chkId, lblId, key) {
+  const chk = document.getElementById(chkId);
+  const lbl = document.getElementById(lblId);
+  chk.addEventListener('change', () => {
+    state[key] = chk.checked;
+    lbl.classList.toggle('active', chk.checked);
+  });
+}
+bindLayer('layerElectrons', 'layerElectronsLbl', 'showElectrons');
+bindLayer('layerSurface',   'layerSurfaceLbl',   'showSurfaceCharges');
+bindLayer('layerEField',    'layerEFieldLbl',    'showEField');
+bindLayer('layerBField',    'layerBFieldLbl',    'showBField');
+bindLayer('layerPoynting',  'layerPoyntingLbl',  'showPoynting');
+bindLayer('rShowFlashes', 'rShowFlashesLbl', 'rShowFlashes');
+bindLayer('rShowHeat',    'rShowHeatLbl',    'rShowHeat');
+
+document.getElementById('walkNext').addEventListener('click', () => {
+  if (state.stage < STAGES.length) applyStage(state.stage + 1);
+  else exitWalkthrough();
+});
+document.getElementById('walkPrev').addEventListener('click', () => {
+  if (state.stage > 1) applyStage(state.stage - 1);
+});
+document.getElementById('walkSkip').addEventListener('click', exitWalkthrough);
+document.getElementById('restartWalkBtn').addEventListener('click', restartWalkthrough);
+
+document.getElementById('switchBtn').addEventListener('click', () => {
+  state.switchClosed = !state.switchClosed;
+  syncAll();
+});
+
+document.getElementById('rFieldBtn').addEventListener('click', () => {
+  state.rFieldOn = !state.rFieldOn;
+  syncAll();
+});
+
+document.getElementById('rTemp').addEventListener('input', (e) => {
+  state.rTemp = parseFloat(e.target.value);
+  document.getElementById('rTempVal').textContent = state.rTemp.toFixed(1);
+});
+
+document.getElementById('rImpurity').addEventListener('input', (e) => {
+  state.rImpurity = parseFloat(e.target.value);
+  document.getElementById('rImpurityVal').textContent = (state.rImpurity * 100).toFixed(0) + '%';
+  rebuildImpurities();
+});
+
+document.getElementById('bulb1R').addEventListener('input', (e) => {
+  state.bulb1R = parseFloat(e.target.value);
+  document.getElementById('bulb1RVal').textContent = state.bulb1R.toFixed(1) + ' Ω';
+});
+document.getElementById('bulb2R').addEventListener('input', (e) => {
+  state.bulb2R = parseFloat(e.target.value);
+  document.getElementById('bulb2RVal').textContent = state.bulb2R.toFixed(1) + ' Ω';
+});
+
+/* ============================================================
+   REBUILD ALL & MAIN LOOP
+   ============================================================ */
+function rebuildAll() {
+  rebuildResistance();
+  rebuildCircuitElectrons();
+}
+
+let lastT = performance.now();
+function frame(now) {
+  const realDt = Math.min(50, now - lastT);
+  lastT = now;
+  const dt = realDt * state.simSpeed;
+  update(dt);
+  draw();
+  requestAnimationFrame(frame);
+}
+
+fitCanvas();
+rebuildAll();
+applyStage(1);
+requestAnimationFrame(frame);
+
+</script>
+</body>
+</html>

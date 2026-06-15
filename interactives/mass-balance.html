@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conservation of mass</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1E2761;--navy-soft:#2a3478;--warm:#F8F4EC;--warm-deep:#EFE8D6;--paper:#FCFAF4;
+  --soft-blue:#EDF2FA;--ink:#1A1A1A;--muted:#5C6370;--rule:#CFD8E3;--accent:#B85042;
+  --accent-soft:#F4DAD7;--success:#2C5F2D;--success-soft:#DDEBDD;--gold:#C8A24A;--gold-soft:#F2E6BD;
+  --display:'Instrument Serif',Georgia,serif;--body:'IBM Plex Sans',system-ui,sans-serif;--mono:'IBM Plex Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--body);background:var(--paper);color:var(--ink);padding:16px;font-weight:300}
+.wrap{max-width:700px;margin:0 auto}
+.instr{font-size:14px;color:var(--muted);margin-bottom:10px;line-height:1.4}
+.instr strong{color:var(--navy);font-weight:600}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px}
+.label{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+button{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:500;
+  background:var(--navy);color:var(--warm);border:1px solid var(--navy);padding:9px 13px;border-radius:3px;cursor:pointer;transition:all .18s}
+button:hover:not(:disabled){background:var(--accent);border-color:var(--accent)}
+button:disabled{opacity:.45;cursor:default}
+button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.pick{background:var(--paper);color:var(--navy);border:1px solid var(--rule)}
+.pick.active{background:var(--gold-soft);border-color:var(--gold)}
+.pick:hover{background:var(--soft-blue);border-color:var(--navy);color:var(--navy)}
+.toggle{background:var(--paper);color:var(--navy);border:1px solid var(--rule)}
+.toggle.open{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.scaleArea{display:flex;flex-direction:column;align-items:center;margin:6px 0 10px}
+.reading{font-family:var(--mono);font-size:14px;font-weight:600;color:var(--navy);background:var(--warm);border:1px solid var(--rule);border-radius:4px;padding:6px 14px;margin-bottom:8px;letter-spacing:.04em}
+.reading b{color:var(--accent)}
+.balance{position:relative;width:300px;max-width:100%;height:120px}
+.beam{position:absolute;left:8%;right:8%;top:34px;height:8px;background:var(--navy);border-radius:4px;transform-origin:center;transition:transform .9s cubic-bezier(.4,0,.2,1)}
+.pan{position:absolute;top:46px;width:84px;height:52px;border:2px solid var(--navy-soft);border-top:none;border-radius:0 0 12px 12px;background:var(--paper);display:flex;align-items:flex-end;justify-content:center;gap:3px;padding-bottom:4px;transition:top .9s cubic-bezier(.4,0,.2,1)}
+.panL{left:6%} .panR{right:6%}
+.fulcrum{position:absolute;left:50%;top:30px;transform:translateX(-50%);width:0;height:0;border-left:12px solid transparent;border-right:12px solid transparent;border-bottom:54px solid var(--navy-soft)}
+.chip{width:16px;height:16px;border-radius:3px;border:1px solid rgba(0,0,0,.25);font-size:0}
+.gas{position:absolute;font-size:16px;opacity:0;transition:opacity .5s,transform 1.4s;pointer-events:none}
+.panttl{position:absolute;top:100px;width:84px;text-align:center;font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.panttlL{left:6%} .panttlR{right:6%}
+.note{border-radius:4px;padding:12px 14px;font-size:14px;line-height:1.45;border:1px solid var(--rule);background:var(--soft-blue);color:var(--muted)}
+.note.sealed{background:var(--success-soft);border-color:var(--success);color:var(--ink)}
+.note.openn{background:var(--gold-soft);border-color:var(--gold);color:var(--ink)}
+.note .head{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;display:block;margin-bottom:4px;color:var(--navy)}
+.note.sealed .head{color:var(--success)} .note.openn .head{color:var(--gold)}
+.note b{font-weight:600}
+.scen{font-family:var(--mono);font-size:12px;color:var(--navy);margin:4px 0 8px;letter-spacing:.02em}
+.take{font-family:var(--display);font-style:italic;font-size:17px;color:var(--navy);line-height:1.35;margin-top:12px;padding-top:10px;border-top:1px solid var(--rule)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="instr">Run a reaction on a balance. <strong>Seal</strong> the container and mass stays the same. <strong>Open</strong> it and watch what gas does to the reading.</p>
+  <div class="row" role="group" aria-label="Choose a scenario">
+    <span class="label">Scenario</span>
+    <button class="pick active" data-sc="0" aria-pressed="true">Burning magnesium</button>
+    <button class="pick" data-sc="1" aria-pressed="false">Heating a carbonate</button>
+  </div>
+  <p class="scen" id="scen" aria-live="polite"></p>
+  <div class="row">
+    <span class="label">Container</span>
+    <button class="toggle" id="container" aria-pressed="false">Sealed</button>
+    <button id="run">React ▸</button>
+    <button id="reset" class="pick">Reset</button>
+  </div>
+  <div class="scaleArea">
+    <div class="reading" id="reading" aria-live="polite">Mass: 50.0 g</div>
+    <div class="balance" aria-hidden="true">
+      <div class="fulcrum"></div>
+      <div class="beam" id="beam"></div>
+      <div class="pan panL" id="panL"></div>
+      <div class="pan panR" id="panR"></div>
+      <div class="panttl panttlL">Reactants</div>
+      <div class="panttl panttlR">Products</div>
+      <div class="gas" id="gas">💨</div>
+    </div>
+  </div>
+  <div class="note sealed" id="note" aria-live="polite"></div>
+  <p class="take">Mass is always conserved — apparent changes are just gas entering or leaving an open container.</p>
+</div>
+<script>
+"use strict";
+const SC=[
+  {
+    name:'Burning magnesium',
+    word:'magnesium + oxygen → magnesium oxide',
+    start:50.0,
+    // open: gains mass because oxygen from the air joins the solid
+    openDelta:+12.0, openGas:'in',
+    reactColL:'#9aa0aa', reactColR:'#e8e8e8',
+    sealedNote:'In a sealed flask, the magnesium and the oxygen it reacts with are <b>all inside</b>. The reading does not change — <b>mass is conserved</b>.',
+    openNote:'In open air, oxygen from outside joins the magnesium to make magnesium oxide. The solid <b>gains mass</b> ('+'reading rises'+') — but no atoms were created: oxygen simply moved onto the balance.',
+    gainLoss:'gains'
+  },
+  {
+    name:'Heating a carbonate',
+    word:'copper carbonate → copper oxide + carbon dioxide',
+    start:50.0,
+    openDelta:-15.0, openGas:'out',
+    reactColL:'#3f6e4a', reactColR:'#2b2b2b',
+    sealedNote:'In a sealed tube, the carbon dioxide gas is <b>trapped inside</b>. The reading does not change — <b>mass is conserved</b>.',
+    openNote:'In an open dish, the carbon dioxide gas <b>escapes into the air</b>. The reading <b>drops</b> — but the atoms are not destroyed: the gas just left the balance.',
+    gainLoss:'loses'
+  }
+];
+let cur=0, isOpen=false, reacted=false;
+const $=id=>document.getElementById(id);
+function fmt(n){return n.toFixed(1)+' g';}
+function buildPan(pan,col,n){
+  pan.innerHTML='';
+  for(let i=0;i<n;i++){const c=document.createElement('div');c.className='chip';c.style.background=col;pan.appendChild(c);}
+}
+function setBeam(deg){$('beam').style.transform='rotate('+deg+'deg)';
+  // tilt pans: left lower if reactants heavier (deg<0 lowers left)
+  $('panL').style.top=(46 - deg*1.4)+'px';
+  $('panR').style.top=(46 + deg*1.4)+'px';
+}
+function render(){
+  const s=SC[cur];
+  $('scen').textContent=s.word;
+  $('reading').innerHTML='Mass: '+fmt(s.start);
+  buildPan($('panL'),s.reactColL,4);
+  $('panR').innerHTML='';
+  setBeam(0);
+  $('gas').style.opacity='0'; $('gas').style.transform='none';
+  const note=$('note');
+  note.className='note '+(isOpen?'openn':'sealed');
+  note.innerHTML='<span class="head">'+(isOpen?'Open container':'Sealed container')+'</span>Press React to run the reaction.';
+  $('container').textContent=isOpen?'Open':'Sealed';
+  $('container').classList.toggle('open',isOpen);
+  $('container').setAttribute('aria-pressed',isOpen);
+  $('run').disabled=false;
+  reacted=false;
+}
+function react(){
+  if(reacted) return;
+  reacted=true; $('run').disabled=true;
+  const s=SC[cur];
+  // products appear on right pan
+  buildPan($('panR'),s.reactColR,4);
+  if(!isOpen){
+    setBeam(0);
+    $('reading').innerHTML='Mass: '+fmt(s.start);
+    const note=$('note'); note.className='note sealed';
+    note.innerHTML='<span class="head">Sealed — mass conserved</span>'+s.sealedNote;
+  }else{
+    const newMass=s.start+s.openDelta;
+    // tilt: gain -> products heavier (right down -> deg positive lowers right via setBeam? we lower right when deg+)
+    const deg = s.openDelta>0 ? 8 : -8; // gain -> right(products) heavier; loss -> left heavier
+    setBeam(deg>0? deg : deg); // beam rotates; pan motion handled in setBeam
+    // animate gas
+    const g=$('gas');
+    if(s.openGas==='out'){
+      g.style.left='62%'; g.style.top='40px'; g.style.opacity='1';
+      requestAnimationFrame(()=>{g.style.transform='translateY(-50px)';g.style.opacity='0';});
+    }else{
+      g.style.left='62%'; g.style.top='-10px'; g.style.opacity='1'; g.style.transform='translateY(0)';
+      requestAnimationFrame(()=>{g.style.transform='translateY(50px)';});
+      setTimeout(()=>{g.style.opacity='0';},1200);
+    }
+    $('reading').innerHTML='Mass: <b>'+fmt(newMass)+'</b>';
+    const note=$('note'); note.className='note openn';
+    note.innerHTML='<span class="head">Open — apparent change</span>'+s.openNote;
+  }
+}
+document.querySelectorAll('.pick[data-sc]').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.pick[data-sc]').forEach(x=>{x.classList.remove('active');x.setAttribute('aria-pressed','false')});
+  b.classList.add('active'); b.setAttribute('aria-pressed','true');
+  cur=+b.dataset.sc; render();
+}));
+$('container').addEventListener('click',()=>{isOpen=!isOpen;render();});
+$('run').addEventListener('click',react);
+$('reset').addEventListener('click',render);
+render();
+</script>
+</body>
+</html>

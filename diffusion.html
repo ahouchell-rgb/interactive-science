@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diffusion &amp; Surface Area : Volume</title>
+<style>
+  :root{
+    --cream:#f6f1e7;
+    --panel:#fffdf8;
+    --panel-2:#fbf6ec;
+    --ink:#2d2a24;
+    --muted:#6b6458;
+    --border:#e4ddcc;
+    --accent:#0f766e;       /* teal: buttons, SA:V readout */
+    --accent-soft:#0f766e22;
+    --out:#2563eb;          /* blue: particles OUTSIDE the cell (high conc.) */
+    --in:#1f9d57;           /* green: particles INSIDE the cell */
+    --membrane:#c2785f;     /* terracotta cell membrane */
+    --nucleus:#7c6aa6;      /* muted violet nucleus */
+    --good:#0f766e;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--cream);
+    color:var(--ink);
+    font-family:"IBM Plex Sans","Segoe UI",system-ui,-apple-system,sans-serif;
+    line-height:1.5;
+    padding:24px 18px 36px;
+  }
+  .wrap{max-width:920px;margin:0 auto;}
+
+  header h1{
+    font-size:clamp(1.5rem,3.5vw,2.1rem);
+    font-weight:700;letter-spacing:-0.02em;margin:0 0 6px;
+  }
+  header p.lead{margin:0 0 4px;color:var(--muted);max-width:62ch;}
+  .gcse{
+    display:inline-block;margin-top:10px;padding:8px 12px;
+    background:var(--accent-soft);border-left:3px solid var(--accent);
+    border-radius:0 8px 8px 0;font-size:0.9rem;color:var(--ink);max-width:64ch;
+  }
+
+  /* ---- Layout ---- */
+  .stage{
+    margin-top:20px;background:var(--panel);
+    border:1px solid var(--border);border-radius:16px;
+    padding:14px;box-shadow:0 1px 0 #00000008,0 8px 24px -16px #00000022;
+  }
+  canvas{display:block;width:100%;height:auto;border-radius:10px;background:#fcfaf4;}
+  .stage-top{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+  #play{min-width:108px;}
+  .legend{
+    display:flex;flex-wrap:wrap;gap:14px;margin-top:10px;
+    font-size:0.82rem;color:var(--muted);
+  }
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .dot{width:11px;height:11px;border-radius:50%;display:inline-block;}
+  .dot.out{background:var(--out);}
+  .dot.in{background:var(--in);}
+  .dot.m{background:transparent;border:2px solid var(--membrane);}
+  .dot.n{background:var(--nucleus);}
+
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;}
+  @media(max-width:680px){.grid{grid-template-columns:1fr;}}
+
+  .card{
+    background:var(--panel);border:1px solid var(--border);
+    border-radius:14px;padding:16px 16px 18px;
+  }
+  .card h2{font-size:0.82rem;text-transform:uppercase;letter-spacing:0.06em;
+    color:var(--muted);margin:0 0 14px;font-weight:600;}
+
+  /* ---- Sliders ---- */
+  .ctrl{margin-bottom:18px;}
+  .ctrl:last-child{margin-bottom:0;}
+  .ctrl .row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;}
+  .ctrl label{font-weight:600;font-size:0.96rem;}
+  .ctrl .val{font-variant-numeric:tabular-nums;color:var(--accent);font-weight:600;font-size:0.9rem;}
+  .ctrl .hint{font-size:0.78rem;color:var(--muted);margin-top:5px;}
+  input[type=range]{
+    -webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:99px;
+    background:linear-gradient(var(--accent),var(--accent)) no-repeat,var(--border);
+    background-size:50% 100%;cursor:pointer;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;width:20px;height:20px;border-radius:50%;
+    background:var(--panel);border:3px solid var(--accent);cursor:pointer;
+    box-shadow:0 2px 5px -1px #0f766e55;margin-top:-1px;
+  }
+  input[type=range]::-moz-range-thumb{
+    width:20px;height:20px;border-radius:50%;background:var(--panel);
+    border:3px solid var(--accent);cursor:pointer;
+  }
+
+  /* ---- Stats ---- */
+  .stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .stat{background:var(--panel-2);border:1px solid var(--border);border-radius:10px;padding:10px 12px;}
+  .stat .k{font-size:0.74rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.04em;}
+  .stat .v{font-size:1.35rem;font-weight:700;font-variant-numeric:tabular-nums;margin-top:2px;}
+  .stat .v small{font-size:0.72rem;font-weight:500;color:var(--muted);}
+  .stat.wide{grid-column:1 / -1;}
+
+  .sav{text-align:center;padding:14px 12px;}
+  .sav .ratio{font-size:2.2rem;font-weight:800;color:var(--accent);font-variant-numeric:tabular-nums;letter-spacing:-0.02em;}
+  .sav .parts{font-size:0.82rem;color:var(--muted);margin-top:2px;}
+  .sav .note{font-size:0.74rem;color:var(--muted);margin-top:8px;line-height:1.4;}
+
+  /* concentration bars */
+  .conc{margin-top:4px;}
+  .conc .barwrap{display:flex;align-items:flex-end;gap:18px;height:90px;justify-content:center;margin:6px 0 4px;}
+  .conc .col{display:flex;flex-direction:column;align-items:center;gap:6px;width:64px;}
+  .conc .track{width:38px;height:72px;background:var(--border);border-radius:6px;display:flex;align-items:flex-end;overflow:hidden;}
+  .conc .fill{width:100%;background:var(--in);border-radius:6px 6px 0 0;transition:height .12s linear;height:0%;}
+  .conc .fill.out{background:var(--out);}
+  .conc .cl{font-size:0.74rem;color:var(--muted);}
+  .conc .eqmsg{text-align:center;font-size:0.82rem;color:var(--accent);font-weight:600;min-height:1.2em;}
+
+  /* buttons */
+  .bar{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;}
+  button{
+    font-family:inherit;font-size:0.92rem;font-weight:600;cursor:pointer;
+    border-radius:10px;padding:10px 18px;border:1px solid var(--accent);
+    background:var(--accent);color:#fff;transition:transform .05s,filter .15s;
+  }
+  button:hover{filter:brightness(1.07);}
+  button:active{transform:translateY(1px);}
+  button.ghost{background:transparent;color:var(--accent);}
+  .workflow{font-size:0.8rem;color:var(--muted);margin-top:12px;}
+
+  /* embed mode strips the teaching chrome for iframing into booklets */
+  body.embed{padding:10px;}
+  body.embed header,body.embed .workflow{display:none;}
+  body.embed .stage{margin-top:0;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>Diffusion across a cell membrane</h1>
+    <p class="lead">Particles start outside the cell and move randomly. Watch the <em>net</em> movement
+       into the cell, down the concentration gradient, until the inside and outside reach the same
+       concentration — equilibrium.</p>
+    <div class="gcse"><strong>Three factors change the rate of diffusion:</strong>
+       temperature, the concentration gradient, and the surface area : volume ratio.
+       Change one slider at a time and compare the <em>time to equilibrium</em>.</div>
+  </header>
+
+  <div class="stage">
+    <div class="stage-top">
+      <button id="play">Play</button>
+    </div>
+    <canvas id="cv"></canvas>
+    <div class="legend">
+      <span><i class="dot out"></i>particle outside the cell (high concentration)</span>
+      <span><i class="dot in"></i>particle inside the cell</span>
+      <span><i class="dot m"></i>cell membrane (freely permeable)</span>
+      <span><i class="dot n"></i>nucleus</span>
+    </div>
+  </div>
+
+  <div class="grid">
+
+    <!-- CONTROLS -->
+    <div class="card">
+      <h2>Controls</h2>
+
+      <div class="ctrl">
+        <div class="row"><label for="temp">Temperature</label><span class="val" id="tempV">—</span></div>
+        <input type="range" id="temp" min="0" max="100" value="50">
+        <div class="hint">Hotter particles move faster, so they hit and cross the membrane more often. Updates live.</div>
+      </div>
+
+      <div class="ctrl">
+        <div class="row"><label for="conc">Concentration gradient</label><span class="val" id="concV">—</span></div>
+        <input type="range" id="conc" min="0" max="100" value="60">
+        <div class="hint">More particles outside = a steeper gradient = faster net movement in. Starts a fresh run.</div>
+      </div>
+
+      <div class="ctrl">
+        <div class="row"><label for="area">Cell size (surface area : volume)</label><span class="val" id="areaV">—</span></div>
+        <input type="range" id="area" min="0" max="100" value="50">
+        <div class="hint">Drag to resize the cell and watch the SA:V ratio change. A bigger cell has more membrane
+           — but far more inside to fill. Release to start a fresh run.</div>
+      </div>
+
+      <div class="bar">
+        <button id="restart" class="ghost">Restart run</button>
+      </div>
+    </div>
+
+    <!-- SA:V + EQUILIBRIUM -->
+    <div class="card">
+      <h2>Surface area : Volume</h2>
+      <div class="sav">
+        <div class="ratio" id="savRatio">—</div>
+        <div class="parts" id="savParts">surface area — &nbsp;·&nbsp; volume —</div>
+        <div class="note">Higher ratio → faster exchange. (2D model: surface area = membrane length,
+          volume = area inside the cell.)</div>
+      </div>
+
+      <div class="conc">
+        <div class="barwrap">
+          <div class="col"><div class="track"><div class="fill" id="fillIn"></div></div><div class="cl">inside</div></div>
+          <div class="col"><div class="track"><div class="fill out" id="fillOut"></div></div><div class="cl">outside</div></div>
+        </div>
+        <div class="eqmsg" id="eqMsg">concentration inside vs outside</div>
+      </div>
+    </div>
+
+    <!-- MEASUREMENTS -->
+    <div class="card" style="grid-column:1 / -1;">
+      <h2>Measurements</h2>
+      <div class="stats">
+        <div class="stat"><div class="k">Total crossings</div><div class="v" id="mGross">0</div></div>
+        <div class="stat"><div class="k">Net particles moved in</div><div class="v" id="mNet">0</div></div>
+        <div class="stat"><div class="k">Total crossings / s</div><div class="v" id="mGrossRate">0</div></div>
+        <div class="stat"><div class="k">Net movement in / s</div><div class="v" id="mNetRate">0</div></div>
+        <div class="stat"><div class="k">Equilibrium reached</div><div class="v" id="mPct">0<small> %</small></div></div>
+        <div class="stat"><div class="k">Time to 90% equilibrium</div><div class="v" id="mTime">—</div></div>
+      </div>
+      <div class="stat wide" style="margin-top:12px;background:transparent;border:none;padding:0;">
+        <div class="k" style="color:var(--muted)">Watch this: at equilibrium <strong>net movement / s falls to ≈ 0</strong>,
+          but <strong>total crossings / s stays high</strong> — particles never stop moving. That is
+          <em>dynamic</em> equilibrium.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <p class="workflow">Fair test: change one slider, press <strong>Restart run</strong>, and note the time to
+     90% equilibrium. Then change it back and try another value.</p>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  // ---------- read params (hash first for base64 data-URL embedding, then query) ----------
+  function getParams(){
+    const out={};
+    const raw=(location.hash.replace(/^#/,'')+'&'+location.search.replace(/^\?/,'')).split('&');
+    for(const seg of raw){ if(!seg)continue; const i=seg.indexOf('='); const k=i<0?seg:seg.slice(0,i);
+      const v=i<0?'':decodeURIComponent(seg.slice(i+1)); if(out[k]===undefined) out[k]=v; }
+    return out;
+  }
+  const P=getParams();
+  if(P.embed==='1') document.body.classList.add('embed');
+
+  // ---------- elements ----------
+  const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+  const tempEl=document.getElementById('temp'), concEl=document.getElementById('conc'), areaEl=document.getElementById('area');
+  const tempV=document.getElementById('tempV'), concV=document.getElementById('concV'), areaV=document.getElementById('areaV');
+  const savRatio=document.getElementById('savRatio'), savParts=document.getElementById('savParts');
+  const fillIn=document.getElementById('fillIn'), fillOut=document.getElementById('fillOut'), eqMsg=document.getElementById('eqMsg');
+  const mGross=document.getElementById('mGross'), mNet=document.getElementById('mNet');
+  const mGrossRate=document.getElementById('mGrossRate'), mNetRate=document.getElementById('mNetRate');
+  const mPct=document.getElementById('mPct'), mTime=document.getElementById('mTime');
+  const playBtn=document.getElementById('play'), restartBtn=document.getElementById('restart');
+
+  // apply incoming params to sliders
+  if(P.temp!==undefined) tempEl.value=clampN(P.temp,0,100,50);
+  if(P.conc!==undefined) concEl.value=clampN(P.conc,0,100,50);
+  if(P.area!==undefined) areaEl.value=clampN(P.area,0,100,50);
+  function clampN(v,lo,hi,d){ v=parseFloat(v); if(!isFinite(v))return d; return Math.max(lo,Math.min(hi,v)); }
+
+  // ---------- geometry / sizing ----------
+  let W=560,H=400,dpr=1,maxR=120,minR=70;
+  const PR=3;            // particle radius (px)
+  const DB=3;            // membrane dead-band to stop edge chatter
+  const FLASH=9;         // frames a crossed particle stays highlighted
+  const cx=()=>W/2, cy=()=>H/2;
+
+  function resize(){
+    const cssW=Math.max(280,cv.clientWidth||cv.parentElement.clientWidth-28);
+    const cssH=Math.round(cssW*0.66);
+    dpr=Math.min(window.devicePixelRatio||1,2);
+    W=cssW; H=cssH;
+    cv.width=Math.round(W*dpr); cv.height=Math.round(H*dpr);
+    cv.style.height=cssH+'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    // cell radius range: 6%..35% of box area, keeping outside as a reservoir
+    const boxA=W*H;
+    minR=Math.sqrt(0.06*boxA/Math.PI);
+    maxR=Math.sqrt(0.35*boxA/Math.PI);
+    applyAreaGeometry();
+  }
+
+  // ---------- mapping sliders -> physics ----------
+  const tempToSpeed=v=>0.5+(v/100)*2.6;          // px / 60fps-frame
+  const concToCount=v=>Math.round(160+(v/100)*480); // 160..640 particles
+  const areaToR   =v=>minR+(v/100)*(maxR-minR);
+
+  // ---------- state ----------
+  let particles=[];
+  let cellR=120, nucR=26, speed=1.6;
+  let gross=0, net=0, t=0, timeToEq=null, barScale=1, running=false;
+  let samples=[]; // {t,gross,net} rolling ~1s window for rates
+
+  function applyAreaGeometry(){
+    cellR=areaToR(parseFloat(areaEl.value));
+    nucR=Math.max(16,cellR*0.22);
+    updateSAV();
+  }
+
+  function placeOutside(p){
+    let x,y,d,tries=0;
+    do{ x=PR+Math.random()*(W-2*PR); y=PR+Math.random()*(H-2*PR);
+        d=Math.hypot(x-cx(),y-cy()); tries++; }
+    while(d<cellR+PR && tries<200);
+    p.x=x; p.y=y;
+  }
+
+  function seed(){
+    speed=tempToSpeed(parseFloat(tempEl.value));
+    const n=concToCount(parseFloat(concEl.value));
+    particles=[];
+    for(let i=0;i<n;i++){
+      const p={x:0,y:0,vx:0,vy:0,inside:false,flash:0};
+      placeOutside(p);
+      const a=Math.random()*Math.PI*2;
+      p.vx=Math.cos(a)*speed; p.vy=Math.sin(a)*speed;
+      particles.push(p);
+    }
+    gross=0; net=0; t=0; timeToEq=null; samples=[];
+    // bar scale = the highest concentration in the system (all outside at t=0)
+    const insideA=Math.PI*cellR*cellR-Math.PI*nucR*nucR;
+    const outsideA=W*H-Math.PI*cellR*cellR;
+    barScale=n/outsideA; // initial outside concentration
+    mTime.textContent='—';
+    updateStats();        // render the starting imbalance immediately (paused)
+  }
+
+  // ---------- simulation step ----------
+  const JIT=0.45;
+  function step(ts){
+    const cX=cx(), cY=cy();
+    for(const p of particles){
+      // wander: rotate velocity a little, keep speed = temperature
+      const da=(Math.random()-0.5)*JIT*ts;
+      const c=Math.cos(da), s=Math.sin(da);
+      let nvx=p.vx*c-p.vy*s, nvy=p.vx*s+p.vy*c;
+      const len=Math.hypot(nvx,nvy)||1;
+      p.vx=nvx/len*speed; p.vy=nvy/len*speed;
+      p.x+=p.vx*ts; p.y+=p.vy*ts;
+
+      // walls
+      if(p.x<PR){p.x=PR;p.vx=Math.abs(p.vx);}
+      else if(p.x>W-PR){p.x=W-PR;p.vx=-Math.abs(p.vx);}
+      if(p.y<PR){p.y=PR;p.vy=Math.abs(p.vy);}
+      else if(p.y>H-PR){p.y=H-PR;p.vy=-Math.abs(p.vy);}
+
+      // nucleus (solid)
+      let dxn=p.x-cX, dyn=p.y-cY, dn=Math.hypot(dxn,dyn), mind=nucR+PR;
+      if(dn<mind){
+        const nx=dxn/(dn||1), ny=dyn/(dn||1);
+        p.x=cX+nx*mind; p.y=cY+ny*mind;
+        const dot=p.vx*nx+p.vy*ny;
+        p.vx-=2*dot*nx; p.vy-=2*dot*ny;
+      }
+
+      // membrane crossing with dead-band
+      const d=Math.hypot(p.x-cX,p.y-cY);
+      if(p.inside){ if(d>cellR+DB){p.inside=false; gross++; net--; p.flash=FLASH;} }
+      else        { if(d<cellR-DB){p.inside=true;  gross++; net++; p.flash=FLASH;} }
+      if(p.flash>0) p.flash--;
+    }
+  }
+
+  // ---------- stats ----------
+  function updateStats(){
+    let insideCount=0;
+    for(const p of particles) if(p.inside) insideCount++;
+    const n=particles.length;
+    const outsideCount=n-insideCount;
+    const insideA=Math.PI*cellR*cellR-Math.PI*nucR*nucR;
+    const outsideA=W*H-Math.PI*cellR*cellR;
+    const concIn=insideCount/insideA, concOut=outsideCount/outsideA;
+    const concEq=n/(insideA+outsideA);
+    const pct=concEq>0?Math.max(0,Math.min(1,concIn/concEq)):0;
+    if(timeToEq===null && pct>=0.90){ timeToEq=t; mTime.textContent=t.toFixed(1)+' s'; }
+
+    // rolling rates (~1s)
+    samples.push({t,gross,net});
+    while(samples.length>2 && t-samples[0].t>1) samples.shift();
+    const first=samples[0];
+    const dt=t-first.t;
+    let gRate=0,nRate=0;
+    if(dt>0.15){ gRate=(gross-first.gross)/dt; nRate=(net-first.net)/dt; }
+
+    mGross.textContent=gross;
+    mNet.textContent=net;
+    mGrossRate.textContent=Math.round(gRate);
+    mNetRate.textContent=Math.round(nRate);
+    mPct.innerHTML=Math.round(pct*100)+'<small> %</small>';
+
+    // concentration bars (normalised to initial outside concentration)
+    const inH=barScale>0?Math.min(100,concIn/barScale*100):0;
+    const outH=barScale>0?Math.min(100,concOut/barScale*100):0;
+    fillIn.style.height=inH+'%';
+    fillOut.style.height=outH+'%';
+    if(pct>=0.90) eqMsg.textContent='equilibrium — concentrations equal';
+    else eqMsg.textContent='concentration inside vs outside';
+  }
+
+  function updateSAV(){
+    const rDisp=cellR/40;
+    const SA=2*Math.PI*rDisp;       // membrane length (arb. units)
+    const Vol=Math.PI*rDisp*rDisp;  // area inside (arb. units)
+    const ratio=SA/Vol;             // = 2/rDisp
+    savRatio.textContent=ratio.toFixed(2)+' : 1';
+    savParts.innerHTML='surface area '+SA.toFixed(1)+' &nbsp;·&nbsp; volume '+Vol.toFixed(1);
+  }
+
+  // ---------- render ----------
+  function draw(){
+    const cX=cx(), cY=cy();
+    ctx.clearRect(0,0,W,H);
+    // vessel + concentration zones (faint tints mark the two regions)
+    ctx.fillStyle='#fcfaf4'; ctx.fillRect(0,0,W,H);
+    ctx.fillStyle='rgba(37,99,235,0.05)'; ctx.fillRect(0,0,W,H);     // outside = faint blue
+    ctx.beginPath(); ctx.arc(cX,cY,cellR,0,Math.PI*2);
+    ctx.fillStyle='#fcfaf4'; ctx.fill();                            // reset the cell area
+    ctx.beginPath(); ctx.arc(cX,cY,cellR,0,Math.PI*2);
+    ctx.fillStyle='rgba(31,157,87,0.07)'; ctx.fill();               // inside = faint green
+
+    // particles, batched by where they are
+    ctx.fillStyle=cssVar('--out');
+    ctx.beginPath();
+    for(const p of particles){ if(p.inside||p.flash>0)continue; ctx.moveTo(p.x+PR,p.y); ctx.arc(p.x,p.y,PR,0,Math.PI*2); }
+    ctx.fill();
+    ctx.fillStyle=cssVar('--in');
+    ctx.beginPath();
+    for(const p of particles){ if(!p.inside||p.flash>0)continue; ctx.moveTo(p.x+PR,p.y); ctx.arc(p.x,p.y,PR,0,Math.PI*2); }
+    ctx.fill();
+    // just-crossed: pop bigger in the new colour so the crossing is unmissable
+    for(const p of particles){ if(p.flash<=0)continue;
+      ctx.beginPath(); ctx.arc(p.x,p.y,PR+2.2,0,Math.PI*2);
+      ctx.fillStyle=cssVar(p.inside?'--in':'--out'); ctx.fill(); }
+
+    // membrane ring
+    ctx.beginPath(); ctx.arc(cX,cY,cellR,0,Math.PI*2);
+    ctx.lineWidth=3; ctx.strokeStyle=cssVar('--membrane');
+    ctx.setLineDash([7,5]); ctx.stroke(); ctx.setLineDash([]);
+
+    // nucleus
+    ctx.beginPath(); ctx.arc(cX,cY,nucR,0,Math.PI*2);
+    ctx.fillStyle=cssVar('--nucleus'); ctx.fill();
+    ctx.beginPath(); ctx.arc(cX-nucR*0.3,cY-nucR*0.3,nucR*0.35,0,Math.PI*2);
+    ctx.fillStyle='rgba(255,255,255,0.18)'; ctx.fill();
+
+    if(t===0 && !running) drawStartHint(cX,cY);
+  }
+
+  function arrow(x1,y1,x2,y2,col){
+    ctx.strokeStyle=col; ctx.fillStyle=col; ctx.lineWidth=3;
+    ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
+    const a=Math.atan2(y2-y1,x2-x1),h=10;
+    ctx.beginPath(); ctx.moveTo(x2,y2);
+    ctx.lineTo(x2-h*Math.cos(a-0.42),y2-h*Math.sin(a-0.42));
+    ctx.lineTo(x2-h*Math.cos(a+0.42),y2-h*Math.sin(a+0.42));
+    ctx.closePath(); ctx.fill();
+  }
+  function drawStartHint(cX,cY){
+    ctx.save();
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    const fs=Math.max(12,Math.round(W*0.026));
+    ctx.font='600 '+fs+'px "IBM Plex Sans",system-ui,sans-serif';
+    ctx.fillStyle=cssVar('--out');
+    ctx.fillText('HIGH concentration outside', cX, 20);
+    ctx.fillStyle=cssVar('--in');
+    ctx.fillText('LOW inside', cX, cY-Math.min(cellR*0.5, cellR-16));
+    arrow(cX-cellR-56, cY+cellR*0.18, cX-cellR+24, cY+cellR*0.18, cssVar('--ink'));
+    ctx.fillStyle=cssVar('--ink');
+    ctx.font='600 '+Math.max(11,fs-2)+'px "IBM Plex Sans",system-ui,sans-serif';
+    ctx.fillText('net movement', cX-cellR-16, cY+cellR*0.18-15);
+    ctx.fillStyle=cssVar('--muted');
+    ctx.font='600 '+fs+'px "IBM Plex Sans",system-ui,sans-serif';
+    ctx.fillText('\u25B6  Press Play to start diffusion', cX, H-18);
+    ctx.restore();
+  }
+  let _vars={};
+  function cssVar(name){ if(_vars[name])return _vars[name];
+    return _vars[name]=getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+
+  // ---------- loop ----------
+  let last=performance.now();
+  function frame(now){
+    let dt=(now-last)/1000; last=now;
+    let ts=dt/(1/60);                       // scale to 60fps frames
+    ts=Math.max(0.2,Math.min(ts,3));
+    if(running){ step(ts); t+=Math.min(dt,0.05); updateStats(); }
+    draw();
+    requestAnimationFrame(frame);
+  }
+
+  // ---------- UI wiring ----------
+  function labels(){
+    tempV.textContent=Math.round(tempEl.value)+' / 100';
+    concV.textContent=concToCount(parseFloat(concEl.value))+' particles';
+    areaV.textContent=Math.round(areaEl.value)+' / 100';
+    fillRange(tempEl); fillRange(concEl); fillRange(areaEl);
+  }
+  function fillRange(el){ const pc=(el.value-el.min)/(el.max-el.min)*100; el.style.backgroundSize=pc+'% 100%'; }
+
+  // temperature: live (no reseed)
+  tempEl.addEventListener('input',()=>{ speed=tempToSpeed(parseFloat(tempEl.value)); labels(); });
+  // area: live resize on drag (shows SA:V change), fresh paused run on release
+  areaEl.addEventListener('input',()=>{ applyAreaGeometry(); labels(); });
+  areaEl.addEventListener('change',()=>{ applyAreaGeometry(); seed(); setRunning(false); });
+  // concentration: fresh paused run on release
+  concEl.addEventListener('input',()=>{ labels(); });
+  concEl.addEventListener('change',()=>{ seed(); setRunning(false); });
+
+  function setRunning(r){ running=r; playBtn.textContent=r?'Pause':'Play'; last=performance.now(); }
+  playBtn.addEventListener('click',()=>setRunning(!running));
+  restartBtn.addEventListener('click',()=>{ applyAreaGeometry(); seed(); setRunning(false); });
+
+  window.addEventListener('resize',()=>{ const wasN=particles.length; resize(); /* keep run but rescale placement */
+    // clamp particles inside new bounds
+    for(const p of particles){ p.x=Math.max(PR,Math.min(W-PR,p.x)); p.y=Math.max(PR,Math.min(H-PR,p.y)); }
+  });
+
+  // ---------- init ----------
+  resize();
+  labels();
+  seed();
+  setRunning(false);
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

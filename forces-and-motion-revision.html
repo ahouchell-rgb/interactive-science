@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forces & Motion — Holiday Revision · Year 8</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1E2761;
+  --navy-soft:#2a3478;
+  --warm:#F8F4EC;
+  --warm-deep:#EFE8D6;
+  --paper:#FCFAF4;
+  --soft-blue:#EDF2FA;
+  --ink:#1A1A1A;
+  --muted:#5C6370;
+  --rule:#CFD8E3;
+  --accent:#B85042;
+  --accent-soft:#F4DAD7;
+  --success:#2C5F2D;
+  --success-soft:#DDEBDD;
+  --gold:#C8A24A;
+  --display: 'Instrument Serif', 'Cormorant Garamond', Georgia, serif;
+  --body: 'IBM Plex Sans', 'Helvetica Neue', system-ui, sans-serif;
+  --mono: 'IBM Plex Mono', 'Courier New', monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--body);
+  font-weight:300;
+  font-size:17px;
+  line-height:1.65;
+  color:var(--ink);
+  background:var(--warm);
+  background-image:
+    radial-gradient(ellipse at 10% 0%, rgba(30,39,97,0.04), transparent 50%),
+    radial-gradient(ellipse at 90% 100%, rgba(184,80,66,0.04), transparent 50%);
+  background-attachment:fixed;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+/* ---------- HERO ---------- */
+.hero{background:var(--navy);color:var(--warm);padding:48px 24px 56px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 30%,rgba(75,30,160,0.25),transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(184,80,66,0.18),transparent 60%);pointer-events:none}
+.hero-inner{max-width:720px;margin:0 auto;position:relative;z-index:1}
+.kicker{font-family:var(--mono);font-size:11px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(248,244,236,0.55);margin-bottom:20px}
+.hero h1{font-family:var(--display);font-weight:400;font-size:clamp(40px,8vw,68px);line-height:1.0;letter-spacing:-0.015em;margin-bottom:14px}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero .tag{font-family:var(--display);font-style:italic;font-size:clamp(18px,3.5vw,22px);color:rgba(248,244,236,0.75);font-weight:400;max-width:520px}
+.pace-banner{margin-top:36px;padding:18px 22px;border:1px solid rgba(248,244,236,0.2);border-left:3px solid var(--gold);background:rgba(0,0,0,0.15);display:flex;gap:14px;align-items:flex-start}
+.pace-banner .pace-icon{font-family:var(--display);font-size:30px;line-height:1;color:var(--gold);flex:0 0 auto}
+.pace-banner p{font-size:15px;line-height:1.5;color:rgba(248,244,236,0.92)}
+.pace-banner strong{color:var(--warm);font-weight:500}
+
+/* ---------- LESSON NAV ---------- */
+.lesson-nav{position:sticky;top:0;z-index:100;background:rgba(252,250,244,0.96);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--rule);padding:12px 0}
+.nav-inner{max-width:720px;margin:0 auto;padding:0 16px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-pill{flex:0 0 auto;font-family:var(--mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);padding:8px 14px;border:1px solid var(--rule);background:var(--paper);text-decoration:none;border-radius:100px;transition:all 0.2s;font-weight:500;white-space:nowrap}
+.nav-pill:hover{border-color:var(--navy);color:var(--navy)}
+.nav-pill.done{background:var(--success-soft);border-color:var(--success);color:var(--success)}
+.nav-pill.done::before{content:'✓ ';font-weight:600}
+.nav-divider{flex:0 0 auto;display:flex;align-items:center;color:var(--accent);font-family:var(--mono);font-size:10px;letter-spacing:0.25em;padding:0 6px;opacity:0.6}
+
+/* ---------- LESSON ---------- */
+main{max-width:720px;margin:0 auto;padding:48px 24px 80px}
+.lesson{margin-bottom:64px;scroll-margin-top:80px}
+.lesson-head{margin-bottom:36px;padding-bottom:24px;border-bottom:1px solid var(--rule);position:relative}
+.lesson-num{font-family:var(--mono);font-size:11px;letter-spacing:0.3em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+.lesson-title{font-family:var(--display);font-weight:400;font-size:clamp(32px,6vw,46px);line-height:1.05;color:var(--navy);letter-spacing:-0.01em;margin-bottom:14px}
+.lesson-title em{font-style:italic}
+.lesson-promise{font-family:var(--display);font-style:italic;font-size:19px;color:var(--muted);line-height:1.4;max-width:540px}
+
+/* ---------- PHASE DIVIDER ---------- */
+.phase{margin:72px 0 52px;text-align:center;padding:32px 0;position:relative;scroll-margin-top:100px}
+.phase::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:var(--rule)}
+.phase::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:var(--rule)}
+.phase-label{display:inline-block;font-family:var(--mono);font-size:12px;letter-spacing:0.4em;text-transform:uppercase;color:var(--accent);font-weight:500;margin-bottom:10px}
+.phase-sub{font-family:var(--display);font-style:italic;font-size:22px;color:var(--navy);line-height:1.3}
+
+/* ---------- SECTION ---------- */
+.section{margin-bottom:42px}
+.section-head{font-family:var(--display);font-weight:400;font-size:26px;line-height:1.15;color:var(--navy);margin-bottom:16px;letter-spacing:-0.005em}
+.section-head .num{font-family:var(--mono);font-size:12px;color:var(--accent);letter-spacing:0.2em;display:block;margin-bottom:6px}
+.section p{margin-bottom:16px;font-size:17px}
+.section p strong{font-weight:500;color:var(--navy);background:linear-gradient(180deg,transparent 60%,rgba(200,162,74,0.25) 60%);padding:0 2px}
+
+/* ---------- KEYWORD BOX ---------- */
+.keywords{background:var(--soft-blue);border:1px solid #C9D7ED;border-left:3px solid var(--navy);padding:20px 22px;margin:24px 0}
+.keywords h4{font-family:var(--mono);font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:var(--navy);margin-bottom:14px;font-weight:500}
+.keywords dl{display:grid;gap:10px}
+.keywords dt{font-family:var(--display);font-size:20px;font-style:italic;color:var(--navy);font-weight:400}
+.keywords dd{font-size:15px;color:var(--ink);margin-bottom:6px}
+
+/* ---------- HINGE QUESTION ---------- */
+.hinge{background:var(--paper);border:1px solid var(--rule);padding:22px 24px;margin:28px 0;position:relative}
+.hinge-tag{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);padding:4px 10px;margin-bottom:12px;font-weight:500}
+.hinge-q{font-family:var(--display);font-size:22px;line-height:1.3;color:var(--navy);margin-bottom:14px;font-weight:400}
+.choices{list-style:none;display:grid;gap:8px;margin-bottom:16px}
+.choices li{font-size:15px;padding:10px 14px;background:var(--warm);border:1px solid var(--rule);display:flex;gap:10px;align-items:flex-start}
+.choices li .letter{font-family:var(--mono);font-weight:500;color:var(--accent);flex:0 0 auto}
+.reveal{width:100%;background:transparent}
+.reveal summary{cursor:pointer;list-style:none;font-family:var(--mono);font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);padding:10px 0;border-top:1px dashed var(--rule);display:flex;align-items:center;gap:10px;transition:color 0.2s;font-weight:500;user-select:none}
+.reveal summary::-webkit-details-marker{display:none}
+.reveal summary::before{content:'+';font-family:var(--display);font-size:18px;color:var(--accent);width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--accent);border-radius:50%;transition:transform 0.25s}
+.reveal[open] summary::before{transform:rotate(45deg)}
+.reveal summary:hover{color:var(--navy)}
+.reveal-body{padding:14px 16px;margin-top:10px;background:var(--success-soft);border-left:3px solid var(--success);font-size:15px;line-height:1.55;color:var(--ink)}
+.reveal-body strong{color:var(--success);font-weight:500}
+.reveal-body em{color:var(--muted);font-style:italic;font-size:13px;display:block;margin-top:8px}
+
+/* ---------- IFRAME EMBED ---------- */
+.zoom-frame{margin:28px -8px;position:relative;background:var(--navy);padding:8px;box-shadow:0 14px 40px rgba(7,10,26,0.25),0 2px 6px rgba(7,10,26,0.15)}
+@media (min-width:740px){.zoom-frame{margin-left:-24px;margin-right:-24px;padding:12px}}
+.zoom-frame::before{content:attr(data-label);position:absolute;top:-12px;left:24px;background:var(--warm);color:var(--navy);font-family:var(--mono);font-size:10px;letter-spacing:0.3em;text-transform:uppercase;padding:4px 12px;font-weight:500}
+.zoom-frame iframe{display:block;width:100%;height:min(85vh,720px);min-height:560px;border:0;background:#f6f1e7}
+.zoom-instr{font-family:var(--mono);font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);text-align:center;margin-top:10px;padding:8px 14px;background:var(--paper);border:1px solid var(--rule)}
+
+/* ---------- WATCH OUT ---------- */
+.watch-out{background:var(--accent-soft);border:1px solid #E6BCB7;border-left:3px solid var(--accent);padding:18px 22px;margin:24px 0}
+.watch-out h4{font-family:var(--mono);font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;font-weight:500}
+.watch-out p{font-size:15px;line-height:1.5;margin:0}
+.watch-out p+p{margin-top:8px}
+
+/* ---------- WORKED EXAMPLE BOX ---------- */
+.worked{background:var(--paper);border:1px solid var(--rule);padding:22px;margin:24px 0}
+.worked h4{font-family:var(--mono);font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:var(--navy);margin-bottom:14px;font-weight:500}
+.formula{font-family:var(--mono);font-size:15px;background:var(--soft-blue);padding:8px 12px;display:inline-block;margin:4px 0;color:var(--navy);font-weight:500}
+
+/* ---------- FORCE DIAGRAM (inline visual) ---------- */
+.force-diagram{margin:18px 0;padding:24px 18px;background:var(--paper);border:1px solid var(--rule);text-align:center;font-family:var(--mono)}
+.force-diagram .box{display:inline-block;width:60px;height:60px;background:var(--navy);border-radius:4px;vertical-align:middle;color:var(--warm);text-align:center;line-height:60px;font-size:11px;letter-spacing:0.1em}
+.force-diagram .arrow{display:inline-block;vertical-align:middle;color:var(--accent);font-family:var(--mono);font-size:13px;font-weight:500;letter-spacing:0.05em}
+.force-diagram .arrow.left{margin-right:8px}
+.force-diagram .arrow.right{margin-left:8px}
+
+/* ---------- QUIZ ---------- */
+.quiz{background:var(--paper);border:1px solid var(--rule);margin-top:36px;padding:28px 24px 24px}
+.quiz-head{font-family:var(--display);font-size:26px;color:var(--navy);margin-bottom:6px;font-weight:400}
+.quiz-head em{font-style:italic}
+.quiz-sub{font-family:var(--mono);font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:20px}
+.quiz ol{list-style:none;counter-reset:q;display:grid;gap:10px}
+.quiz li{counter-increment:q;border:1px solid var(--rule);background:var(--warm)}
+.quiz details summary{cursor:pointer;list-style:none;padding:14px 18px;display:flex;gap:14px;align-items:flex-start;font-size:16px;line-height:1.45;user-select:none}
+.quiz details summary::-webkit-details-marker{display:none}
+.quiz details summary::before{content:counter(q,decimal-leading-zero);font-family:var(--mono);font-size:13px;font-weight:500;color:var(--accent);flex:0 0 auto;padding-top:2px}
+.quiz details summary::after{content:'show answer';font-family:var(--mono);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-left:auto;flex:0 0 auto;padding-top:4px;white-space:nowrap;align-self:flex-start}
+.quiz details[open] summary::after{content:'hide';}
+.quiz details summary:hover::after{color:var(--accent)}
+.quiz .ans{padding:0 18px 16px 50px;font-size:15px;color:var(--success);line-height:1.5;border-top:1px dashed var(--rule);padding-top:14px;margin-top:4px}
+.quiz .ans strong{font-weight:600}
+
+/* ---------- DONE BUTTON ---------- */
+.done-btn{display:block;width:100%;margin-top:24px;padding:14px;background:var(--navy);color:var(--warm);border:0;font-family:var(--mono);font-size:12px;letter-spacing:0.25em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;font-weight:500}
+.done-btn:hover{background:var(--accent)}
+.done-btn.is-done{background:var(--success);cursor:default}
+.done-btn.is-done::before{content:'✓ '}
+
+/* ---------- DIVIDER ---------- */
+.section-rule{height:1px;background:var(--rule);margin:36px 0;position:relative}
+.section-rule::after{content:'⁂';position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--warm);padding:0 14px;color:var(--accent);font-size:18px}
+
+/* ---------- FOOTER ---------- */
+footer{text-align:center;padding:48px 24px;background:var(--navy);color:rgba(248,244,236,0.6)}
+footer p{font-size:13px;line-height:1.5;margin-bottom:6px}
+footer .sig{font-family:var(--display);font-style:italic;font-size:18px;color:var(--gold);margin-bottom:14px}
+
+/* ---------- SMALL SCREENS ---------- */
+@media (max-width:540px){
+  body{font-size:16px}
+  .hero{padding:36px 20px 44px}
+  main{padding:32px 18px 60px}
+  .keywords,.hinge,.watch-out,.worked{padding:18px 18px}
+  .lesson{margin-bottom:48px}
+  .phase{margin:60px 0 44px}
+  .phase-label{padding:12px 20px;font-size:11px;letter-spacing:0.3em}
+  .quiz{padding:22px 16px 18px}
+  .quiz details summary{padding:12px 14px;font-size:15px}
+  .quiz .ans{padding-left:42px;padding-right:14px}
+  .zoom-frame iframe{height:min(75vh,560px);min-height:480px}
+}
+
+@media print{
+  .lesson-nav,.pace-banner,.done-btn,.zoom-frame{display:none}
+  body{background:white}
+  details[open] summary::after,details>summary::after{content:''}
+  details>.ans,details>.reveal-body{display:block !important}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="kicker">Year 8 · Springboard Physics · Forces &amp; Motion</div>
+    <h1>Forces &amp; Motion, <em>but bitesize.</em></h1>
+    <p class="tag">A holiday revision booklet — ten short topics, split into Motion and Forces.</p>
+    <div class="pace-banner">
+      <span class="pace-icon">i</span>
+      <p><strong>Take it one topic at a time.</strong> There are ten topics, so don't try to do them all at once. Each one is short — about 10 minutes. Do one or two a day.</p>
+    </div>
+  </div>
+</header>
+
+<!-- ============ STICKY NAV ============ -->
+<nav class="lesson-nav">
+  <div class="nav-inner">
+    <a href="#lesson-1" class="nav-pill" data-lesson="1">Speed</a>
+    <a href="#lesson-2" class="nav-pill" data-lesson="2">D-T Graphs</a>
+    <a href="#lesson-3" class="nav-pill" data-lesson="3">Relative Motion</a>
+    <a href="#lesson-4" class="nav-pill" data-lesson="4">Typical Speeds</a>
+    <span class="nav-divider">·</span>
+    <a href="#lesson-5" class="nav-pill" data-lesson="5">What Is a Force?</a>
+    <a href="#lesson-6" class="nav-pill" data-lesson="6">10 Forces</a>
+    <a href="#lesson-7" class="nav-pill" data-lesson="7">Contact / Non-contact</a>
+    <a href="#lesson-8" class="nav-pill" data-lesson="8">Interaction Pairs</a>
+    <a href="#lesson-9" class="nav-pill" data-lesson="9">Resultant Force</a>
+    <a href="#lesson-10" class="nav-pill" data-lesson="10">Effect on Motion</a>
+  </div>
+</nav>
+
+<main>
+
+<!-- ============ PART 1 OPENER ============ -->
+<div class="phase" id="part-motion">
+  <span class="phase-label">Part 1 — Motion</span>
+  <p class="phase-sub">How fast, how far, in which direction.</p>
+</div>
+
+<!-- ===================================================================== -->
+<!-- TOPIC 1 — SPEED                                                        -->
+<!-- ===================================================================== -->
+<section class="lesson" id="lesson-1">
+  <div class="lesson-head">
+    <div class="lesson-num">Topic 01 · Motion</div>
+    <h2 class="lesson-title">How fast is <em>fast?</em></h2>
+    <p class="lesson-promise">By the end of this topic you'll know what speed is, how to calculate it, and the units we use.</p>
+  </div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 1</span>Speed = how far in how long</h3>
+    <p>Speed tells you <strong>how far something travels in a certain amount of time</strong>. A car going 30 metres every second is faster than one going 10 metres every second.</p>
+    <p>The <strong>standard unit</strong> of speed in science is <strong>metres per second</strong>, written as <strong>m/s</strong>. You'll also see miles per hour (mph) on car speedometers, and kilometres per hour (km/h) on road signs in many countries — but in physics class, always use m/s unless told otherwise.</p>
+
+    <div class="keywords">
+      <h4>Keywords for Part 1</h4>
+      <dl>
+        <dt>Speed</dt>
+        <dd>How far something travels in a given time.</dd>
+        <dt>Standard unit</dt>
+        <dd>Metres per second (m/s).</dd>
+      </dl>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">What is the standard unit of speed in science?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>miles per hour (mph)</span></li>
+        <li><span class="letter">B</span><span>metres per second (m/s)</span></li>
+        <li><span class="letter">C</span><span>kilometres per hour (km/h)</span></li>
+        <li><span class="letter">D</span><span>seconds per metre (s/m)</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>B — metres per second (m/s).</strong> mph and km/h are common in everyday life, but in physics we use m/s.</div>
+      </details>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 2</span>The speed formula</h3>
+    <p>To work out the speed of something, you need to know <strong>two things</strong>: how far it went (distance), and how long it took (time). Then:</p>
+
+    <p style="text-align:center"><span class="formula">Speed = distance ÷ time</span></p>
+
+    <div class="worked">
+      <h4>Worked example</h4>
+      <p style="margin-bottom:8px">A lorry travels <strong>48 m in 12 seconds</strong>. What's its speed?</p>
+      <p style="margin-bottom:6px"><strong>Step 1.</strong> Write the formula: <span class="formula">Speed = distance ÷ time</span></p>
+      <p style="margin-bottom:6px"><strong>Step 2.</strong> Put the numbers in: Speed = 48 ÷ 12</p>
+      <p><strong>Step 3.</strong> Calculate: Speed = <strong>4 m/s</strong></p>
+    </div>
+
+    <div class="watch-out">
+      <h4>⚠ Watch out — units</h4>
+      <p>The formula only works if distance is in <strong>metres</strong> and time is in <strong>seconds</strong>. If you're given kilometres, multiply by 1000 first (e.g. 2 km = 2000 m). If you're given minutes, multiply by 60 (e.g. 2 minutes = 120 seconds).</p>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">A bird flies <strong>60 m in 12 seconds</strong>. What's its speed?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>720 m/s</span></li>
+        <li><span class="letter">B</span><span>72 m/s</span></li>
+        <li><span class="letter">C</span><span>5 m/s</span></li>
+        <li><span class="letter">D</span><span>0.2 m/s</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>C — 5 m/s.</strong> Speed = distance ÷ time = 60 ÷ 12 = 5 m/s. <em>(If you got A, you multiplied instead of divided. If you got D, you divided the wrong way round — time ÷ distance.)</em></div>
+      </details>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <h3 class="quiz-head">Test <em>yourself</em></h3>
+    <p class="quiz-sub">6 questions · click to reveal each answer</p>
+    <ol>
+      <li><details>
+        <summary>Write the formula for speed.</summary>
+        <div class="ans"><strong>Speed = distance ÷ time</strong> (or s = d ÷ t).</div>
+      </details></li>
+      <li><details>
+        <summary>What is the standard unit of distance?</summary>
+        <div class="ans"><strong>Metres (m).</strong></div>
+      </details></li>
+      <li><details>
+        <summary>A student walks 10 m in 5 seconds. What is their speed?</summary>
+        <div class="ans"><strong>2 m/s.</strong> Speed = 10 ÷ 5 = 2 m/s.</div>
+      </details></li>
+      <li><details>
+        <summary>A car travels 100 m in 4 seconds. Calculate its speed.</summary>
+        <div class="ans"><strong>25 m/s.</strong> Speed = 100 ÷ 4 = 25 m/s.</div>
+      </details></li>
+      <li><details>
+        <summary>Convert 3 km into metres.</summary>
+        <div class="ans"><strong>3000 m.</strong> 1 km = 1000 m, so multiply by 1000.</div>
+      </details></li>
+      <li><details>
+        <summary>A snail travels 3 m in 2 minutes. Calculate its speed in m/s.</summary>
+        <div class="ans"><strong>0.025 m/s.</strong> First convert 2 minutes to seconds: 2 × 60 = 120 s. Then Speed = 3 ÷ 120 = 0.025 m/s. <em>(Easy mistake: forgetting to convert minutes to seconds — would give the wrong answer.)</em></div>
+      </details></li>
+    </ol>
+    <button class="done-btn" data-lesson-done="1">Mark this topic complete</button>
+  </div>
+</section>
+
+<!-- ===================================================================== -->
+<!-- TOPIC 2 — DISTANCE-TIME GRAPHS                                          -->
+<!-- ===================================================================== -->
+<section class="lesson" id="lesson-2">
+  <div class="lesson-head">
+    <div class="lesson-num">Topic 02 · Motion</div>
+    <h2 class="lesson-title">Drawing a <em>journey</em></h2>
+    <p class="lesson-promise">Distance-time graphs show how far something has travelled at every moment. You'll learn how to read one and how to find the speed from it.</p>
+  </div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 1</span>The two axes</h3>
+    <p>A distance-time graph has <strong>distance on the y-axis</strong> (the vertical one) and <strong>time on the x-axis</strong> (the horizontal one).</p>
+    <p>Why this way round? Because <em>time keeps moving forward</em> no matter what — it makes sense to put it along the bottom. Distance is what we're tracking <em>against</em> time.</p>
+
+    <div class="watch-out">
+      <h4>⚠ Watch out</h4>
+      <p>Don't get the axes mixed up. <strong>Distance up. Time across.</strong> If you swap them, every reading you take from the graph will be wrong.</p>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">On a distance-time graph, what goes on the <em>y-axis</em>?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>Distance (m)</span></li>
+        <li><span class="letter">B</span><span>Time (s)</span></li>
+        <li><span class="letter">C</span><span>Speed (m/s)</span></li>
+        <li><span class="letter">D</span><span>Mass (kg)</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>A — Distance (m).</strong> The y-axis is the vertical one. Distance up, time across.</div>
+      </details>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 2</span>What the line tells you</h3>
+    <p>The shape of the line tells you what's happening:</p>
+
+    <div class="keywords">
+      <h4>Reading the line</h4>
+      <dl>
+        <dt>Diagonal line going up</dt>
+        <dd>The object is moving at a <strong>constant speed</strong>. Distance keeps increasing as time passes.</dd>
+        <dt>Steeper diagonal</dt>
+        <dd>A faster speed — covering more distance in the same time.</dd>
+        <dt>Horizontal (flat) line</dt>
+        <dd>The object is <strong>stationary</strong> (not moving). Time passes but distance doesn't change.</dd>
+      </dl>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">On a distance-time graph, the line is <em>flat</em> (horizontal). What's happening?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>The object is moving fast</span></li>
+        <li><span class="letter">B</span><span>The object is moving slowly</span></li>
+        <li><span class="letter">C</span><span>The object is stationary (not moving)</span></li>
+        <li><span class="letter">D</span><span>The object is going backwards</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>C — Stationary.</strong> Time keeps going (the line moves rightwards), but distance stays the same (the line stays at the same height). So the object is not moving.</div>
+      </details>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 3</span>Finding speed from the graph</h3>
+    <p>The <strong>steepness</strong> of a diagonal line is its <strong>gradient</strong>. The gradient gives you the speed.</p>
+
+    <p style="text-align:center"><span class="formula">Speed = change in distance ÷ change in time</span></p>
+
+    <div class="worked">
+      <h4>Worked example</h4>
+      <p style="margin-bottom:8px">A diagonal line goes from <strong>(0 s, 0 m)</strong> up to <strong>(8 s, 24 m)</strong>.</p>
+      <p style="margin-bottom:6px"><strong>Change in distance:</strong> 24 − 0 = 24 m</p>
+      <p style="margin-bottom:6px"><strong>Change in time:</strong> 8 − 0 = 8 s</p>
+      <p><strong>Speed:</strong> 24 ÷ 8 = <strong>3 m/s</strong></p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <h3 class="quiz-head">Test <em>yourself</em></h3>
+    <p class="quiz-sub">6 questions · click to reveal each answer</p>
+    <ol>
+      <li><details>
+        <summary>What goes on the x-axis of a distance-time graph?</summary>
+        <div class="ans"><strong>Time (in seconds).</strong> Always.</div>
+      </details></li>
+      <li><details>
+        <summary>What does a horizontal (flat) line on a distance-time graph mean?</summary>
+        <div class="ans"><strong>The object is stationary</strong> — not moving. Time passes but distance doesn't change.</div>
+      </details></li>
+      <li><details>
+        <summary>What does a diagonal line going up mean?</summary>
+        <div class="ans"><strong>The object is moving at a constant speed.</strong> The steeper the line, the faster the object.</div>
+      </details></li>
+      <li><details>
+        <summary>Two diagonal lines: A is steep, B is shallow. Which represents the faster object?</summary>
+        <div class="ans"><strong>A.</strong> A steeper gradient means more distance covered in the same time — that's faster.</div>
+      </details></li>
+      <li><details>
+        <summary>A line goes from (0 s, 0 m) to (4 s, 8 m). What is the speed?</summary>
+        <div class="ans"><strong>2 m/s.</strong> Speed = 8 ÷ 4 = 2 m/s.</div>
+      </details></li>
+      <li><details>
+        <summary>A distance-time graph shows a diagonal line from 0–10 s, then a flat line from 10–20 s. Describe the journey.</summary>
+        <div class="ans"><strong>The object moved at a constant speed for 10 seconds, then stopped (was stationary) for the next 10 seconds.</strong></div>
+      </details></li>
+    </ol>
+    <button class="done-btn" data-lesson-done="2">Mark this topic complete</button>
+  </div>
+</section>
+
+<!-- ===================================================================== -->
+<!-- TOPIC 3 — RELATIVE MOTION                                              -->
+<!-- ===================================================================== -->
+<section class="lesson" id="lesson-3">
+  <div class="lesson-head">
+    <div class="lesson-num">Topic 03 · Motion</div>
+    <h2 class="lesson-title">How fast does it look <em>from where you are?</em></h2>
+    <p class="lesson-promise">Speed depends on where you're watching from. This is called relative motion — and you'll learn the two simple rules.</p>
+  </div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 1</span>It depends on the observer</h3>
+    <p>Imagine you're on a train going 80 km/h. The person sitting next to you isn't moving — to you. But to someone standing on a platform watching your train fly past, that person is moving 80 km/h. Same person, two different speeds. That's <strong>relative motion</strong>.</p>
+    <p>Relative motion just means: <strong>how fast something is moving compared with the thing watching it</strong>.</p>
+
+    <div class="keywords">
+      <h4>Key idea</h4>
+      <dl>
+        <dt>Relative motion</dt>
+        <dd>How fast one object moves compared with another. Different observers can see different speeds.</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 2</span>The two rules</h3>
+    <p>To work out the relative speed of two objects, there are just two rules to remember:</p>
+
+    <div class="keywords">
+      <h4>The two rules</h4>
+      <dl>
+        <dt>Same direction → SUBTRACT</dt>
+        <dd>If two objects move the same way, you <strong>subtract</strong> their speeds. <em>Example:</em> a 12 m/s car and a 10 m/s car going the same direction — the relative speed between them is 12 − 10 = <strong>2 m/s</strong>.</dd>
+        <dt>Opposite directions → ADD</dt>
+        <dd>If two objects move toward each other (or away from each other in opposite directions), you <strong>add</strong> their speeds. <em>Example:</em> two cars moving toward each other at 10 m/s and 5 m/s — the relative speed is 10 + 5 = <strong>15 m/s</strong>.</dd>
+      </dl>
+    </div>
+
+    <div class="watch-out">
+      <h4>⚠ Why this works</h4>
+      <p>Two trains side by side, both going 100 km/h the same way: from one train's window, the other looks <em>still</em>. 100 − 100 = 0. That's why "same direction → subtract" is the rule — they're cancelling each other out.</p>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">Car A moves at 20 m/s. Car B moves at 15 m/s in the <em>same direction</em>. What's their relative speed?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>35 m/s</span></li>
+        <li><span class="letter">B</span><span>5 m/s</span></li>
+        <li><span class="letter">C</span><span>0 m/s</span></li>
+        <li><span class="letter">D</span><span>300 m/s</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>B — 5 m/s.</strong> Same direction, so subtract: 20 − 15 = 5 m/s. <em>(A is wrong — that's the rule for opposite directions.)</em></div>
+      </details>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <h3 class="quiz-head">Test <em>yourself</em></h3>
+    <p class="quiz-sub">6 questions · click to reveal each answer</p>
+    <ol>
+      <li><details>
+        <summary>What is relative motion?</summary>
+        <div class="ans"><strong>How fast one object is moving compared with another.</strong> Different observers can see different speeds for the same object.</div>
+      </details></li>
+      <li><details>
+        <summary>Two trains move in the SAME direction at the same speed. How does each train's passenger see the other train?</summary>
+        <div class="ans"><strong>Stationary.</strong> Same direction at the same speed means relative speed is zero (subtract: 80 − 80 = 0).</div>
+      </details></li>
+      <li><details>
+        <summary>If two objects move in OPPOSITE directions, do you add or subtract their speeds?</summary>
+        <div class="ans"><strong>Add.</strong> Opposite → add. Same → subtract.</div>
+      </details></li>
+      <li><details>
+        <summary>Two cars approach each other. Car A travels at 12 m/s, Car B at 8 m/s. What is the relative speed between them?</summary>
+        <div class="ans"><strong>20 m/s.</strong> Opposite directions, so add: 12 + 8 = 20 m/s.</div>
+      </details></li>
+      <li><details>
+        <summary>A bus travels at 30 m/s. A motorbike behind it goes at 35 m/s in the same direction. From the bus driver's view, how fast does the motorbike approach?</summary>
+        <div class="ans"><strong>5 m/s.</strong> Same direction, so subtract: 35 − 30 = 5 m/s.</div>
+      </details></li>
+      <li><details>
+        <summary>A boy on a moving train rolls a ball forward at 2 m/s. The train moves at 20 m/s. How fast is the ball going relative to a person standing on the platform?</summary>
+        <div class="ans"><strong>22 m/s.</strong> Same direction, but here we ADD because we want the speed relative to the platform (a stationary observer). The ball's speed relative to the train (2) plus the train's speed relative to the platform (20) = 22 m/s.</div>
+      </details></li>
+    </ol>
+    <button class="done-btn" data-lesson-done="3">Mark this topic complete</button>
+  </div>
+</section>
+
+<!-- ===================================================================== -->
+<!-- TOPIC 4 — TYPICAL SPEEDS                                               -->
+<!-- ===================================================================== -->
+<section class="lesson" id="lesson-4">
+  <div class="lesson-head">
+    <div class="lesson-num">Topic 04 · Motion</div>
+    <h2 class="lesson-title">Speeds you should <em>just know</em></h2>
+    <p class="lesson-promise">Three numbers to memorise. They come up in MCQs and short-answer questions.</p>
+  </div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 1</span>Walking, running, cycling</h3>
+    <p>You need to remember roughly how fast a typical person walks, runs, and cycles. The numbers form a clean pattern, which makes them easier to memorise.</p>
+
+    <div class="keywords">
+      <h4>Memorise these three</h4>
+      <dl>
+        <dt>Walking</dt>
+        <dd><strong>1.5 m/s</strong> — the slowest one.</dd>
+        <dt>Running</dt>
+        <dd><strong>3 m/s</strong> — twice walking speed.</dd>
+        <dt>Cycling</dt>
+        <dd><strong>6 m/s</strong> — twice running speed (or four times walking speed).</dd>
+      </dl>
+    </div>
+
+    <div class="watch-out">
+      <h4>The pattern that helps</h4>
+      <p>Each one is roughly <strong>double</strong> the one before. Walking → ×2 → Running → ×2 → Cycling. So if you only remember "1.5, then double it twice", you've got all three.</p>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">What's the typical speed of a runner?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>1.5 m/s</span></li>
+        <li><span class="letter">B</span><span>3 m/s</span></li>
+        <li><span class="letter">C</span><span>6 m/s</span></li>
+        <li><span class="letter">D</span><span>10 m/s</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>B — 3 m/s.</strong> 1.5 is walking. 6 is cycling. 10 is faster than most casual cyclists.</div>
+      </details>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <h3 class="quiz-head">Test <em>yourself</em></h3>
+    <p class="quiz-sub">6 questions · click to reveal each answer</p>
+    <ol>
+      <li><details>
+        <summary>What is the typical speed of walking?</summary>
+        <div class="ans"><strong>1.5 m/s.</strong></div>
+      </details></li>
+      <li><details>
+        <summary>What is the typical speed of cycling?</summary>
+        <div class="ans"><strong>6 m/s.</strong></div>
+      </details></li>
+      <li><details>
+        <summary>How many times faster is cycling than walking?</summary>
+        <div class="ans"><strong>4 times faster.</strong> 6 ÷ 1.5 = 4.</div>
+      </details></li>
+      <li><details>
+        <summary>How far would you walk in 10 seconds at typical walking speed?</summary>
+        <div class="ans"><strong>15 m.</strong> Distance = speed × time = 1.5 × 10 = 15 m.</div>
+      </details></li>
+      <li><details>
+        <summary>How far would a runner go in 30 seconds at a typical pace?</summary>
+        <div class="ans"><strong>90 m.</strong> Distance = 3 × 30 = 90 m.</div>
+      </details></li>
+      <li><details>
+        <summary>A cyclist takes 60 seconds to cross a park at typical speed. How long is the park?</summary>
+        <div class="ans"><strong>360 m.</strong> Distance = 6 × 60 = 360 m.</div>
+      </details></li>
+    </ol>
+    <button class="done-btn" data-lesson-done="4">Mark this topic complete</button>
+  </div>
+</section>
+
+<!-- ============ PART 2 OPENER ============ -->
+<div class="phase" id="part-forces">
+  <span class="phase-label">Part 2 — Forces</span>
+  <p class="phase-sub">What pushes, what pulls, and what happens next.</p>
+</div>
+
+<!-- ===================================================================== -->
+<!-- TOPIC 5 — WHAT IS A FORCE?                                             -->
+<!-- ===================================================================== -->
+<section class="lesson" id="lesson-5">
+  <div class="lesson-head">
+    <div class="lesson-num">Topic 05 · Forces</div>
+    <h2 class="lesson-title">A push or a <em>pull</em></h2>
+    <p class="lesson-promise">You'll learn what a force is, how we measure it, and how to draw one.</p>
+  </div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 1</span>What forces actually are</h3>
+    <p>A <strong>force</strong> is a push or a pull that acts on an object. When you kick a ball, push a door, lift a bag — those are all forces.</p>
+    <p>Forces try to <strong>change the motion</strong> of an object. They can speed something up, slow it down, change the direction it's going in, or even change its shape.</p>
+
+    <div class="keywords">
+      <h4>Keywords for Part 1</h4>
+      <dl>
+        <dt>Force</dt>
+        <dd>A push or a pull on an object.</dd>
+        <dt>Newton (N)</dt>
+        <dd>The unit we measure forces in. 1 N is roughly the weight of a small apple.</dd>
+        <dt>Newton meter</dt>
+        <dd>The piece of equipment used to measure a force.</dd>
+      </dl>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">Which statement best describes a force?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>Energy moving through an object</span></li>
+        <li><span class="letter">B</span><span>The speed an object moves</span></li>
+        <li><span class="letter">C</span><span>A push or a pull on an object</span></li>
+        <li><span class="letter">D</span><span>The mass of an object</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>C — A push or a pull on an object.</strong> Simple as that. Anything that pushes or pulls is a force.</div>
+      </details>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 2</span>Drawing forces — the arrow rules</h3>
+    <p>We draw forces as <strong>arrows</strong>. Two things matter about the arrow:</p>
+    <p>• The <strong>direction</strong> the arrow points = the direction the force is acting in. <br>
+       • The <strong>length</strong> of the arrow = the size of the force. A bigger force gets a longer arrow.</p>
+
+    <div class="watch-out">
+      <h4>⚠ Length, not thickness</h4>
+      <p>It's the <strong>length</strong> of the arrow that shows the size of the force, not how thick or fat the arrow is. A long thin arrow shows a bigger force than a short fat arrow.</p>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">On a force arrow, what does the <em>length</em> show?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>The size of the force</span></li>
+        <li><span class="letter">B</span><span>The direction of the force</span></li>
+        <li><span class="letter">C</span><span>The speed of the object</span></li>
+        <li><span class="letter">D</span><span>The mass of the object</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>A — The size of the force.</strong> Direction is shown by which way the arrow points. Length is the size.</div>
+      </details>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <h3 class="quiz-head">Test <em>yourself</em></h3>
+    <p class="quiz-sub">6 questions · click to reveal each answer</p>
+    <ol>
+      <li><details>
+        <summary>What is a force?</summary>
+        <div class="ans"><strong>A push or a pull on an object.</strong></div>
+      </details></li>
+      <li><details>
+        <summary>What is the unit of force?</summary>
+        <div class="ans"><strong>The Newton (N).</strong></div>
+      </details></li>
+      <li><details>
+        <summary>What piece of equipment is used to measure a force?</summary>
+        <div class="ans"><strong>A newton meter.</strong></div>
+      </details></li>
+      <li><details>
+        <summary>How do we show the direction of a force on a diagram?</summary>
+        <div class="ans"><strong>With an arrow</strong> — the arrow points in the direction the force is acting.</div>
+      </details></li>
+      <li><details>
+        <summary>How do we show the size of a force on a diagram?</summary>
+        <div class="ans"><strong>By the length of the arrow.</strong> Bigger force = longer arrow. (Not thickness.)</div>
+      </details></li>
+      <li><details>
+        <summary>A student draws a thick short arrow next to a thin long one. Which represents a bigger force?</summary>
+        <div class="ans"><strong>The thin long one.</strong> Length is what counts — thickness doesn't matter.</div>
+      </details></li>
+    </ol>
+    <button class="done-btn" data-lesson-done="5">Mark this topic complete</button>
+  </div>
+</section>
+
+<!-- ===================================================================== -->
+<!-- TOPIC 6 — THE 10 FORCES                                                -->
+<!-- ===================================================================== -->
+<section class="lesson" id="lesson-6">
+  <div class="lesson-head">
+    <div class="lesson-num">Topic 06 · Forces</div>
+    <h2 class="lesson-title">The forces you need to <em>know by name</em></h2>
+    <p class="lesson-promise">There are about ten forces that come up in KS3 physics. Each one has a specific cause and direction.</p>
+  </div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 1</span>The full list</h3>
+    <p>Here are the forces you need to be able to name and recognise. Don't try to memorise them all in one go — read through, then come back later.</p>
+
+    <div class="keywords">
+      <h4>The ten forces</h4>
+      <dl>
+        <dt>Weight (gravity)</dt>
+        <dd>The pull of gravity on an object. Always acts <strong>downwards</strong>. A book sitting on a table has weight pulling it down.</dd>
+        <dt>Normal contact force</dt>
+        <dd>The push from a surface on an object resting on it. Always acts <strong>away from the surface</strong>. The table pushes the book upwards.</dd>
+        <dt>Thrust</dt>
+        <dd>A driving force that pushes something <strong>forwards</strong>. From an engine, a swimmer's arms, a rocket.</dd>
+        <dt>Friction</dt>
+        <dd>A force that opposes motion when two surfaces rub together. Always acts <strong>against</strong> the direction of movement.</dd>
+        <dt>Air resistance</dt>
+        <dd>Friction with the air. Acts against the direction of motion. Bigger when you go faster.</dd>
+        <dt>Water resistance</dt>
+        <dd>Same as air resistance, but in water. Acts against motion through water.</dd>
+        <dt>Upthrust</dt>
+        <dd>The upward push from a fluid (water or air) on an object floating in it. This is why boats float.</dd>
+        <dt>Lift</dt>
+        <dd>The upward force on an aeroplane wing as air flows over it. Keeps planes in the air.</dd>
+        <dt>Tension</dt>
+        <dd>The pulling force in a stretched rope, string, or cable.</dd>
+        <dt>Magnetism</dt>
+        <dd>The force between magnets and magnetic materials. Can pull (attract) or push (repel).</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 2</span>Common scenarios — which forces act?</h3>
+    <p>You won't be asked to list all ten in one go. You'll usually be shown a picture (a book on a table, a plane, a swimmer) and asked to name the forces acting. Here are the common ones:</p>
+
+    <div class="worked">
+      <h4>Three classic scenarios</h4>
+      <p style="margin-bottom:10px"><strong>Book resting on a table:</strong> weight (down) + normal contact force (up). Balanced.</p>
+      <p style="margin-bottom:10px"><strong>Plane flying:</strong> thrust (forwards) + air resistance (backwards) + lift (up) + weight (down). Four forces.</p>
+      <p><strong>Boat on water:</strong> thrust (forwards) + water resistance (backwards) + upthrust (up) + weight (down). Four forces.</p>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">A swimmer is pushing forward through water. Which force is acting <em>against their motion</em>?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>Lift</span></li>
+        <li><span class="letter">B</span><span>Upthrust</span></li>
+        <li><span class="letter">C</span><span>Water resistance</span></li>
+        <li><span class="letter">D</span><span>Weight</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>C — Water resistance.</strong> It always acts against the direction of motion through water. Upthrust pushes <em>up</em>, not against forward motion.</div>
+      </details>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <h3 class="quiz-head">Test <em>yourself</em></h3>
+    <p class="quiz-sub">6 questions · click to reveal each answer</p>
+    <ol>
+      <li><details>
+        <summary>What force pulls objects towards Earth?</summary>
+        <div class="ans"><strong>Weight (or gravity).</strong> Always acts downwards.</div>
+      </details></li>
+      <li><details>
+        <summary>What force keeps a boat floating on water?</summary>
+        <div class="ans"><strong>Upthrust.</strong> The upward push from the water.</div>
+      </details></li>
+      <li><details>
+        <summary>What force keeps a plane up in the air?</summary>
+        <div class="ans"><strong>Lift.</strong> Generated by air flowing over the wings.</div>
+      </details></li>
+      <li><details>
+        <summary>A car is rolling along but slows down and stops. Which force caused it to stop?</summary>
+        <div class="ans"><strong>Friction (and air resistance).</strong> Both act against the direction of motion.</div>
+      </details></li>
+      <li><details>
+        <summary>What force is in a rope when someone pulls it tight?</summary>
+        <div class="ans"><strong>Tension.</strong> The pulling force in a stretched rope.</div>
+      </details></li>
+      <li><details>
+        <summary>A book sits on a table. Name the two forces acting on the book.</summary>
+        <div class="ans"><strong>Weight</strong> (pulling it down) and the <strong>normal contact force</strong> (the table pushing it up).</div>
+      </details></li>
+    </ol>
+    <button class="done-btn" data-lesson-done="6">Mark this topic complete</button>
+  </div>
+</section>
+
+<!-- ===================================================================== -->
+<!-- TOPIC 7 — CONTACT VS NON-CONTACT                                        -->
+<!-- ===================================================================== -->
+<section class="lesson" id="lesson-7">
+  <div class="lesson-head">
+    <div class="lesson-num">Topic 07 · Forces</div>
+    <h2 class="lesson-title">Touch or <em>no touch?</em></h2>
+    <p class="lesson-promise">A simple way to sort the ten forces into two groups, depending on whether the objects need to touch.</p>
+  </div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 1</span>The test</h3>
+    <p>Here's the rule: <strong>do the objects have to be touching for the force to act?</strong></p>
+    <p>If yes → it's a <strong>contact force</strong>. If no → it's a <strong>non-contact force</strong>.</p>
+
+    <div class="keywords">
+      <h4>The two groups</h4>
+      <dl>
+        <dt>Contact forces (need to touch)</dt>
+        <dd>Friction · Normal contact force · Thrust · Tension · Air resistance · Water resistance · Upthrust · Lift</dd>
+        <dt>Non-contact forces (no touching needed)</dt>
+        <dd>Gravity (weight) · Magnetism · Electrostatic force</dd>
+      </dl>
+    </div>
+
+    <div class="watch-out">
+      <h4>⚠ Common mix-up — air resistance</h4>
+      <p>Air resistance is a <strong>contact force</strong>. It looks like nothing's touching, but actually <em>air particles</em> are colliding with the moving object. Particles touching = contact.</p>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">Which of these is a <em>non-contact</em> force?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>Friction</span></li>
+        <li><span class="letter">B</span><span>Magnetism</span></li>
+        <li><span class="letter">C</span><span>Tension</span></li>
+        <li><span class="letter">D</span><span>Air resistance</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>B — Magnetism.</strong> Two magnets can pull or push each other without touching. The other three all need contact (yes, including air resistance — air particles count as contact).</div>
+      </details>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <h3 class="quiz-head">Test <em>yourself</em></h3>
+    <p class="quiz-sub">6 questions · click to reveal each answer</p>
+    <ol>
+      <li><details>
+        <summary>What does "non-contact force" mean?</summary>
+        <div class="ans"><strong>A force that acts without the objects needing to touch.</strong></div>
+      </details></li>
+      <li><details>
+        <summary>List all the non-contact forces.</summary>
+        <div class="ans"><strong>Gravity (weight), magnetism, electrostatic force.</strong> Three of them.</div>
+      </details></li>
+      <li><details>
+        <summary>Is friction a contact or non-contact force?</summary>
+        <div class="ans"><strong>Contact.</strong> Two surfaces have to be touching for friction to act.</div>
+      </details></li>
+      <li><details>
+        <summary>Is gravity a contact or non-contact force?</summary>
+        <div class="ans"><strong>Non-contact.</strong> The Earth pulls on you whether or not you're touching the ground.</div>
+      </details></li>
+      <li><details>
+        <summary>A skydiver is falling through the air. Which forces are acting? Which are contact, which are non-contact?</summary>
+        <div class="ans"><strong>Weight (non-contact)</strong> pulling down, and <strong>air resistance (contact)</strong> pushing up.</div>
+      </details></li>
+      <li><details>
+        <summary>A student says: "Air resistance must be a non-contact force, because air isn't really touching me." Are they right?</summary>
+        <div class="ans"><strong>No.</strong> Air is made of particles. As you move through air, particles collide with you — that's contact. Air resistance is a <strong>contact</strong> force.</div>
+      </details></li>
+    </ol>
+    <button class="done-btn" data-lesson-done="7">Mark this topic complete</button>
+  </div>
+</section>
+
+<!-- ===================================================================== -->
+<!-- TOPIC 8 — INTERACTION PAIRS                                            -->
+<!-- ===================================================================== -->
+<section class="lesson" id="lesson-8">
+  <div class="lesson-head">
+    <div class="lesson-num">Topic 08 · Forces</div>
+    <h2 class="lesson-title">Forces always come <em>in pairs</em></h2>
+    <p class="lesson-promise">Every force has a partner — equal in size, opposite in direction. This is one of the trickiest ideas in KS3, but the rule itself is simple.</p>
+  </div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 1</span>The rule</h3>
+    <p>Whenever object A pushes (or pulls) object B, object B <strong>pushes (or pulls) back on A</strong>. The two forces are:</p>
+    <p>• <strong>Equal in size</strong> <br>
+       • <strong>Opposite in direction</strong> <br>
+       • Acting on <strong>two different objects</strong>.</p>
+    <p>This is called an <strong>interaction pair</strong>. You can't have a force on its own — every force is one half of a pair.</p>
+
+    <div class="keywords">
+      <h4>Examples to picture</h4>
+      <dl>
+        <dt>You push a wall</dt>
+        <dd>You push the wall. <strong>The wall pushes you back with the same force.</strong> If you push harder, it pushes back harder. That's why a wall hurts your hand if you slam it.</dd>
+        <dt>Apple falling from tree</dt>
+        <dd>Earth pulls the apple down (weight). <strong>The apple pulls the Earth up</strong> with an equal and opposite force. (Yes, really — but the Earth is so massive that it doesn't visibly move.)</dd>
+        <dt>Two skaters push off each other</dt>
+        <dd>Skater A pushes Skater B to the right. <strong>Skater B pushes Skater A to the left.</strong> Equal forces, opposite directions.</dd>
+      </dl>
+    </div>
+
+    <div class="watch-out">
+      <h4>⚠ The most confusing bit</h4>
+      <p>Interaction pairs <em>do not cancel each other out</em>. They look like balanced forces, but they're not — because they act on <strong>different objects</strong>. To have balanced forces, both forces have to act on the <em>same</em> object.</p>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">A lorry crashes into a small car. The lorry exerts a force of 50,000 N on the car. What force does the car exert on the lorry?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>Less than 50,000 N (the car is smaller)</span></li>
+        <li><span class="letter">B</span><span>More than 50,000 N</span></li>
+        <li><span class="letter">C</span><span>Exactly 50,000 N, opposite direction</span></li>
+        <li><span class="letter">D</span><span>Zero — only the lorry is pushing</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>C — Exactly 50,000 N, opposite direction.</strong> It feels weird because the car is much smaller, but the forces in an interaction pair are always equal. The reason the car comes off worse is that the same force does more damage to a lighter object.</div>
+      </details>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 2</span>How to describe an interaction pair</h3>
+    <p>In exam questions you'll be asked to describe an interaction pair. Use this template:</p>
+
+    <div class="worked">
+      <h4>The schema</h4>
+      <p style="margin-bottom:10px">"There is a [force] on [object 1] from [object 2] [direction]."</p>
+      <p>"There is a [force] on [object 2] from [object 1] [opposite direction]."</p>
+    </div>
+
+    <div class="worked">
+      <h4>Worked example</h4>
+      <p style="margin-bottom:8px">A penny is falling towards the floor. Describe the interaction pair between the penny and the Earth.</p>
+      <p style="margin-bottom:6px">"There is a <strong>gravitational force on the penny from the Earth pulling it downwards</strong>."</p>
+      <p>"There is a <strong>gravitational force on the Earth from the penny pulling it upwards</strong>."</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <h3 class="quiz-head">Test <em>yourself</em></h3>
+    <p class="quiz-sub">6 questions · click to reveal each answer</p>
+    <ol>
+      <li><details>
+        <summary>How many forces are there in an interaction?</summary>
+        <div class="ans"><strong>Two.</strong> Always exactly two — that's why we call them pairs.</div>
+      </details></li>
+      <li><details>
+        <summary>How many objects are involved in an interaction?</summary>
+        <div class="ans"><strong>Two.</strong> Forces never act between an object and itself.</div>
+      </details></li>
+      <li><details>
+        <summary>How do the sizes of the two forces in an interaction pair compare?</summary>
+        <div class="ans"><strong>Equal in size, opposite in direction.</strong> Always.</div>
+      </details></li>
+      <li><details>
+        <summary>"If I kick a football, the football kicks me back with the same force." True or false?</summary>
+        <div class="ans"><strong>True.</strong> Equal and opposite — that's the interaction pair rule.</div>
+      </details></li>
+      <li><details>
+        <summary>Why don't the two forces in an interaction pair cancel each other out?</summary>
+        <div class="ans">Because they <strong>act on different objects</strong>. For forces to cancel (be balanced), they have to act on the same object.</div>
+      </details></li>
+      <li><details>
+        <summary>A book sits on a table. The book pushes down on the table. What does the table do?</summary>
+        <div class="ans">The table <strong>pushes up on the book with an equal force</strong>. (This is the normal contact force, and it's the partner of the book's weight pushing down on the table.)</div>
+      </details></li>
+    </ol>
+    <button class="done-btn" data-lesson-done="8">Mark this topic complete</button>
+  </div>
+</section>
+
+<!-- ===================================================================== -->
+<!-- TOPIC 9 — BALANCED & RESULTANT FORCES (FORCE BUILDER GOES HERE)        -->
+<!-- ===================================================================== -->
+<section class="lesson" id="lesson-9">
+  <div class="lesson-head">
+    <div class="lesson-num">Topic 09 · Forces</div>
+    <h2 class="lesson-title">Adding up the <em>arrows</em></h2>
+    <p class="lesson-promise">When more than one force acts on an object, you need to work out the overall — or "resultant" — force. This topic teaches you how.</p>
+  </div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 1</span>Balanced forces</h3>
+    <p>If two forces are <strong>equal in size and opposite in direction</strong>, they cancel each other out. We say the forces are <strong>balanced</strong>.</p>
+    <p>When forces are balanced, the <strong>resultant force is zero</strong>. There's no overall push or pull.</p>
+
+    <div class="force-diagram">
+      <span class="arrow left">← 10 N</span>
+      <span class="box">obj</span>
+      <span class="arrow right">10 N →</span>
+      <p style="margin-top:14px;font-family:var(--mono);font-size:12px;color:var(--success);letter-spacing:0.1em">RESULTANT = 0 N · BALANCED</p>
+    </div>
+
+    <p>A book sitting on a table is the classic example. Its weight pulls it down. The table pushes back up with the same force. Balanced. Resultant = 0. The book doesn't move.</p>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">Two forces act on a box: 5 N to the right, and 5 N to the left. What's the resultant force?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>10 N to the right</span></li>
+        <li><span class="letter">B</span><span>10 N to the left</span></li>
+        <li><span class="letter">C</span><span>0 N — the forces are balanced</span></li>
+        <li><span class="letter">D</span><span>5 N up</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>C — 0 N, balanced.</strong> Equal forces in opposite directions cancel out.</div>
+      </details>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 2</span>Calculating the resultant force</h3>
+    <p>When forces aren't balanced, we work out the <strong>resultant force</strong> — a single force that has the same overall effect as all the forces combined.</p>
+
+    <div class="keywords">
+      <h4>Two simple rules</h4>
+      <dl>
+        <dt>Same direction → ADD</dt>
+        <dd>If two forces both point the same way, add their sizes. The resultant points in that same direction.</dd>
+        <dt>Opposite directions → SUBTRACT</dt>
+        <dd>Find the difference. The resultant points in the direction of the bigger force.</dd>
+      </dl>
+    </div>
+
+    <div class="worked">
+      <h4>Worked example 1 — Opposite directions</h4>
+      <div class="force-diagram" style="margin-top:10px">
+        <span class="arrow left">← 5 N</span>
+        <span class="box">obj</span>
+        <span class="arrow right">15 N →</span>
+        <p style="margin-top:14px;font-family:var(--mono);font-size:12px;color:var(--accent);letter-spacing:0.1em">RESULTANT = 10 N TO THE RIGHT</p>
+      </div>
+      <p style="margin-top:10px">Subtract: 15 − 5 = 10 N. The bigger force is to the right, so the resultant points right.</p>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">A box has 20 N pushing right, and 8 N pushing left. What's the resultant force?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>28 N to the right</span></li>
+        <li><span class="letter">B</span><span>12 N to the right</span></li>
+        <li><span class="letter">C</span><span>12 N to the left</span></li>
+        <li><span class="letter">D</span><span>0 N</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>B — 12 N to the right.</strong> Opposite directions, so subtract: 20 − 8 = 12. The bigger force was to the right, so the resultant points right.</div>
+      </details>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 3</span>Try it yourself</h3>
+    <p>Now you know the rules — try playing with them. Drag arrows of different sizes onto the box, hit "Reveal resultant", and see if your prediction matches.</p>
+
+    <div class="zoom-frame" data-label="Interactive · Drag &amp; predict">
+      <iframe src="data:text/html;base64,PCFET0NUWVBFIGh0bWw+CjxodG1sIGxhbmc9ImVuLUdCIj4KPGhlYWQ+CjxtZXRhIGNoYXJzZXQ9IlVURi04Ij4KPG1ldGEgbmFtZT0idmlld3BvcnQiIGNvbnRlbnQ9IndpZHRoPWRldmljZS13aWR0aCwgaW5pdGlhbC1zY2FsZT0xLjAiPgo8dGl0bGU+Rm9yY2UgRGlhZ3JhbSBCdWlsZGVyPC90aXRsZT4KPGxpbmsgcmVsPSJwcmVjb25uZWN0IiBocmVmPSJodHRwczovL2ZvbnRzLmdvb2dsZWFwaXMuY29tIj4KPGxpbmsgcmVsPSJwcmVjb25uZWN0IiBocmVmPSJodHRwczovL2ZvbnRzLmdzdGF0aWMuY29tIiBjcm9zc29yaWdpbj4KPGxpbmsgaHJlZj0iaHR0cHM6Ly9mb250cy5nb29nbGVhcGlzLmNvbS9jc3MyP2ZhbWlseT1GcmF1bmNlczpvcHN6LHdnaHRAOS4uMTQ0LDQwMDs5Li4xNDQsNjAwOzkuLjE0NCw3MDAmZmFtaWx5PUJyaWNvbGFnZStHcm90ZXNxdWU6d2dodEA0MDA7NTAwOzYwMDs3MDAmZmFtaWx5PUpldEJyYWlucytNb25vOndnaHRANTAwOzcwMCZkaXNwbGF5PXN3YXAiIHJlbD0ic3R5bGVzaGVldCI+CjxzdHlsZT4KICA6cm9vdCB7CiAgICAtLXBhcGVyOiAjZjZmMWU3OwogICAgLS1wYXBlci1kYXJrOiAjZWJlM2QyOwogICAgLS1pbms6ICMxZTFkMWE7CiAgICAtLWluay1zb2Z0OiAjNTU1MTQ4OwogICAgLS1pbmstZmFpbnQ6ICNhMTliOGM7CiAgICAtLWZvcmNlOiAjYzIzYTJhOwogICAgLS1mb3JjZS1kYXJrOiAjOGYyNTE2OwogICAgLS1tb3Rpb246ICM2YjZhNjc7CiAgICAtLXJlc3VsdGFudDogIzBlNmIzYzsKICAgIC0tcmVzdWx0YW50LXNvZnQ6ICNlMGYwZTU7CiAgICAtLWFjY2VudDogIzFiM2E2MzsKICAgIC0tYWNjZW50LXNvZnQ6ICNkY2U1ZjA7CiAgICAtLXdhcm46ICNiODc4MmE7CiAgICAtLXJ1bGU6ICNjOWMwYWI7CiAgICAtLXNoYWRvdzogMCAxcHggMCByZ2JhKDMwLDI5LDI2LDAuMDgpLCAwIDRweCAxMnB4IHJnYmEoMzAsMjksMjYsMC4wNik7CiAgfQoKICAqIHsgYm94LXNpemluZzogYm9yZGVyLWJveDsgfQoKICBodG1sLCBib2R5IHsKICAgIG1hcmdpbjogMDsKICAgIHBhZGRpbmc6IDA7CiAgICBmb250LWZhbWlseTogJ0JyaWNvbGFnZSBHcm90ZXNxdWUnLCBzeXN0ZW0tdWksIHNhbnMtc2VyaWY7CiAgICBiYWNrZ3JvdW5kOiB2YXIoLS1wYXBlcik7CiAgICBjb2xvcjogdmFyKC0taW5rKTsKICAgIC13ZWJraXQtZm9udC1zbW9vdGhpbmc6IGFudGlhbGlhc2VkOwogICAgb3ZlcmZsb3cteDogaGlkZGVuOwogIH0KCiAgYm9keSB7CiAgICBiYWNrZ3JvdW5kLWltYWdlOgogICAgICBsaW5lYXItZ3JhZGllbnQodmFyKC0tcGFwZXItZGFyaykgMXB4LCB0cmFuc3BhcmVudCAxcHgpLAogICAgICBsaW5lYXItZ3JhZGllbnQoOTBkZWcsIHZhcigtLXBhcGVyLWRhcmspIDFweCwgdHJhbnNwYXJlbnQgMXB4KTsKICAgIGJhY2tncm91bmQtc2l6ZTogNDBweCA0MHB4OwogICAgYmFja2dyb3VuZC1wb3NpdGlvbjogLTFweCAtMXB4OwogICAgbWluLWhlaWdodDogMTAwdmg7CiAgfQoKICAucGFnZSB7CiAgICBtYXgtd2lkdGg6IDEyODBweDsKICAgIG1hcmdpbjogMCBhdXRvOwogICAgcGFkZGluZzogMjRweCAyOHB4IDQ4cHg7CiAgfQoKICBoZWFkZXIubWFzdGhlYWQgewogICAgZGlzcGxheTogZmxleDsKICAgIGp1c3RpZnktY29udGVudDogc3BhY2UtYmV0d2VlbjsKICAgIGFsaWduLWl0ZW1zOiBmbGV4LWVuZDsKICAgIHBhZGRpbmctYm90dG9tOiAxNHB4OwogICAgYm9yZGVyLWJvdHRvbTogMnB4IHNvbGlkIHZhcigtLWluayk7CiAgICBtYXJnaW4tYm90dG9tOiAyMnB4OwogIH0KCiAgLm1hc3RoZWFkIGgxIHsKICAgIGZvbnQtZmFtaWx5OiAnRnJhdW5jZXMnLCBzZXJpZjsKICAgIGZvbnQtd2VpZ2h0OiA2MDA7CiAgICBmb250LXNpemU6IGNsYW1wKDI4cHgsIDR2dywgNDJweCk7CiAgICBsZXR0ZXItc3BhY2luZzogLTAuMDJlbTsKICAgIG1hcmdpbjogMDsKICAgIGxpbmUtaGVpZ2h0OiAxOwogIH0KCiAgLm1hc3RoZWFkIGgxIGVtIHsKICAgIGZvbnQtc3R5bGU6IGl0YWxpYzsKICAgIGZvbnQtd2VpZ2h0OiA0MDA7CiAgICBjb2xvcjogdmFyKC0tZm9yY2UpOwogIH0KCiAgLm1hc3RoZWFkIC5tZXRhIHsKICAgIGZvbnQtZmFtaWx5OiAnSmV0QnJhaW5zIE1vbm8nLCBtb25vc3BhY2U7CiAgICBmb250LXNpemU6IDExcHg7CiAgICBsZXR0ZXItc3BhY2luZzogMC4wOGVtOwogICAgdGV4dC10cmFuc2Zvcm06IHVwcGVyY2FzZTsKICAgIGNvbG9yOiB2YXIoLS1pbmstc29mdCk7CiAgfQoKICAvKiBDb250cm9sIHN0cmlwICovCiAgLmNvbnRyb2xzIHsKICAgIGRpc3BsYXk6IGZsZXg7CiAgICBnYXA6IDE4cHg7CiAgICBmbGV4LXdyYXA6IHdyYXA7CiAgICBhbGlnbi1pdGVtczogY2VudGVyOwogICAgcGFkZGluZzogMTRweCAxOHB4OwogICAgYmFja2dyb3VuZDogd2hpdGU7CiAgICBib3JkZXI6IDEuNXB4IHNvbGlkIHZhcigtLWluayk7CiAgICBib3gtc2hhZG93OiB2YXIoLS1zaGFkb3cpOwogICAgbWFyZ2luLWJvdHRvbTogMThweDsKICB9CgogIC5jb250cm9sLWdyb3VwIHsKICAgIGRpc3BsYXk6IGZsZXg7CiAgICBhbGlnbi1pdGVtczogY2VudGVyOwogICAgZ2FwOiAxMHB4OwogIH0KCiAgLmNvbnRyb2wtbGFiZWwgewogICAgZm9udC1mYW1pbHk6ICdKZXRCcmFpbnMgTW9ubycsIG1vbm9zcGFjZTsKICAgIGZvbnQtc2l6ZTogMTFweDsKICAgIGxldHRlci1zcGFjaW5nOiAwLjFlbTsKICAgIHRleHQtdHJhbnNmb3JtOiB1cHBlcmNhc2U7CiAgICBjb2xvcjogdmFyKC0taW5rLXNvZnQpOwogICAgZm9udC13ZWlnaHQ6IDcwMDsKICB9CgogIC5tb3Rpb24tb3B0aW9ucyB7CiAgICBkaXNwbGF5OiBmbGV4OwogICAgZ2FwOiA0cHg7CiAgICBiYWNrZ3JvdW5kOiB2YXIoLS1wYXBlcik7CiAgICBwYWRkaW5nOiAzcHg7CiAgICBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1ydWxlKTsKICB9CgogIC5tb3Rpb24tb3B0aW9ucyBsYWJlbCB7CiAgICBmb250LXNpemU6IDE0cHg7CiAgICBwYWRkaW5nOiA2cHggMTJweDsKICAgIGN1cnNvcjogcG9pbnRlcjsKICAgIHVzZXItc2VsZWN0OiBub25lOwogICAgZGlzcGxheTogZmxleDsKICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7CiAgICBnYXA6IDZweDsKICAgIHRyYW5zaXRpb246IGFsbCAwLjEyczsKICAgIGZvbnQtd2VpZ2h0OiA1MDA7CiAgfQoKICAubW90aW9uLW9wdGlvbnMgbGFiZWw6aG92ZXIgewogICAgYmFja2dyb3VuZDogdmFyKC0tcGFwZXItZGFyayk7CiAgfQoKICAubW90aW9uLW9wdGlvbnMgaW5wdXRbdHlwZT0icmFkaW8iXSB7CiAgICBkaXNwbGF5OiBub25lOwogIH0KCiAgLm1vdGlvbi1vcHRpb25zIGlucHV0W3R5cGU9InJhZGlvIl06Y2hlY2tlZCArIHNwYW4gewogICAgYmFja2dyb3VuZDogdmFyKC0taW5rKTsKICAgIGNvbG9yOiB2YXIoLS1wYXBlcik7CiAgfQoKICAubW90aW9uLW9wdGlvbnMgbGFiZWwgc3BhbiB7CiAgICBwYWRkaW5nOiA0cHggMTBweDsKICAgIHRyYW5zaXRpb246IGFsbCAwLjEyczsKICB9CgogIC5zcGFjZXIgeyBmbGV4OiAxOyB9CgogIGJ1dHRvbiB7CiAgICBmb250LWZhbWlseTogJ0JyaWNvbGFnZSBHcm90ZXNxdWUnLCBzYW5zLXNlcmlmOwogICAgZm9udC1zaXplOiAxNHB4OwogICAgZm9udC13ZWlnaHQ6IDYwMDsKICAgIHBhZGRpbmc6IDEwcHggMThweDsKICAgIGJvcmRlcjogMS41cHggc29saWQgdmFyKC0taW5rKTsKICAgIGJhY2tncm91bmQ6IHdoaXRlOwogICAgY29sb3I6IHZhcigtLWluayk7CiAgICBjdXJzb3I6IHBvaW50ZXI7CiAgICB0cmFuc2l0aW9uOiBhbGwgMC4xMnM7CiAgICBsZXR0ZXItc3BhY2luZzogMC4wMWVtOwogIH0KCiAgYnV0dG9uOmhvdmVyIHsKICAgIGJhY2tncm91bmQ6IHZhcigtLWluayk7CiAgICBjb2xvcjogdmFyKC0tcGFwZXIpOwogIH0KCiAgYnV0dG9uLnByaW1hcnkgewogICAgYmFja2dyb3VuZDogdmFyKC0taW5rKTsKICAgIGNvbG9yOiB2YXIoLS1wYXBlcik7CiAgfQoKICBidXR0b24ucHJpbWFyeTpob3ZlciB7CiAgICBiYWNrZ3JvdW5kOiB2YXIoLS1yZXN1bHRhbnQpOwogICAgYm9yZGVyLWNvbG9yOiB2YXIoLS1yZXN1bHRhbnQpOwogIH0KCiAgLyogV29ya3NwYWNlICovCiAgLndvcmtzcGFjZSB7CiAgICBkaXNwbGF5OiBncmlkOwogICAgZ3JpZC10ZW1wbGF0ZS1jb2x1bW5zOiAyODBweCAxZnI7CiAgICBnYXA6IDE4cHg7CiAgICBhbGlnbi1pdGVtczogc3RhcnQ7CiAgfQoKICAvKiBQYWxldHRlICovCiAgLnBhbGV0dGUgewogICAgYmFja2dyb3VuZDogd2hpdGU7CiAgICBib3JkZXI6IDEuNXB4IHNvbGlkIHZhcigtLWluayk7CiAgICBib3gtc2hhZG93OiB2YXIoLS1zaGFkb3cpOwogICAgcGFkZGluZzogMThweDsKICB9CgogIC5wYWxldHRlIGgyIHsKICAgIGZvbnQtZmFtaWx5OiAnRnJhdW5jZXMnLCBzZXJpZjsKICAgIGZvbnQtd2VpZ2h0OiA2MDA7CiAgICBmb250LXNpemU6IDE4cHg7CiAgICBtYXJnaW46IDAgMCA0cHg7CiAgICBsZXR0ZXItc3BhY2luZzogLTAuMDFlbTsKICB9CgogIC5wYWxldHRlIC5oaW50IHsKICAgIGZvbnQtc2l6ZTogMTJweDsKICAgIGNvbG9yOiB2YXIoLS1pbmstc29mdCk7CiAgICBsaW5lLWhlaWdodDogMS40NTsKICAgIG1hcmdpbjogMCAwIDE4cHg7CiAgICBwYWRkaW5nLWJvdHRvbTogMTRweDsKICAgIGJvcmRlci1ib3R0b206IDFweCBkYXNoZWQgdmFyKC0tcnVsZSk7CiAgfQoKICAucGFsZXR0ZS1ncmlkIHsKICAgIGRpc3BsYXk6IGdyaWQ7CiAgICBncmlkLXRlbXBsYXRlLWNvbHVtbnM6IDFmciAxZnI7CiAgICBnYXA6IDEycHg7CiAgfQoKICAucGFsZXR0ZS1pdGVtIHsKICAgIGRpc3BsYXk6IGZsZXg7CiAgICBmbGV4LWRpcmVjdGlvbjogY29sdW1uOwogICAgYWxpZ24taXRlbXM6IGNlbnRlcjsKICAgIGdhcDogNnB4OwogICAgcGFkZGluZzogMTJweCA4cHg7CiAgICBiYWNrZ3JvdW5kOiB2YXIoLS1wYXBlcik7CiAgICBib3JkZXI6IDEuNXB4IHNvbGlkIHZhcigtLXJ1bGUpOwogICAgY3Vyc29yOiBncmFiOwogICAgdXNlci1zZWxlY3Q6IG5vbmU7CiAgICB0b3VjaC1hY3Rpb246IG5vbmU7CiAgICB0cmFuc2l0aW9uOiBhbGwgMC4xMnM7CiAgICBwb3NpdGlvbjogcmVsYXRpdmU7CiAgfQoKICAucGFsZXR0ZS1pdGVtOmhvdmVyIHsKICAgIGJvcmRlci1jb2xvcjogdmFyKC0tZm9yY2UpOwogICAgYmFja2dyb3VuZDogI2ZiZWVlYTsKICB9CgogIC5wYWxldHRlLWl0ZW06YWN0aXZlIHsKICAgIGN1cnNvcjogZ3JhYmJpbmc7CiAgfQoKICAucGFsZXR0ZS1pdGVtLmRyYWdnaW5nIHsKICAgIG9wYWNpdHk6IDAuNDsKICB9CgogIC5wYWxldHRlLWFycm93IHsKICAgIHdpZHRoOiA0NHB4OwogICAgaGVpZ2h0OiA0NHB4OwogICAgZGlzcGxheTogZmxleDsKICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7CiAgICBqdXN0aWZ5LWNvbnRlbnQ6IGNlbnRlcjsKICB9CgogIC5wYWxldHRlLWFycm93IHN2ZyB7CiAgICB3aWR0aDogMTAwJTsKICAgIGhlaWdodDogMTAwJTsKICAgIHN0cm9rZTogdmFyKC0tZm9yY2UpOwogICAgZmlsbDogdmFyKC0tZm9yY2UpOwogIH0KCiAgLnBhbGV0dGUtaXRlbSAuZGlyLWxhYmVsIHsKICAgIGZvbnQtZmFtaWx5OiAnSmV0QnJhaW5zIE1vbm8nLCBtb25vc3BhY2U7CiAgICBmb250LXNpemU6IDEwcHg7CiAgICB0ZXh0LXRyYW5zZm9ybTogdXBwZXJjYXNlOwogICAgbGV0dGVyLXNwYWNpbmc6IDAuMWVtOwogICAgY29sb3I6IHZhcigtLWluay1zb2Z0KTsKICAgIGZvbnQtd2VpZ2h0OiA3MDA7CiAgfQoKICAucGFsZXR0ZS1pdGVtIC5tYWctcm93IHsKICAgIGRpc3BsYXk6IGZsZXg7CiAgICBhbGlnbi1pdGVtczogYmFzZWxpbmU7CiAgICBnYXA6IDNweDsKICB9CgogIC5wYWxldHRlLWl0ZW0gaW5wdXRbdHlwZT0ibnVtYmVyIl0gewogICAgd2lkdGg6IDQ2cHg7CiAgICB0ZXh0LWFsaWduOiBjZW50ZXI7CiAgICBmb250LWZhbWlseTogJ0pldEJyYWlucyBNb25vJywgbW9ub3NwYWNlOwogICAgZm9udC1zaXplOiAxNXB4OwogICAgZm9udC13ZWlnaHQ6IDcwMDsKICAgIHBhZGRpbmc6IDRweCAycHg7CiAgICBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1ydWxlKTsKICAgIGJhY2tncm91bmQ6IHdoaXRlOwogICAgY29sb3I6IHZhcigtLWluayk7CiAgfQoKICAucGFsZXR0ZS1pdGVtIGlucHV0W3R5cGU9Im51bWJlciJdOmZvY3VzIHsKICAgIG91dGxpbmU6IDJweCBzb2xpZCB2YXIoLS1mb3JjZSk7CiAgICBvdXRsaW5lLW9mZnNldDogMXB4OwogIH0KCiAgLnBhbGV0dGUtaXRlbSAudW5pdCB7CiAgICBmb250LWZhbWlseTogJ0pldEJyYWlucyBNb25vJywgbW9ub3NwYWNlOwogICAgZm9udC1zaXplOiAxM3B4OwogICAgZm9udC13ZWlnaHQ6IDcwMDsKICAgIGNvbG9yOiB2YXIoLS1pbmstc29mdCk7CiAgfQoKICAucGFsZXR0ZS1mb290IHsKICAgIG1hcmdpbi10b3A6IDE0cHg7CiAgICBwYWRkaW5nLXRvcDogMTRweDsKICAgIGJvcmRlci10b3A6IDFweCBkYXNoZWQgdmFyKC0tcnVsZSk7CiAgICBmb250LXNpemU6IDExcHg7CiAgICBjb2xvcjogdmFyKC0taW5rLWZhaW50KTsKICAgIGxpbmUtaGVpZ2h0OiAxLjU7CiAgfQoKICAucGFsZXR0ZS1mb290IHN0cm9uZyB7CiAgICBjb2xvcjogdmFyKC0taW5rLXNvZnQpOwogIH0KCiAgLyogQ2FudmFzICovCiAgLmNhbnZhcy13cmFwIHsKICAgIGJhY2tncm91bmQ6IHdoaXRlOwogICAgYm9yZGVyOiAxLjVweCBzb2xpZCB2YXIoLS1pbmspOwogICAgYm94LXNoYWRvdzogdmFyKC0tc2hhZG93KTsKICAgIHBvc2l0aW9uOiByZWxhdGl2ZTsKICAgIG92ZXJmbG93OiBoaWRkZW47CiAgfQoKICAuY2FudmFzLWhlYWRlciB7CiAgICBkaXNwbGF5OiBmbGV4OwogICAganVzdGlmeS1jb250ZW50OiBzcGFjZS1iZXR3ZWVuOwogICAgYWxpZ24taXRlbXM6IGNlbnRlcjsKICAgIHBhZGRpbmc6IDEwcHggMTZweDsKICAgIGJvcmRlci1ib3R0b206IDEuNXB4IHNvbGlkIHZhcigtLWluayk7CiAgICBiYWNrZ3JvdW5kOiB2YXIoLS1wYXBlcik7CiAgfQoKICAuY2FudmFzLWhlYWRlciAuc3RhdGUtbGFiZWwgewogICAgZm9udC1mYW1pbHk6ICdKZXRCcmFpbnMgTW9ubycsIG1vbm9zcGFjZTsKICAgIGZvbnQtc2l6ZTogMTJweDsKICAgIGxldHRlci1zcGFjaW5nOiAwLjA2ZW07CiAgICB0ZXh0LXRyYW5zZm9ybTogdXBwZXJjYXNlOwogIH0KCiAgLmNhbnZhcy1oZWFkZXIgLnN0YXRlLWxhYmVsIC5tdXRlZCB7CiAgICBjb2xvcjogdmFyKC0taW5rLXNvZnQpOwogICAgbWFyZ2luLXJpZ2h0OiA2cHg7CiAgfQoKICAuY2FudmFzLWhlYWRlciAuc3RhdGUtbGFiZWwgLnZhbHVlIHsKICAgIGNvbG9yOiB2YXIoLS1pbmspOwogICAgZm9udC13ZWlnaHQ6IDcwMDsKICB9CgogIC5jYW52YXMtaGVhZGVyIC5jb29yZCB7CiAgICBmb250LWZhbWlseTogJ0pldEJyYWlucyBNb25vJywgbW9ub3NwYWNlOwogICAgZm9udC1zaXplOiAxMHB4OwogICAgY29sb3I6IHZhcigtLWluay1mYWludCk7CiAgfQoKICAjY2FudmFzIHsKICAgIHdpZHRoOiAxMDAlOwogICAgaGVpZ2h0OiBhdXRvOwogICAgZGlzcGxheTogYmxvY2s7CiAgICBiYWNrZ3JvdW5kOgogICAgICBsaW5lYXItZ3JhZGllbnQodmFyKC0tcGFwZXItZGFyaykgMXB4LCB0cmFuc3BhcmVudCAxcHgpLAogICAgICBsaW5lYXItZ3JhZGllbnQoOTBkZWcsIHZhcigtLXBhcGVyLWRhcmspIDFweCwgdHJhbnNwYXJlbnQgMXB4KTsKICAgIGJhY2tncm91bmQtc2l6ZTogNDBweCA0MHB4OwogICAgYmFja2dyb3VuZC1jb2xvcjogd2hpdGU7CiAgICB0b3VjaC1hY3Rpb246IG5vbmU7CiAgfQoKICAvKiBEcmFnIGdob3N0ICovCiAgLmRyYWctZ2hvc3QgewogICAgcG9zaXRpb246IGZpeGVkOwogICAgcG9pbnRlci1ldmVudHM6IG5vbmU7CiAgICB6LWluZGV4OiAxMDAwOwogICAgdHJhbnNmb3JtOiB0cmFuc2xhdGUoLTUwJSwgLTUwJSk7CiAgICBvcGFjaXR5OiAwLjg1OwogIH0KCiAgLyogQ2FudmFzIGRyb3AgdGFyZ2V0IGhpZ2hsaWdodCAqLwogIC5jYW52YXMtd3JhcC5kcm9wLWFjdGl2ZSB7CiAgICBvdXRsaW5lOiAzcHggZGFzaGVkIHZhcigtLWZvcmNlKTsKICAgIG91dGxpbmUtb2Zmc2V0OiAtM3B4OwogIH0KCiAgLyogUmV2ZWFsIHBhbmVsICovCiAgLnJldmVhbC1wYW5lbCB7CiAgICBtYXJnaW4tdG9wOiAxOHB4OwogICAgYmFja2dyb3VuZDogd2hpdGU7CiAgICBib3JkZXI6IDEuNXB4IHNvbGlkIHZhcigtLWluayk7CiAgICBib3gtc2hhZG93OiB2YXIoLS1zaGFkb3cpOwogICAgcGFkZGluZzogMDsKICAgIG92ZXJmbG93OiBoaWRkZW47CiAgICBkaXNwbGF5OiBub25lOwogIH0KCiAgLnJldmVhbC1wYW5lbC5zaG93biB7CiAgICBkaXNwbGF5OiBibG9jazsKICAgIGFuaW1hdGlvbjogc2xpZGVEb3duIDAuM3MgZWFzZTsKICB9CgogIEBrZXlmcmFtZXMgc2xpZGVEb3duIHsKICAgIGZyb20geyBvcGFjaXR5OiAwOyB0cmFuc2Zvcm06IHRyYW5zbGF0ZVkoLTZweCk7IH0KICAgIHRvIHsgb3BhY2l0eTogMTsgdHJhbnNmb3JtOiB0cmFuc2xhdGVZKDApOyB9CiAgfQoKICAucmV2ZWFsLWhlYWRlciB7CiAgICBwYWRkaW5nOiAxMnB4IDIwcHg7CiAgICBiYWNrZ3JvdW5kOiB2YXIoLS1pbmspOwogICAgY29sb3I6IHZhcigtLXBhcGVyKTsKICAgIGRpc3BsYXk6IGZsZXg7CiAgICBqdXN0aWZ5LWNvbnRlbnQ6IHNwYWNlLWJldHdlZW47CiAgICBhbGlnbi1pdGVtczogY2VudGVyOwogIH0KCiAgLnJldmVhbC1oZWFkZXIgaDIgewogICAgZm9udC1mYW1pbHk6ICdGcmF1bmNlcycsIHNlcmlmOwogICAgZm9udC13ZWlnaHQ6IDYwMDsKICAgIGZvbnQtc2l6ZTogMjBweDsKICAgIG1hcmdpbjogMDsKICAgIGxldHRlci1zcGFjaW5nOiAtMC4wMWVtOwogIH0KCiAgLnJldmVhbC1oZWFkZXIgLnRhZyB7CiAgICBmb250LWZhbWlseTogJ0pldEJyYWlucyBNb25vJywgbW9ub3NwYWNlOwogICAgZm9udC1zaXplOiAxMHB4OwogICAgdGV4dC10cmFuc2Zvcm06IHVwcGVyY2FzZTsKICAgIGxldHRlci1zcGFjaW5nOiAwLjE1ZW07CiAgICBjb2xvcjogdmFyKC0tcGFwZXIpOwogICAgb3BhY2l0eTogMC43OwogIH0KCiAgLnJldmVhbC1ib2R5IHsKICAgIHBhZGRpbmc6IDIycHggMjRweDsKICAgIGRpc3BsYXk6IGdyaWQ7CiAgICBncmlkLXRlbXBsYXRlLWNvbHVtbnM6IDEuMmZyIDFmciAxLjNmcjsKICAgIGdhcDogMjRweDsKICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7CiAgfQoKICBAbWVkaWEgKG1heC13aWR0aDogOTAwcHgpIHsKICAgIC5yZXZlYWwtYm9keSB7IGdyaWQtdGVtcGxhdGUtY29sdW1uczogMWZyOyB9CiAgICAud29ya3NwYWNlIHsgZ3JpZC10ZW1wbGF0ZS1jb2x1bW5zOiAxZnI7IH0KICB9CgogIC5yZXZlYWwtYmxvY2sgaDMgewogICAgZm9udC1mYW1pbHk6ICdKZXRCcmFpbnMgTW9ubycsIG1vbm9zcGFjZTsKICAgIGZvbnQtc2l6ZTogMTBweDsKICAgIGxldHRlci1zcGFjaW5nOiAwLjE1ZW07CiAgICB0ZXh0LXRyYW5zZm9ybTogdXBwZXJjYXNlOwogICAgY29sb3I6IHZhcigtLWluay1zb2Z0KTsKICAgIG1hcmdpbjogMCAwIDhweDsKICAgIGZvbnQtd2VpZ2h0OiA3MDA7CiAgfQoKICAucmV2ZWFsLWJsb2NrIC5iaWcgewogICAgZm9udC1mYW1pbHk6ICdGcmF1bmNlcycsIHNlcmlmOwogICAgZm9udC1zaXplOiA0NHB4OwogICAgZm9udC13ZWlnaHQ6IDYwMDsKICAgIGxpbmUtaGVpZ2h0OiAxOwogICAgbGV0dGVyLXNwYWNpbmc6IC0wLjAyZW07CiAgfQoKICAucmV2ZWFsLWJsb2NrIC5iaWcgLnVuaXQgewogICAgZm9udC1mYW1pbHk6ICdKZXRCcmFpbnMgTW9ubycsIG1vbm9zcGFjZTsKICAgIGZvbnQtc2l6ZTogMjJweDsKICAgIGNvbG9yOiB2YXIoLS1pbmstc29mdCk7CiAgICBmb250LXdlaWdodDogNTAwOwogICAgbWFyZ2luLWxlZnQ6IDRweDsKICB9CgogIC5yZXZlYWwtYmxvY2sgLnN1YiB7CiAgICBmb250LXNpemU6IDEzcHg7CiAgICBjb2xvcjogdmFyKC0taW5rLXNvZnQpOwogICAgbWFyZ2luLXRvcDogNHB4OwogICAgbGluZS1oZWlnaHQ6IDEuNDsKICB9CgogIC52ZXJkaWN0LWNhcmQgewogICAgYmFja2dyb3VuZDogdmFyKC0tcmVzdWx0YW50LXNvZnQpOwogICAgcGFkZGluZzogMTRweCAxNnB4OwogICAgYm9yZGVyLWxlZnQ6IDRweCBzb2xpZCB2YXIoLS1yZXN1bHRhbnQpOwogIH0KCiAgLnZlcmRpY3QtY2FyZC5iYWxhbmNlZCB7IGJhY2tncm91bmQ6IHZhcigtLWFjY2VudC1zb2Z0KTsgYm9yZGVyLWxlZnQtY29sb3I6IHZhcigtLWFjY2VudCk7IH0KICAudmVyZGljdC1jYXJkLmRlY2VsZXJhdGluZyB7IGJhY2tncm91bmQ6ICNmNWU2ZDQ7IGJvcmRlci1sZWZ0LWNvbG9yOiB2YXIoLS13YXJuKTsgfQogIC52ZXJkaWN0LWNhcmQucGVycGVuZGljdWxhciB7IGJhY2tncm91bmQ6ICNlZGU0ZjA7IGJvcmRlci1sZWZ0LWNvbG9yOiAjNmEzODg5OyB9CgogIC52ZXJkaWN0LWNhcmQgLnZlcmRpY3QtbGFiZWwgewogICAgZm9udC1mYW1pbHk6ICdGcmF1bmNlcycsIHNlcmlmOwogICAgZm9udC1zaXplOiAyMnB4OwogICAgZm9udC13ZWlnaHQ6IDYwMDsKICAgIGxpbmUtaGVpZ2h0OiAxLjE1OwogICAgbGV0dGVyLXNwYWNpbmc6IC0wLjAxZW07CiAgfQoKICAudmVyZGljdC1jYXJkIC52ZXJkaWN0LWRldGFpbCB7CiAgICBmb250LXNpemU6IDEzcHg7CiAgICBtYXJnaW4tdG9wOiA2cHg7CiAgICBjb2xvcjogdmFyKC0taW5rLXNvZnQpOwogICAgbGluZS1oZWlnaHQ6IDEuNDU7CiAgfQoKICAuYnJlYWtkb3duIHsKICAgIGRpc3BsYXk6IGZsZXg7CiAgICBmbGV4LWRpcmVjdGlvbjogY29sdW1uOwogICAgZ2FwOiA2cHg7CiAgICBmb250LWZhbWlseTogJ0pldEJyYWlucyBNb25vJywgbW9ub3NwYWNlOwogICAgZm9udC1zaXplOiAxMnB4OwogIH0KCiAgLmJyZWFrZG93bi1yb3cgewogICAgZGlzcGxheTogZmxleDsKICAgIGp1c3RpZnktY29udGVudDogc3BhY2UtYmV0d2VlbjsKICAgIHBhZGRpbmc6IDRweCAwOwogICAgYm9yZGVyLWJvdHRvbTogMXB4IGRhc2hlZCB2YXIoLS1ydWxlKTsKICB9CgogIC5icmVha2Rvd24tcm93Omxhc3QtY2hpbGQgewogICAgYm9yZGVyLWJvdHRvbTogbm9uZTsKICAgIHBhZGRpbmctdG9wOiA2cHg7CiAgICBmb250LXdlaWdodDogNzAwOwogICAgZm9udC1zaXplOiAxM3B4OwogIH0KCiAgLmJyZWFrZG93bi1yb3cgLmNhbGMgeyBjb2xvcjogdmFyKC0taW5rLXNvZnQpOyB9CiAgLmJyZWFrZG93bi1yb3cgLnJlc3VsdCB7IGNvbG9yOiB2YXIoLS1pbmspOyB9CgogIC8qIGZvb3RlciAqLwogIGZvb3Rlci5mb290IHsKICAgIG1hcmdpbi10b3A6IDMycHg7CiAgICBwYWRkaW5nLXRvcDogMTRweDsKICAgIGJvcmRlci10b3A6IDFweCBzb2xpZCB2YXIoLS1ydWxlKTsKICAgIGZvbnQtZmFtaWx5OiAnSmV0QnJhaW5zIE1vbm8nLCBtb25vc3BhY2U7CiAgICBmb250LXNpemU6IDEwcHg7CiAgICBsZXR0ZXItc3BhY2luZzogMC4wOGVtOwogICAgdGV4dC10cmFuc2Zvcm06IHVwcGVyY2FzZTsKICAgIGNvbG9yOiB2YXIoLS1pbmstZmFpbnQpOwogICAgZGlzcGxheTogZmxleDsKICAgIGp1c3RpZnktY29udGVudDogc3BhY2UtYmV0d2VlbjsKICB9Cjwvc3R5bGU+CjwvaGVhZD4KPGJvZHk+CjxkaXYgY2xhc3M9InBhZ2UiPgoKPGhlYWRlciBjbGFzcz0ibWFzdGhlYWQiPgogIDxoMT5Gb3JjZSBEaWFncmFtIDxlbT5CdWlsZGVyPC9lbT48L2gxPgogIDxkaXYgY2xhc3M9Im1ldGEiPgogICAgPGRpdj5QaHlzaWNzIMK3IEtTMzwvZGl2PgogICAgPGRpdj5EcmFnIOKGkiBEcm9wIOKGkiBQcmVkaWN0PC9kaXY+CiAgPC9kaXY+CjwvaGVhZGVyPgoKPGRpdiBjbGFzcz0iY29udHJvbHMiPgogIDxkaXYgY2xhc3M9ImNvbnRyb2wtZ3JvdXAiPgogICAgPHNwYW4gY2xhc3M9ImNvbnRyb2wtbGFiZWwiPkluaXRpYWwgc3RhdGU8L3NwYW4+CiAgICA8ZGl2IGNsYXNzPSJtb3Rpb24tb3B0aW9ucyIgaWQ9Im1vdGlvbk9wdGlvbnMiPgogICAgICA8bGFiZWw+PGlucHV0IHR5cGU9InJhZGlvIiBuYW1lPSJtb3Rpb24iIHZhbHVlPSJzdGF0aW9uYXJ5IiBjaGVja2VkPjxzcGFuPlN0YXRpb25hcnk8L3NwYW4+PC9sYWJlbD4KICAgICAgPGxhYmVsPjxpbnB1dCB0eXBlPSJyYWRpbyIgbmFtZT0ibW90aW9uIiB2YWx1ZT0idXAiPjxzcGFuPk1vdmluZyDihpE8L3NwYW4+PC9sYWJlbD4KICAgICAgPGxhYmVsPjxpbnB1dCB0eXBlPSJyYWRpbyIgbmFtZT0ibW90aW9uIiB2YWx1ZT0iZG93biI+PHNwYW4+TW92aW5nIOKGkzwvc3Bhbj48L2xhYmVsPgogICAgICA8bGFiZWw+PGlucHV0IHR5cGU9InJhZGlvIiBuYW1lPSJtb3Rpb24iIHZhbHVlPSJsZWZ0Ij48c3Bhbj5Nb3Zpbmcg4oaQPC9zcGFuPjwvbGFiZWw+CiAgICAgIDxsYWJlbD48aW5wdXQgdHlwZT0icmFkaW8iIG5hbWU9Im1vdGlvbiIgdmFsdWU9InJpZ2h0Ij48c3Bhbj5Nb3Zpbmcg4oaSPC9zcGFuPjwvbGFiZWw+CiAgICA8L2Rpdj4KICA8L2Rpdj4KCiAgPGRpdiBjbGFzcz0ic3BhY2VyIj48L2Rpdj4KCiAgPGRpdiBjbGFzcz0iY29udHJvbC1ncm91cCI+CiAgICA8YnV0dG9uIGlkPSJjbGVhckJ0biI+Q2xlYXIgZm9yY2VzPC9idXR0b24+CiAgICA8YnV0dG9uIGlkPSJyZXZlYWxCdG4iIGNsYXNzPSJwcmltYXJ5Ij5SZXZlYWwgcmVzdWx0YW50PC9idXR0b24+CiAgPC9kaXY+CjwvZGl2PgoKPGRpdiBjbGFzcz0id29ya3NwYWNlIj4KCiAgPGFzaWRlIGNsYXNzPSJwYWxldHRlIj4KICAgIDxoMj5Gb3JjZSBwYWxldHRlPC9oMj4KICAgIDxwIGNsYXNzPSJoaW50Ij5TZXQgdGhlIHNpemUgb2YgZWFjaCBmb3JjZSBpbiBuZXd0b25zLiA8c3Ryb25nPkNsaWNrIGFuZCBkcmFnPC9zdHJvbmc+IGFuIGFycm93IG9udG8gdGhlIGJveCB0byBhcHBseSBpdC4gRHJhZyB0aGUgc2FtZSBhcnJvdyBhZ2FpbiB0byBhZGQgYW5vdGhlci48L3A+CgogICAgPGRpdiBjbGFzcz0icGFsZXR0ZS1ncmlkIj4KICAgICAgPGRpdiBjbGFzcz0icGFsZXR0ZS1pdGVtIiBkYXRhLWRpcmVjdGlvbj0idXAiPgogICAgICAgIDxkaXYgY2xhc3M9InBhbGV0dGUtYXJyb3ciPgogICAgICAgICAgPHN2ZyB2aWV3Qm94PSIwIDAgNDQgNDQiPjxsaW5lIHgxPSIyMiIgeTE9IjQwIiB4Mj0iMjIiIHkyPSIxMCIgc3Ryb2tlLXdpZHRoPSIzLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwb2x5Z29uIHBvaW50cz0iMjIsNCAxNCwxNiAzMCwxNiIgc3Ryb2tlPSJub25lIi8+PC9zdmc+CiAgICAgICAgPC9kaXY+CiAgICAgICAgPGRpdiBjbGFzcz0iZGlyLWxhYmVsIj5VcDwvZGl2PgogICAgICAgIDxkaXYgY2xhc3M9Im1hZy1yb3ciPgogICAgICAgICAgPGlucHV0IHR5cGU9Im51bWJlciIgdmFsdWU9IjUiIG1pbj0iMSIgbWF4PSI5OSIgZGF0YS1tYWctZm9yPSJ1cCI+CiAgICAgICAgICA8c3BhbiBjbGFzcz0idW5pdCI+Tjwvc3Bhbj4KICAgICAgICA8L2Rpdj4KICAgICAgPC9kaXY+CgogICAgICA8ZGl2IGNsYXNzPSJwYWxldHRlLWl0ZW0iIGRhdGEtZGlyZWN0aW9uPSJkb3duIj4KICAgICAgICA8ZGl2IGNsYXNzPSJwYWxldHRlLWFycm93Ij4KICAgICAgICAgIDxzdmcgdmlld0JveD0iMCAwIDQ0IDQ0Ij48bGluZSB4MT0iMjIiIHkxPSI0IiB4Mj0iMjIiIHkyPSIzNCIgc3Ryb2tlLXdpZHRoPSIzLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwb2x5Z29uIHBvaW50cz0iMjIsNDAgMTQsMjggMzAsMjgiIHN0cm9rZT0ibm9uZSIvPjwvc3ZnPgogICAgICAgIDwvZGl2PgogICAgICAgIDxkaXYgY2xhc3M9ImRpci1sYWJlbCI+RG93bjwvZGl2PgogICAgICAgIDxkaXYgY2xhc3M9Im1hZy1yb3ciPgogICAgICAgICAgPGlucHV0IHR5cGU9Im51bWJlciIgdmFsdWU9IjUiIG1pbj0iMSIgbWF4PSI5OSIgZGF0YS1tYWctZm9yPSJkb3duIj4KICAgICAgICAgIDxzcGFuIGNsYXNzPSJ1bml0Ij5OPC9zcGFuPgogICAgICAgIDwvZGl2PgogICAgICA8L2Rpdj4KCiAgICAgIDxkaXYgY2xhc3M9InBhbGV0dGUtaXRlbSIgZGF0YS1kaXJlY3Rpb249ImxlZnQiPgogICAgICAgIDxkaXYgY2xhc3M9InBhbGV0dGUtYXJyb3ciPgogICAgICAgICAgPHN2ZyB2aWV3Qm94PSIwIDAgNDQgNDQiPjxsaW5lIHgxPSI0MCIgeTE9IjIyIiB4Mj0iMTAiIHkyPSIyMiIgc3Ryb2tlLXdpZHRoPSIzLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwb2x5Z29uIHBvaW50cz0iNCwyMiAxNiwxNCAxNiwzMCIgc3Ryb2tlPSJub25lIi8+PC9zdmc+CiAgICAgICAgPC9kaXY+CiAgICAgICAgPGRpdiBjbGFzcz0iZGlyLWxhYmVsIj5MZWZ0PC9kaXY+CiAgICAgICAgPGRpdiBjbGFzcz0ibWFnLXJvdyI+CiAgICAgICAgICA8aW5wdXQgdHlwZT0ibnVtYmVyIiB2YWx1ZT0iNSIgbWluPSIxIiBtYXg9Ijk5IiBkYXRhLW1hZy1mb3I9ImxlZnQiPgogICAgICAgICAgPHNwYW4gY2xhc3M9InVuaXQiPk48L3NwYW4+CiAgICAgICAgPC9kaXY+CiAgICAgIDwvZGl2PgoKICAgICAgPGRpdiBjbGFzcz0icGFsZXR0ZS1pdGVtIiBkYXRhLWRpcmVjdGlvbj0icmlnaHQiPgogICAgICAgIDxkaXYgY2xhc3M9InBhbGV0dGUtYXJyb3ciPgogICAgICAgICAgPHN2ZyB2aWV3Qm94PSIwIDAgNDQgNDQiPjxsaW5lIHgxPSI0IiB5MT0iMjIiIHgyPSIzNCIgeTI9IjIyIiBzdHJva2Utd2lkdGg9IjMuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBvbHlnb24gcG9pbnRzPSI0MCwyMiAyOCwxNCAyOCwzMCIgc3Ryb2tlPSJub25lIi8+PC9zdmc+CiAgICAgICAgPC9kaXY+CiAgICAgICAgPGRpdiBjbGFzcz0iZGlyLWxhYmVsIj5SaWdodDwvZGl2PgogICAgICAgIDxkaXYgY2xhc3M9Im1hZy1yb3ciPgogICAgICAgICAgPGlucHV0IHR5cGU9Im51bWJlciIgdmFsdWU9IjUiIG1pbj0iMSIgbWF4PSI5OSIgZGF0YS1tYWctZm9yPSJyaWdodCI+CiAgICAgICAgICA8c3BhbiBjbGFzcz0idW5pdCI+Tjwvc3Bhbj4KICAgICAgICA8L2Rpdj4KICAgICAgPC9kaXY+CiAgICA8L2Rpdj4KCiAgICA8ZGl2IGNsYXNzPSJwYWxldHRlLWZvb3QiPgogICAgICA8c3Ryb25nPlRpcDo8L3N0cm9uZz4gQ2xpY2sgYW55IHJlZCBhcnJvdyBvbiB0aGUgZGlhZ3JhbSB0byByZW1vdmUgaXQuIE1vdGlvbiBpcyBzaG93biBpbiBncmV5IOKAlCBkb24ndCBjb25mdXNlIG1vdGlvbiB3aXRoIGZvcmNlIQogICAgPC9kaXY+CiAgPC9hc2lkZT4KCiAgPGRpdiBjbGFzcz0iY2FudmFzLXdyYXAiIGlkPSJjYW52YXNXcmFwIj4KICAgIDxkaXYgY2xhc3M9ImNhbnZhcy1oZWFkZXIiPgogICAgICA8ZGl2IGNsYXNzPSJzdGF0ZS1sYWJlbCI+CiAgICAgICAgPHNwYW4gY2xhc3M9Im11dGVkIj5PYmplY3QgaXM8L3NwYW4+PHNwYW4gY2xhc3M9InZhbHVlIiBpZD0ic3RhdGVUZXh0Ij5zdGF0aW9uYXJ5PC9zcGFuPgogICAgICA8L2Rpdj4KICAgICAgPGRpdiBjbGFzcz0iY29vcmQiIGlkPSJmb3JjZUNvdW50Ij4wIGZvcmNlcyBhcHBsaWVkPC9kaXY+CiAgICA8L2Rpdj4KICAgIDxzdmcgaWQ9ImNhbnZhcyIgdmlld0JveD0iMCAwIDgwMCA1NjAiIHByZXNlcnZlQXNwZWN0UmF0aW89InhNaWRZTWlkIG1lZXQiPgogICAgICA8ZGVmcz4KICAgICAgICA8bWFya2VyIGlkPSJhcnJvd2hlYWQtZm9yY2UiIHZpZXdCb3g9IjAgMCAxMCAxMCIgcmVmWD0iOCIgcmVmWT0iNSIgbWFya2VyV2lkdGg9IjYiIG1hcmtlckhlaWdodD0iNiIgb3JpZW50PSJhdXRvLXN0YXJ0LXJldmVyc2UiPgogICAgICAgICAgPHBhdGggZD0iTSAwIDAgTCAxMCA1IEwgMCAxMCB6IiBmaWxsPSIjYzIzYTJhIi8+CiAgICAgICAgPC9tYXJrZXI+CiAgICAgICAgPG1hcmtlciBpZD0iYXJyb3doZWFkLW1vdGlvbiIgdmlld0JveD0iMCAwIDEwIDEwIiByZWZYPSI4IiByZWZZPSI1IiBtYXJrZXJXaWR0aD0iNyIgbWFya2VySGVpZ2h0PSI3IiBvcmllbnQ9ImF1dG8tc3RhcnQtcmV2ZXJzZSI+CiAgICAgICAgICA8cGF0aCBkPSJNIDAgMCBMIDEwIDUgTCAwIDEwIHoiIGZpbGw9IiM2YjZhNjciLz4KICAgICAgICA8L21hcmtlcj4KICAgICAgICA8bWFya2VyIGlkPSJhcnJvd2hlYWQtcmVzdWx0YW50IiB2aWV3Qm94PSIwIDAgMTAgMTAiIHJlZlg9IjgiIHJlZlk9IjUiIG1hcmtlcldpZHRoPSI2IiBtYXJrZXJIZWlnaHQ9IjYiIG9yaWVudD0iYXV0by1zdGFydC1yZXZlcnNlIj4KICAgICAgICAgIDxwYXRoIGQ9Ik0gMCAwIEwgMTAgNSBMIDAgMTAgeiIgZmlsbD0iIzBlNmIzYyIvPgogICAgICAgIDwvbWFya2VyPgogICAgICA8L2RlZnM+CiAgICAgIDxnIGlkPSJsYXllci1tb3Rpb24iPjwvZz4KICAgICAgPGcgaWQ9ImxheWVyLWJveCI+PC9nPgogICAgICA8ZyBpZD0ibGF5ZXItZm9yY2VzIj48L2c+CiAgICAgIDxnIGlkPSJsYXllci1yZXN1bHRhbnQiPjwvZz4KICAgIDwvc3ZnPgogIDwvZGl2Pgo8L2Rpdj4KCjxkaXYgY2xhc3M9InJldmVhbC1wYW5lbCIgaWQ9InJldmVhbFBhbmVsIj4KICA8ZGl2IGNsYXNzPSJyZXZlYWwtaGVhZGVyIj4KICAgIDxoMj5SZXN1bHRhbnQgZm9yY2UgJmFtcDsgbW90aW9uPC9oMj4KICAgIDxkaXYgY2xhc3M9InRhZyI+QW5zd2VyIHJldmVhbGVkPC9kaXY+CiAgPC9kaXY+CiAgPGRpdiBjbGFzcz0icmV2ZWFsLWJvZHkiPgogICAgPGRpdiBjbGFzcz0icmV2ZWFsLWJsb2NrIj4KICAgICAgPGgzPlJlc3VsdGFudCBtYWduaXR1ZGU8L2gzPgogICAgICA8ZGl2IGNsYXNzPSJiaWciIGlkPSJyZXNNYWduaXR1ZGUiPjA8c3BhbiBjbGFzcz0idW5pdCI+Tjwvc3Bhbj48L2Rpdj4KICAgICAgPGRpdiBjbGFzcz0ic3ViIiBpZD0icmVzRGlyZWN0aW9uIj5ObyByZXN1bHRhbnQgZm9yY2Ug4oCUIHRoZSBmb3JjZXMgYXJlIGJhbGFuY2VkLjwvZGl2PgogICAgPC9kaXY+CiAgICA8ZGl2IGNsYXNzPSJyZXZlYWwtYmxvY2siPgogICAgICA8aDM+SG9yaXpvbnRhbCAmYW1wOyB2ZXJ0aWNhbDwvaDM+CiAgICAgIDxkaXYgY2xhc3M9ImJyZWFrZG93biIgaWQ9ImJyZWFrZG93biI+PC9kaXY+CiAgICA8L2Rpdj4KICAgIDxkaXYgY2xhc3M9InJldmVhbC1ibG9jayI+CiAgICAgIDxoMz5XaGF0IGhhcHBlbnM8L2gzPgogICAgICA8ZGl2IGNsYXNzPSJ2ZXJkaWN0LWNhcmQiIGlkPSJ2ZXJkaWN0Q2FyZCI+CiAgICAgICAgPGRpdiBjbGFzcz0idmVyZGljdC1sYWJlbCIgaWQ9InZlcmRpY3RMYWJlbCI+4oCUPC9kaXY+CiAgICAgICAgPGRpdiBjbGFzcz0idmVyZGljdC1kZXRhaWwiIGlkPSJ2ZXJkaWN0RGV0YWlsIj7igJQ8L2Rpdj4KICAgICAgPC9kaXY+CiAgICA8L2Rpdj4KICA8L2Rpdj4KPC9kaXY+Cgo8Zm9vdGVyIGNsYXNzPSJmb290Ij4KICA8ZGl2PkphbWVzIEhvcm5zYnkgwrcgUGh5c2ljcyBkZXBhcnRtZW50PC9kaXY+CiAgPGRpdj5OZXd0b24ncyAybmQgTGF3IMK3IEYgPSBtYTwvZGl2Pgo8L2Zvb3Rlcj4KCjwvZGl2PgoKPHNjcmlwdD4KKGZ1bmN0aW9uKCkgewogICd1c2Ugc3RyaWN0JzsKCiAgLy8gLS0tLS0tLS0tLSBDb2xvcnMgKGhleCBtaXJyb3JzIG9mIENTUyB2YXJzIGZvciByZWxpYWJsZSBTVkcgcmVuZGVyaW5nKSAtLS0tLS0tLS0tCiAgY29uc3QgQyA9IHsKICAgIGluazogJyMxZTFkMWEnLAogICAgaW5rU29mdDogJyM1NTUxNDgnLAogICAgZm9yY2U6ICcjYzIzYTJhJywKICAgIGZvcmNlRGFyazogJyM4ZjI1MTYnLAogICAgbW90aW9uOiAnIzZiNmE2NycsCiAgICByZXN1bHRhbnQ6ICcjMGU2YjNjJywKICAgIHBhcGVyOiAnI2Y2ZjFlNycKICB9OwoKICAvLyAtLS0tLS0tLS0tIFN0YXRlIC0tLS0tLS0tLS0KICBjb25zdCBzdGF0ZSA9IHsKICAgIGZvcmNlczogW10sIC8vIHsgaWQsIGRpcmVjdGlvbiwgbWFnbml0dWRlIH0KICAgIG1vdGlvbjogJ3N0YXRpb25hcnknLAogICAgcmV2ZWFsZWQ6IGZhbHNlCiAgfTsKICBsZXQgbmV4dElkID0gMTsKCiAgLy8gQ2FudmFzIGdlb21ldHJ5IChpbiBTVkcgdW5pdHMsIHZpZXdCb3ggODAweDU2MCkKICBjb25zdCBDQU5WQVNfVyA9IDgwMDsKICBjb25zdCBDQU5WQVNfSCA9IDU2MDsKICBjb25zdCBCT1hfQ1ggPSA0MDA7CiAgY29uc3QgQk9YX0NZID0gMjgwOwogIGNvbnN0IEJPWF9TSVpFID0gMTMwOwogIGNvbnN0IEJPWF9MRUZUID0gQk9YX0NYIC0gQk9YX1NJWkUgLyAyOwogIGNvbnN0IEJPWF9SSUdIVCA9IEJPWF9DWCArIEJPWF9TSVpFIC8gMjsKICBjb25zdCBCT1hfVE9QID0gQk9YX0NZIC0gQk9YX1NJWkUgLyAyOwogIGNvbnN0IEJPWF9CT1RUT00gPSBCT1hfQ1kgKyBCT1hfU0laRSAvIDI7CgogIC8vIEFycm93IGxlbmd0aCBzY2FsaW5nOiBiYXNlICsgTiAqIHBlck4sIGNhcHBlZAogIGNvbnN0IEFSUk9XX0JBU0UgPSAzMDsKICBjb25zdCBBUlJPV19QRVJfTiA9IDc7CiAgY29uc3QgQVJST1dfTUFYID0gMTY1OwoKICBmdW5jdGlvbiBhcnJvd0xlbmd0aChtYWduaXR1ZGUpIHsKICAgIHJldHVybiBNYXRoLm1pbihBUlJPV19NQVgsIEFSUk9XX0JBU0UgKyBtYWduaXR1ZGUgKiBBUlJPV19QRVJfTik7CiAgfQoKICAvLyAtLS0tLS0tLS0tIFJlbmRlcmluZyAtLS0tLS0tLS0tCiAgY29uc3QgU1ZHX05TID0gJ2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJzsKCiAgZnVuY3Rpb24gZWwodGFnLCBhdHRycyA9IHt9LCB0ZXh0KSB7CiAgICBjb25zdCBub2RlID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudE5TKFNWR19OUywgdGFnKTsKICAgIGZvciAoY29uc3QgayBpbiBhdHRycykgbm9kZS5zZXRBdHRyaWJ1dGUoaywgYXR0cnNba10pOwogICAgaWYgKHRleHQgIT09IHVuZGVmaW5lZCkgbm9kZS50ZXh0Q29udGVudCA9IHRleHQ7CiAgICByZXR1cm4gbm9kZTsKICB9CgogIGZ1bmN0aW9uIHJlbmRlckJveCgpIHsKICAgIGNvbnN0IGxheWVyID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ2xheWVyLWJveCcpOwogICAgbGF5ZXIuaW5uZXJIVE1MID0gJyc7CiAgICAvLyBTdWJ0bGUgc2hhZG93CiAgICBsYXllci5hcHBlbmRDaGlsZChlbCgncmVjdCcsIHsKICAgICAgeDogQk9YX0xFRlQgKyA0LCB5OiBCT1hfVE9QICsgNCwgd2lkdGg6IEJPWF9TSVpFLCBoZWlnaHQ6IEJPWF9TSVpFLAogICAgICBmaWxsOiAncmdiYSgzMCwyOSwyNiwwLjA4KScKICAgIH0pKTsKICAgIC8vIEJveCBib2R5CiAgICBsYXllci5hcHBlbmRDaGlsZChlbCgncmVjdCcsIHsKICAgICAgeDogQk9YX0xFRlQsIHk6IEJPWF9UT1AsIHdpZHRoOiBCT1hfU0laRSwgaGVpZ2h0OiBCT1hfU0laRSwKICAgICAgZmlsbDogJyNmZGZiZjUnLAogICAgICBzdHJva2U6ICd2YXIoLS1pbmspJywKICAgICAgJ3N0cm9rZS13aWR0aCc6ICcyLjUnCiAgICB9KSk7CiAgICAvLyBDZW50cmUgZG90CiAgICBsYXllci5hcHBlbmRDaGlsZChlbCgnY2lyY2xlJywgewogICAgICBjeDogQk9YX0NYLCBjeTogQk9YX0NZLCByOiAzLCBmaWxsOiAndmFyKC0taW5rKScKICAgIH0pKTsKICAgIC8vIExhYmVsCiAgICBsYXllci5hcHBlbmRDaGlsZChlbCgndGV4dCcsIHsKICAgICAgeDogQk9YX0NYLCB5OiBCT1hfQ1kgKyAyMiwKICAgICAgJ3RleHQtYW5jaG9yJzogJ21pZGRsZScsCiAgICAgICdmb250LWZhbWlseSc6ICdKZXRCcmFpbnMgTW9ubywgbW9ub3NwYWNlJywKICAgICAgJ2ZvbnQtc2l6ZSc6ICcxMScsCiAgICAgICdsZXR0ZXItc3BhY2luZyc6ICcwLjFlbScsCiAgICAgIGZpbGw6ICd2YXIoLS1pbmstc29mdCknCiAgICB9LCAnT0JKRUNUJykpOwogIH0KCiAgZnVuY3Rpb24gcmVuZGVyTW90aW9uKCkgewogICAgY29uc3QgbGF5ZXIgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnbGF5ZXItbW90aW9uJyk7CiAgICBsYXllci5pbm5lckhUTUwgPSAnJzsKICAgIGlmIChzdGF0ZS5tb3Rpb24gPT09ICdzdGF0aW9uYXJ5JykgcmV0dXJuOwoKICAgIC8vIERhc2hlZCBncmV5IG1vdGlvbiBhcnJvdyDigJQgcGxhY2VkIHdlbGwgYXdheSBmcm9tIHRoZSBib3ggc28gc3R1ZGVudHMKICAgIC8vIGRvbid0IGNvbmZ1c2UgaXQgd2l0aCBhIGZvcmNlIGFycm93LiBQb3NpdGlvbmVkIHRvcC1yaWdodCBjb3JuZXIuCiAgICBjb25zdCBhcnJvd0xlbiA9IDcwOwogICAgY29uc3Qgb3ggPSA2OTA7ICAvLyBvcmlnaW4geAogICAgY29uc3Qgb3kgPSA3MDsgICAvLyBvcmlnaW4geQoKICAgIGxldCB4MSA9IG94LCB5MSA9IG95LCB4MiA9IG94LCB5MiA9IG95OwogICAgaWYgKHN0YXRlLm1vdGlvbiA9PT0gJ3JpZ2h0JykgeyB4MSA9IG94IC0gYXJyb3dMZW47IHgyID0gb3g7IH0KICAgIGlmIChzdGF0ZS5tb3Rpb24gPT09ICdsZWZ0JykgIHsgeDEgPSBveDsgeDIgPSBveCAtIGFycm93TGVuOyB9CiAgICBpZiAoc3RhdGUubW90aW9uID09PSAndXAnKSAgICB7IHkxID0gb3kgKyBhcnJvd0xlbjsgeTIgPSBveTsgfQogICAgaWYgKHN0YXRlLm1vdGlvbiA9PT0gJ2Rvd24nKSAgeyB5MSA9IG95OyB5MiA9IG95ICsgYXJyb3dMZW47IH0KCiAgICAvLyBCYWNrZ3JvdW5kIGxhYmVsIHBpbGwKICAgIGxheWVyLmFwcGVuZENoaWxkKGVsKCdyZWN0JywgewogICAgICB4OiA2MjAsIHk6IDIwLCB3aWR0aDogMTQwLCBoZWlnaHQ6IDgwLAogICAgICBmaWxsOiAnI2Y0ZjFlYScsIHN0cm9rZTogJ3ZhcigtLW1vdGlvbiknLCAnc3Ryb2tlLXdpZHRoJzogJzEnLAogICAgICAnc3Ryb2tlLWRhc2hhcnJheSc6ICczIDMnLCByeDogJzInCiAgICB9KSk7CiAgICBsYXllci5hcHBlbmRDaGlsZChlbCgndGV4dCcsIHsKICAgICAgeDogNjkwLCB5OiA0MCwKICAgICAgJ3RleHQtYW5jaG9yJzogJ21pZGRsZScsCiAgICAgICdmb250LWZhbWlseSc6ICdKZXRCcmFpbnMgTW9ubywgbW9ub3NwYWNlJywKICAgICAgJ2ZvbnQtc2l6ZSc6ICcxMCcsCiAgICAgICdsZXR0ZXItc3BhY2luZyc6ICcwLjE1ZW0nLAogICAgICBmaWxsOiAndmFyKC0tbW90aW9uKScsCiAgICAgICdmb250LXdlaWdodCc6ICc3MDAnCiAgICB9LCAnSU5JVElBTCBNT1RJT04nKSk7CiAgICBsYXllci5hcHBlbmRDaGlsZChlbCgnbGluZScsIHsKICAgICAgeDEsIHkxLCB4MiwgeTIsCiAgICAgIHN0cm9rZTogJ3ZhcigtLW1vdGlvbiknLAogICAgICAnc3Ryb2tlLXdpZHRoJzogJzInLAogICAgICAnc3Ryb2tlLWRhc2hhcnJheSc6ICc2IDQnLAogICAgICAnbWFya2VyLWVuZCc6ICd1cmwoI2Fycm93aGVhZC1tb3Rpb24pJwogICAgfSkpOwogIH0KCiAgZnVuY3Rpb24gcmVuZGVyRm9yY2VzKCkgewogICAgY29uc3QgbGF5ZXIgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnbGF5ZXItZm9yY2VzJyk7CiAgICBsYXllci5pbm5lckhUTUwgPSAnJzsKCiAgICAvLyBHcm91cCBmb3JjZXMgYnkgZGlyZWN0aW9uIGZvciBzdGFja2luZwogICAgY29uc3QgYnlTaWRlID0geyB1cDogW10sIGRvd246IFtdLCBsZWZ0OiBbXSwgcmlnaHQ6IFtdIH07CiAgICBzdGF0ZS5mb3JjZXMuZm9yRWFjaChmID0+IGJ5U2lkZVtmLmRpcmVjdGlvbl0ucHVzaChmKSk7CgogICAgT2JqZWN0LmtleXMoYnlTaWRlKS5mb3JFYWNoKGRpciA9PiB7CiAgICAgIGNvbnN0IGxpc3QgPSBieVNpZGVbZGlyXTsKICAgICAgaWYgKGxpc3QubGVuZ3RoID09PSAwKSByZXR1cm47CgogICAgICAvLyBGaWd1cmUgb3V0IHN0YXJ0IHBvc2l0aW9ucyBhbG9uZyB0aGUgcmVsZXZhbnQgZWRnZQogICAgICAvLyBFZGdlIHNwYW4gPSBCT1hfU0laRSwgc3ByZWFkIG4gZm9yY2VzIGV2ZW5seSBhcyBpbnRlcmlvciBwb2ludHMKICAgICAgY29uc3QgbiA9IGxpc3QubGVuZ3RoOwogICAgICBsaXN0LmZvckVhY2goKGZvcmNlLCBpKSA9PiB7CiAgICAgICAgY29uc3QgdCA9IChpICsgMSkgLyAobiArIDEpOyAvLyAwLi4xIGFsb25nIGVkZ2UKICAgICAgICBsZXQgc3RhcnRYLCBzdGFydFksIGVuZFgsIGVuZFk7CiAgICAgICAgY29uc3QgbGVuID0gYXJyb3dMZW5ndGgoZm9yY2UubWFnbml0dWRlKTsKCiAgICAgICAgaWYgKGRpciA9PT0gJ3VwJykgewogICAgICAgICAgc3RhcnRYID0gQk9YX0xFRlQgKyBCT1hfU0laRSAqIHQ7CiAgICAgICAgICBzdGFydFkgPSBCT1hfVE9QOwogICAgICAgICAgZW5kWCA9IHN0YXJ0WDsKICAgICAgICAgIGVuZFkgPSBzdGFydFkgLSBsZW47CiAgICAgICAgfSBlbHNlIGlmIChkaXIgPT09ICdkb3duJykgewogICAgICAgICAgc3RhcnRYID0gQk9YX0xFRlQgKyBCT1hfU0laRSAqIHQ7CiAgICAgICAgICBzdGFydFkgPSBCT1hfQk9UVE9NOwogICAgICAgICAgZW5kWCA9IHN0YXJ0WDsKICAgICAgICAgIGVuZFkgPSBzdGFydFkgKyBsZW47CiAgICAgICAgfSBlbHNlIGlmIChkaXIgPT09ICdsZWZ0JykgewogICAgICAgICAgc3RhcnRYID0gQk9YX0xFRlQ7CiAgICAgICAgICBzdGFydFkgPSBCT1hfVE9QICsgQk9YX1NJWkUgKiB0OwogICAgICAgICAgZW5kWCA9IHN0YXJ0WCAtIGxlbjsKICAgICAgICAgIGVuZFkgPSBzdGFydFk7CiAgICAgICAgfSBlbHNlIGlmIChkaXIgPT09ICdyaWdodCcpIHsKICAgICAgICAgIHN0YXJ0WCA9IEJPWF9SSUdIVDsKICAgICAgICAgIHN0YXJ0WSA9IEJPWF9UT1AgKyBCT1hfU0laRSAqIHQ7CiAgICAgICAgICBlbmRYID0gc3RhcnRYICsgbGVuOwogICAgICAgICAgZW5kWSA9IHN0YXJ0WTsKICAgICAgICB9CgogICAgICAgIC8vIEhpdCB0YXJnZXQgKHdpZGVyIGludmlzaWJsZSBsaW5lIGZvciBlYXNpZXIgY2xpY2tpbmcpCiAgICAgICAgY29uc3QgaGl0ID0gZWwoJ2xpbmUnLCB7CiAgICAgICAgICB4MTogc3RhcnRYLCB5MTogc3RhcnRZLCB4MjogZW5kWCwgeTI6IGVuZFksCiAgICAgICAgICBzdHJva2U6ICd0cmFuc3BhcmVudCcsCiAgICAgICAgICAnc3Ryb2tlLXdpZHRoJzogJzIyJywKICAgICAgICAgICdkYXRhLWZvcmNlLWlkJzogZm9yY2UuaWQsCiAgICAgICAgICBzdHlsZTogJ2N1cnNvcjogcG9pbnRlcjsnCiAgICAgICAgfSk7CiAgICAgICAgaGl0LmFkZEV2ZW50TGlzdGVuZXIoJ2NsaWNrJywgKCkgPT4gcmVtb3ZlRm9yY2UoZm9yY2UuaWQpKTsKICAgICAgICBsYXllci5hcHBlbmRDaGlsZChoaXQpOwoKICAgICAgICAvLyBWaXNpYmxlIGFycm93CiAgICAgICAgbGF5ZXIuYXBwZW5kQ2hpbGQoZWwoJ2xpbmUnLCB7CiAgICAgICAgICB4MTogc3RhcnRYLCB5MTogc3RhcnRZLCB4MjogZW5kWCwgeTI6IGVuZFksCiAgICAgICAgICBzdHJva2U6ICd2YXIoLS1mb3JjZSknLAogICAgICAgICAgJ3N0cm9rZS13aWR0aCc6ICczJywKICAgICAgICAgICdzdHJva2UtbGluZWNhcCc6ICdyb3VuZCcsCiAgICAgICAgICAnbWFya2VyLWVuZCc6ICd1cmwoI2Fycm93aGVhZC1mb3JjZSknLAogICAgICAgICAgJ3BvaW50ZXItZXZlbnRzJzogJ25vbmUnCiAgICAgICAgfSkpOwoKICAgICAgICAvLyBMYWJlbCBwb3NpdGlvbiAob2Zmc2V0IGZyb20gYXJyb3cgdGlwLCBwZXJwZW5kaWN1bGFyIHRvIGFycm93KQogICAgICAgIGxldCBsYWJlbFggPSBlbmRYLCBsYWJlbFkgPSBlbmRZOwogICAgICAgIGlmIChkaXIgPT09ICd1cCcpICAgIHsgbGFiZWxZIC09IDEyOyB9CiAgICAgICAgaWYgKGRpciA9PT0gJ2Rvd24nKSAgeyBsYWJlbFkgKz0gMjA7IH0KICAgICAgICBpZiAoZGlyID09PSAnbGVmdCcpICB7IGxhYmVsWCAtPSAxNjsgbGFiZWxZICs9IDQ7IH0KICAgICAgICBpZiAoZGlyID09PSAncmlnaHQnKSB7IGxhYmVsWCArPSAxNjsgbGFiZWxZICs9IDQ7IH0KCiAgICAgICAgY29uc3QgYW5jaG9yID0gKGRpciA9PT0gJ2xlZnQnKSA/ICdlbmQnIDogKGRpciA9PT0gJ3JpZ2h0JykgPyAnc3RhcnQnIDogJ21pZGRsZSc7CgogICAgICAgIC8vIExhYmVsIGJhY2tncm91bmQgZm9yIHJlYWRhYmlsaXR5CiAgICAgICAgY29uc3QgbGFiZWxUZXh0ID0gZm9yY2UubWFnbml0dWRlICsgJyBOJzsKICAgICAgICBjb25zdCBhcHByb3hXID0gbGFiZWxUZXh0Lmxlbmd0aCAqIDcuNSArIDg7CiAgICAgICAgY29uc3QgYXBwcm94SCA9IDE4OwogICAgICAgIGxldCBiZ1ggPSBsYWJlbFggLSBhcHByb3hXIC8gMjsKICAgICAgICBpZiAoYW5jaG9yID09PSAnZW5kJykgYmdYID0gbGFiZWxYIC0gYXBwcm94VyArIDQ7CiAgICAgICAgaWYgKGFuY2hvciA9PT0gJ3N0YXJ0JykgYmdYID0gbGFiZWxYIC0gNDsKICAgICAgICBsYXllci5hcHBlbmRDaGlsZChlbCgncmVjdCcsIHsKICAgICAgICAgIHg6IGJnWCwgeTogbGFiZWxZIC0gMTMsCiAgICAgICAgICB3aWR0aDogYXBwcm94VywgaGVpZ2h0OiBhcHByb3hILAogICAgICAgICAgZmlsbDogJ3doaXRlJywgJ2ZpbGwtb3BhY2l0eSc6ICcwLjg1JywKICAgICAgICAgIHJ4OiAnMicsCiAgICAgICAgICAncG9pbnRlci1ldmVudHMnOiAnbm9uZScKICAgICAgICB9KSk7CiAgICAgICAgbGF5ZXIuYXBwZW5kQ2hpbGQoZWwoJ3RleHQnLCB7CiAgICAgICAgICB4OiBsYWJlbFgsIHk6IGxhYmVsWSArIDEsCiAgICAgICAgICAndGV4dC1hbmNob3InOiBhbmNob3IsCiAgICAgICAgICAnZm9udC1mYW1pbHknOiAnSmV0QnJhaW5zIE1vbm8sIG1vbm9zcGFjZScsCiAgICAgICAgICAnZm9udC1zaXplJzogJzE0JywKICAgICAgICAgICdmb250LXdlaWdodCc6ICc3MDAnLAogICAgICAgICAgZmlsbDogJ3ZhcigtLWZvcmNlLWRhcmspJywKICAgICAgICAgICdwb2ludGVyLWV2ZW50cyc6ICdub25lJwogICAgICAgIH0sIGxhYmVsVGV4dCkpOwogICAgICB9KTsKICAgIH0pOwogIH0KCiAgZnVuY3Rpb24gY29tcHV0ZU5ldCgpIHsKICAgIC8vIFBoeXNpY3MgY29udmVudGlvbjogcmlnaHQgPSAreCwgdXAgPSAreQogICAgbGV0IGZ4ID0gMCwgZnkgPSAwOwogICAgbGV0IHN1bVVwID0gMCwgc3VtRG93biA9IDAsIHN1bUxlZnQgPSAwLCBzdW1SaWdodCA9IDA7CiAgICBzdGF0ZS5mb3JjZXMuZm9yRWFjaChmID0+IHsKICAgICAgaWYgKGYuZGlyZWN0aW9uID09PSAncmlnaHQnKSB7IGZ4ICs9IGYubWFnbml0dWRlOyBzdW1SaWdodCArPSBmLm1hZ25pdHVkZTsgfQogICAgICBpZiAoZi5kaXJlY3Rpb24gPT09ICdsZWZ0JykgIHsgZnggLT0gZi5tYWduaXR1ZGU7IHN1bUxlZnQgKz0gZi5tYWduaXR1ZGU7IH0KICAgICAgaWYgKGYuZGlyZWN0aW9uID09PSAndXAnKSAgICB7IGZ5ICs9IGYubWFnbml0dWRlOyBzdW1VcCArPSBmLm1hZ25pdHVkZTsgfQogICAgICBpZiAoZi5kaXJlY3Rpb24gPT09ICdkb3duJykgIHsgZnkgLT0gZi5tYWduaXR1ZGU7IHN1bURvd24gKz0gZi5tYWduaXR1ZGU7IH0KICAgIH0pOwogICAgY29uc3QgbWFnID0gTWF0aC5zcXJ0KGZ4ICogZnggKyBmeSAqIGZ5KTsKICAgIHJldHVybiB7IGZ4LCBmeSwgbWFnLCBzdW1VcCwgc3VtRG93biwgc3VtTGVmdCwgc3VtUmlnaHQgfTsKICB9CgogIGZ1bmN0aW9uIHJlbmRlclJlc3VsdGFudCgpIHsKICAgIGNvbnN0IGxheWVyID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ2xheWVyLXJlc3VsdGFudCcpOwogICAgbGF5ZXIuaW5uZXJIVE1MID0gJyc7CiAgICBpZiAoIXN0YXRlLnJldmVhbGVkKSByZXR1cm47CiAgICBjb25zdCBuZXQgPSBjb21wdXRlTmV0KCk7CiAgICBpZiAobmV0Lm1hZyA8IDAuMDEpIHJldHVybjsKICAgIC8vIERyYXcgcmVzdWx0YW50IGZyb20gYm94IGNlbnRyZQogICAgLy8gTWFwIHBoeXNpY3MgKHVwID0gK3kpIHRvIHNjcmVlbiAodXAgPSAteSkKICAgIGNvbnN0IHNjYWxlID0gQVJST1dfUEVSX047CiAgICBjb25zdCBlbmRYID0gQk9YX0NYICsgbmV0LmZ4ICogc2NhbGU7CiAgICBjb25zdCBlbmRZID0gQk9YX0NZIC0gbmV0LmZ5ICogc2NhbGU7IC8vIGludmVydCB5CiAgICAvLyBDYXAgbGVuZ3RoCiAgICBjb25zdCBkeCA9IGVuZFggLSBCT1hfQ1g7CiAgICBjb25zdCBkeSA9IGVuZFkgLSBCT1hfQ1k7CiAgICBjb25zdCBsZW4gPSBNYXRoLnNxcnQoZHggKiBkeCArIGR5ICogZHkpOwogICAgY29uc3QgbWF4TGVuID0gMTgwOwogICAgbGV0IGZ4X3B4ID0gZHgsIGZ5X3B4ID0gZHk7CiAgICBpZiAobGVuID4gbWF4TGVuKSB7CiAgICAgIGZ4X3B4ID0gZHggKiBtYXhMZW4gLyBsZW47CiAgICAgIGZ5X3B4ID0gZHkgKiBtYXhMZW4gLyBsZW47CiAgICB9CgogICAgbGF5ZXIuYXBwZW5kQ2hpbGQoZWwoJ2xpbmUnLCB7CiAgICAgIHgxOiBCT1hfQ1gsIHkxOiBCT1hfQ1ksCiAgICAgIHgyOiBCT1hfQ1ggKyBmeF9weCwgeTI6IEJPWF9DWSArIGZ5X3B4LAogICAgICBzdHJva2U6ICd2YXIoLS1yZXN1bHRhbnQpJywKICAgICAgJ3N0cm9rZS13aWR0aCc6ICc1JywKICAgICAgJ3N0cm9rZS1saW5lY2FwJzogJ3JvdW5kJywKICAgICAgJ21hcmtlci1lbmQnOiAndXJsKCNhcnJvd2hlYWQtcmVzdWx0YW50KScsCiAgICAgIG9wYWNpdHk6ICcwLjk1JwogICAgfSkpOwoKICAgIC8vIExhYmVsCiAgICBjb25zdCBsYWJlbFggPSBCT1hfQ1ggKyBmeF9weCAqIDAuNjsKICAgIGNvbnN0IGxhYmVsWSA9IEJPWF9DWSArIGZ5X3B4ICogMC42IC0gMTA7CiAgICBsYXllci5hcHBlbmRDaGlsZChlbCgncmVjdCcsIHsKICAgICAgeDogbGFiZWxYIC0gNDAsIHk6IGxhYmVsWSAtIDEzLAogICAgICB3aWR0aDogODAsIGhlaWdodDogMjAsCiAgICAgIGZpbGw6ICd3aGl0ZScsICdmaWxsLW9wYWNpdHknOiAnMC45JywKICAgICAgcng6ICcyJwogICAgfSkpOwogICAgbGF5ZXIuYXBwZW5kQ2hpbGQoZWwoJ3RleHQnLCB7CiAgICAgIHg6IGxhYmVsWCwgeTogbGFiZWxZICsgMiwKICAgICAgJ3RleHQtYW5jaG9yJzogJ21pZGRsZScsCiAgICAgICdmb250LWZhbWlseSc6ICdKZXRCcmFpbnMgTW9ubywgbW9ub3NwYWNlJywKICAgICAgJ2ZvbnQtc2l6ZSc6ICcxMycsCiAgICAgICdmb250LXdlaWdodCc6ICc3MDAnLAogICAgICBmaWxsOiAndmFyKC0tcmVzdWx0YW50KScKICAgIH0sICdSID0gJyArIE1hdGgucm91bmQobmV0Lm1hZyAqIDEwKSAvIDEwICsgJyBOJykpOwogIH0KCiAgZnVuY3Rpb24gdXBkYXRlU3RhdGVMYWJlbCgpIHsKICAgIGNvbnN0IHR4dCA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdzdGF0ZVRleHQnKTsKICAgIGNvbnN0IGFycm93ID0geyB1cDogJ+KGkScsIGRvd246ICfihpMnLCBsZWZ0OiAn4oaQJywgcmlnaHQ6ICfihpInIH07CiAgICBpZiAoc3RhdGUubW90aW9uID09PSAnc3RhdGlvbmFyeScpIHsKICAgICAgdHh0LnRleHRDb250ZW50ID0gJ3N0YXRpb25hcnknOwogICAgfSBlbHNlIHsKICAgICAgdHh0LnRleHRDb250ZW50ID0gJ21vdmluZyAnICsgc3RhdGUubW90aW9uICsgJyAnICsgYXJyb3dbc3RhdGUubW90aW9uXTsKICAgIH0KICAgIGNvbnN0IGNvdW50ID0gc3RhdGUuZm9yY2VzLmxlbmd0aDsKICAgIGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdmb3JjZUNvdW50JykudGV4dENvbnRlbnQgPQogICAgICBjb3VudCArICcgZm9yY2UnICsgKGNvdW50ID09PSAxID8gJycgOiAncycpICsgJyBhcHBsaWVkJzsKICB9CgogIGZ1bmN0aW9uIHJlbmRlcigpIHsKICAgIHJlbmRlckJveCgpOwogICAgcmVuZGVyTW90aW9uKCk7CiAgICByZW5kZXJGb3JjZXMoKTsKICAgIHJlbmRlclJlc3VsdGFudCgpOwogICAgdXBkYXRlU3RhdGVMYWJlbCgpOwogICAgaWYgKHN0YXRlLnJldmVhbGVkKSByZW5kZXJSZXZlYWxQYW5lbCgpOwogIH0KCiAgLy8gLS0tLS0tLS0tLSBBY3Rpb25zIC0tLS0tLS0tLS0KICBmdW5jdGlvbiBhZGRGb3JjZShkaXJlY3Rpb24sIG1hZ25pdHVkZSkgewogICAgY29uc3QgbWFnID0gTWF0aC5tYXgoMSwgTWF0aC5taW4oOTksIE1hdGgucm91bmQoTnVtYmVyKG1hZ25pdHVkZSkgfHwgMSkpKTsKICAgIHN0YXRlLmZvcmNlcy5wdXNoKHsgaWQ6IG5leHRJZCsrLCBkaXJlY3Rpb24sIG1hZ25pdHVkZTogbWFnIH0pOwogICAgLy8gQWRkaW5nIGEgZm9yY2UgaW52YWxpZGF0ZXMgdGhlIHByZXZpb3VzIHJldmVhbCDigJQgbWFrZSBzdHVkZW50cyByZS1yZXZlYWwKICAgIGhpZGVSZXZlYWwoKTsKICAgIHJlbmRlcigpOwogIH0KCiAgZnVuY3Rpb24gcmVtb3ZlRm9yY2UoaWQpIHsKICAgIHN0YXRlLmZvcmNlcyA9IHN0YXRlLmZvcmNlcy5maWx0ZXIoZiA9PiBmLmlkICE9PSBpZCk7CiAgICBoaWRlUmV2ZWFsKCk7CiAgICByZW5kZXIoKTsKICB9CgogIGZ1bmN0aW9uIGNsZWFyRm9yY2VzKCkgewogICAgc3RhdGUuZm9yY2VzID0gW107CiAgICBoaWRlUmV2ZWFsKCk7CiAgICByZW5kZXIoKTsKICB9CgogIGZ1bmN0aW9uIGhpZGVSZXZlYWwoKSB7CiAgICBzdGF0ZS5yZXZlYWxlZCA9IGZhbHNlOwogICAgZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ3JldmVhbFBhbmVsJykuY2xhc3NMaXN0LnJlbW92ZSgnc2hvd24nKTsKICAgIGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdsYXllci1yZXN1bHRhbnQnKS5pbm5lckhUTUwgPSAnJzsKICB9CgogIGZ1bmN0aW9uIHJldmVhbCgpIHsKICAgIHN0YXRlLnJldmVhbGVkID0gdHJ1ZTsKICAgIGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdyZXZlYWxQYW5lbCcpLmNsYXNzTGlzdC5hZGQoJ3Nob3duJyk7CiAgICByZW5kZXJSZXZlYWxQYW5lbCgpOwogICAgcmVuZGVyUmVzdWx0YW50KCk7CiAgfQoKICBmdW5jdGlvbiByZW5kZXJSZXZlYWxQYW5lbCgpIHsKICAgIGNvbnN0IG5ldCA9IGNvbXB1dGVOZXQoKTsKICAgIC8vIE1hZ25pdHVkZSBkaXNwbGF5CiAgICBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgncmVzTWFnbml0dWRlJykuaW5uZXJIVE1MID0KICAgICAgKE1hdGgucm91bmQobmV0Lm1hZyAqIDEwKSAvIDEwKSArICc8c3BhbiBjbGFzcz0idW5pdCI+Tjwvc3Bhbj4nOwoKICAgIC8vIERpcmVjdGlvbiB0ZXh0CiAgICBsZXQgZGlyVGV4dCA9ICcnOwogICAgaWYgKG5ldC5tYWcgPCAwLjAxKSB7CiAgICAgIGRpclRleHQgPSAnVGhlIGZvcmNlcyBhcmUgYmFsYW5jZWQg4oCUIHRoZSByZXN1bHRhbnQgZm9yY2UgaXMgemVyby4nOwogICAgfSBlbHNlIGlmIChuZXQuZnkgPT09IDApIHsKICAgICAgZGlyVGV4dCA9ICdBY3RpbmcgcHVyZWx5IGhvcml6b250YWxseSwgJyArIChuZXQuZnggPiAwID8gJ3RvIHRoZSByaWdodCDihpInIDogJ3RvIHRoZSBsZWZ0IOKGkCcpICsgJy4nOwogICAgfSBlbHNlIGlmIChuZXQuZnggPT09IDApIHsKICAgICAgZGlyVGV4dCA9ICdBY3RpbmcgcHVyZWx5IHZlcnRpY2FsbHksICcgKyAobmV0LmZ5ID4gMCA/ICd1cHdhcmQg4oaRJyA6ICdkb3dud2FyZCDihpMnKSArICcuJzsKICAgIH0gZWxzZSB7CiAgICAgIGNvbnN0IGhvcml6ID0gbmV0LmZ4ID4gMCA/ICdyaWdodCcgOiAnbGVmdCc7CiAgICAgIGNvbnN0IHZlcnQgID0gbmV0LmZ5ID4gMCA/ICd1cCcgOiAnZG93bic7CiAgICAgIGRpclRleHQgPSAnQWN0aW5nICcgKyB2ZXJ0ICsgJyBhbmQgdG8gdGhlICcgKyBob3JpeiArICcgKGRpYWdvbmFsKS4nOwogICAgfQogICAgZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ3Jlc0RpcmVjdGlvbicpLnRleHRDb250ZW50ID0gZGlyVGV4dDsKCiAgICAvLyBCcmVha2Rvd24KICAgIGNvbnN0IGJkID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ2JyZWFrZG93bicpOwogICAgY29uc3QgaExpbmUgPSBuZXQuc3VtUmlnaHQgKyAnIOKIkiAnICsgbmV0LnN1bUxlZnQgKyAnID0gJyArIG5ldC5meDsKICAgIGNvbnN0IHZMaW5lID0gbmV0LnN1bVVwICsgJyDiiJIgJyArIG5ldC5zdW1Eb3duICsgJyA9ICcgKyBuZXQuZnk7CiAgICBiZC5pbm5lckhUTUwgPQogICAgICAnPGRpdiBjbGFzcz0iYnJlYWtkb3duLXJvdyI+PHNwYW4gY2xhc3M9ImNhbGMiPkhvcml6b250YWw6IHJpZ2h0IOKIkiBsZWZ0PC9zcGFuPjxzcGFuIGNsYXNzPSJyZXN1bHQiPicgKyBoTGluZSArICcgTjwvc3Bhbj48L2Rpdj4nICsKICAgICAgJzxkaXYgY2xhc3M9ImJyZWFrZG93bi1yb3ciPjxzcGFuIGNsYXNzPSJjYWxjIj5WZXJ0aWNhbDogdXAg4oiSIGRvd248L3NwYW4+PHNwYW4gY2xhc3M9InJlc3VsdCI+JyArIHZMaW5lICsgJyBOPC9zcGFuPjwvZGl2PicgKwogICAgICAnPGRpdiBjbGFzcz0iYnJlYWtkb3duLXJvdyI+PHNwYW4gY2xhc3M9ImNhbGMiPlJlc3VsdGFudCBtYWduaXR1ZGU8L3NwYW4+PHNwYW4gY2xhc3M9InJlc3VsdCI+JyArIChNYXRoLnJvdW5kKG5ldC5tYWcgKiAxMCkgLyAxMCkgKyAnIE48L3NwYW4+PC9kaXY+JzsKCiAgICAvLyBWZXJkaWN0CiAgICBjb25zdCB7IGxhYmVsLCBkZXRhaWwsIGNzc0NsYXNzIH0gPSBkZXJpdmVWZXJkaWN0KG5ldCk7CiAgICBjb25zdCBjYXJkID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ3ZlcmRpY3RDYXJkJyk7CiAgICBjYXJkLmNsYXNzTmFtZSA9ICd2ZXJkaWN0LWNhcmQgJyArIGNzc0NsYXNzOwogICAgZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ3ZlcmRpY3RMYWJlbCcpLnRleHRDb250ZW50ID0gbGFiZWw7CiAgICBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgndmVyZGljdERldGFpbCcpLnRleHRDb250ZW50ID0gZGV0YWlsOwogIH0KCiAgZnVuY3Rpb24gZGVyaXZlVmVyZGljdChuZXQpIHsKICAgIGNvbnN0IG1vdGlvbiA9IHN0YXRlLm1vdGlvbjsKICAgIGNvbnN0IGJhbGFuY2VkID0gbmV0Lm1hZyA8IDAuMDE7CgogICAgLy8gU3RhdGlvbmFyeSBjYXNlcwogICAgaWYgKG1vdGlvbiA9PT0gJ3N0YXRpb25hcnknKSB7CiAgICAgIGlmIChiYWxhbmNlZCkgewogICAgICAgIHJldHVybiB7CiAgICAgICAgICBsYWJlbDogJ1N0YXlzIHN0YXRpb25hcnknLAogICAgICAgICAgZGV0YWlsOiAnVGhlIGZvcmNlcyBhcmUgYmFsYW5jZWQsIHNvIHRoZXJlIGlzIG5vIHJlc3VsdGFudCBmb3JjZS4gQW4gb2JqZWN0IGF0IHJlc3Qgc3RheXMgYXQgcmVzdC4nLAogICAgICAgICAgY3NzQ2xhc3M6ICdiYWxhbmNlZCcKICAgICAgICB9OwogICAgICB9IGVsc2UgewogICAgICAgIGxldCBkaXIgPSAnJzsKICAgICAgICBpZiAobmV0LmZ4ICE9PSAwICYmIG5ldC5meSAhPT0gMCkgZGlyID0gJ2RpYWdvbmFsbHknOwogICAgICAgIGVsc2UgaWYgKG5ldC5meCA+IDApIGRpciA9ICd0byB0aGUgcmlnaHQnOwogICAgICAgIGVsc2UgaWYgKG5ldC5meCA8IDApIGRpciA9ICd0byB0aGUgbGVmdCc7CiAgICAgICAgZWxzZSBpZiAobmV0LmZ5ID4gMCkgZGlyID0gJ3Vwd2FyZCc7CiAgICAgICAgZWxzZSBpZiAobmV0LmZ5IDwgMCkgZGlyID0gJ2Rvd253YXJkJzsKICAgICAgICByZXR1cm4gewogICAgICAgICAgbGFiZWw6ICdTdGFydHMgdG8gbW92ZSAnICsgZGlyLAogICAgICAgICAgZGV0YWlsOiAnQSBzdGF0aW9uYXJ5IG9iamVjdCB3aXRoIGFuIHVuYmFsYW5jZWQgZm9yY2UgYWNjZWxlcmF0ZXMgaW4gdGhlIGRpcmVjdGlvbiBvZiB0aGUgcmVzdWx0YW50IGZvcmNlLicsCiAgICAgICAgICBjc3NDbGFzczogJycKICAgICAgICB9OwogICAgICB9CiAgICB9CgogICAgLy8gTW92aW5nIGNhc2VzIOKAlCBkZWNvbXBvc2UgbmV0IGZvcmNlIHJlbGF0aXZlIHRvIG1vdGlvbiBkaXJlY3Rpb24KICAgIC8vIFBhcmFsbGVsID0gY29tcG9uZW50IGFsb25nIG1vdGlvbjsgUGVycCA9IGNvbXBvbmVudCBwZXJwZW5kaWN1bGFyCiAgICBsZXQgcGFyYWxsZWwgPSAwLCBwZXJwID0gMDsKICAgIGlmIChtb3Rpb24gPT09ICdyaWdodCcpIHsgcGFyYWxsZWwgPSBuZXQuZng7IHBlcnAgPSBuZXQuZnk7IH0KICAgIGlmIChtb3Rpb24gPT09ICdsZWZ0JykgIHsgcGFyYWxsZWwgPSAtbmV0LmZ4OyBwZXJwID0gbmV0LmZ5OyB9CiAgICBpZiAobW90aW9uID09PSAndXAnKSAgICB7IHBhcmFsbGVsID0gbmV0LmZ5OyBwZXJwID0gbmV0LmZ4OyB9CiAgICBpZiAobW90aW9uID09PSAnZG93bicpICB7IHBhcmFsbGVsID0gLW5ldC5meTsgcGVycCA9IG5ldC5meDsgfQoKICAgIGlmIChiYWxhbmNlZCkgewogICAgICByZXR1cm4gewogICAgICAgIGxhYmVsOiAnQ29udGludWVzIGF0IGNvbnN0YW50IHZlbG9jaXR5JywKICAgICAgICBkZXRhaWw6ICdUaGUgZm9yY2VzIGFyZSBiYWxhbmNlZCwgc28gdGhlcmUgaXMgbm8gcmVzdWx0YW50IGZvcmNlLiBBIG1vdmluZyBvYmplY3Qgd2l0aCBiYWxhbmNlZCBmb3JjZXMga2VlcHMgbW92aW5nIGF0IHRoZSBzYW1lIHNwZWVkIGluIHRoZSBzYW1lIGRpcmVjdGlvbi4nLAogICAgICAgIGNzc0NsYXNzOiAnYmFsYW5jZWQnCiAgICAgIH07CiAgICB9CgogICAgaWYgKHBlcnAgPT09IDAgJiYgcGFyYWxsZWwgPiAwKSB7CiAgICAgIHJldHVybiB7CiAgICAgICAgbGFiZWw6ICdTcGVlZHMgdXAnLAogICAgICAgIGRldGFpbDogJ1RoZSByZXN1bHRhbnQgZm9yY2UgYWN0cyBpbiB0aGUgc2FtZSBkaXJlY3Rpb24gYXMgdGhlIG1vdGlvbiwgc28gdGhlIG9iamVjdCBhY2NlbGVyYXRlcyAoZ2V0cyBmYXN0ZXIpLicsCiAgICAgICAgY3NzQ2xhc3M6ICcnCiAgICAgIH07CiAgICB9CiAgICBpZiAocGVycCA9PT0gMCAmJiBwYXJhbGxlbCA8IDApIHsKICAgICAgcmV0dXJuIHsKICAgICAgICBsYWJlbDogJ1Nsb3dzIGRvd24nLAogICAgICAgIGRldGFpbDogJ1RoZSByZXN1bHRhbnQgZm9yY2UgYWN0cyBvcHBvc2l0ZSB0byB0aGUgbW90aW9uLCBzbyB0aGUgb2JqZWN0IGRlY2VsZXJhdGVzIChnZXRzIHNsb3dlcikuIEl0IHdpbGwgZXZlbnR1YWxseSBzdG9wLCB0aGVuIHJldmVyc2UgZGlyZWN0aW9uLicsCiAgICAgICAgY3NzQ2xhc3M6ICdkZWNlbGVyYXRpbmcnCiAgICAgIH07CiAgICB9CiAgICBpZiAocGFyYWxsZWwgPT09IDAgJiYgcGVycCAhPT0gMCkgewogICAgICByZXR1cm4gewogICAgICAgIGxhYmVsOiAnQ2hhbmdlcyBkaXJlY3Rpb24nLAogICAgICAgIGRldGFpbDogJ1RoZSByZXN1bHRhbnQgZm9yY2UgaXMgcGVycGVuZGljdWxhciB0byB0aGUgbW90aW9uLCBzbyBpdCBwdXNoZXMgdGhlIG9iamVjdCBzaWRld2F5cy4gU3BlZWQgYWxvbmcgdGhlIG9yaWdpbmFsIGRpcmVjdGlvbiBkb2Vzblx1MjAxOXQgY2hhbmdlLCBidXQgaXRzIHBhdGggY3VydmVzLicsCiAgICAgICAgY3NzQ2xhc3M6ICdwZXJwZW5kaWN1bGFyJwogICAgICB9OwogICAgfQogICAgLy8gTWl4ZWQg4oCUIHBhcmFsbGVsIGFuZCBwZXJwZW5kaWN1bGFyIGNvbXBvbmVudHMgYm90aCBub24temVybwogICAgY29uc3Qgc3BlZWRXb3JkID0gcGFyYWxsZWwgPiAwID8gJ3NwZWVkcyB1cCcgOiAnc2xvd3MgZG93bic7CiAgICByZXR1cm4gewogICAgICBsYWJlbDogJ0NoYW5nZXMgZGlyZWN0aW9uIEFORCAnICsgc3BlZWRXb3JkLAogICAgICBkZXRhaWw6ICdUaGUgcmVzdWx0YW50IGZvcmNlIGhhcyBvbmUgcGFydCBhbG9uZyB0aGUgbW90aW9uICgnICsKICAgICAgICAocGFyYWxsZWwgPiAwID8gJ21ha2luZyBpdCBzcGVlZCB1cCcgOiAnbWFraW5nIGl0IHNsb3cgZG93bicpICsKICAgICAgICAnKSBhbmQgb25lIHBhcnQgYWNyb3NzIHRoZSBtb3Rpb24gKHB1c2hpbmcgaXQgc2lkZXdheXMpLicsCiAgICAgIGNzc0NsYXNzOiAncGVycGVuZGljdWxhcicKICAgIH07CiAgfQoKICAvLyAtLS0tLS0tLS0tIERyYWcgJiBkcm9wIC0tLS0tLS0tLS0KICBsZXQgZHJhZyA9IG51bGw7CgogIGZ1bmN0aW9uIHN0YXJ0RHJhZyhlLCBpdGVtKSB7CiAgICBjb25zdCBkaXJlY3Rpb24gPSBpdGVtLmdldEF0dHJpYnV0ZSgnZGF0YS1kaXJlY3Rpb24nKTsKICAgIGNvbnN0IG1hZ0lucHV0ID0gaXRlbS5xdWVyeVNlbGVjdG9yKCdpbnB1dFt0eXBlPSJudW1iZXIiXScpOwogICAgY29uc3QgbWFnbml0dWRlID0gTnVtYmVyKG1hZ0lucHV0LnZhbHVlKSB8fCAxOwoKICAgIC8vIENyZWF0ZSBnaG9zdAogICAgY29uc3QgZ2hvc3QgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KCdkaXYnKTsKICAgIGdob3N0LmNsYXNzTmFtZSA9ICdkcmFnLWdob3N0JzsKICAgIGNvbnN0IGFycm93U3ZnID0gaXRlbS5xdWVyeVNlbGVjdG9yKCcucGFsZXR0ZS1hcnJvdyBzdmcnKS5jbG9uZU5vZGUodHJ1ZSk7CiAgICBhcnJvd1N2Zy5zdHlsZS53aWR0aCA9ICc2MHB4JzsKICAgIGFycm93U3ZnLnN0eWxlLmhlaWdodCA9ICc2MHB4JzsKICAgIGNvbnN0IGxhYmVsID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgnZGl2Jyk7CiAgICBsYWJlbC50ZXh0Q29udGVudCA9IG1hZ25pdHVkZSArICcgTic7CiAgICBsYWJlbC5zdHlsZS5mb250RmFtaWx5ID0gJ0pldEJyYWlucyBNb25vLCBtb25vc3BhY2UnOwogICAgbGFiZWwuc3R5bGUuZm9udFNpemUgPSAnMTRweCc7CiAgICBsYWJlbC5zdHlsZS5mb250V2VpZ2h0ID0gJzcwMCc7CiAgICBsYWJlbC5zdHlsZS5jb2xvciA9ICd2YXIoLS1mb3JjZS1kYXJrKSc7CiAgICBsYWJlbC5zdHlsZS50ZXh0QWxpZ24gPSAnY2VudGVyJzsKICAgIGxhYmVsLnN0eWxlLmJhY2tncm91bmQgPSAnd2hpdGUnOwogICAgbGFiZWwuc3R5bGUucGFkZGluZyA9ICcycHggNnB4JzsKICAgIGxhYmVsLnN0eWxlLm1hcmdpblRvcCA9ICctNHB4JzsKICAgIGdob3N0LmFwcGVuZENoaWxkKGFycm93U3ZnKTsKICAgIGdob3N0LmFwcGVuZENoaWxkKGxhYmVsKTsKICAgIGRvY3VtZW50LmJvZHkuYXBwZW5kQ2hpbGQoZ2hvc3QpOwoKICAgIGRyYWcgPSB7CiAgICAgIGRpcmVjdGlvbiwgbWFnbml0dWRlLCBnaG9zdCwgaXRlbSwKICAgICAgcG9pbnRlcklkOiBlLnBvaW50ZXJJZAogICAgfTsKICAgIGl0ZW0uY2xhc3NMaXN0LmFkZCgnZHJhZ2dpbmcnKTsKCiAgICB0cnkgeyBpdGVtLnNldFBvaW50ZXJDYXB0dXJlKGUucG9pbnRlcklkKTsgfSBjYXRjaCAoZXJyKSB7fQogICAgbW92ZUdob3N0KGUuY2xpZW50WCwgZS5jbGllbnRZKTsKICAgIGUucHJldmVudERlZmF1bHQoKTsKICB9CgogIGZ1bmN0aW9uIG1vdmVHaG9zdCh4LCB5KSB7CiAgICBpZiAoIWRyYWcpIHJldHVybjsKICAgIGRyYWcuZ2hvc3Quc3R5bGUubGVmdCA9IHggKyAncHgnOwogICAgZHJhZy5naG9zdC5zdHlsZS50b3AgPSB5ICsgJ3B4JzsKICAgIC8vIENoZWNrIGlmIG92ZXIgY2FudmFzCiAgICBjb25zdCB3cmFwID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ2NhbnZhc1dyYXAnKTsKICAgIGNvbnN0IHJlY3QgPSB3cmFwLmdldEJvdW5kaW5nQ2xpZW50UmVjdCgpOwogICAgY29uc3Qgb3ZlciA9IHggPj0gcmVjdC5sZWZ0ICYmIHggPD0gcmVjdC5yaWdodCAmJiB5ID49IHJlY3QudG9wICYmIHkgPD0gcmVjdC5ib3R0b207CiAgICB3cmFwLmNsYXNzTGlzdC50b2dnbGUoJ2Ryb3AtYWN0aXZlJywgb3Zlcik7CiAgfQoKICBmdW5jdGlvbiBlbmREcmFnKHgsIHkpIHsKICAgIGlmICghZHJhZykgcmV0dXJuOwogICAgY29uc3Qgd3JhcCA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdjYW52YXNXcmFwJyk7CiAgICBjb25zdCByZWN0ID0gd3JhcC5nZXRCb3VuZGluZ0NsaWVudFJlY3QoKTsKICAgIGNvbnN0IG92ZXIgPSB4ID49IHJlY3QubGVmdCAmJiB4IDw9IHJlY3QucmlnaHQgJiYgeSA+PSByZWN0LnRvcCAmJiB5IDw9IHJlY3QuYm90dG9tOwogICAgaWYgKG92ZXIpIHsKICAgICAgYWRkRm9yY2UoZHJhZy5kaXJlY3Rpb24sIGRyYWcubWFnbml0dWRlKTsKICAgIH0KICAgIGRyYWcuZ2hvc3QucmVtb3ZlKCk7CiAgICBkcmFnLml0ZW0uY2xhc3NMaXN0LnJlbW92ZSgnZHJhZ2dpbmcnKTsKICAgIHdyYXAuY2xhc3NMaXN0LnJlbW92ZSgnZHJvcC1hY3RpdmUnKTsKICAgIGRyYWcgPSBudWxsOwogIH0KCiAgLy8gV2lyZSB1cCBwYWxldHRlIGl0ZW1zCiAgZG9jdW1lbnQucXVlcnlTZWxlY3RvckFsbCgnLnBhbGV0dGUtaXRlbScpLmZvckVhY2goaXRlbSA9PiB7CiAgICBpdGVtLmFkZEV2ZW50TGlzdGVuZXIoJ3BvaW50ZXJkb3duJywgKGUpID0+IHsKICAgICAgLy8gSWdub3JlIGlmIHN0YXJ0aW5nIGRyYWcgZnJvbSB0aGUgbnVtYmVyIGlucHV0CiAgICAgIGlmIChlLnRhcmdldC50YWdOYW1lID09PSAnSU5QVVQnKSByZXR1cm47CiAgICAgIHN0YXJ0RHJhZyhlLCBpdGVtKTsKICAgIH0pOwogICAgaXRlbS5hZGRFdmVudExpc3RlbmVyKCdwb2ludGVybW92ZScsIChlKSA9PiB7CiAgICAgIGlmIChkcmFnICYmIGRyYWcucG9pbnRlcklkID09PSBlLnBvaW50ZXJJZCkgewogICAgICAgIG1vdmVHaG9zdChlLmNsaWVudFgsIGUuY2xpZW50WSk7CiAgICAgIH0KICAgIH0pOwogICAgaXRlbS5hZGRFdmVudExpc3RlbmVyKCdwb2ludGVydXAnLCAoZSkgPT4gewogICAgICBpZiAoZHJhZyAmJiBkcmFnLnBvaW50ZXJJZCA9PT0gZS5wb2ludGVySWQpIHsKICAgICAgICBlbmREcmFnKGUuY2xpZW50WCwgZS5jbGllbnRZKTsKICAgICAgfQogICAgfSk7CiAgICBpdGVtLmFkZEV2ZW50TGlzdGVuZXIoJ3BvaW50ZXJjYW5jZWwnLCAoZSkgPT4gewogICAgICBpZiAoZHJhZyAmJiBkcmFnLnBvaW50ZXJJZCA9PT0gZS5wb2ludGVySWQpIHsKICAgICAgICBkcmFnLmdob3N0LnJlbW92ZSgpOwogICAgICAgIGRyYWcuaXRlbS5jbGFzc0xpc3QucmVtb3ZlKCdkcmFnZ2luZycpOwogICAgICAgIGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdjYW52YXNXcmFwJykuY2xhc3NMaXN0LnJlbW92ZSgnZHJvcC1hY3RpdmUnKTsKICAgICAgICBkcmFnID0gbnVsbDsKICAgICAgfQogICAgfSk7CiAgfSk7CgogIC8vIC0tLS0tLS0tLS0gTW90aW9uIHJhZGlvIC0tLS0tLS0tLS0KICBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCdpbnB1dFtuYW1lPSJtb3Rpb24iXScpLmZvckVhY2gociA9PiB7CiAgICByLmFkZEV2ZW50TGlzdGVuZXIoJ2NoYW5nZScsICgpID0+IHsKICAgICAgc3RhdGUubW90aW9uID0gci52YWx1ZTsKICAgICAgaGlkZVJldmVhbCgpOwogICAgICByZW5kZXIoKTsKICAgIH0pOwogIH0pOwoKICAvLyAtLS0tLS0tLS0tIEJ1dHRvbnMgLS0tLS0tLS0tLQogIGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdjbGVhckJ0bicpLmFkZEV2ZW50TGlzdGVuZXIoJ2NsaWNrJywgY2xlYXJGb3JjZXMpOwogIGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdyZXZlYWxCdG4nKS5hZGRFdmVudExpc3RlbmVyKCdjbGljaycsIHJldmVhbCk7CgogIC8vIC0tLS0tLS0tLS0gSW5wdXQgdmFsaWRhdGlvbiAtLS0tLS0tLS0tCiAgZG9jdW1lbnQucXVlcnlTZWxlY3RvckFsbCgnLnBhbGV0dGUtaXRlbSBpbnB1dFt0eXBlPSJudW1iZXIiXScpLmZvckVhY2goaW5wID0+IHsKICAgIGlucC5hZGRFdmVudExpc3RlbmVyKCdjaGFuZ2UnLCAoKSA9PiB7CiAgICAgIGxldCB2ID0gTnVtYmVyKGlucC52YWx1ZSkgfHwgMTsKICAgICAgdiA9IE1hdGgubWF4KDEsIE1hdGgubWluKDk5LCBNYXRoLnJvdW5kKHYpKSk7CiAgICAgIGlucC52YWx1ZSA9IHY7CiAgICB9KTsKICB9KTsKCiAgLy8gLS0tLS0tLS0tLSBLZXlib2FyZCAtLS0tLS0tLS0tCiAgZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcigna2V5ZG93bicsIChlKSA9PiB7CiAgICBpZiAoZS50YXJnZXQudGFnTmFtZSA9PT0gJ0lOUFVUJykgcmV0dXJuOwogICAgaWYgKGUua2V5ID09PSAnRW50ZXInKSB7IHJldmVhbCgpOyB9CiAgICBpZiAoZS5rZXkgPT09ICdFc2NhcGUnKSB7IGNsZWFyRm9yY2VzKCk7IH0KICB9KTsKCiAgLy8gSW5pdGlhbCByZW5kZXIKICByZW5kZXIoKTsKCn0pKCk7Cjwvc2NyaXB0Pgo8L2JvZHk+CjwvaHRtbD4K" loading="lazy" title="Force Diagram Builder"></iframe>
+    </div>
+    <div class="zoom-instr">Set the size of each arrow, drag it onto the box, then click "Reveal resultant"</div>
+  </div>
+
+  <div class="quiz">
+    <h3 class="quiz-head">Test <em>yourself</em></h3>
+    <p class="quiz-sub">6 questions · click to reveal each answer</p>
+    <ol>
+      <li><details>
+        <summary>What does "balanced forces" mean?</summary>
+        <div class="ans"><strong>The forces are equal in size and opposite in direction</strong>, so they cancel out and the resultant force is zero.</div>
+      </details></li>
+      <li><details>
+        <summary>What is a resultant force?</summary>
+        <div class="ans"><strong>A single force that has the same overall effect as all the forces acting on an object combined.</strong></div>
+      </details></li>
+      <li><details>
+        <summary>Two forces of 7 N and 3 N both push to the right. What's the resultant?</summary>
+        <div class="ans"><strong>10 N to the right.</strong> Same direction → add: 7 + 3 = 10 N.</div>
+      </details></li>
+      <li><details>
+        <summary>A 12 N force pulls left. A 4 N force pulls right. What's the resultant?</summary>
+        <div class="ans"><strong>8 N to the left.</strong> Opposite directions → subtract: 12 − 4 = 8 N. The bigger one was to the left.</div>
+      </details></li>
+      <li><details>
+        <summary>A book weighs 5 N. The table pushes up with 5 N. What's the resultant force on the book?</summary>
+        <div class="ans"><strong>0 N.</strong> Equal and opposite → balanced → resultant zero.</div>
+      </details></li>
+      <li><details>
+        <summary>A boat weighs 800,000 N. The forces on it are balanced as it floats. What's the size and direction of upthrust?</summary>
+        <div class="ans"><strong>800,000 N upwards.</strong> If forces are balanced, upthrust must equal weight.</div>
+      </details></li>
+    </ol>
+    <button class="done-btn" data-lesson-done="9">Mark this topic complete</button>
+  </div>
+</section>
+
+<!-- ===================================================================== -->
+<!-- TOPIC 10 — EFFECT OF RESULTANT FORCE ON MOTION                          -->
+<!-- ===================================================================== -->
+<section class="lesson" id="lesson-10">
+  <div class="lesson-head">
+    <div class="lesson-num">Topic 10 · Forces</div>
+    <h2 class="lesson-title">So <em>what happens?</em></h2>
+    <p class="lesson-promise">The final topic. You'll learn what a resultant force actually does to an object — whether it's already moving or standing still.</p>
+  </div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 1</span>When the resultant force is zero</h3>
+    <p>If the resultant force on an object is <strong>zero</strong> (forces are balanced), the object's motion <strong>doesn't change</strong>:</p>
+    <p>• If it was <strong>stationary</strong>, it stays stationary. <br>
+       • If it was <strong>moving</strong>, it keeps moving at the same speed in the same direction.</p>
+    <p>That second one feels weird at first. Surely something needs a force to keep moving? But no — once it's already moving, balanced forces (or no forces at all) just mean the motion carries on. What slows things down in everyday life is friction or air resistance — those are unbalanced forces.</p>
+
+    <div class="keywords">
+      <h4>Key phrase</h4>
+      <dl>
+        <dt>Resultant force = 0</dt>
+        <dd>Motion stays the same. Stationary objects stay still. Moving objects keep moving at constant speed.</dd>
+      </dl>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">A box is sliding across smooth ice with a resultant force of zero on it. What happens?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>It slows down and stops</span></li>
+        <li><span class="letter">B</span><span>It speeds up</span></li>
+        <li><span class="letter">C</span><span>It keeps moving at the same speed in the same direction</span></li>
+        <li><span class="letter">D</span><span>It changes direction</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>C — It keeps moving at the same speed in the same direction.</strong> No resultant force = no change to motion. (On smooth ice there's almost no friction to slow it down.)</div>
+      </details>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 2</span>When the resultant force is NOT zero</h3>
+    <p>If there's a resultant force, the object's motion <strong>changes</strong>. The direction of the change depends on which way the resultant points:</p>
+
+    <div class="keywords">
+      <h4>The three outcomes</h4>
+      <dl>
+        <dt>Resultant force in the same direction as motion</dt>
+        <dd>The object <strong>speeds up</strong>. (e.g. a car with engine thrust bigger than friction.)</dd>
+        <dt>Resultant force opposite to motion</dt>
+        <dd>The object <strong>slows down</strong>. (e.g. a car when you brake — friction now bigger than thrust.)</dd>
+        <dt>Resultant force on a stationary object</dt>
+        <dd>The object <strong>starts to move</strong> in the direction of the resultant force.</dd>
+      </dl>
+    </div>
+
+    <div class="watch-out">
+      <h4>⚠ Constant speed = balanced forces</h4>
+      <p>This catches people out. A car driving along at a steady 25 m/s isn't "force-free" — its engine is doing work against friction and air resistance. But because the engine's thrust <em>equals</em> the resistance, the resultant is zero, so the speed stays constant. <strong>Constant speed → balanced forces.</strong></p>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">A skydiver is falling and reaches a constant speed (terminal velocity). What does this tell you about the forces on them?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>The forces are unbalanced</span></li>
+        <li><span class="letter">B</span><span>Weight is bigger than air resistance</span></li>
+        <li><span class="letter">C</span><span>The forces are balanced (air resistance = weight)</span></li>
+        <li><span class="letter">D</span><span>There are no forces acting</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>C — Forces are balanced.</strong> Constant speed always means balanced forces (resultant = 0). Weight pulls them down; air resistance pushes them up; the two are equal at terminal velocity.</div>
+      </details>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <h3 class="quiz-head">Test <em>yourself</em></h3>
+    <p class="quiz-sub">6 questions · click to reveal each answer</p>
+    <ol>
+      <li><details>
+        <summary>If a stationary object has a resultant force of zero, what happens?</summary>
+        <div class="ans"><strong>It stays stationary.</strong> No change to motion.</div>
+      </details></li>
+      <li><details>
+        <summary>If a moving object has a resultant force of zero, what happens?</summary>
+        <div class="ans"><strong>It keeps moving at the same speed in the same direction.</strong> Constant motion.</div>
+      </details></li>
+      <li><details>
+        <summary>A car has a thrust of 800 N forwards. Friction and air resistance total 300 N backwards. What's the resultant force, and what happens to the car?</summary>
+        <div class="ans"><strong>500 N forwards. The car speeds up.</strong> Resultant in the direction of motion = speeds up.</div>
+      </details></li>
+      <li><details>
+        <summary>A cyclist stops pedalling. What happens to their motion, and why?</summary>
+        <div class="ans">They <strong>slow down and stop</strong>. Without thrust, friction and air resistance are now unbalanced — both push backwards, so the resultant is backwards, and that's against their motion.</div>
+      </details></li>
+      <li><details>
+        <summary>A lorry travels at a constant 25 m/s. Its driving force is 800 N. What's the size of friction and air resistance combined?</summary>
+        <div class="ans"><strong>800 N.</strong> Constant speed means forces are balanced — so the backward forces must equal the forward force.</div>
+      </details></li>
+      <li><details>
+        <summary>Why does a parachute slow a skydiver down?</summary>
+        <div class="ans">The parachute increases <strong>air resistance</strong>. Air resistance becomes bigger than weight, so the resultant force is now <strong>upwards</strong> (against the downward motion), and the skydiver slows down.</div>
+      </details></li>
+    </ol>
+    <button class="done-btn" data-lesson-done="10">Mark this topic complete</button>
+  </div>
+</section>
+
+<div style="text-align:center;margin-top:48px;padding:32px 24px;border-top:1px solid var(--rule);">
+  <p style="font-family:var(--display);font-style:italic;font-size:24px;color:var(--navy);margin-bottom:8px">Done. <em>Have a brilliant holiday.</em></p>
+  <p style="color:var(--muted);font-size:14px">All ten topics are still here if you want to revisit anything. The force builder is fun to play with even when you're just messing around.</p>
+</div>
+
+</main>
+
+<footer>
+  <div class="sig">⁂</div>
+  <p>Year 8 Physics · Forces &amp; Motion</p>
+  <p>Holiday revision booklet · James Hornsby School</p>
+</footer>
+
+<script>
+(function(){
+  var STORAGE_KEY = 'forces-holiday-done';
+  var done = {};
+  try {
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) done = JSON.parse(raw);
+  } catch(e) {}
+
+  function save(){
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(done)); } catch(e){}
+  }
+
+  function refresh(){
+    document.querySelectorAll('[data-lesson-done]').forEach(function(btn){
+      var n = btn.getAttribute('data-lesson-done');
+      if (done[n]){
+        btn.classList.add('is-done');
+        btn.textContent = '✓ Done — nice work';
+      }
+    });
+    document.querySelectorAll('.nav-pill').forEach(function(pill){
+      var n = pill.getAttribute('data-lesson');
+      if (done[n]) pill.classList.add('done');
+      else pill.classList.remove('done');
+    });
+  }
+
+  document.querySelectorAll('[data-lesson-done]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var n = btn.getAttribute('data-lesson-done');
+      if (done[n]) return;
+      done[n] = true;
+      save();
+      refresh();
+    });
+  });
+
+  refresh();
+})();
+</script>
+
+</body>
+</html>

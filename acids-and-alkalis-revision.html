@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acids &amp; Alkalis — Year 8 Revision</title>
+<meta name="description" content="A Year 8 KS3 science revision booklet on C4 Acids & alkalis — five short topics covering the pH scale, bases and alkalis, indicators, neutralisation and naming salts, and reactions of acids with metals.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1E2761;
+  --navy-soft:#2a3478;
+  --warm:#F8F4EC;
+  --warm-deep:#EFE8D6;
+  --paper:#FCFAF4;
+  --soft-blue:#EDF2FA;
+  --ink:#1A1A1A;
+  --muted:#5C6370;
+  --rule:#CFD8E3;
+  --accent:#B85042;
+  --accent-soft:#F4DAD7;
+  --success:#2C5F2D;
+  --success-soft:#DDEBDD;
+  --gold:#C8A24A;
+  --gold-soft:#F2E6BD;
+  --display: 'Instrument Serif', 'Cormorant Garamond', Georgia, serif;
+  --body: 'IBM Plex Sans', 'Helvetica Neue', system-ui, sans-serif;
+  --mono: 'IBM Plex Mono', 'Courier New', monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--body);
+  font-weight:300;
+  font-size:17px;
+  line-height:1.65;
+  color:var(--ink);
+  background:var(--warm);
+  background-image:
+    radial-gradient(ellipse at 10% 0%, rgba(30,39,97,0.04), transparent 50%),
+    radial-gradient(ellipse at 90% 100%, rgba(184,80,66,0.04), transparent 50%);
+  background-attachment:fixed;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+/* ---------- HERO ---------- */
+.hero{background:var(--navy);color:var(--warm);padding:48px 24px 56px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 30%,rgba(75,30,160,0.25),transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(184,80,66,0.18),transparent 60%);pointer-events:none}
+.hero-inner{max-width:720px;margin:0 auto;position:relative;z-index:1}
+.kicker{font-family:var(--mono);font-size:11px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(248,244,236,0.55);margin-bottom:20px}
+.hero h1{font-family:var(--display);font-weight:400;font-size:clamp(40px,8vw,68px);line-height:1.0;letter-spacing:-0.015em;margin-bottom:14px}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero .tag{font-family:var(--display);font-style:italic;font-size:clamp(18px,3.5vw,22px);color:rgba(248,244,236,0.75);font-weight:400;max-width:520px}
+.pace-banner{margin-top:36px;padding:18px 22px;border:1px solid rgba(248,244,236,0.2);border-left:3px solid var(--gold);background:rgba(0,0,0,0.15);display:flex;gap:14px;align-items:flex-start}
+.pace-banner .pace-icon{font-family:var(--display);font-size:30px;line-height:1;color:var(--gold);flex:0 0 auto}
+.pace-banner p{font-size:15px;line-height:1.5;color:rgba(248,244,236,0.92)}
+.pace-banner strong{color:var(--warm);font-weight:500}
+
+/* ---------- LESSON NAV ---------- */
+.lesson-nav{position:sticky;top:0;z-index:100;background:rgba(252,250,244,0.96);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--rule);padding:12px 0}
+.nav-inner{max-width:720px;margin:0 auto;padding:0 16px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-pill{flex:0 0 auto;font-family:var(--mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);padding:8px 14px;border:1px solid var(--rule);background:var(--paper);text-decoration:none;border-radius:100px;transition:all 0.2s;font-weight:500;white-space:nowrap}
+.nav-pill:hover{border-color:var(--navy);color:var(--navy)}
+.nav-pill.done{background:var(--success-soft);border-color:var(--success);color:var(--success)}
+.nav-pill.done::before{content:'✓ ';font-weight:600}
+
+/* ---------- LESSON ---------- */
+main{max-width:720px;margin:0 auto;padding:48px 24px 80px}
+.lesson{margin-bottom:64px;scroll-margin-top:80px}
+.lesson-head{margin-bottom:36px;padding-bottom:24px;border-bottom:1px solid var(--rule);position:relative}
+.lesson-num{font-family:var(--mono);font-size:11px;letter-spacing:0.3em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+.lesson-title{font-family:var(--display);font-weight:400;font-size:clamp(32px,6vw,46px);line-height:1.05;color:var(--navy);letter-spacing:-0.01em;margin-bottom:14px}
+.lesson-title em{font-style:italic}
+.lesson-promise{font-family:var(--display);font-style:italic;font-size:19px;color:var(--muted);line-height:1.4;max-width:540px}
+
+/* ---------- SECTION ---------- */
+.section{margin-bottom:42px}
+.section-head{font-family:var(--display);font-weight:400;font-size:26px;line-height:1.15;color:var(--navy);margin-bottom:16px;letter-spacing:-0.005em}
+.section-head .num{font-family:var(--mono);font-size:12px;color:var(--accent);letter-spacing:0.2em;display:block;margin-bottom:6px}
+.section p{margin-bottom:16px;font-size:17px}
+.section p strong{font-weight:500;color:var(--navy);background:linear-gradient(180deg,transparent 60%,rgba(200,162,74,0.25) 60%);padding:0 2px}
+
+/* ---------- KEYWORD BOX ---------- */
+.keywords{background:var(--soft-blue);border:1px solid #C9D7ED;border-left:3px solid var(--navy);padding:20px 22px;margin:24px 0}
+.keywords h4{font-family:var(--mono);font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:var(--navy);margin-bottom:14px;font-weight:500}
+.keywords dl{display:grid;gap:10px}
+.keywords dt{font-family:var(--display);font-size:20px;font-style:italic;color:var(--navy);font-weight:400}
+.keywords dd{font-size:15px;color:var(--ink);margin-bottom:6px}
+
+/* ---------- HINGE QUESTION ---------- */
+.hinge{background:var(--paper);border:1px solid var(--rule);padding:22px 24px;margin:28px 0;position:relative}
+.hinge-tag{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);padding:4px 10px;margin-bottom:12px;font-weight:500}
+.hinge-q{font-family:var(--display);font-size:22px;line-height:1.3;color:var(--navy);margin-bottom:14px;font-weight:400}
+.choices{list-style:none;display:grid;gap:8px;margin-bottom:16px}
+.choices li{font-size:15px;padding:10px 14px;background:var(--warm);border:1px solid var(--rule);display:flex;gap:10px;align-items:flex-start}
+.choices li .letter{font-family:var(--mono);font-weight:500;color:var(--accent);flex:0 0 auto}
+.reveal{width:100%;background:transparent}
+.reveal summary{cursor:pointer;list-style:none;font-family:var(--mono);font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);padding:10px 0;border-top:1px dashed var(--rule);display:flex;align-items:center;gap:10px;transition:color 0.2s;font-weight:500;user-select:none}
+.reveal summary::-webkit-details-marker{display:none}
+.reveal summary::before{content:'+';font-family:var(--display);font-size:18px;color:var(--accent);width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--accent);border-radius:50%;transition:transform 0.25s}
+.reveal[open] summary::before{transform:rotate(45deg)}
+.reveal summary:hover{color:var(--navy)}
+.reveal-body{padding:14px 16px;margin-top:10px;background:var(--success-soft);border-left:3px solid var(--success);font-size:15px;line-height:1.55;color:var(--ink)}
+.reveal-body strong{color:var(--success);font-weight:500}
+.reveal-body em{color:var(--muted);font-style:italic;font-size:13px;display:block;margin-top:8px}
+
+/* ---------- WATCH OUT ---------- */
+.watch-out{background:var(--accent-soft);border:1px solid #E6BCB7;border-left:3px solid var(--accent);padding:18px 22px;margin:24px 0}
+.watch-out h4{font-family:var(--mono);font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;font-weight:500}
+.watch-out p{font-size:15px;line-height:1.5;margin:0}
+.watch-out p+p{margin-top:8px}
+
+/* ---------- WORKED EXAMPLE / FORMULA ---------- */
+.worked{background:var(--paper);border:1px solid var(--rule);padding:22px;margin:24px 0}
+.worked h4{font-family:var(--mono);font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:var(--navy);margin-bottom:14px;font-weight:500}
+.worked .q{font-size:16px;margin-bottom:14px;line-height:1.5;color:var(--ink);font-weight:400}
+.worked .step{display:grid;grid-template-columns:80px 1fr;gap:14px;padding:8px 0;border-bottom:1px dashed var(--rule);align-items:baseline}
+.worked .step:last-child{border-bottom:0;padding-bottom:0}
+.worked .step .label{font-family:var(--mono);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);font-weight:500}
+.worked .step .v{font-family:var(--mono);font-size:14px;color:var(--ink);line-height:1.5}
+.worked .step.answer .v{font-family:var(--mono);font-size:16px;font-weight:500;color:var(--success);background:var(--success-soft);padding:4px 10px;display:inline-block}
+.formula{font-family:var(--mono);font-size:15px;background:var(--soft-blue);padding:8px 12px;display:inline-block;margin:4px 0;color:var(--navy);font-weight:500}
+
+/* ---------- INLINE DIAGRAM ---------- */
+.diagram{margin:18px 0;padding:20px;background:var(--paper);border:1px solid var(--rule);text-align:center}
+.diagram svg{display:inline-block;width:100%;max-width:560px;height:auto}
+.diagram .caption{font-family:var(--mono);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-top:10px;font-weight:500}
+
+/* ---------- QUIZ ---------- */
+.quiz{background:var(--paper);border:1px solid var(--rule);margin-top:36px;padding:28px 24px 24px}
+.quiz-head{font-family:var(--display);font-size:26px;color:var(--navy);margin-bottom:6px;font-weight:400}
+.quiz-head em{font-style:italic}
+.quiz-sub{font-family:var(--mono);font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:20px}
+.quiz ol{list-style:none;counter-reset:q;display:grid;gap:10px}
+.quiz li{counter-increment:q;border:1px solid var(--rule);background:var(--warm)}
+.quiz details summary{cursor:pointer;list-style:none;padding:14px 18px;display:flex;gap:14px;align-items:flex-start;font-size:16px;line-height:1.45;user-select:none}
+.quiz details summary::-webkit-details-marker{display:none}
+.quiz details summary::before{content:counter(q,decimal-leading-zero);font-family:var(--mono);font-size:13px;font-weight:500;color:var(--accent);flex:0 0 auto;padding-top:2px}
+.quiz details summary::after{content:'show answer';font-family:var(--mono);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-left:auto;flex:0 0 auto;padding-top:4px;white-space:nowrap;align-self:flex-start}
+.quiz details[open] summary::after{content:'hide';}
+.quiz details summary:hover::after{color:var(--accent)}
+.quiz .ans{padding:0 18px 16px 50px;font-size:15px;color:var(--success);line-height:1.5;border-top:1px dashed var(--rule);padding-top:14px;margin-top:4px}
+.quiz .ans strong{font-weight:600}
+
+/* ---------- DONE BUTTON ---------- */
+.done-btn{display:block;width:100%;margin-top:24px;padding:14px;background:var(--navy);color:var(--warm);border:0;font-family:var(--mono);font-size:12px;letter-spacing:0.25em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;font-weight:500}
+.done-btn:hover{background:var(--accent)}
+.done-btn.is-done{background:var(--success);cursor:default}
+.done-btn.is-done::before{content:'✓ '}
+
+/* ---------- DIVIDER ---------- */
+.section-rule{height:1px;background:var(--rule);margin:36px 0;position:relative}
+.section-rule::after{content:'⁂';position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--warm);padding:0 14px;color:var(--accent);font-size:18px}
+
+/* ---------- FOOTER ---------- */
+footer{text-align:center;padding:48px 24px;background:var(--navy);color:rgba(248,244,236,0.6)}
+footer p{font-size:13px;line-height:1.5;margin-bottom:6px}
+footer .sig{font-family:var(--display);font-style:italic;font-size:18px;color:var(--gold);margin-bottom:14px}
+
+/* ---------- SMALL SCREENS ---------- */
+@media (max-width:540px){
+  body{font-size:16px}
+  .hero{padding:36px 20px 44px}
+  main{padding:32px 18px 60px}
+  .keywords,.hinge,.watch-out,.worked{padding:18px 18px}
+  .lesson{margin-bottom:48px}
+  .quiz{padding:22px 16px 18px}
+  .quiz details summary{padding:12px 14px;font-size:15px}
+  .quiz .ans{padding-left:42px;padding-right:14px}
+  .worked .step{grid-template-columns:64px 1fr;gap:10px}
+}
+
+.pdf-btn{display:inline-flex;align-items:center;gap:8px;margin-top:22px;font-family:var(--mono);font-size:12px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;color:var(--navy);background:var(--gold);padding:12px 18px;text-decoration:none;border-radius:3px;transition:background .2s,color .2s}
+.pdf-btn:hover{background:var(--warm);color:var(--navy)}
+.pdf-btn .ic{font-size:15px;line-height:1}
+.answers-print{margin-top:56px;padding-top:26px;border-top:2px solid var(--navy)}
+.answers-print-title{font-family:var(--display);font-weight:400;font-size:40px;color:var(--navy);line-height:1}
+.answers-print-sub{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin:6px 0 20px}
+.answers-block{margin-bottom:22px}
+.answers-topic{font-family:var(--display);font-weight:400;font-size:23px;color:var(--accent);margin:0 0 8px}
+.answers-qc{font-size:14px;line-height:1.5;margin:0 0 8px}
+.answers-qc strong{color:var(--navy);font-weight:500}
+.answers-list{margin:0;padding-left:22px;display:grid;gap:9px}
+.answers-list li{font-size:14px;line-height:1.5}
+.answers-list .aq{display:block;color:var(--muted)}
+.answers-list .aa{display:block;color:var(--success)}
+.answers-list .aa strong{color:var(--success);font-weight:600}
+@media screen{.answers-print{display:none}}
+@page{size:A4;margin:12mm}
+@media print{
+  .lesson-nav,.pace-banner,.done-btn,.pdf-btn,.embed-slot,.reveal{display:none !important}
+  body{background:white}
+  *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important}
+  main{max-width:100% !important;padding:6px 2px 0 !important}
+  details>summary::after,.quiz details summary::after{content:'' !important}
+  .quiz-sub{display:none !important}
+  .answers-print{break-before:page}
+  .worked,.hinge,.keywords,.watch-out,.diagram,.quiz li,.answers-block{break-inside:avoid}
+  .lesson-head,.section-head,.quiz-head,.answers-topic{break-after:avoid}
+}
+
+/* ---------- INTERACTIVE EMBED SLOT ---------- */
+.embed-slot{margin:28px 0;border:2px dashed var(--navy);background:repeating-linear-gradient(45deg,var(--soft-blue),var(--soft-blue) 12px,var(--paper) 12px,var(--paper) 24px);padding:5px}
+.embed-slot-inner{background:var(--paper);border:1px solid var(--rule);padding:26px 22px;text-align:center}
+.embed-tag{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:var(--navy);background:var(--gold-soft);border:1px solid var(--gold);padding:4px 12px;margin-bottom:14px;font-weight:600}
+.embed-slot h4{font-family:var(--display);font-size:23px;color:var(--navy);font-weight:400;margin-bottom:8px;font-style:italic}
+.embed-slot p{font-size:15px;color:var(--muted);max-width:480px;margin:0 auto}
+.embed-canvas{margin-top:18px;min-height:130px;border:1px dashed var(--rule);display:flex;align-items:center;justify-content:center;color:var(--muted);font-family:var(--mono);font-size:12px;letter-spacing:0.1em;background:var(--warm)}
+.embed-note{font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin-top:14px}
+</style>
+</head>
+<body>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="kicker">KS3 Science · Year 8 · C4 Acids &amp; alkalis</div>
+    <h1>Acids &amp; alkalis, <em>but bitesize.</em></h1>
+    <p class="tag">A revision booklet — five short topics, from the pH scale to making salts and testing the gas.</p>
+    <div class="pace-banner">
+      <span class="pace-icon">i</span>
+      <p><strong>Take it one topic at a time.</strong> There are five topics. Each one is short — about 10 minutes. Do one or two a day.</p>
+    </div>
+    <a class="pdf-btn" href="pdf/acids-and-alkalis-revision.pdf" download><span class="ic">&#8595;</span> Download printable PDF</a>
+  </div>
+</header>
+
+<!-- ============ STICKY NAV ============ -->
+<nav class="lesson-nav">
+  <div class="nav-inner">
+    <a href="#lesson-1" class="nav-pill" data-lesson="1">The pH scale</a>
+    <a href="#lesson-2" class="nav-pill" data-lesson="2">Bases &amp; alkalis</a>
+    <a href="#lesson-3" class="nav-pill" data-lesson="3">Indicators</a>
+    <a href="#lesson-4" class="nav-pill" data-lesson="4">Neutralisation &amp; salts</a>
+    <a href="#lesson-5" class="nav-pill" data-lesson="5">Acids &amp; metals</a>
+  </div>
+</nav>
+
+<main>
+
+<!-- ===================================================================== -->
+<!-- TOPIC 1 — C4 ACIDS, ALKALIS AND THE pH SCALE                            -->
+<!-- ===================================================================== -->
+<section class="lesson" id="lesson-1">
+  <div class="lesson-head">
+    <div class="lesson-num">Topic 01 · C4 · Acids &amp; alkalis</div>
+    <h2 class="lesson-title">Acids, alkalis &amp; the <em>pH scale</em></h2>
+    <p class="lesson-promise">By the end of this topic you'll know what acids, alkalis and neutral substances are, and how to use the pH scale to say how acidic or alkaline something is.</p>
+  </div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 1</span>Sour, slippery, or nothing at all</h3>
+    <p>Lemon juice, vinegar and fizzy drinks all taste sharp and sour. Soap and bleach feel slippery. Pure water tastes of almost nothing at all. These are not random differences — chemists sort every substance using one single scale that runs from 0 to 14.</p>
+    <p>An <strong>ACID</strong> is a family of chemicals with a pH <strong>below 7</strong>. Many of them taste sour (though you must never taste a lab chemical to find out). An <strong>ALKALI</strong> is, roughly, the chemical opposite of an acid — it has a pH <strong>above 7</strong>. A <strong>NEUTRAL</strong> substance is neither acidic nor alkaline: it sits at exactly pH 7. Pure water is the classic example.</p>
+
+    <div class="keywords">
+      <h4>Keywords for Part 1 — where the words come from</h4>
+      <dl>
+        <dt>Acid</dt>
+        <dd>From the Latin <em>acidus</em>, "sour". A family of chemicals with a pH below 7 — many taste sour.</dd>
+        <dt>Alkali</dt>
+        <dd>From the Arabic <em>al-qaly</em>, "the ashes" (the first alkalis were made from plant ashes). The chemical opposite of an acid — pH above 7.</dd>
+        <dt>Neutral</dt>
+        <dd>From the Latin <em>neuter</em>, "neither". Neither acidic nor alkaline — exactly pH 7, like water.</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 2</span>Reading the pH scale</h3>
+    <p>The <strong>pH scale</strong> runs from 0 to 14 and measures how acidic or alkaline a substance is. The rule is short and worth memorising: pH <strong>less than 7</strong> means acid, pH <strong>exactly 7</strong> means neutral, pH <strong>greater than 7</strong> means alkali.</p>
+    <p>The scale also tells you <strong>how strong</strong> something is. The <strong>further from 7</strong> a substance sits, the more corrosive it is. So a pH of 1 is a much stronger, more dangerous acid than a pH of 5. A pH of 14 is a far more corrosive alkali than a pH of 8.</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 560 200" xmlns="http://www.w3.org/2000/svg">
+        <!-- colour strip 0-14 -->
+        <g>
+          <rect x="20" y="40" width="38.57" height="36" fill="#C0392B"/><!-- 0 -->
+          <rect x="58.57" y="40" width="38.57" height="36" fill="#D14B2E"/><!-- 1 -->
+          <rect x="97.14" y="40" width="38.57" height="36" fill="#E0622E"/><!-- 2 -->
+          <rect x="135.71" y="40" width="38.57" height="36" fill="#E98A2E"/><!-- 3 -->
+          <rect x="174.28" y="40" width="38.57" height="36" fill="#EBAA33"/><!-- 4 -->
+          <rect x="212.85" y="40" width="38.57" height="36" fill="#E9C93B"/><!-- 5 -->
+          <rect x="251.42" y="40" width="38.57" height="36" fill="#C8CF3E"/><!-- 6 -->
+          <rect x="289.99" y="40" width="38.57" height="36" fill="#2C5F2D"/><!-- 7 neutral -->
+          <rect x="328.56" y="40" width="38.57" height="36" fill="#2E8B57"/><!-- 8 -->
+          <rect x="367.13" y="40" width="38.57" height="36" fill="#2F8FA6"/><!-- 9 -->
+          <rect x="405.70" y="40" width="38.57" height="36" fill="#2C6FB0"/><!-- 10 -->
+          <rect x="444.27" y="40" width="38.57" height="36" fill="#2C4FA8"/><!-- 11 -->
+          <rect x="482.84" y="40" width="38.57" height="36" fill="#3E3A9E"/><!-- 12 -->
+          <rect x="521.41" y="40" width="18.59" height="36" fill="#4B2E8C"/><!-- 13-14 -->
+        </g>
+        <rect x="20" y="40" width="520" height="36" fill="none" stroke="#1E2761" stroke-width="2"/>
+        <!-- neutral marker -->
+        <g>
+          <line x1="309" y1="30" x2="309" y2="86" stroke="#1E2761" stroke-width="2"/>
+          <text x="309" y="24" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" font-weight="700" fill="#1E2761">7 NEUTRAL</text>
+        </g>
+        <!-- numbers -->
+        <g font-family="IBM Plex Mono,monospace" font-size="10" fill="#1E2761" text-anchor="middle">
+          <text x="39" y="92">0</text><text x="116" y="92">2</text><text x="193" y="92">4</text>
+          <text x="270" y="92">6</text><text x="309" y="92">7</text><text x="386" y="92">9</text>
+          <text x="463" y="92">11</text><text x="531" y="92">14</text>
+        </g>
+        <!-- band labels -->
+        <g font-family="IBM Plex Mono,monospace" font-size="11" font-weight="700" letter-spacing="2" text-anchor="middle">
+          <text x="135" y="118" fill="#B85042">ACIDS</text>
+          <text x="309" y="118" fill="#2C5F2D">NEUTRAL</text>
+          <text x="425" y="118" fill="#1E2761">ALKALIS</text>
+        </g>
+        <!-- example substances -->
+        <g font-family="IBM Plex Sans,sans-serif" font-size="11" fill="#5C6370" text-anchor="middle">
+          <text x="58" y="150" font-weight="700" fill="#1E2761">stomach acid</text>
+          <text x="58" y="164">pH 1–2</text>
+          <text x="193" y="150" font-weight="700" fill="#1E2761">lemon, vinegar</text>
+          <text x="193" y="164">pH 2–4</text>
+          <text x="309" y="150" font-weight="700" fill="#1E2761">water</text>
+          <text x="309" y="164">pH 7</text>
+          <text x="405" y="150" font-weight="700" fill="#1E2761">soap, toothpaste</text>
+          <text x="405" y="164">pH 8–10</text>
+          <text x="510" y="150" font-weight="700" fill="#1E2761">bleach, NaOH</text>
+          <text x="510" y="164">pH 12–14</text>
+        </g>
+        <text x="280" y="190" text-anchor="middle" font-family="Instrument Serif,serif" font-style="italic" font-size="13" fill="#5C6370">the further from 7, the more corrosive</text>
+      </svg>
+      <div class="caption">The pH scale 0–14 — acid below 7, neutral at 7, alkali above 7</div>
+    </div>
+
+    <div class="embed-slot" id="embed-ph-slider">
+      <div class="embed-slot-inner">
+        <span class="embed-tag">Interactive · drop-in</span>
+        <h4>Drag-the-pH slider</h4>
+        <p>Slide a marker from 0 to 14 and watch the universal-indicator colour and an example substance change as you go.</p>
+        <div class="embed-canvas"><iframe src="interactives/ph-slider.html" title="Drag-the-pH slider" loading="lazy" style="width:100%;height:420px;border:0;display:block;border-radius:2px"></iframe></div>
+        <div class="embed-note"><a href="interactives/ph-slider.html" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none">Open this interactive in a new tab ↗</a></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 3</span>Where the everyday substances sit</h3>
+    <p>It helps to know which substances live at which end of the scale. The <strong>strong acids</strong> (pH 0–2) are the laboratory acids: hydrochloric acid (HCl), nitric acid (HNO₃) and sulfuric acid (H₂SO₄). The <strong>weak acids</strong> (pH 4–6) are the household and food acids: vinegar, lemon juice, fizzy drinks. <strong>Water</strong> sits at exactly pH 7. The <strong>weak alkalis</strong> (pH 8–10) include toothpaste, soap and some bleach. The one <strong>strong alkali</strong> you meet in the lab is sodium hydroxide (NaOH), at pH 12–14.</p>
+    <p>Remember that pH 7 is a single <strong>point</strong>, not a range. There is only one value that is truly neutral.</p>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">A substance has a pH of 2. What type of substance is it?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>A weak acid</span></li>
+        <li><span class="letter">B</span><span>A strong acid</span></li>
+        <li><span class="letter">C</span><span>A neutral substance</span></li>
+        <li><span class="letter">D</span><span>A strong alkali</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>B — a strong acid.</strong> pH 0–2 is the strong (most corrosive) acid range, so a pH of 2 is a strong acid. <em>A is the tempting wrong answer — but weak acids sit around pH 4–6, much closer to neutral. The closer the pH is to 0, the stronger and more corrosive the acid.</em></div>
+      </details>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">Which of these is a strong (laboratory) alkali?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>vinegar</span></li>
+        <li><span class="letter">B</span><span>water</span></li>
+        <li><span class="letter">C</span><span>sodium hydroxide</span></li>
+        <li><span class="letter">D</span><span>lemon juice</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>C — sodium hydroxide (NaOH).</strong> It is the strong laboratory alkali, at pH 12–14. <em>Vinegar and lemon juice are weak acids, and water is neutral — none of them are alkalis at all.</em></div>
+      </details>
+    </div>
+
+    <div class="watch-out">
+      <h4>⚠ Watch out — "strong" is not the same as "concentrated"</h4>
+      <p><strong>Strong</strong> describes how far an acid or alkali sits from pH 7 — how fully it acts as an acid. <strong>Concentrated</strong> describes how much of it is dissolved in the water. They are different ideas. A more concentrated solution of the same chemical can be more corrosive, so the pH alone does not always tell you how dangerous something is.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <h3 class="quiz-head">Test <em>yourself</em></h3>
+    <p class="quiz-sub">7 questions · click to reveal each answer</p>
+    <ol>
+      <li><details>
+        <summary>What does the pH scale measure?</summary>
+        <div class="ans">How <strong>acidic or alkaline</strong> a substance is, on a scale from <strong>0 to 14</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>What pH are neutral substances, and give one example.</summary>
+        <div class="ans"><strong>pH 7</strong>. Example: <strong>water</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>What pH range are strong acids? What pH range are strong alkalis?</summary>
+        <div class="ans">Strong acids: <strong>pH 0–2</strong>. Strong alkalis: <strong>pH 12–14</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>Name the three laboratory acids and their formulae.</summary>
+        <div class="ans"><strong>Hydrochloric acid (HCl), nitric acid (HNO₃), sulfuric acid (H₂SO₄)</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>Which is more corrosive: pH 1 or pH 5? Explain.</summary>
+        <div class="ans"><strong>pH 1.</strong> The further a substance is from 7, the more corrosive it is — and pH 1 is much further from 7 than pH 5.</div>
+      </details></li>
+      <li><details>
+        <summary>Acid rain has a pH of about 4. Is it a strong or weak acid? Explain.</summary>
+        <div class="ans">A <strong>weak acid</strong> — pH 4 is only a little below 7, not down in the 0–2 strong range.</div>
+      </details></li>
+      <li><details>
+        <summary>Explain why "strong" and "concentrated" are not the same thing.</summary>
+        <div class="ans"><strong>Strong</strong> is how fully a substance acts as an acid (how far from pH 7). <strong>Concentrated</strong> is how much is dissolved in the water. You can have a concentrated weak acid or a dilute strong acid.</div>
+      </details></li>
+    </ol>
+    <button class="done-btn" data-lesson-done="1">Mark this topic complete</button>
+  </div>
+</section>
+
+<!-- ===================================================================== -->
+<!-- TOPIC 2 — C4 BASES AND ALKALIS                                          -->
+<!-- ===================================================================== -->
+<section class="lesson" id="lesson-2">
+  <div class="lesson-head">
+    <div class="lesson-num">Topic 02 · C4 · Acids &amp; alkalis</div>
+    <h2 class="lesson-title">Bases &amp; <em>alkalis</em></h2>
+    <p class="lesson-promise">By the end of this topic you'll know exactly what a base is, what makes an alkali special, and why all alkalis are bases but not all bases are alkalis.</p>
+  </div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 1</span>The chemicals that cancel out acids</h3>
+    <p>Indigestion tablets contain a chemical that "cancels out" the acid in your stomach. Some of these acid-cancelling chemicals dissolve in water; some do not. Either way, they all do the same job — they <strong>neutralise</strong> the acid and raise its pH back towards 7.</p>
+    <p>The general word for any chemical that does this is a <strong>BASE</strong>. A base is any chemical that cancels out (neutralises) an acid, raising its pH towards 7. Metal oxides and metal carbonates are common bases.</p>
+
+    <div class="keywords">
+      <h4>Keywords for Part 1</h4>
+      <dl>
+        <dt>Base</dt>
+        <dd>Any chemical that cancels out (neutralises) an acid, raising its pH towards 7.</dd>
+        <dt>Neutralise</dt>
+        <dd>From the Latin <em>neuter</em>, "neither". To make a solution neither acidic nor alkaline — to bring it towards pH 7.</dd>
+        <dt>Soluble / insoluble</dt>
+        <dd><em>Soluble</em> means it can dissolve in water. <em>Insoluble</em> means it cannot.</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 2</span>An alkali is a soluble base</h3>
+    <p>Here is the key idea of the whole topic. An <strong>ALKALI</strong> is simply a base that is <strong>SOLUBLE</strong> in water. That single difference matters because dissolving lets a substance do more.</p>
+    <p>Because an alkali dissolves and has a high pH, it can raise a solution's pH <strong>above 7</strong> — it can overshoot neutral and make the solution alkaline. An <strong>insoluble base</strong> does not dissolve, so it can only cancel an acid up to pH 7 and no further. It cannot overshoot.</p>
+    <p>So the rule is: <strong>ALL alkalis are bases — but NOT all bases are alkalis.</strong> The alkalis are the special, soluble members of the larger base family.</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg">
+        <!-- big bases circle -->
+        <ellipse cx="280" cy="110" rx="250" ry="95" fill="#EDF2FA" stroke="#1E2761" stroke-width="2"/>
+        <text x="280" y="40" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="13" font-weight="700" letter-spacing="2" fill="#1E2761">BASES</text>
+        <text x="150" y="110" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="11" fill="#5C6370">neutralise acids</text>
+        <text x="150" y="126" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="11" fill="#5C6370">(raise pH towards 7)</text>
+        <text x="150" y="150" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="10" font-style="italic" fill="#B85042">e.g. copper oxide</text>
+        <text x="150" y="164" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="10" font-style="italic" fill="#B85042">(insoluble)</text>
+        <!-- inner alkalis circle -->
+        <ellipse cx="385" cy="110" rx="120" ry="72" fill="#DDEBDD" stroke="#2C5F2D" stroke-width="2"/>
+        <text x="385" y="98" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" font-weight="700" letter-spacing="2" fill="#2C5F2D">ALKALIS</text>
+        <text x="385" y="118" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="10" fill="#2C5F2D">soluble bases —</text>
+        <text x="385" y="132" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="10" fill="#2C5F2D">can raise pH above 7</text>
+        <text x="385" y="150" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="10" font-style="italic" fill="#2C5F2D">e.g. sodium hydroxide</text>
+      </svg>
+      <div class="caption">All alkalis are bases — not all bases are alkalis</div>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 3</span>Quick checks</h3>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">What is the difference between a base and an alkali?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>There is no difference</span></li>
+        <li><span class="letter">B</span><span>An alkali is a base that is soluble in water</span></li>
+        <li><span class="letter">C</span><span>A base is a soluble alkali</span></li>
+        <li><span class="letter">D</span><span>An alkali cannot cancel out an acid</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>B — an alkali is a base that is soluble in water.</strong> Every alkali is a base; the alkalis are just the soluble ones. <em>C is back-to-front — it is the alkali that is soluble, not the base. And insoluble bases are bases but not alkalis.</em></div>
+      </details>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">An ammonia solution has a pH of 13. What type of chemical is it?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>A neutral substance</span></li>
+        <li><span class="letter">B</span><span>A weak acid</span></li>
+        <li><span class="letter">C</span><span>An alkali (soluble base)</span></li>
+        <li><span class="letter">D</span><span>An insoluble base</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>C — an alkali (soluble base).</strong> A pH above 7 means it is alkaline, and because it is in solution it must be a soluble base — which is exactly what an alkali is. <em>D is the trap: an insoluble base could not raise the pH above 7 in the first place, so it cannot be sitting at pH 13.</em></div>
+      </details>
+    </div>
+
+    <div class="watch-out">
+      <h4>⚠ Watch out — "all bases are alkalis" is wrong</h4>
+      <p>It is the other way round. <strong>All alkalis are bases, but not all bases are alkalis.</strong> Only the bases that dissolve in water (soluble bases) count as alkalis. An insoluble base, like copper oxide, is a base but never an alkali.</p>
+    </div>
+
+    <div class="worked">
+      <h4>6-mark question — model answer</h4>
+      <p class="q">Indigestion is caused by too much stomach acid. Indigestion remedies usually contain an <strong>insoluble base</strong>, not a soluble alkali. Explain why an insoluble base is safer to use as a remedy. <strong>[6 marks]</strong></p>
+      <div class="step"><div class="label">Point 1</div><div class="v">A base works by cancelling out (neutralising) the excess stomach acid, raising its pH towards 7. (1)</div></div>
+      <div class="step"><div class="label">Point 2</div><div class="v">An insoluble base does not dissolve, so it can only raise the pH up to 7 (neutral) and no further. (1)</div></div>
+      <div class="step"><div class="label">Point 3</div><div class="v">A soluble alkali would dissolve and could raise the pH beyond 7, making the stomach alkaline. (1)</div></div>
+      <div class="step answer"><div class="label">Point 4</div><div class="v">An alkaline stomach would itself be harmful, so the insoluble base is safer because it cannot overshoot neutral. (1)</div></div>
+    </div>
+
+    <div class="watch-out">
+      <h4>Mark scheme — how the 6 marks are awarded</h4>
+      <p>1 mark each for: base neutralises the acid; insoluble base only reaches pH 7; a soluble alkali could go beyond pH 7; an alkaline stomach is harmful / cannot overshoot. Marks are also available for clear use of the terms <strong>base</strong>, <strong>insoluble</strong> and <strong>neutralise</strong>. <strong>Maximum 6 marks.</strong></p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <h3 class="quiz-head">Test <em>yourself</em></h3>
+    <p class="quiz-sub">7 questions · click to reveal each answer</p>
+    <ol>
+      <li><details>
+        <summary>Define 'base'.</summary>
+        <div class="ans">A chemical that cancels out (<strong>neutralises</strong>) an acid, raising its pH towards 7.</div>
+      </details></li>
+      <li><details>
+        <summary>Define 'alkali'.</summary>
+        <div class="ans">A base that is <strong>soluble</strong> in water.</div>
+      </details></li>
+      <li><details>
+        <summary>Are all bases alkalis? Are all alkalis bases? Explain.</summary>
+        <div class="ans"><strong>No</strong> — only the soluble bases are alkalis. <strong>Yes</strong> — every alkali is a base, because it neutralises acid.</div>
+      </details></li>
+      <li><details>
+        <summary>What does an insoluble base do to an acid's pH? What can a soluble alkali do that it cannot?</summary>
+        <div class="ans">An insoluble base raises the pH <strong>towards 7 (neutral) but not beyond</strong>. A soluble alkali can <strong>raise the pH above 7</strong>, making the solution alkaline.</div>
+      </details></li>
+      <li><details>
+        <summary>Give an example of an insoluble base and an example of a soluble base (alkali).</summary>
+        <div class="ans">Insoluble base: <strong>copper oxide</strong> or <strong>calcium carbonate (limestone)</strong>. Soluble base (alkali): <strong>sodium hydroxide</strong> or <strong>potassium hydroxide</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>Farmers add lime (a base) to acidic soil. Explain how this helps crops.</summary>
+        <div class="ans">The base <strong>neutralises the acid in the soil</strong>, raising its pH towards neutral so that crops can grow well.</div>
+      </details></li>
+      <li><details>
+        <summary>A student adds excess copper oxide to acid; the solution becomes neutral, not alkaline. Explain why.</summary>
+        <div class="ans">Copper oxide is an <strong>insoluble base</strong>. Because it cannot dissolve, it cannot raise the pH past 7 — so it stops at neutral instead of overshooting into alkaline.</div>
+      </details></li>
+    </ol>
+    <button class="done-btn" data-lesson-done="2">Mark this topic complete</button>
+  </div>
+</section>
+
+<!-- ===================================================================== -->
+<!-- TOPIC 3 — C4 INDICATORS                                                 -->
+<!-- ===================================================================== -->
+<section class="lesson" id="lesson-3">
+  <div class="lesson-head">
+    <div class="lesson-num">Topic 03 · C4 · Acids &amp; alkalis</div>
+    <h2 class="lesson-title">Indicators &amp; the <em>colour of pH</em></h2>
+    <p class="lesson-promise">By the end of this topic you'll know what an indicator is, what colours universal indicator shows, and how to use it to read the pH of a solution.</p>
+  </div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 1</span>Telling acids and alkalis apart by colour</h3>
+    <p>Imagine two clear, colourless liquids in beakers. One is a strong acid, one a strong alkali — and you must not taste or touch either, because both are corrosive. Yet a few drops of one special chemical instantly tells you which is which. That chemical is an <strong>indicator</strong>.</p>
+    <p>An <strong>INDICATOR</strong> is a chemical that changes colour depending on the pH of a solution. Digital pH probes also exist and give an exact number, but they are expensive — an indicator is quick and cheap, which is why you meet it first.</p>
+
+    <div class="keywords">
+      <h4>Keywords for Part 1 — where the words come from</h4>
+      <dl>
+        <dt>Indicator</dt>
+        <dd>From the Latin <em>indicare</em>, "to point out". A chemical that points out the pH of a solution by changing colour.</dd>
+        <dt>Universal</dt>
+        <dd>From the Latin <em>universalis</em>, "the whole / all". Universal indicator shows the whole range of the pH scale, not just acid or alkali.</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 2</span>The universal indicator colours</h3>
+    <p>Some indicators only give two colours — litmus, for example, is just red in acid and blue in alkali. <strong>Universal indicator</strong> is more useful because it shows the <strong>whole pH range</strong>, telling you not just whether a substance is an acid or an alkali but <strong>how strong</strong> it is.</p>
+    <p>Learn the colour order. At the acid end: <strong>red</strong> (strong acid) → orange → yellow (weak acid). At pH 7: <strong>green</strong> (neutral). At the alkali end: blue (weak alkali) → <strong>purple</strong> (strong alkali). The colours go red → orange → yellow → green → blue → purple as pH climbs from 0 to 14.</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 560 170" xmlns="http://www.w3.org/2000/svg">
+        <g>
+          <rect x="20" y="40" width="86.6" height="40" fill="#C0392B"/>
+          <rect x="106.6" y="40" width="86.6" height="40" fill="#E98A2E"/>
+          <rect x="193.2" y="40" width="86.6" height="40" fill="#E9C93B"/>
+          <rect x="279.8" y="40" width="86.6" height="40" fill="#2C5F2D"/>
+          <rect x="366.4" y="40" width="86.6" height="40" fill="#2C6FB0"/>
+          <rect x="453" y="40" width="87" height="40" fill="#4B2E8C"/>
+        </g>
+        <rect x="20" y="40" width="520" height="40" fill="none" stroke="#1E2761" stroke-width="2"/>
+        <g font-family="IBM Plex Sans,sans-serif" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">
+          <text x="63" y="65">RED</text>
+          <text x="150" y="65">ORANGE</text>
+          <text x="236" y="65">YELLOW</text>
+          <text x="323" y="65">GREEN</text>
+          <text x="410" y="65">BLUE</text>
+          <text x="496" y="65">PURPLE</text>
+        </g>
+        <g font-family="IBM Plex Mono,monospace" font-size="10" fill="#5C6370" text-anchor="middle">
+          <text x="63" y="98">strong acid</text>
+          <text x="150" y="98">acid</text>
+          <text x="236" y="98">weak acid</text>
+          <text x="323" y="98">NEUTRAL pH 7</text>
+          <text x="410" y="98">weak alkali</text>
+          <text x="496" y="98">strong alkali</text>
+        </g>
+        <text x="280" y="135" text-anchor="middle" font-family="Instrument Serif,serif" font-style="italic" font-size="14" fill="#5C6370">the colours are the colour of the INDICATOR — not of the acid or alkali itself</text>
+      </svg>
+      <div class="caption">Universal indicator: red → orange → yellow → green → blue → purple</div>
+    </div>
+
+    <div class="embed-slot" id="embed-indicator-lab">
+      <div class="embed-slot-inner">
+        <span class="embed-tag">Interactive · drop-in</span>
+        <h4>Virtual indicator lab</h4>
+        <p>Pick a solution and an indicator, add a few drops, and see the colour it turns — then read off the pH.</p>
+        <div class="embed-canvas"><iframe src="interactives/indicator-lab.html" title="Virtual indicator lab" loading="lazy" style="width:100%;height:400px;border:0;display:block;border-radius:2px"></iframe></div>
+        <div class="embed-note"><a href="interactives/indicator-lab.html" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none">Open this interactive in a new tab ↗</a></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 3</span>Reading the colour</h3>
+    <p>The whole skill is to look at the colour and work backwards to the pH and the type of substance. Green means pH 7 and neutral. Red means a strong acid. Purple means a strong alkali. The green band is very narrow, because neutral is a single point (pH 7), not a range.</p>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">Universal indicator turns GREEN. What type of solution is it?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>A strong acid</span></li>
+        <li><span class="letter">B</span><span>A weak acid</span></li>
+        <li><span class="letter">C</span><span>A neutral solution</span></li>
+        <li><span class="letter">D</span><span>A strong alkali</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>C — a neutral solution.</strong> Green is the colour of universal indicator at exactly pH 7. <em>Don't confuse green (neutral) with the alkali colours — blue and purple sit further along the scale, above pH 7.</em></div>
+      </details>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">Universal indicator turns PURPLE. What does this tell you?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>It is a weak acid</span></li>
+        <li><span class="letter">B</span><span>It is neutral</span></li>
+        <li><span class="letter">C</span><span>It is a strong alkali</span></li>
+        <li><span class="letter">D</span><span>It is pure water</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>C — it is a strong alkali</strong> (pH 12–14), such as sodium hydroxide. Purple is universal indicator's colour at the very top of the scale. <em>D is wrong because pure water is neutral and would turn the indicator green, not purple.</em></div>
+      </details>
+    </div>
+
+    <div class="watch-out">
+      <h4>⚠ Watch out — the colour belongs to the indicator</h4>
+      <p>"The acid is red" is a common slip. The acid is usually <strong>colourless</strong> — it is the <strong>indicator</strong> you have added that is red. Always say "the indicator turns red in the acid", not "the acid is red". Also: only add a <strong>few</strong> drops, or you change the solution you are testing.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <h3 class="quiz-head">Test <em>yourself</em></h3>
+    <p class="quiz-sub">7 questions · click to reveal each answer</p>
+    <ol>
+      <li><details>
+        <summary>What is an indicator?</summary>
+        <div class="ans">A chemical that <strong>changes colour depending on the pH</strong> of a solution.</div>
+      </details></li>
+      <li><details>
+        <summary>What colour is universal indicator in a strong acid, in a neutral solution, and in a strong alkali?</summary>
+        <div class="ans">Strong acid: <strong>red</strong>. Neutral: <strong>green</strong>. Strong alkali: <strong>purple</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>Why is it called 'universal' indicator?</summary>
+        <div class="ans">Because it shows the <strong>whole (universal) range of pH values</strong>, not just whether a substance is acid or alkali.</div>
+      </details></li>
+      <li><details>
+        <summary>Indicator turns yellow — classify the solution and give a possible pH.</summary>
+        <div class="ans">A <strong>weak acid</strong>, about <strong>pH 5–6</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>Why use an indicator rather than a digital pH meter?</summary>
+        <div class="ans">It is <strong>quick and cheap</strong>; meters are expensive. (A meter does give a more precise numerical pH, though.)</div>
+      </details></li>
+      <li><details>
+        <summary>Are the colours those of the acid, or of the indicator?</summary>
+        <div class="ans">The colours of the <strong>indicator</strong> — the acid itself is usually colourless.</div>
+      </details></li>
+      <li><details>
+        <summary>Why is the green (neutral) band so narrow when you run the indicator across a strip from acid to alkali?</summary>
+        <div class="ans">Because neutral is <strong>exactly pH 7 — a single point</strong>, not a range — so only a thin band of the strip is truly neutral and shows green.</div>
+      </details></li>
+    </ol>
+    <button class="done-btn" data-lesson-done="3">Mark this topic complete</button>
+  </div>
+</section>
+
+<!-- ===================================================================== -->
+<!-- TOPIC 4 — C4 NEUTRALISATION AND NAMING SALTS                            -->
+<!-- ===================================================================== -->
+<section class="lesson" id="lesson-4">
+  <div class="lesson-head">
+    <div class="lesson-num">Topic 04 · C4 · Acids &amp; alkalis</div>
+    <h2 class="lesson-title">Neutralisation &amp; <em>naming salts</em></h2>
+    <p class="lesson-promise">By the end of this topic you'll know what happens when an acid meets an alkali, the word equation for it, and how to name the salt that forms.</p>
+  </div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 1</span>What happens when an acid meets an alkali</h3>
+    <p>Add an alkali to an acid drop by drop and the pH climbs steadily towards 7. The two <strong>cancel each other out</strong>. This is a <strong>neutralisation reaction</strong>, and the products are not dangerous at all: one is just <strong>water</strong>, and the other is a chemical called a <strong>salt</strong>.</p>
+    <p>The general word equation is one you must know by heart:</p>
+    <p style="text-align:center"><span class="formula">acid + alkali → salt + water</span></p>
+    <p>If the right amounts react, the final solution ends up neutral, at pH 7. And "salt" does not mean table salt — it is a whole <strong>family</strong> of compounds. Table salt (sodium chloride) is just the most famous one.</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 560 150" xmlns="http://www.w3.org/2000/svg">
+        <!-- acid -->
+        <rect x="20" y="50" width="110" height="50" rx="6" fill="#F4DAD7" stroke="#B85042" stroke-width="2"/>
+        <text x="75" y="80" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="14" font-weight="700" fill="#B85042">ACID</text>
+        <!-- plus -->
+        <text x="155" y="82" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="26" font-weight="300" fill="#1E2761">+</text>
+        <!-- alkali -->
+        <rect x="180" y="50" width="110" height="50" rx="6" fill="#DDEBDD" stroke="#2C5F2D" stroke-width="2"/>
+        <text x="235" y="80" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="14" font-weight="700" fill="#2C5F2D">ALKALI</text>
+        <!-- arrow -->
+        <g transform="translate(330,75)">
+          <line x1="-25" y1="0" x2="25" y2="0" stroke="#1E2761" stroke-width="2"/>
+          <path d="M 16 -7 L 30 0 L 16 7 Z" fill="#1E2761"/>
+        </g>
+        <!-- salt -->
+        <rect x="375" y="50" width="80" height="50" rx="6" fill="#F2E6BD" stroke="#C8A24A" stroke-width="2"/>
+        <text x="415" y="80" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="14" font-weight="700" fill="#1E2761">SALT</text>
+        <text x="468" y="82" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="26" font-weight="300" fill="#1E2761">+</text>
+        <rect x="482" y="50" width="58" height="50" rx="6" fill="#EDF2FA" stroke="#1E2761" stroke-width="2"/>
+        <text x="511" y="80" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="13" font-weight="700" fill="#1E2761">WATER</text>
+        <text x="280" y="130" text-anchor="middle" font-family="Instrument Serif,serif" font-style="italic" font-size="14" fill="#5C6370">the acid and alkali cancel out; the products are neutral</text>
+      </svg>
+      <div class="caption">The neutralisation word equation</div>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">What are the products of a reaction between an acid and an alkali?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>hydrogen and water</span></li>
+        <li><span class="letter">B</span><span>a salt and water</span></li>
+        <li><span class="letter">C</span><span>carbon dioxide and water</span></li>
+        <li><span class="letter">D</span><span>two acids</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>B — a salt and water.</strong> Acid + alkali → salt + water. This is neutralisation, and the products are neutral. <em>A is the trap — hydrogen is the product when a metal reacts with an acid (next topic), not when an alkali does.</em></div>
+      </details>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 2</span>Naming the salt</h3>
+    <p>Naming the salt looks tricky but follows two simple rules. The <strong>acid sets the ending</strong>, and the <strong>alkali (or base) sets the metal</strong> — and the metal name always comes <strong>first</strong>.</p>
+    <p>The three acids give three endings: hydrochloric acid makes a <strong>chloride</strong>, sulfuric acid makes a <strong>sulfate</strong>, and nitric acid makes a <strong>nitrate</strong>. The metal part comes from the metal in the alkali or base.</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 560 200" xmlns="http://www.w3.org/2000/svg">
+        <g font-family="IBM Plex Mono,monospace" font-size="13">
+          <text x="40" y="35" font-size="11" font-weight="700" letter-spacing="2" fill="#B85042">ACID USED</text>
+          <text x="370" y="35" font-size="11" font-weight="700" letter-spacing="2" fill="#C8A24A">SALT ENDING</text>
+          <!-- row 1 -->
+          <text x="40" y="70" fill="#1E2761">hydrochloric acid (HCl)</text>
+          <line x1="270" y1="65" x2="350" y2="65" stroke="#1E2761" stroke-width="1.5"/>
+          <path d="M 344 60 L 356 65 L 344 70 Z" fill="#1E2761"/>
+          <text x="370" y="70" font-weight="700" fill="#2C5F2D">metal chloride</text>
+          <!-- row 2 -->
+          <text x="40" y="110" fill="#1E2761">sulfuric acid (H2SO4)</text>
+          <line x1="270" y1="105" x2="350" y2="105" stroke="#1E2761" stroke-width="1.5"/>
+          <path d="M 344 100 L 356 105 L 344 110 Z" fill="#1E2761"/>
+          <text x="370" y="110" font-weight="700" fill="#2C5F2D">metal sulfate</text>
+          <!-- row 3 -->
+          <text x="40" y="150" fill="#1E2761">nitric acid (HNO3)</text>
+          <line x1="270" y1="145" x2="350" y2="145" stroke="#1E2761" stroke-width="1.5"/>
+          <path d="M 344 140 L 356 145 L 344 150 Z" fill="#1E2761"/>
+          <text x="370" y="150" font-weight="700" fill="#2C5F2D">metal nitrate</text>
+        </g>
+        <line x1="40" y1="170" x2="520" y2="170" stroke="#CFD8E3" stroke-width="1"/>
+        <text x="280" y="190" text-anchor="middle" font-family="Instrument Serif,serif" font-style="italic" font-size="13" fill="#5C6370">the METAL in the salt comes from the alkali — and goes first</text>
+      </svg>
+      <div class="caption">The salt-naming map: acid → salt ending</div>
+    </div>
+
+    <div class="worked">
+      <h4>Worked example 1 — hydrochloric acid</h4>
+      <p class="q">Name the salt made when <strong>hydrochloric acid</strong> reacts with <strong>sodium hydroxide</strong>.</p>
+      <div class="step"><div class="label">Ending</div><div class="v">hydrochloric acid → a chloride</div></div>
+      <div class="step"><div class="label">Metal</div><div class="v">metal comes from sodium hydroxide → sodium</div></div>
+      <div class="step"><div class="label">Build</div><div class="v">metal first, then ending: sodium + chloride</div></div>
+      <div class="step answer"><div class="label">Answer</div><div class="v">sodium chloride (+ water)</div></div>
+    </div>
+
+    <div class="worked">
+      <h4>Worked example 2 — sulfuric acid</h4>
+      <p class="q">Name the salt made when <strong>sulfuric acid</strong> reacts with <strong>magnesium hydroxide</strong>.</p>
+      <div class="step"><div class="label">Ending</div><div class="v">sulfuric acid → a sulfate</div></div>
+      <div class="step"><div class="label">Metal</div><div class="v">metal comes from magnesium hydroxide → magnesium</div></div>
+      <div class="step"><div class="label">Build</div><div class="v">metal first, then ending: magnesium + sulfate</div></div>
+      <div class="step answer"><div class="label">Answer</div><div class="v">magnesium sulfate (+ water)</div></div>
+    </div>
+
+    <div class="worked">
+      <h4>Worked example 3 — nitric acid</h4>
+      <p class="q">Name the salt made when <strong>nitric acid</strong> reacts with <strong>calcium hydroxide</strong>.</p>
+      <div class="step"><div class="label">Ending</div><div class="v">nitric acid → a nitrate</div></div>
+      <div class="step"><div class="label">Metal</div><div class="v">metal comes from calcium hydroxide → calcium</div></div>
+      <div class="step"><div class="label">Build</div><div class="v">metal first, then ending: calcium + nitrate</div></div>
+      <div class="step answer"><div class="label">Answer</div><div class="v">calcium nitrate (+ water)</div></div>
+    </div>
+
+    <div class="watch-out">
+      <h4>⚠ Watch out — match the acid to the right ending</h4>
+      <p>Mixing up the endings is the most common slip. Hydro<strong>chloric</strong> → <strong>chloride</strong>, sulf<strong>uric</strong> → <strong>sulfate</strong>, nitr<strong>ic</strong> → <strong>nitrate</strong>. And the salt is <em>not</em> "table salt" — sodium chloride is only one member of a huge family of salts.</p>
+    </div>
+
+    <div class="embed-slot" id="embed-neutralisation">
+      <div class="embed-slot-inner">
+        <span class="embed-tag">Interactive · drop-in</span>
+        <h4>Watch a neutralisation happen</h4>
+        <p>Animate acid + alkali → salt + water, and watch the pH curve climb towards 7 as alkali is added drop by drop.</p>
+        <div class="embed-canvas"><iframe src="interactives/neutralisation.html" title="Watch a neutralisation happen" loading="lazy" style="width:100%;height:440px;border:0;display:block;border-radius:2px"></iframe></div>
+        <div class="embed-note"><a href="interactives/neutralisation.html" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none">Open this interactive in a new tab ↗</a></div>
+      </div>
+    </div>
+
+    <div class="embed-slot" id="embed-salt-namer">
+      <div class="embed-slot-inner">
+        <span class="embed-tag">Interactive · drop-in</span>
+        <h4>Build-a-salt namer</h4>
+        <p>Choose an acid and a metal hydroxide (or base) and let the tool build the salt name, metal first.</p>
+        <div class="embed-canvas"><iframe src="interactives/salt-namer.html" title="Build-a-salt namer" loading="lazy" style="width:100%;height:420px;border:0;display:block;border-radius:2px"></iframe></div>
+        <div class="embed-note"><a href="interactives/salt-namer.html" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none">Open this interactive in a new tab ↗</a></div>
+      </div>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">Sulfuric acid reacts with potassium hydroxide. What is the salt called?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>potassium chloride</span></li>
+        <li><span class="letter">B</span><span>potassium sulfate</span></li>
+        <li><span class="letter">C</span><span>potassium nitrate</span></li>
+        <li><span class="letter">D</span><span>potassium hydroxide</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>B — potassium sulfate.</strong> Sulfuric acid always makes a sulfate, and the metal (potassium) comes from the alkali. <em>A would only be right if the acid were hydrochloric; C if it were nitric. D is just the starting alkali, not the salt.</em></div>
+      </details>
+    </div>
+
+    <div class="worked">
+      <h4>6-mark question — model answer</h4>
+      <p class="q">A student wants to make a sample of copper chloride. They react hydrochloric acid with copper oxide (an insoluble base). Name the products, explain how the student knows when all the acid has reacted, and describe how to get dry copper chloride. <strong>[6 marks]</strong></p>
+      <div class="step"><div class="label">Point 1</div><div class="v">The reaction makes a salt and water: copper oxide + hydrochloric acid → copper chloride + water. (1)</div></div>
+      <div class="step"><div class="label">Point 2</div><div class="v">Hydrochloric acid makes a chloride and the metal (copper) comes from the copper oxide, so the salt is copper chloride. (1)</div></div>
+      <div class="step"><div class="label">Point 3</div><div class="v">The student adds copper oxide in excess until no more reacts / the acid is used up (the pH reaches 7). (1)</div></div>
+      <div class="step"><div class="label">Point 4</div><div class="v">They filter off the leftover (insoluble) copper oxide to leave copper chloride solution. (1)</div></div>
+      <div class="step answer"><div class="label">Point 5</div><div class="v">Then they evaporate the water to leave dry copper chloride salt. (1)</div></div>
+    </div>
+
+    <div class="watch-out">
+      <h4>Mark scheme — how the 6 marks are awarded</h4>
+      <p>1 mark each for: products are salt + water / correct word equation; salt named correctly (copper chloride); add base until the acid is used up; filter off the excess base; evaporate to get dry salt. A further mark is available for clear method language. <strong>Maximum 6 marks.</strong></p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <h3 class="quiz-head">Test <em>yourself</em></h3>
+    <p class="quiz-sub">8 questions · click to reveal each answer</p>
+    <ol>
+      <li><details>
+        <summary>What is a neutralisation reaction?</summary>
+        <div class="ans">A reaction between an <strong>acid and an alkali (or base)</strong> that cancels them out, bringing the solution towards pH 7.</div>
+      </details></li>
+      <li><details>
+        <summary>Write the general word equation for acid + alkali.</summary>
+        <div class="ans"><strong>acid + alkali → salt + water</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>What salt ending does each acid make — hydrochloric, sulfuric, nitric?</summary>
+        <div class="ans">Hydrochloric → <strong>chloride</strong>. Sulfuric → <strong>sulfate</strong>. Nitric → <strong>nitrate</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>Name the salt: nitric acid + calcium hydroxide.</summary>
+        <div class="ans"><strong>Calcium nitrate</strong> (+ water).</div>
+      </details></li>
+      <li><details>
+        <summary>Complete: sulfuric acid + barium hydroxide → ______ + water.</summary>
+        <div class="ans"><strong>Barium sulfate</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>Where does the metal in the salt come from? Where does the ending come from?</summary>
+        <div class="ans">The <strong>metal</strong> comes from the alkali (or base); the <strong>ending</strong> comes from the acid.</div>
+      </details></li>
+      <li><details>
+        <summary>Is table salt the only salt? Explain.</summary>
+        <div class="ans"><strong>No</strong> — "salt" is a whole family of compounds. Sodium chloride (table salt) is just one of them.</div>
+      </details></li>
+      <li><details>
+        <summary>Predict the salt and second product: hydrochloric acid + zinc oxide.</summary>
+        <div class="ans"><strong>Zinc chloride</strong> (+ water). The acid gives the chloride ending; the metal (zinc) comes from the zinc oxide base.</div>
+      </details></li>
+    </ol>
+    <button class="done-btn" data-lesson-done="4">Mark this topic complete</button>
+  </div>
+</section>
+
+<!-- ===================================================================== -->
+<!-- TOPIC 5 — C4 REACTIONS OF ACIDS WITH METALS                             -->
+<!-- ===================================================================== -->
+<section class="lesson" id="lesson-5">
+  <div class="lesson-head">
+    <div class="lesson-num">Topic 05 · C4 · Acids &amp; alkalis</div>
+    <h2 class="lesson-title">Reactions of acids with <em>metals</em></h2>
+    <p class="lesson-promise">By the end of this topic you'll know what a metal and acid make, how to name the salt, and how to test the gas with a 'squeaky pop'.</p>
+  </div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 1</span>A different reaction — and a different second product</h3>
+    <p>Drop a piece of magnesium into acid and it fizzes vigorously, giving off a gas. Hold a lit splint to the gas and it goes "squeaky POP!" This time, water is <strong>NOT</strong> one of the products. So what is being made?</p>
+    <p>When a <strong>metal</strong> reacts with an <strong>acid</strong>, the products are a <strong>salt</strong> and <strong>hydrogen</strong> gas. The general word equation is:</p>
+    <p style="text-align:center"><span class="formula">metal + acid → salt + hydrogen</span></p>
+    <p>An easy way to remember it is <strong>MASH</strong>: <strong>M</strong>etal + <strong>A</strong>cid → <strong>S</strong>alt + <strong>H</strong>ydrogen. The salt is named with the same rules as before — the acid sets the ending, the metal sets the metal.</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 560 160" xmlns="http://www.w3.org/2000/svg">
+        <rect x="20" y="40" width="100" height="50" rx="6" fill="#EDF2FA" stroke="#1E2761" stroke-width="2"/>
+        <text x="70" y="70" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="13" font-weight="700" fill="#1E2761">METAL</text>
+        <text x="142" y="72" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="24" font-weight="300" fill="#1E2761">+</text>
+        <rect x="165" y="40" width="100" height="50" rx="6" fill="#F4DAD7" stroke="#B85042" stroke-width="2"/>
+        <text x="215" y="70" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="13" font-weight="700" fill="#B85042">ACID</text>
+        <g transform="translate(300,65)">
+          <line x1="-20" y1="0" x2="22" y2="0" stroke="#1E2761" stroke-width="2"/>
+          <path d="M 14 -7 L 28 0 L 14 7 Z" fill="#1E2761"/>
+        </g>
+        <rect x="340" y="40" width="80" height="50" rx="6" fill="#F2E6BD" stroke="#C8A24A" stroke-width="2"/>
+        <text x="380" y="70" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="13" font-weight="700" fill="#1E2761">SALT</text>
+        <text x="433" y="72" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="24" font-weight="300" fill="#1E2761">+</text>
+        <rect x="450" y="40" width="90" height="50" rx="6" fill="#DDEBDD" stroke="#2C5F2D" stroke-width="2"/>
+        <text x="495" y="66" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="13" font-weight="700" fill="#2C5F2D">HYDROGEN</text>
+        <text x="495" y="80" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="#2C5F2D">(not water!)</text>
+        <text x="280" y="125" text-anchor="middle" font-family="Instrument Serif,serif" font-style="italic" font-size="14" fill="#5C6370">MASH — Metal + Acid → Salt + Hydrogen</text>
+        <text x="280" y="145" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" fill="#1E2761">e.g. magnesium + hydrochloric acid → magnesium chloride + hydrogen</text>
+      </svg>
+      <div class="caption">Metal + acid → salt + hydrogen (MASH)</div>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">What are the products when a metal reacts with an acid?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>a salt and water</span></li>
+        <li><span class="letter">B</span><span>a salt and hydrogen</span></li>
+        <li><span class="letter">C</span><span>carbon dioxide and water</span></li>
+        <li><span class="letter">D</span><span>an oxide and hydrogen</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>B — a salt and hydrogen (MASH).</strong> Unlike neutralisation, the second product is hydrogen gas, not water. <em>A is the trap — "salt and water" is what you get from acid + alkali, not from a metal. A metal has no oxygen to make water.</em></div>
+      </details>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 2</span>Testing the gas — the squeaky pop</h3>
+    <p>Fizzing tells you a gas is being made, but it does not tell you <em>which</em> gas — you need a test. To test for <strong>hydrogen</strong>, hold a <strong>lit splint</strong> to the gas: a high-pitched <strong>"squeaky pop"</strong> is the positive result. The pop happens because the hydrogen burns very quickly with the oxygen in the air, releasing energy in a small explosion.</p>
+    <p>Compare this with <strong>carbon dioxide</strong>, which is made when a <strong>carbonate</strong> reacts with an acid. To test for carbon dioxide, bubble the gas through <strong>limewater</strong>: it turns <strong>cloudy white</strong>. So a fizzing metal gives hydrogen (pop), while a fizzing carbonate gives carbon dioxide (cloudy limewater).</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 560 200" xmlns="http://www.w3.org/2000/svg">
+        <!-- hydrogen test -->
+        <g>
+          <rect x="20" y="30" width="250" height="150" rx="6" fill="#DDEBDD" stroke="#2C5F2D" stroke-width="2"/>
+          <text x="145" y="55" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" font-weight="700" letter-spacing="2" fill="#2C5F2D">HYDROGEN</text>
+          <text x="145" y="85" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="13" fill="#1A1A1A">Hold a LIT SPLINT to the gas</text>
+          <text x="145" y="115" text-anchor="middle" font-family="Instrument Serif,serif" font-style="italic" font-size="18" fill="#2C5F2D">"squeaky POP"</text>
+          <text x="145" y="150" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="11" fill="#5C6370">made by: metal + acid</text>
+        </g>
+        <!-- carbon dioxide test -->
+        <g>
+          <rect x="290" y="30" width="250" height="150" rx="6" fill="#EDF2FA" stroke="#1E2761" stroke-width="2"/>
+          <text x="415" y="55" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" font-weight="700" letter-spacing="2" fill="#1E2761">CARBON DIOXIDE</text>
+          <text x="415" y="85" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="13" fill="#1A1A1A">Bubble through LIMEWATER</text>
+          <text x="415" y="115" text-anchor="middle" font-family="Instrument Serif,serif" font-style="italic" font-size="18" fill="#1E2761">turns cloudy white</text>
+          <text x="415" y="150" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="11" fill="#5C6370">made by: carbonate + acid</text>
+        </g>
+      </svg>
+      <div class="caption">The two gas tests — a gas means a reaction; the test names the gas</div>
+    </div>
+
+    <div class="embed-slot" id="embed-metal-acid">
+      <div class="embed-slot-inner">
+        <span class="embed-tag">Interactive · drop-in</span>
+        <h4>Metal-in-acid &amp; the pop test</h4>
+        <p>Drop a metal into acid, watch it fizz, then hold a lit splint to the gas to hear the hydrogen squeaky pop.</p>
+        <div class="embed-canvas"><iframe src="interactives/metal-acid.html" title="Metal-in-acid &amp; the pop test" loading="lazy" style="width:100%;height:440px;border:0;display:block;border-radius:2px"></iframe></div>
+        <div class="embed-note"><a href="interactives/metal-acid.html" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none">Open this interactive in a new tab ↗</a></div>
+      </div>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">How do you test that a gas is hydrogen?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>bubble it through limewater</span></li>
+        <li><span class="letter">B</span><span>hold a lit splint to it — it goes 'squeaky pop'</span></li>
+        <li><span class="letter">C</span><span>smell it</span></li>
+        <li><span class="letter">D</span><span>see if it turns blue</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>B — hold a lit splint to it and listen for the squeaky pop.</strong> <em>A is the trap: bubbling through limewater (and it turning cloudy) is the test for carbon dioxide, not hydrogen. Never identify a gas by smell.</em></div>
+      </details>
+    </div>
+
+    <div class="watch-out">
+      <h4>⚠ Watch out — not every fizz is the same gas</h4>
+      <p>Fizzing alone does not tell you which gas you have. A <strong>metal</strong> + acid fizzes and gives <strong>hydrogen</strong> (squeaky pop). A <strong>carbonate</strong> + acid also fizzes, but gives <strong>carbon dioxide</strong> (cloudy limewater). Always do the test — and remember that <strong>copper</strong> is too unreactive to fizz with dilute acid at all.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <h3 class="quiz-head">Test <em>yourself</em></h3>
+    <p class="quiz-sub">8 questions · click to reveal each answer</p>
+    <ol>
+      <li><details>
+        <summary>Write the general word equation for metal + acid.</summary>
+        <div class="ans"><strong>metal + acid → salt + hydrogen</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>What does the mnemonic MASH stand for?</summary>
+        <div class="ans"><strong>M</strong>etal + <strong>A</strong>cid → <strong>S</strong>alt + <strong>H</strong>ydrogen.</div>
+      </details></li>
+      <li><details>
+        <summary>Name the products: zinc + hydrochloric acid.</summary>
+        <div class="ans"><strong>Zinc chloride and hydrogen</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>Name the products: calcium + sulfuric acid.</summary>
+        <div class="ans"><strong>Calcium sulfate and hydrogen</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>What is the test for hydrogen, and the positive result?</summary>
+        <div class="ans">Hold a <strong>lit splint</strong> to the gas — a <strong>squeaky pop</strong> shows it is hydrogen.</div>
+      </details></li>
+      <li><details>
+        <summary>What is the test for carbon dioxide, and the positive result?</summary>
+        <div class="ans">Bubble the gas through <strong>limewater</strong> — it turns <strong>cloudy white</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>Why is water NOT a product of a metal + acid reaction?</summary>
+        <div class="ans">The metal has no oxygen to make water — so <strong>hydrogen</strong> is given off instead.</div>
+      </details></li>
+      <li><details>
+        <summary>A salt is named 'iron sulfate'. Suggest the metal and acid used to make it.</summary>
+        <div class="ans">The metal is <strong>iron</strong> and the acid is <strong>sulfuric acid</strong> (because sulfuric acid makes sulfates).</div>
+      </details></li>
+    </ol>
+    <button class="done-btn" data-lesson-done="5">Mark this topic complete</button>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="sig">⁂</div>
+  <p>Year 8 · KS3 Science · C4 Acids &amp; alkalis</p>
+  <p>A revision booklet</p>
+</footer>
+
+<script>
+(function(){
+  var STORAGE_KEY = 'c4-acids-alkalis-done';
+  var done = {};
+  try {
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) done = JSON.parse(raw);
+  } catch(e) {}
+
+  function save(){
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(done)); } catch(e){}
+  }
+
+  function refresh(){
+    document.querySelectorAll('[data-lesson-done]').forEach(function(btn){
+      var n = btn.getAttribute('data-lesson-done');
+      if (done[n]){
+        btn.classList.add('is-done');
+        btn.textContent = '✓ Done — nice work';
+      }
+    });
+    document.querySelectorAll('.nav-pill').forEach(function(pill){
+      var n = pill.getAttribute('data-lesson');
+      if (done[n]) pill.classList.add('done');
+      else pill.classList.remove('done');
+    });
+  }
+
+  document.querySelectorAll('[data-lesson-done]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var n = btn.getAttribute('data-lesson-done');
+      if (done[n]) return;
+      done[n] = true;
+      save();
+      refresh();
+    });
+  });
+
+  refresh();
+})();
+</script>
+
+<script>
+/* For printing / "Save as PDF": questions stay in place; all answers are gathered into a separate "Answers" section at the end (grouped by topic). Removed again after printing so the on-screen booklet is unchanged. */
+(function(){
+  var sec=null;
+  function build(){
+    if(sec) return;
+    var main=document.querySelector('main'); if(!main) return;
+    sec=document.createElement('section'); sec.className='answers-print';
+    sec.innerHTML='<h2 class="answers-print-title">Answers</h2><p class="answers-print-sub">Check your work — grouped by topic, in order</p>';
+    document.querySelectorAll('.lesson').forEach(function(lesson){
+      var t=lesson.querySelector('.lesson-title'), nu=lesson.querySelector('.lesson-num');
+      var qc=[], qz=[];
+      lesson.querySelectorAll('.hinge .reveal-body').forEach(function(a){ qc.push(a.innerHTML.trim()); });
+      lesson.querySelectorAll('.quiz li details').forEach(function(d){
+        var q=d.querySelector('summary'), a=d.querySelector('.ans');
+        if(a) qz.push({q:q?q.textContent.trim():'', a:a.innerHTML.trim()});
+      });
+      if(!qc.length && !qz.length) return;
+      var b=document.createElement('div'); b.className='answers-block';
+      var h='<h3 class="answers-topic">'+((nu?nu.textContent.trim()+' · ':'')+(t?t.textContent.trim():''))+'</h3>';
+      qc.forEach(function(a){ h+='<p class="answers-qc"><strong>Quick check.</strong> '+a+'</p>'; });
+      if(qz.length){ h+='<ol class="answers-list">'; qz.forEach(function(it){ h+='<li><span class="aq">'+it.q+'</span><span class="aa">'+it.a+'</span></li>'; }); h+='</ol>'; }
+      b.innerHTML=h; sec.appendChild(b);
+    });
+    main.appendChild(sec);
+  }
+  function teardown(){ if(sec){ sec.remove(); sec=null; } }
+  window.__buildPrintLayout=build;
+  window.addEventListener('beforeprint',build);
+  window.addEventListener('afterprint',teardown);
+})();
+</script>
+
+</body>
+</html>

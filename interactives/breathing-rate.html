@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Breathing rate and exercise</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1E2761;--navy-soft:#2a3478;--warm:#F8F4EC;--warm-deep:#EFE8D6;
+  --paper:#FCFAF4;--soft-blue:#EDF2FA;--ink:#1A1A1A;--muted:#5C6370;
+  --rule:#CFD8E3;--accent:#B85042;--accent-soft:#F4DAD7;--success:#2C5F2D;
+  --success-soft:#DDEBDD;--gold:#C8A24A;--gold-soft:#F2E6BD;--bone:#BBA86F;
+  --display:'Instrument Serif',Georgia,serif;
+  --body:'IBM Plex Sans',system-ui,sans-serif;
+  --mono:'IBM Plex Mono','Courier New',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{margin:0;background:var(--paper);font-family:var(--body);color:var(--ink);font-weight:300}
+.wrap{padding:20px;max-width:740px;margin:0 auto}
+.instruction{font-family:var(--mono);font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+.layout{display:flex;gap:26px;align-items:center}
+.left{flex:0 0 auto;width:230px;display:flex;flex-direction:column;align-items:center;gap:8px}
+.chest{width:100%;height:auto;display:block}
+.bpm{font-family:var(--display);font-size:58px;color:var(--navy);line-height:.9;text-align:center}
+.bpm small{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:block;margin-top:4px}
+.right{flex:1 1 auto;min-width:0}
+.slider-row{margin-bottom:10px}
+.slider-row label{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:8px}
+input[type=range]{width:100%;height:22px;accent-color:var(--accent);cursor:pointer}
+.ticks{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+.ticks span{flex:1;text-align:center}
+.ticks span.on{color:var(--accent);font-weight:600}
+.activity{font-family:var(--display);font-style:italic;font-size:26px;color:var(--accent);margin:14px 0 6px}
+#graph{width:100%;height:auto;display:block}
+.reason{background:var(--soft-blue);border:1px solid #C9D7ED;border-left:3px solid var(--navy);padding:12px 14px;font-size:15px;line-height:1.5;margin-top:10px}
+.reason b{color:var(--accent);font-weight:500}
+.takeaway{font-family:var(--display);font-style:italic;font-size:18px;color:var(--muted);margin-top:18px;line-height:1.35;border-top:1px solid var(--rule);padding-top:12px}
+.takeaway b{color:var(--accent);font-style:normal;font-weight:400}
+@media(max-width:560px){.layout{flex-direction:column;align-items:stretch}.left{width:100%;max-width:230px;margin:0 auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="instruction">Slide through the activity levels and watch the chest breathe</p>
+  <div class="layout">
+    <div class="left">
+      <svg class="chest" viewBox="0 0 200 222" role="img" aria-label="A breathing chest — the ribcage, lungs and diaphragm rise and fall at the chosen breathing rate">
+        <!-- body silhouette -->
+        <path d="M80 46 Q100 38 120 46 Q154 52 164 86 L164 214 L36 214 L36 86 Q46 52 80 46 Z" fill="#F3EAD3"/>
+        <circle cx="100" cy="22" r="15" fill="#EFE2C6" stroke="#cdbf94" stroke-width="1.2"/>
+        <rect x="91" y="33" width="18" height="13" rx="3" fill="#EFE2C6" stroke="#cdbf94" stroke-width="1"/>
+        <!-- trachea + bronchi -->
+        <rect x="95" y="44" width="10" height="22" rx="3" fill="#C9D7ED" stroke="var(--navy)" stroke-width="1.2"/>
+        <path d="M100 64 C 96 72 90 78 84 86" fill="none" stroke="#9DB2D6" stroke-width="4.5" stroke-linecap="round"/>
+        <path d="M100 64 C 104 72 110 78 116 86" fill="none" stroke="#9DB2D6" stroke-width="4.5" stroke-linecap="round"/>
+        <!-- lungs (inflate / deflate) -->
+        <g id="lungs">
+          <path d="M97 66 C 80 64 62 74 56 96 C 50 122 54 150 68 160 C 79 168 95 163 97 150 C 100 118 100 92 97 66 Z" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.8"/>
+          <path d="M103 66 C 120 64 138 74 144 96 C 150 122 146 150 132 160 C 121 168 105 163 103 150 C 100 118 100 92 103 66 Z" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.8"/>
+        </g>
+        <!-- diaphragm -->
+        <path id="diaphragm" d="M50 164 Q100 152 150 164" fill="none" stroke="var(--success)" stroke-width="6" stroke-linecap="round"/>
+        <!-- ribcage over the lungs -->
+        <g id="ribcage">
+          <rect x="96" y="68" width="8" height="68" rx="4" fill="#EDE3C4" opacity="0.85" stroke="var(--bone)" stroke-width="1"/>
+          <g fill="none" stroke="var(--bone)" stroke-width="3" stroke-linecap="round" opacity="0.9">
+            <path d="M98 72 C 80 70 62 78 56 94"/>
+            <path d="M98 84 C 78 82 58 92 54 110"/>
+            <path d="M98 96 C 80 94 60 106 58 126"/>
+            <path d="M98 108 C 82 106 66 118 66 138"/>
+            <path d="M98 120 C 84 120 72 130 74 150"/>
+            <path d="M102 72 C 120 70 138 78 144 94"/>
+            <path d="M102 84 C 122 82 142 92 146 110"/>
+            <path d="M102 96 C 120 94 140 106 142 126"/>
+            <path d="M102 108 C 118 106 134 118 134 138"/>
+            <path d="M102 120 C 116 120 128 130 126 150"/>
+          </g>
+        </g>
+      </svg>
+      <div class="bpm"><span id="bpm">14</span><small>breaths / min</small></div>
+    </div>
+    <div class="right">
+      <div class="slider-row">
+        <label for="act">Activity level</label>
+        <input type="range" id="act" min="0" max="3" step="1" value="0" aria-label="Activity level from resting to sprinting">
+        <div class="ticks" id="ticks">
+          <span data-i="0">Resting</span><span data-i="1">Walking</span><span data-i="2">Jogging</span><span data-i="3">Sprinting</span>
+        </div>
+      </div>
+      <div class="activity" id="activity">Resting</div>
+      <svg id="graph" viewBox="0 0 360 168" role="img" aria-label="Bar graph of breathing rate against activity level"></svg>
+      <div class="reason" id="reason"></div>
+    </div>
+  </div>
+  <p class="takeaway">Harder exercise &rarr; <b>faster, deeper breathing</b> to deliver more O&#8322; to the muscles and remove the extra CO&#8322;.</p>
+</div>
+<script>
+(function(){
+  var levels=[
+    {name:'Resting', bpm:14, reason:'At rest, the muscles need little oxygen, so slow, gentle breathing is enough.'},
+    {name:'Walking', bpm:22, reason:'Walking uses more oxygen, so you breathe a little faster to supply O&#8322; and remove CO&#8322;.'},
+    {name:'Jogging', bpm:34, reason:'Working muscles need much more oxygen and make more carbon dioxide, so breathing speeds up and gets deeper.'},
+    {name:'Sprinting', bpm:46, reason:'Sprinting muscles demand oxygen fast and produce lots of CO&#8322;, so you breathe as fast and deep as you can.'}
+  ];
+  var act=document.getElementById('act'),bpmEl=document.getElementById('bpm');
+  var activityEl=document.getElementById('activity'),reasonEl=document.getElementById('reason');
+  var lungs=document.getElementById('lungs'),ribcage=document.getElementById('ribcage'),diaphragm=document.getElementById('diaphragm');
+  var graph=document.getElementById('graph');
+  var ticks=document.querySelectorAll('#ticks span');
+  var maxBpm=46;
+  function drawGraph(active){
+    var w=360,h=168,n=levels.length,gap=20,bw=(w-gap*(n+1))/n,base=h-24;
+    var s='<line x1="0" y1="'+base+'" x2="'+w+'" y2="'+base+'" stroke="var(--rule)" stroke-width="1"/>';
+    levels.forEach(function(l,i){
+      var x=gap+i*(bw+gap),bh=(l.bpm/maxBpm)*(base-26),y=base-bh;
+      var on=i===active;
+      s+='<rect x="'+x+'" y="'+y+'" width="'+bw+'" height="'+bh+'" rx="3" fill="'+(on?'var(--accent)':'#C9D7ED')+'"/>';
+      s+='<text x="'+(x+bw/2)+'" y="'+(y-6)+'" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="13" font-weight="500" fill="'+(on?'var(--accent)':'var(--muted)')+'">'+l.bpm+'</text>';
+      s+='<text x="'+(x+bw/2)+'" y="'+(base+15)+'" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9" letter-spacing="0.05em" fill="'+(on?'var(--accent)':'var(--muted)')+'">'+l.name.toUpperCase()+'</text>';
+    });
+    graph.innerHTML=s;
+  }
+  var animTimer=null;
+  function setBreathing(bpm){
+    if(animTimer)clearInterval(animTimer);
+    var period=60000/bpm;                  // ms per full breath
+    var dur=Math.max(0.16,period/1000*0.85);
+    [lungs,ribcage,diaphragm].forEach(function(el){el.style.transition='transform '+dur+'s ease-in-out';});
+    lungs.style.transformOrigin='100px 122px';
+    ribcage.style.transformOrigin='100px 132px';
+    var inflated=false;
+    function pulse(){
+      inflated=!inflated;
+      lungs.style.transform=inflated?'scale(1.13)':'none';
+      ribcage.style.transform=inflated?'translateY(-3px) scale(1.04)':'none';
+      diaphragm.style.transform=inflated?'translateY(9px)':'none';
+    }
+    pulse();
+    animTimer=setInterval(pulse,period/2);
+  }
+  function render(){
+    var i=parseInt(act.value,10),l=levels[i];
+    bpmEl.textContent=l.bpm;activityEl.textContent=l.name;reasonEl.innerHTML=l.reason;
+    ticks.forEach(function(t){t.classList.toggle('on',parseInt(t.getAttribute('data-i'),10)===i);});
+    drawGraph(i);setBreathing(l.bpm);
+  }
+  act.addEventListener('input',render);
+  render();
+})();
+</script>
+</body>
+</html>

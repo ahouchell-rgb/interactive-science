@@ -1,0 +1,1589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Specific Heat Capacity — Practical Builder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0e2a47;
+    --navy-light: #1f4068;
+    --cream: #f7f3ec;
+    --paper: #fffdf8;
+    --ink: #1a1a1a;
+    --rule: #d4cfc2;
+    --correct: #2d6a4f;
+    --correct-bg: #d4e9dd;
+    --wrong: #b73225;
+    --wrong-bg: #f4d6d2;
+    --accent: #c9892f;
+    --shadow: 0 1px 0 rgba(0,0,0,0.04), 0 4px 16px rgba(14,42,71,0.08);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: 'Public Sans', system-ui, sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    line-height: 1.55;
+    min-height: 100vh;
+    background-image:
+      linear-gradient(to right, rgba(14,42,71,0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(14,42,71,0.03) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+
+  header {
+    background: var(--navy);
+    color: var(--cream);
+    padding: 1.5rem 2rem;
+    border-bottom: 4px solid var(--accent);
+  }
+
+  .title-row { max-width: 1100px; margin: 0 auto; }
+
+  h1 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 700;
+    font-size: 1.9rem;
+    margin: 0;
+    letter-spacing: -0.015em;
+  }
+
+  .subtitle {
+    font-size: 0.82rem;
+    opacity: 0.85;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    margin-top: 0.3rem;
+  }
+
+  .tabs {
+    background: var(--paper);
+    border-bottom: 1px solid var(--rule);
+    padding: 0 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .tab-list {
+    display: flex;
+    gap: 0;
+    max-width: 1100px;
+    margin: 0 auto;
+    list-style: none;
+    padding: 0;
+    overflow-x: auto;
+  }
+
+  .tab-btn {
+    background: none;
+    border: none;
+    padding: 1rem 1.1rem;
+    font-family: 'Public Sans', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 500;
+    cursor: pointer;
+    color: var(--navy-light);
+    border-bottom: 3px solid transparent;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+  }
+
+  .tab-btn:hover { color: var(--navy); }
+
+  .tab-btn.active {
+    color: var(--navy);
+    border-bottom-color: var(--accent);
+    font-weight: 700;
+  }
+
+  .tab-btn .num {
+    background: var(--cream);
+    color: var(--navy);
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.78rem;
+    font-weight: 700;
+  }
+
+  .tab-btn.active .num { background: var(--accent); color: var(--paper); }
+
+  main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; animation: fadeIn 0.3s ease; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .panel-header { margin-bottom: 1.25rem; }
+
+  .panel-header h2 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 1.7rem;
+    margin: 0 0 0.4rem 0;
+    color: var(--navy);
+    font-weight: 700;
+    letter-spacing: -0.015em;
+  }
+
+  .panel-header .lede {
+    color: #4a4a4a;
+    font-size: 1rem;
+    max-width: 65ch;
+    margin: 0;
+  }
+
+  .card {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 1.4rem;
+    margin-bottom: 1rem;
+    box-shadow: var(--shadow);
+  }
+
+  /* ============ WALKTHROUGH LAYOUT ============ */
+  .walkthrough {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(220px, 1fr);
+    gap: 1.25rem;
+    align-items: start;
+  }
+
+  @media (max-width: 820px) {
+    .walkthrough { grid-template-columns: 1fr; }
+  }
+
+  .stage-frame {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .stage-frame svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    background: #fffdf8;
+  }
+
+  .stage-caption {
+    padding: 0.85rem 1.1rem;
+    background: var(--cream);
+    border-top: 1px solid var(--rule);
+    font-size: 0.95rem;
+    color: var(--ink);
+    min-height: 3.2rem;
+    line-height: 1.45;
+  }
+
+  .stage-caption .stage-num {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    color: var(--accent);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: block;
+    margin-bottom: 0.15rem;
+  }
+
+  .stage-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.7rem 1.1rem;
+    background: var(--paper);
+    border-top: 1px solid var(--rule);
+    gap: 0.5rem;
+  }
+
+  .stage-counter {
+    font-size: 0.88rem;
+    color: var(--navy);
+    font-weight: 600;
+  }
+
+  /* ============ STEP LIST ============ */
+  .step-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+
+  .step-list-title {
+    font-family: 'Fraunces', serif;
+    font-size: 1.05rem;
+    color: var(--navy);
+    font-weight: 700;
+    margin: 0 0 0.25rem 0;
+  }
+
+  .step-item {
+    background: var(--paper);
+    border: 1.5px solid var(--rule);
+    border-radius: 4px;
+    padding: 0.7rem 0.85rem;
+    text-align: left;
+    cursor: pointer;
+    font-family: 'Public Sans', sans-serif;
+    font-size: 0.93rem;
+    transition: all 0.15s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    color: var(--ink);
+    line-height: 1.35;
+  }
+
+  .step-item:hover:not(:disabled) {
+    border-color: var(--navy);
+    background: var(--cream);
+    transform: translateX(2px);
+  }
+
+  .step-item .step-num {
+    background: var(--cream);
+    color: var(--navy);
+    min-width: 1.7rem;
+    height: 1.7rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+    border: 1.5px solid var(--rule);
+  }
+
+  .step-item.active {
+    background: var(--navy);
+    color: var(--paper);
+    border-color: var(--navy);
+  }
+
+  .step-item.active .step-num {
+    background: var(--accent);
+    color: var(--paper);
+    border-color: var(--accent);
+  }
+
+  .step-item.done {
+    background: var(--correct-bg);
+    border-color: var(--correct);
+    color: var(--correct);
+  }
+
+  .step-item.done .step-num {
+    background: var(--correct);
+    color: white;
+    border-color: var(--correct);
+  }
+
+  .step-item.wrong { animation: shake 0.4s ease; }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); background: var(--wrong-bg); border-color: var(--wrong); }
+    75% { transform: translateX(6px); background: var(--wrong-bg); border-color: var(--wrong); }
+  }
+
+  .step-item:disabled { cursor: default; }
+
+  /* ============ BUTTONS ============ */
+  .btn {
+    font-family: 'Public Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 0.55rem 1rem;
+    border-radius: 3px;
+    cursor: pointer;
+    border: 1.5px solid var(--navy);
+    transition: all 0.15s ease;
+  }
+
+  .btn-primary {
+    background: var(--navy);
+    color: var(--paper);
+  }
+  .btn-primary:hover:not(:disabled) { background: var(--navy-light); }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--navy);
+  }
+  .btn-secondary:hover:not(:disabled) { background: var(--cream); }
+
+  /* ============ MCQ ============ */
+  .question {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-left: 4px solid var(--navy);
+    padding: 1.1rem 1.3rem;
+    margin-bottom: 0.85rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .question-text {
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 0.8rem;
+    font-size: 1.02rem;
+  }
+
+  .options { display: grid; gap: 0.4rem; }
+
+  .option {
+    background: var(--cream);
+    border: 1.5px solid var(--rule);
+    padding: 0.6rem 0.9rem;
+    border-radius: 3px;
+    cursor: pointer;
+    text-align: left;
+    font-family: inherit;
+    font-size: 0.93rem;
+    transition: all 0.12s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    color: var(--ink);
+  }
+
+  .option .letter {
+    font-weight: 700;
+    color: var(--navy);
+    background: var(--paper);
+    width: 1.55rem;
+    height: 1.55rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.82rem;
+    flex-shrink: 0;
+  }
+
+  .option:hover:not(:disabled) {
+    border-color: var(--navy);
+    background: var(--paper);
+  }
+
+  .option.correct {
+    background: var(--correct-bg);
+    border-color: var(--correct);
+    color: var(--correct);
+  }
+  .option.correct .letter { background: var(--correct); color: white; }
+
+  .option.incorrect {
+    background: var(--wrong-bg);
+    border-color: var(--wrong);
+    color: var(--wrong);
+  }
+  .option.incorrect .letter { background: var(--wrong); color: white; }
+
+  .option:disabled { cursor: default; }
+
+  .explanation {
+    margin-top: 0.6rem;
+    padding: 0.6rem 0.85rem;
+    background: var(--cream);
+    border-left: 3px solid var(--accent);
+    font-size: 0.88rem;
+    display: none;
+    color: #333;
+    line-height: 1.5;
+  }
+  .explanation.show { display: block; }
+
+  .progress {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 0.55rem 1rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    color: var(--navy);
+    font-size: 0.92rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .feedback {
+    margin-top: 0.9rem;
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    font-weight: 500;
+    display: none;
+    font-size: 0.93rem;
+  }
+  .feedback.show { display: block; }
+  .feedback.success { background: var(--correct-bg); color: var(--correct); border-left: 4px solid var(--correct); }
+  .feedback.error { background: var(--wrong-bg); color: var(--wrong); border-left: 4px solid var(--wrong); }
+  .feedback.neutral { background: var(--cream); color: var(--navy); border-left: 4px solid var(--accent); }
+
+  /* ============ 6-MARKER FRAME ============ */
+  .frame-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 0.85rem;
+    margin-bottom: 0.7rem;
+    align-items: stretch;
+  }
+
+  .frame-label {
+    background: var(--navy);
+    color: var(--paper);
+    padding: 0.7rem 0.85rem;
+    border-radius: 3px;
+    font-weight: 700;
+    font-size: 0.88rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .frame-label .starter {
+    font-style: italic;
+    font-weight: 400;
+    margin-top: 0.25rem;
+    opacity: 0.85;
+    font-size: 0.82rem;
+  }
+
+  .frame-row textarea {
+    font-family: 'Public Sans', sans-serif;
+    font-size: 0.95rem;
+    padding: 0.65rem 0.85rem;
+    border: 1.5px solid var(--rule);
+    border-radius: 3px;
+    background: var(--paper);
+    resize: vertical;
+    min-height: 70px;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+
+  .frame-row textarea:focus {
+    outline: none;
+    border-color: var(--navy);
+  }
+
+  .model-reveal {
+    background: var(--cream);
+    border: 1px dashed var(--accent);
+    padding: 1rem 1.2rem;
+    border-radius: 4px;
+    margin-top: 1.25rem;
+  }
+
+  .model-reveal summary {
+    cursor: pointer;
+    font-weight: 700;
+    color: var(--navy);
+    font-family: 'Fraunces', serif;
+    font-size: 1.05rem;
+  }
+
+  .model-reveal p {
+    margin: 0.9rem 0 0 0;
+    line-height: 1.7;
+    font-size: 0.96rem;
+  }
+
+  .model-reveal .key {
+    background: var(--accent);
+    color: var(--paper);
+    padding: 0.1rem 0.35rem;
+    border-radius: 2px;
+    font-weight: 600;
+    font-size: 0.85rem;
+  }
+
+  /* ============ FIX THE BAD ANSWER ============ */
+  .round-title {
+    font-family: 'Fraunces', serif;
+    color: var(--navy);
+    margin: 0 0 0.4rem 0;
+    font-size: 1.2rem;
+    font-weight: 700;
+  }
+
+  .round-instruction {
+    color: #555;
+    font-size: 0.92rem;
+    margin: 0 0 1rem 0;
+    line-height: 1.5;
+  }
+
+  .bad-answer {
+    background: var(--cream);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 1.1rem 1.3rem;
+    font-size: 1.02rem;
+    line-height: 1.85;
+    margin-bottom: 1rem;
+    color: var(--ink);
+    font-family: 'Public Sans', sans-serif;
+  }
+
+  .chunk {
+    transition: all 0.15s ease;
+    border-radius: 2px;
+    padding: 0.05rem 0.15rem;
+  }
+
+  .chunk.error-visible {
+    text-decoration: underline wavy var(--wrong);
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 4px;
+    cursor: pointer;
+  }
+
+  .chunk.error-visible:hover {
+    background: var(--wrong-bg);
+  }
+
+  .chunk.error-visible.reviewed {
+    background: var(--correct-bg);
+    text-decoration-color: var(--correct);
+    color: var(--correct);
+  }
+
+  .chunk.markable {
+    cursor: pointer;
+    border-bottom: 1.5px dotted transparent;
+  }
+
+  .chunk.markable:hover:not(.locked) {
+    background: rgba(14, 42, 71, 0.08);
+    border-bottom-color: var(--navy-light);
+  }
+
+  .chunk.markable.marked {
+    background: rgba(201, 137, 47, 0.22);
+    border-bottom: 2px solid var(--accent);
+  }
+
+  .chunk.markable.locked { cursor: default; }
+
+  .chunk.markable.show-correct {
+    background: var(--correct-bg);
+    color: var(--correct);
+    border-bottom: 2px solid var(--correct);
+  }
+
+  .chunk.markable.show-missed {
+    background: var(--wrong-bg);
+    color: var(--wrong);
+    border-bottom: 2px solid var(--wrong);
+    text-decoration: underline wavy var(--wrong);
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 4px;
+  }
+
+  .chunk.markable.show-falsepos {
+    background: rgba(201, 137, 47, 0.25);
+    color: #8b5e1d;
+    border-bottom: 2px dashed var(--accent);
+    text-decoration: line-through;
+  }
+
+  .chunk.markable.show-good {
+    color: #6b6b6b;
+  }
+
+  .round1-progress {
+    font-weight: 600;
+    color: var(--navy);
+    font-size: 0.92rem;
+    margin-bottom: 0.65rem;
+    padding: 0.45rem 0.75rem;
+    background: var(--cream);
+    border-radius: 3px;
+    display: inline-block;
+  }
+
+  .explanation-area {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-left: 4px solid var(--accent);
+    padding: 0.95rem 1.15rem;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .explanation-area .empty-state {
+    color: #888;
+    font-style: italic;
+    margin: 0;
+    font-size: 0.9rem;
+  }
+
+  .explanation-item {
+    margin-bottom: 0.95rem;
+    padding-bottom: 0.95rem;
+    border-bottom: 1px dashed var(--rule);
+  }
+
+  .explanation-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .explanation-item .quote {
+    font-style: italic;
+    color: var(--wrong);
+    margin-bottom: 0.4rem;
+    font-size: 0.92rem;
+  }
+
+  .explanation-item .quote.missed-quote {
+    color: var(--wrong);
+    font-weight: 600;
+  }
+
+  .explanation-item .quote.got-it {
+    color: var(--correct);
+    font-weight: 600;
+  }
+
+  .explanation-item .issue {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    color: var(--navy);
+    font-size: 1rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .explanation-item .explain {
+    color: #444;
+    font-size: 0.92rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.55;
+  }
+
+  .explanation-item .better {
+    background: var(--correct-bg);
+    border-left: 3px solid var(--correct);
+    padding: 0.55rem 0.8rem;
+    border-radius: 0 3px 3px 0;
+    font-size: 0.9rem;
+    color: var(--correct);
+    line-height: 1.5;
+  }
+
+  .explanation-item .better strong { color: var(--correct); }
+
+  @media (max-width: 700px) {
+    .frame-row { grid-template-columns: 1fr; }
+    main { padding: 1rem; }
+    h1 { font-size: 1.5rem; }
+    .tab-btn { padding: 0.8rem 0.85rem; font-size: 0.85rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="title-row">
+    <h1>Specific Heat Capacity</h1>
+    <div class="subtitle">AQA Combined Science · Required Practical · 6-Marker Builder</div>
+  </div>
+</header>
+
+<nav class="tabs">
+  <ul class="tab-list">
+    <li><button class="tab-btn active" data-tab="setup"><span class="num">1</span>Build the setup</button></li>
+    <li><button class="tab-btn" data-tab="check"><span class="num">2</span>What happens next?</button></li>
+    <li><button class="tab-btn" data-tab="equipment-quiz"><span class="num">3</span>Equipment quiz</button></li>
+    <li><button class="tab-btn" data-tab="method-quiz"><span class="num">4</span>Method quiz</button></li>
+    <li><button class="tab-btn" data-tab="fix-answer"><span class="num">5</span>Fix the bad answer</button></li>
+    <li><button class="tab-btn" data-tab="six-marker"><span class="num">6</span>Write the 6-marker</button></li>
+  </ul>
+</nav>
+
+<main>
+  <!-- TAB 1: BUILD THE SETUP -->
+  <section class="tab-panel active" id="setup">
+    <div class="panel-header">
+      <h2>Build the setup</h2>
+      <p class="lede">Click each step on the right to see what happens. The diagram builds up as you go.</p>
+    </div>
+
+    <div class="card">
+      <div class="walkthrough">
+        <div>
+          <div class="stage-frame">
+            <div id="setup-diagram"></div>
+            <div class="stage-caption" id="setup-caption">
+              <span class="stage-num">Start</span>
+              Click step 1 on the right to begin.
+            </div>
+            <div class="stage-controls">
+              <button class="btn btn-secondary" id="setup-prev" disabled>◀ Previous</button>
+              <span class="stage-counter">Step <span id="setup-current">0</span> / 6</span>
+              <button class="btn btn-primary" id="setup-next">Next ▶</button>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <p class="step-list-title">The six stages</p>
+          <div class="step-list" id="setup-steps"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 2: WHAT HAPPENS NEXT -->
+  <section class="tab-panel" id="check">
+    <div class="panel-header">
+      <h2>What happens next?</h2>
+      <p class="lede">The steps are scrambled. Click the one that comes next — if you're right, the diagram updates and the step turns green. Wrong picks flash red.</p>
+    </div>
+
+    <div class="card">
+      <div class="walkthrough">
+        <div>
+          <div class="stage-frame">
+            <div id="check-diagram"></div>
+            <div class="stage-caption" id="check-caption">
+              <span class="stage-num">Empty bench</span>
+              Pick the first step on the right.
+            </div>
+            <div class="stage-controls">
+              <span class="stage-counter">Placed: <span id="check-current">0</span> / 6</span>
+              <button class="btn btn-secondary" id="check-reset">Reset</button>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <p class="step-list-title">Pick the next step</p>
+          <div class="step-list" id="check-steps"></div>
+          <div class="feedback" id="check-feedback"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 3: EQUIPMENT QUIZ -->
+  <section class="tab-panel" id="equipment-quiz">
+    <div class="panel-header">
+      <h2>Equipment quiz</h2>
+      <p class="lede">Five questions on the apparatus. One attempt each.</p>
+    </div>
+    <div class="progress"><span>Equipment quiz</span><span id="eq-progress">0 / 5 correct</span></div>
+    <div id="equipment-questions"></div>
+  </section>
+
+  <!-- TAB 4: METHOD QUIZ -->
+  <section class="tab-panel" id="method-quiz">
+    <div class="panel-header">
+      <h2>Method quiz</h2>
+      <p class="lede">Six questions on the steps, the science and the calculation.</p>
+    </div>
+    <div class="progress"><span>Method quiz</span><span id="m-progress">0 / 6 correct</span></div>
+    <div id="method-questions"></div>
+  </section>
+
+  <!-- TAB 5: FIX THE BAD ANSWER -->
+  <section class="tab-panel" id="fix-answer">
+    <div class="panel-header">
+      <h2>Fix the bad 6-marker</h2>
+      <p class="lede">Two bad answers from struggling Year 9 pupils. Round 1: the mistakes are already underlined — click each one to learn what's wrong. Round 2: no underlines. You spot them, then check.</p>
+    </div>
+
+    <div class="card">
+      <h3 class="round-title">Round 1 · Click each underlined mistake</h3>
+      <p class="round-instruction">Six things are wrong with this answer. Each one is underlined in red. Click each underlined phrase to see the issue and what the pupil should have written instead.</p>
+
+      <div class="bad-answer" id="bad-answer-1"></div>
+
+      <div class="round1-progress" id="round1-progress-text">0 / 6 mistakes reviewed</div>
+
+      <div class="explanation-area" id="round1-explanation">
+        <p class="empty-state">Click any red underlined phrase above to see why it's wrong.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 class="round-title">Round 2 · Find the mistakes yourself</h3>
+      <p class="round-instruction">A different bad answer. Nothing is underlined this time. Click on the phrases you think are wrong, then hit <em>Check my answers</em>. Some phrases are actually fine — don't click those.</p>
+
+      <div class="bad-answer" id="bad-answer-2"></div>
+
+      <div class="actions">
+        <button class="btn btn-primary" id="round2-check">Check my answers</button>
+        <button class="btn btn-secondary" id="round2-reset">Reset</button>
+      </div>
+
+      <div class="feedback" id="round2-feedback"></div>
+
+      <div class="explanation-area" id="round2-explanations" style="margin-top:1rem;"></div>
+    </div>
+  </section>
+
+  <!-- TAB 6: 6-MARKER -->
+  <section class="tab-panel" id="six-marker">
+    <div class="panel-header">
+      <h2>Write the 6-marker</h2>
+      <p class="lede"><strong>Question:</strong> Describe a method to measure the specific heat capacity of a metal block. <em>(6 marks)</em></p>
+    </div>
+
+    <div class="card">
+      <p style="margin-top:0; color:#444;">Build your answer one mark at a time. Each row is worth roughly one mark — use the sentence starter to get going.</p>
+
+      <div class="frame-row">
+        <div class="frame-label">Mark 1 · Equipment<span class="starter">"To carry out this experiment I would use..."</span></div>
+        <textarea placeholder="List the main equipment: balance, metal block, immersion heater, thermometer, joulemeter, insulation, power supply..."></textarea>
+      </div>
+
+      <div class="frame-row">
+        <div class="frame-label">Mark 2 · Mass<span class="starter">"First, I would use..."</span></div>
+        <textarea placeholder="Describe measuring the mass (m) of the block, in kg, BEFORE heating..."></textarea>
+      </div>
+
+      <div class="frame-row">
+        <div class="frame-label">Mark 3 · Set-up<span class="starter">"Then I would place..."</span></div>
+        <textarea placeholder="Place the immersion heater and thermometer into the two holes; wrap the block in insulation to reduce heat loss..."></textarea>
+      </div>
+
+      <div class="frame-row">
+        <div class="frame-label">Mark 4 · Starting temperature<span class="starter">"I would record..."</span></div>
+        <textarea placeholder="Record the starting temperature of the block using the thermometer..."></textarea>
+      </div>
+
+      <div class="frame-row">
+        <div class="frame-label">Mark 5 · Heating<span class="starter">"Next, I would switch on..."</span></div>
+        <textarea placeholder="Switch on the power, heat for a set time (e.g. 10 minutes), record the energy on the joulemeter..."></textarea>
+      </div>
+
+      <div class="frame-row">
+        <div class="frame-label">Mark 6 · Final temp & calculation<span class="starter">"Finally, I would..."</span></div>
+        <textarea placeholder="Record the highest temperature reached, calculate Δθ (final − starting), then use c = E ÷ (m × Δθ)..."></textarea>
+      </div>
+
+      <details class="model-reveal">
+        <summary>Reveal a model answer (only after you've tried!)</summary>
+        <p>
+          To carry out this experiment I would use a <span class="key">balance</span>, the metal block, an <span class="key">immersion heater</span>, a <span class="key">thermometer</span>, a <span class="key">joulemeter</span>, insulation and a power supply. First, I would use the balance to <span class="key">measure the mass (m)</span> of the block in kilograms. I would then place the immersion heater into the larger hole and the thermometer into the smaller hole, and <span class="key">wrap the block in insulation</span> to reduce heat loss to the surroundings. I would <span class="key">record the starting temperature</span> of the block. Next, I would switch on the power supply and heat the block for ten minutes, <span class="key">recording the total energy transferred (E)</span> shown on the joulemeter. After switching off, I would record the highest temperature reached and <span class="key">calculate the temperature change Δθ</span>. Finally, I would calculate the specific heat capacity using <span class="key">c = E ÷ (m × Δθ)</span>.
+        </p>
+      </details>
+    </div>
+  </section>
+</main>
+
+<script>
+  // ============ TAB NAV ============
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const panels = document.querySelectorAll('.tab-panel');
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabBtns.forEach(b => b.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.tab).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+
+  // ============ STAGE DATA ============
+  const stages = [
+    { num: 1, short: "Measure the mass", caption: "Place the metal block on the balance and record the mass (m) in kilograms. Here m = 1.000 kg." },
+    { num: 2, short: "Insert heater & thermometer", caption: "Place the immersion heater into the larger hole and the thermometer into the smaller hole in the block." },
+    { num: 3, short: "Wrap in insulation", caption: "Wrap the block in insulation (lagging) to reduce heat loss to the surroundings." },
+    { num: 4, short: "Connect the circuit", caption: "Connect the heater to a joulemeter and the power supply to make a complete circuit." },
+    { num: 5, short: "Switch on & heat", caption: "Switch on for a measured time. The joulemeter records the energy (E) transferred and the thermometer reading rises." },
+    { num: 6, short: "Calculate c", caption: "Calculate the temperature change Δθ, then use c = E ÷ (m × Δθ) to find the specific heat capacity." }
+  ];
+
+  // ============ THE SVG (single source, injected into both tabs) ============
+  // Stage logic: balance-scene visible only at stage 1; apparatus-scene visible at stages 0 + 2-6 with sub-layers gated by stage.
+  const svgMarkup = `
+<svg viewBox="0 0 500 360" xmlns="http://www.w3.org/2000/svg" aria-label="Specific heat capacity apparatus">
+  <rect width="500" height="360" fill="#fffdf8"/>
+
+  <!-- ============ BALANCE SCENE (stage 1 only) ============ -->
+  <g class="scene-balance" style="display:none;">
+    <text x="250" y="38" text-anchor="middle" font-family="Fraunces, serif" font-size="16" fill="#0e2a47" font-weight="700">Measuring the mass</text>
+
+    <!-- bench -->
+    <rect x="100" y="320" width="300" height="5" fill="#0e2a47"/>
+    <line x1="115" y1="325" x2="135" y2="350" stroke="#0e2a47" stroke-width="2"/>
+    <line x1="385" y1="325" x2="365" y2="350" stroke="#0e2a47" stroke-width="2"/>
+
+    <!-- balance body -->
+    <rect x="175" y="240" width="150" height="80" fill="#1a1a1a" rx="5"/>
+    <rect x="195" y="220" width="110" height="22" fill="#9ca3af"/>
+    <rect x="195" y="288" width="110" height="24" fill="#1a1a1a" stroke="#3a3a3a" stroke-width="1"/>
+    <rect x="200" y="292" width="100" height="16" fill="#c9892f"/>
+    <text x="250" y="305" text-anchor="middle" fill="#1a1a1a" font-family="Public Sans, sans-serif" font-size="13" font-weight="700">1.000 kg</text>
+
+    <!-- block on balance pan -->
+    <rect x="215" y="170" width="70" height="50" fill="#9ca3af" stroke="#0e2a47" stroke-width="1.8"/>
+    <rect x="218" y="173" width="6" height="44" fill="#b0b8c2"/>
+    <ellipse cx="240" cy="178" rx="6" ry="2.5" fill="#374151"/>
+    <ellipse cx="265" cy="178" rx="5" ry="2" fill="#374151"/>
+
+    <!-- label arrow for block -->
+    <text x="365" y="190" font-family="Public Sans, sans-serif" font-size="11" fill="#0e2a47" font-weight="600">Metal block</text>
+    <path d="M360 187 L295 192" stroke="#0e2a47" stroke-width="1" fill="none"/>
+
+    <!-- label arrow for reading -->
+    <text x="360" y="305" font-family="Public Sans, sans-serif" font-size="11" fill="#0e2a47" font-weight="600">Mass = m</text>
+    <path d="M355 302 L310 300" stroke="#0e2a47" stroke-width="1" fill="none"/>
+  </g>
+
+  <!-- ============ APPARATUS SCENE (stages 0, 2-6) ============ -->
+  <g class="scene-apparatus">
+    <!-- bench (always) -->
+    <rect x="30" y="320" width="440" height="6" fill="#0e2a47"/>
+    <line x1="50" y1="326" x2="70" y2="350" stroke="#0e2a47" stroke-width="2"/>
+    <line x1="450" y1="326" x2="430" y2="350" stroke="#0e2a47" stroke-width="2"/>
+
+    <!-- empty-bench label (stage 0 only) -->
+    <g class="layer-empty">
+      <text x="250" y="160" text-anchor="middle" font-family="Fraunces, serif" font-size="15" fill="#999" font-weight="500" font-style="italic">Ready to begin...</text>
+    </g>
+
+    <!-- Insulation layer (stage 3+) -->
+    <g class="layer-insulation" style="display:none;">
+      <rect x="155" y="195" width="170" height="125" fill="#e8dfc8" stroke="#0e2a47" stroke-width="1.5" stroke-dasharray="3,3" rx="4"/>
+      <g stroke="#c2b48a" stroke-width="1">
+        <line x1="160" y1="202" x2="170" y2="212"/>
+        <line x1="172" y1="202" x2="182" y2="212"/>
+        <line x1="184" y1="202" x2="194" y2="212"/>
+        <line x1="196" y1="202" x2="206" y2="212"/>
+        <line x1="208" y1="202" x2="218" y2="212"/>
+        <line x1="220" y1="202" x2="230" y2="212"/>
+        <line x1="232" y1="202" x2="242" y2="212"/>
+        <line x1="244" y1="202" x2="254" y2="212"/>
+        <line x1="256" y1="202" x2="266" y2="212"/>
+        <line x1="268" y1="202" x2="278" y2="212"/>
+        <line x1="280" y1="202" x2="290" y2="212"/>
+        <line x1="292" y1="202" x2="302" y2="212"/>
+        <line x1="304" y1="202" x2="314" y2="212"/>
+      </g>
+      <text x="155" y="190" font-family="Public Sans, sans-serif" font-size="11" fill="#0e2a47" font-weight="600">Insulation</text>
+    </g>
+
+    <!-- Block (stage 2+) -->
+    <g class="layer-block" style="display:none;">
+      <rect x="175" y="215" width="130" height="105" fill="#9ca3af" stroke="#0e2a47" stroke-width="2"/>
+      <rect x="178" y="218" width="8" height="99" fill="#b0b8c2"/>
+      <ellipse cx="210" cy="222" rx="7" ry="3" fill="#374151"/>
+      <ellipse cx="270" cy="222" rx="6" ry="2.5" fill="#374151"/>
+      <text x="340" y="270" font-family="Public Sans, sans-serif" font-size="11" fill="#0e2a47" font-weight="600">Metal block</text>
+      <path d="M335 267 L308 263" stroke="#0e2a47" stroke-width="1" fill="none"/>
+    </g>
+
+    <!-- Heater + Thermometer (stage 2+) -->
+    <g class="layer-heater-therm" style="display:none;">
+      <!-- Heater rod -->
+      <rect x="206" y="115" width="8" height="110" fill="#0e2a47"/>
+      <rect x="200" y="108" width="20" height="11" fill="#c9892f"/>
+      <line x1="206" y1="222" x2="214" y2="219" stroke="#b73225" stroke-width="1.2"/>
+      <line x1="206" y1="219" x2="214" y2="216" stroke="#b73225" stroke-width="1.2"/>
+
+      <!-- Thermometer -->
+      <line x1="270" y1="125" x2="270" y2="222" stroke="#0e2a47" stroke-width="2"/>
+      <rect x="265" y="105" width="10" height="25" fill="#fffdf8" stroke="#0e2a47" stroke-width="1.4"/>
+      <!-- Mercury level COOL (default) -->
+      <rect class="therm-cool" x="267" y="120" width="6" height="9" fill="#b73225"/>
+      <!-- Scale ticks -->
+      <line x1="276" y1="112" x2="280" y2="112" stroke="#0e2a47" stroke-width="0.8"/>
+      <line x1="276" y1="118" x2="280" y2="118" stroke="#0e2a47" stroke-width="0.8"/>
+      <line x1="276" y1="124" x2="280" y2="124" stroke="#0e2a47" stroke-width="0.8"/>
+
+      <!-- Labels -->
+      <text x="120" y="125" font-family="Public Sans, sans-serif" font-size="11" fill="#0e2a47" font-weight="600">Immersion heater</text>
+      <path d="M180 122 L205 115" stroke="#0e2a47" stroke-width="1" fill="none"/>
+
+      <text x="340" y="125" font-family="Public Sans, sans-serif" font-size="11" fill="#0e2a47" font-weight="600">Thermometer</text>
+      <path d="M335 122 L280 117" stroke="#0e2a47" stroke-width="1" fill="none"/>
+    </g>
+
+    <!-- Circuit (stage 4+) -->
+    <g class="layer-circuit" style="display:none;">
+      <!-- Wires from heater up-left to joulemeter -->
+      <path d="M206 108 Q160 90 110 90 L88 90" stroke="#0e2a47" stroke-width="2" fill="none"/>
+      <path d="M214 108 Q180 78 105 78 L88 78" stroke="#b73225" stroke-width="2" fill="none"/>
+
+      <!-- Joulemeter -->
+      <rect x="22" y="58" width="68" height="48" fill="#0e2a47" rx="3"/>
+      <text x="56" y="75" text-anchor="middle" fill="#fffdf8" font-family="Public Sans, sans-serif" font-size="9" font-weight="700">JOULEMETER</text>
+      <rect x="28" y="82" width="56" height="18" fill="#c9892f" opacity="0.45"/>
+      <text class="joulemeter-reading" x="56" y="96" text-anchor="middle" fill="#fffdf8" font-family="Public Sans, sans-serif" font-size="12" font-weight="700">0 J</text>
+
+      <!-- Wire from joulemeter to power supply -->
+      <path d="M90 80 Q260 25 410 215" stroke="#0e2a47" stroke-width="1.8" fill="none"/>
+
+      <!-- Power supply -->
+      <rect x="395" y="215" width="80" height="68" fill="#0e2a47" rx="3"/>
+      <text x="435" y="237" text-anchor="middle" fill="#fffdf8" font-family="Public Sans, sans-serif" font-size="10" font-weight="700">POWER</text>
+      <text x="435" y="252" text-anchor="middle" fill="#fffdf8" font-family="Public Sans, sans-serif" font-size="10" font-weight="700">SUPPLY</text>
+      <circle class="power-light" cx="435" cy="270" r="5" fill="#444"/>
+      <circle cx="410" cy="288" r="2.5" fill="#c9892f"/>
+      <circle cx="460" cy="288" r="2.5" fill="#c9892f"/>
+    </g>
+
+    <!-- Heating active (stage 5+) -->
+    <g class="layer-heating" style="display:none;">
+      <!-- Mercury level HOT (overlays the cool one) -->
+      <rect x="265" y="100" width="10" height="5" fill="#fffdf8" stroke="#0e2a47" stroke-width="1.4"/>
+      <rect x="267" y="113" width="6" height="17" fill="#b73225"/>
+      <!-- Heat waves -->
+      <path d="M155 290 Q150 285 155 280 Q160 275 155 270" stroke="#b73225" stroke-width="1.8" fill="none" opacity="0.65"/>
+      <path d="M325 290 Q330 285 325 280 Q320 275 325 270" stroke="#b73225" stroke-width="1.8" fill="none" opacity="0.65"/>
+      <path d="M165 270 Q160 265 165 260 Q170 255 165 250" stroke="#b73225" stroke-width="1.5" fill="none" opacity="0.45"/>
+      <path d="M315 270 Q320 265 315 260 Q310 255 315 250" stroke="#b73225" stroke-width="1.5" fill="none" opacity="0.45"/>
+      <!-- Power supply lamp ON (covers the off lamp) -->
+      <circle cx="435" cy="270" r="5" fill="#7ad57a"/>
+      <!-- Joulemeter reading updated -->
+      <rect x="28" y="82" width="56" height="18" fill="#0e2a47"/>
+      <rect x="28" y="82" width="56" height="18" fill="#c9892f" opacity="0.55"/>
+      <text x="56" y="96" text-anchor="middle" fill="#fffdf8" font-family="Public Sans, sans-serif" font-size="12" font-weight="700">18000 J</text>
+    </g>
+
+    <!-- Calculation overlay (stage 6) -->
+    <g class="layer-calc" style="display:none;">
+      <rect x="100" y="28" width="300" height="74" fill="#fffdf8" stroke="#c9892f" stroke-width="2" rx="4"/>
+      <text x="250" y="50" text-anchor="middle" font-family="Fraunces, serif" font-size="14" fill="#0e2a47" font-weight="700">c = E ÷ (m × Δθ)</text>
+      <text x="250" y="70" text-anchor="middle" font-family="Public Sans, sans-serif" font-size="12" fill="#0e2a47">= 18000 ÷ (1.000 × 20)</text>
+      <text x="250" y="90" text-anchor="middle" font-family="Public Sans, sans-serif" font-size="13" fill="#2d6a4f" font-weight="700">c = 900 J/kg°C</text>
+    </g>
+  </g>
+</svg>`;
+
+  // ============ STAGE RENDERER ============
+  function applyStage(svgRoot, stage) {
+    const bal = svgRoot.querySelector('.scene-balance');
+    const app = svgRoot.querySelector('.scene-apparatus');
+    const empty = svgRoot.querySelector('.layer-empty');
+    const block = svgRoot.querySelector('.layer-block');
+    const ht = svgRoot.querySelector('.layer-heater-therm');
+    const ins = svgRoot.querySelector('.layer-insulation');
+    const circ = svgRoot.querySelector('.layer-circuit');
+    const heat = svgRoot.querySelector('.layer-heating');
+    const calc = svgRoot.querySelector('.layer-calc');
+
+    if (stage === 1) {
+      bal.style.display = '';
+      app.style.display = 'none';
+    } else {
+      bal.style.display = 'none';
+      app.style.display = '';
+      empty.style.display = (stage === 0) ? '' : 'none';
+      block.style.display = (stage >= 2) ? '' : 'none';
+      ht.style.display = (stage >= 2) ? '' : 'none';
+      ins.style.display = (stage >= 3) ? '' : 'none';
+      circ.style.display = (stage >= 4) ? '' : 'none';
+      heat.style.display = (stage >= 5) ? '' : 'none';
+      calc.style.display = (stage >= 6) ? '' : 'none';
+    }
+  }
+
+  // ============ TAB 1: SETUP WALKTHROUGH ============
+  const setupDiagram = document.getElementById('setup-diagram');
+  setupDiagram.innerHTML = svgMarkup;
+  let setupStage = 0;
+
+  function renderSetupSteps() {
+    const list = document.getElementById('setup-steps');
+    list.innerHTML = '';
+    stages.forEach(s => {
+      const btn = document.createElement('button');
+      btn.className = 'step-item' + (s.num === setupStage ? ' active' : '') + (s.num < setupStage ? ' done' : '');
+      btn.innerHTML = `<span class="step-num">${s.num}</span><span>${s.short}</span>`;
+      btn.addEventListener('click', () => goToSetupStage(s.num));
+      list.appendChild(btn);
+    });
+  }
+
+  function goToSetupStage(n) {
+    setupStage = n;
+    applyStage(setupDiagram.querySelector('svg'), n);
+    const caption = document.getElementById('setup-caption');
+    if (n === 0) {
+      caption.innerHTML = '<span class="stage-num">Start</span>Click step 1 on the right to begin.';
+    } else {
+      const s = stages[n - 1];
+      caption.innerHTML = `<span class="stage-num">Step ${s.num} · ${s.short}</span>${s.caption}`;
+    }
+    document.getElementById('setup-current').textContent = n;
+    document.getElementById('setup-prev').disabled = (n <= 0);
+    document.getElementById('setup-next').disabled = (n >= 6);
+    renderSetupSteps();
+  }
+
+  document.getElementById('setup-prev').addEventListener('click', () => { if (setupStage > 0) goToSetupStage(setupStage - 1); });
+  document.getElementById('setup-next').addEventListener('click', () => { if (setupStage < 6) goToSetupStage(setupStage + 1); });
+
+  goToSetupStage(0);
+
+  // ============ TAB 2: WHAT HAPPENS NEXT ============
+  const checkDiagram = document.getElementById('check-diagram');
+  checkDiagram.innerHTML = svgMarkup;
+  let checkStage = 0;
+  let checkOrder = []; // scrambled order of stage nums
+
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function renderCheckSteps() {
+    const list = document.getElementById('check-steps');
+    list.innerHTML = '';
+    checkOrder.forEach(num => {
+      const s = stages[num - 1];
+      const btn = document.createElement('button');
+      const isDone = num <= checkStage;
+      btn.className = 'step-item' + (isDone ? ' done' : '');
+      btn.dataset.stage = num;
+      btn.disabled = isDone;
+      btn.innerHTML = `<span class="step-num">${isDone ? '✓' : '?'}</span><span>${s.short}</span>`;
+      btn.addEventListener('click', () => handleCheckClick(btn, num));
+      list.appendChild(btn);
+    });
+  }
+
+  function handleCheckClick(btn, num) {
+    const feedback = document.getElementById('check-feedback');
+    const expectedNext = checkStage + 1;
+    if (num === expectedNext) {
+      // correct
+      checkStage = num;
+      applyStage(checkDiagram.querySelector('svg'), num);
+      document.getElementById('check-current').textContent = checkStage;
+      const s = stages[num - 1];
+      document.getElementById('check-caption').innerHTML =
+        `<span class="stage-num">Step ${s.num} · ${s.short}</span>${s.caption}`;
+      if (checkStage === 6) {
+        feedback.className = 'feedback show success';
+        feedback.textContent = 'All six steps in the right order — apparatus complete. Now move to the equipment quiz.';
+      } else {
+        feedback.className = 'feedback show success';
+        feedback.textContent = `Correct. Now: what's step ${expectedNext + 1}?`;
+      }
+      renderCheckSteps();
+    } else {
+      // wrong
+      btn.classList.add('wrong');
+      setTimeout(() => btn.classList.remove('wrong'), 400);
+      feedback.className = 'feedback show error';
+      feedback.textContent = `Not yet — that's step ${num}, but you need step ${expectedNext} next.`;
+    }
+  }
+
+  function resetCheck() {
+    checkStage = 0;
+    checkOrder = shuffle([1, 2, 3, 4, 5, 6]);
+    applyStage(checkDiagram.querySelector('svg'), 0);
+    document.getElementById('check-current').textContent = '0';
+    document.getElementById('check-caption').innerHTML =
+      '<span class="stage-num">Empty bench</span>Pick the first step on the right.';
+    document.getElementById('check-feedback').classList.remove('show');
+    renderCheckSteps();
+  }
+
+  document.getElementById('check-reset').addEventListener('click', resetCheck);
+  resetCheck();
+
+  // ============ MCQ ENGINE ============
+  function buildQuiz(containerId, questions, progressId) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = '';
+    const state = { answered: 0, correct: 0 };
+
+    questions.forEach((q, qi) => {
+      const qDiv = document.createElement('div');
+      qDiv.className = 'question';
+      const safeId = `${containerId}-${qi}`;
+      qDiv.innerHTML = `
+        <div class="question-text">${qi + 1}. ${q.q}</div>
+        <div class="options" id="opts-${safeId}"></div>
+        <div class="explanation" id="exp-${safeId}">${q.exp}</div>
+      `;
+      container.appendChild(qDiv);
+
+      const optsDiv = qDiv.querySelector(`#opts-${safeId}`);
+      q.options.forEach((opt, oi) => {
+        const btn = document.createElement('button');
+        btn.className = 'option';
+        btn.innerHTML = `<span class="letter">${String.fromCharCode(65 + oi)}</span><span>${opt}</span>`;
+        btn.addEventListener('click', () => {
+          if (btn.disabled) return;
+          optsDiv.querySelectorAll('.option').forEach(o => o.disabled = true);
+          if (oi === q.correct) {
+            btn.classList.add('correct');
+            state.correct++;
+          } else {
+            btn.classList.add('incorrect');
+            optsDiv.children[q.correct].classList.add('correct');
+          }
+          state.answered++;
+          document.getElementById(progressId).textContent = `${state.correct} / ${questions.length} correct`;
+          qDiv.querySelector('.explanation').classList.add('show');
+        });
+        optsDiv.appendChild(btn);
+      });
+    });
+  }
+
+  const equipmentQs = [
+    {
+      q: "Which piece of equipment is used to measure the mass of the block?",
+      options: ["Thermometer", "Balance", "Joulemeter", "Stopwatch"],
+      correct: 1,
+      exp: "A balance measures mass (in kg). The thermometer measures temperature, the joulemeter measures energy, the stopwatch measures time."
+    },
+    {
+      q: "What is the purpose of the immersion heater?",
+      options: ["To measure temperature", "To insulate the block", "To transfer electrical energy to the block as heat", "To measure the energy used"],
+      correct: 2,
+      exp: "The immersion heater converts electrical energy into thermal energy and transfers it directly into the metal block."
+    },
+    {
+      q: "Why do we wrap the block in insulation?",
+      options: ["To make the apparatus look neat", "To reduce heat loss to the surroundings", "To increase the heater's power", "To stop the heater breaking"],
+      correct: 1,
+      exp: "Insulation (lagging) reduces heat loss from the block to the surrounding air. Without it, the calculated value of c would appear larger than it really is."
+    },
+    {
+      q: "What does the joulemeter measure?",
+      options: ["The temperature change", "The mass of the block", "The electrical energy transferred to the heater", "The time taken"],
+      correct: 2,
+      exp: "The joulemeter directly reads the total electrical energy (E, in joules) supplied to the immersion heater. This is the E you use in c = E ÷ (m × Δθ)."
+    },
+    {
+      q: "Why is a small drop of water sometimes placed in the thermometer hole?",
+      options: ["To cool the block down", "To improve thermal contact between the block and thermometer", "To stop the thermometer evaporating", "To measure the water"],
+      correct: 1,
+      exp: "The drop of water fills the air gap, so heat is conducted from block to thermometer more efficiently. This gives a more accurate temperature reading."
+    }
+  ];
+
+  const methodQs = [
+    {
+      q: "What should you measure FIRST, before any heating?",
+      options: ["The final temperature", "The mass of the block AND the starting temperature", "The energy transferred", "The time the heater is on"],
+      correct: 1,
+      exp: "You need the mass and the starting temperature before heating begins. The energy, time and final temperature are all measured during or after."
+    },
+    {
+      q: "Why might you keep reading the thermometer for a short time after switching off the heater?",
+      options: ["The temperature carries on rising as heat spreads through the block", "Because the thermometer is broken", "To save the joulemeter reading", "To check the heater has switched off"],
+      correct: 0,
+      exp: "Heat takes time to spread evenly through the metal. The peak temperature often occurs a few seconds after the heater is switched off, so you wait for the highest reading."
+    },
+    {
+      q: "Which equation links energy, mass, specific heat capacity and temperature change?",
+      options: ["E = mv²", "E = mcΔθ", "V = IR", "E = Fd"],
+      correct: 1,
+      exp: "E = mcΔθ. Rearranged for specific heat capacity: c = E ÷ (m × Δθ)."
+    },
+    {
+      q: "The joulemeter reads 18,000 J. The mass is 1 kg. The temperature rose by 20 °C. What is the specific heat capacity?",
+      options: ["360 J/kg°C", "900 J/kg°C", "9,000 J/kg°C", "36,000 J/kg°C"],
+      correct: 1,
+      exp: "c = E ÷ (m × Δθ) = 18,000 ÷ (1 × 20) = 900 J/kg°C."
+    },
+    {
+      q: "Which of these is the main source of inaccuracy in this experiment?",
+      options: ["The mass of the block changes during heating", "Heat is lost to the surroundings even with insulation", "The joulemeter is always broken", "The block changes shape"],
+      correct: 1,
+      exp: "Some heat always escapes to the surroundings. So the energy used to heat the block is slightly less than the joulemeter reading, making the calculated c appear larger than its true value."
+    },
+    {
+      q: "What does Δθ stand for in c = E ÷ (mΔθ)?",
+      options: ["The starting temperature", "The final temperature", "The change in temperature (final − starting)", "The room temperature"],
+      correct: 2,
+      exp: "The Greek letter delta (Δ) means 'change in'. Δθ is the change in temperature: final − starting."
+    }
+  ];
+
+  buildQuiz('equipment-questions', equipmentQs, 'eq-progress');
+  buildQuiz('method-questions', methodQs, 'm-progress');
+
+  // ============ FIX THE BAD ANSWER ============
+  const badAnswer1 = [
+    { text: "To find the specific heat capacity, ", error: false },
+    { text: "put the block in a heater", error: true,
+      issue: "Wrong setup, and no joulemeter",
+      explain: "It's the wrong way round — the heater goes INTO a hole in the block. Also there's no mention of a joulemeter, but you need one to measure the energy (E) for the calculation.",
+      better: "place an immersion heater into one of the holes in the block, and connect it to a joulemeter and power supply"
+    },
+    { text: " and ", error: false },
+    { text: "turn it on for a bit", error: true,
+      issue: "No measured time, no energy recorded",
+      explain: "'A bit' isn't a measurement. You need a set heating time (e.g. 10 minutes) AND you need to record the total energy (E) on the joulemeter — that's the E in c = E ÷ (mΔθ).",
+      better: "switch on for a measured time (e.g. 10 minutes) and record the energy (E) shown on the joulemeter"
+    },
+    { text: ". ", error: false },
+    { text: "Use a thermometer to measure the temperature", error: true,
+      issue: "Only one temperature reading",
+      explain: "You need TWO temperature readings — the STARTING temperature (before heating) and the FINAL (highest) temperature (after heating). The change Δθ = final − starting.",
+      better: "record the starting temperature before heating and the final temperature after heating, then calculate Δθ"
+    },
+    { text: ". ", error: false },
+    { text: "After heating, wrap the block in insulation", error: true,
+      issue: "Wrong order — insulation goes FIRST",
+      explain: "Insulation reduces heat loss DURING heating. Wrapping it after the experiment is pointless — by then the energy has already escaped to the surroundings.",
+      better: "wrap the block in insulation BEFORE heating, to reduce heat loss to the surroundings"
+    },
+    { text: " so it doesn't cool down too fast. You can ", error: false },
+    { text: "work out the answer in joules", error: true,
+      issue: "Wrong unit",
+      explain: "Specific heat capacity is measured in J/kg°C (joules per kilogram per degree Celsius), NOT joules. Joules is the unit for energy, which is different.",
+      better: "calculate c using c = E ÷ (m × Δθ); the unit of c is J/kg°C"
+    },
+    { text: " at the end. ", error: false },
+    { text: "Make sure to weigh the block when you're done", error: true,
+      issue: "Wrong order — mass goes FIRST",
+      explain: "Mass should be measured BEFORE heating, using a balance. Doing it 'when you're done' is sloppy and easy to forget.",
+      better: "use a balance to measure the mass (m) of the block in kilograms BEFORE you start heating"
+    },
+    { text: ".", error: false }
+  ];
+
+  const badAnswer2 = [
+    { text: "To find the specific heat capacity of a metal block, ", clickable: false },
+    { text: "first place an immersion heater into one of the holes in the block", clickable: true, error: false },
+    { text: ". ", clickable: false },
+    { text: "Heat it for around 10 minutes", clickable: true, error: false },
+    { text: ". ", clickable: false },
+    { text: "Wait until it gets really hot", clickable: true, error: true,
+      issue: "Vague — needs an actual measurement",
+      explain: "'Really hot' isn't a number. You need to read the highest temperature off the thermometer.",
+      better: "record the highest temperature reached on the thermometer"
+    },
+    { text: ", then ", clickable: false },
+    { text: "read off the temperature", clickable: true, error: true,
+      issue: "Only one temperature reading",
+      explain: "You need TWO readings — starting AND final. Without both you can't calculate Δθ.",
+      better: "record both the starting and final temperatures and calculate Δθ"
+    },
+    { text: ". ", clickable: false },
+    { text: "The mass of the block doesn't matter much", clickable: true, error: true,
+      issue: "Mass is essential",
+      explain: "Mass (m) is one of the three quantities in c = E ÷ (m × Δθ). You can't calculate c without it. It must be measured with a balance, before heating.",
+      better: "use a balance to measure the mass (m) of the block in kg before heating"
+    },
+    { text: ". ", clickable: false },
+    { text: "Insulation isn't really needed", clickable: true, error: true,
+      issue: "Insulation is essential",
+      explain: "Without insulation, heat escapes to the surroundings. The energy used to actually heat the block is less than the joulemeter reading, which makes the calculated c value wrong (too large).",
+      better: "wrap the block in insulation to reduce heat loss to the surroundings"
+    },
+    { text: " for this experiment. ", clickable: false },
+    { text: "The unit for specific heat capacity is joules per second", clickable: true, error: true,
+      issue: "Wrong unit",
+      explain: "Joules per second (J/s) is the unit of POWER, not specific heat capacity. The correct unit for c is J/kg°C.",
+      better: "the unit of specific heat capacity is J/kg°C"
+    },
+    { text: ".", clickable: false }
+  ];
+
+  // --- Round 1 ---
+  const round1Reviewed = new Set();
+
+  function renderRound1() {
+    const container = document.getElementById('bad-answer-1');
+    container.innerHTML = '';
+    badAnswer1.forEach((chunk, i) => {
+      if (chunk.error) {
+        const span = document.createElement('span');
+        span.className = 'chunk error-visible';
+        span.dataset.index = i;
+        span.textContent = chunk.text;
+        span.addEventListener('click', () => handleRound1Click(i, span));
+        container.appendChild(span);
+      } else {
+        container.appendChild(document.createTextNode(chunk.text));
+      }
+    });
+    updateRound1Progress();
+  }
+
+  function handleRound1Click(index, span) {
+    const chunk = badAnswer1[index];
+    const area = document.getElementById('round1-explanation');
+
+    if (round1Reviewed.has(index)) return; // already reviewed
+    round1Reviewed.add(index);
+    span.classList.add('reviewed');
+
+    if (round1Reviewed.size === 1) area.innerHTML = '';
+
+    const item = document.createElement('div');
+    item.className = 'explanation-item';
+    item.innerHTML = `
+      <div class="quote">"${chunk.text}"</div>
+      <div class="issue">${chunk.issue}</div>
+      <div class="explain">${chunk.explain}</div>
+      <div class="better"><strong>Better:</strong> ${chunk.better}</div>
+    `;
+    area.appendChild(item);
+    item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+    updateRound1Progress();
+  }
+
+  function updateRound1Progress() {
+    const total = badAnswer1.filter(c => c.error).length;
+    const reviewed = round1Reviewed.size;
+    const el = document.getElementById('round1-progress-text');
+    el.textContent = `${reviewed} / ${total} mistakes reviewed${reviewed === total ? ' — well done. Now try Round 2.' : ''}`;
+  }
+
+  // --- Round 2 ---
+  const round2Marked = new Set();
+  let round2Checked = false;
+
+  function renderRound2() {
+    const container = document.getElementById('bad-answer-2');
+    container.innerHTML = '';
+    badAnswer2.forEach((chunk, i) => {
+      if (chunk.clickable) {
+        const span = document.createElement('span');
+        span.className = 'chunk markable';
+        span.dataset.index = i;
+        span.textContent = chunk.text;
+        span.addEventListener('click', () => handleRound2Click(i, span));
+        container.appendChild(span);
+      } else {
+        container.appendChild(document.createTextNode(chunk.text));
+      }
+    });
+  }
+
+  function handleRound2Click(index, span) {
+    if (round2Checked) return;
+    if (round2Marked.has(index)) {
+      round2Marked.delete(index);
+      span.classList.remove('marked');
+    } else {
+      round2Marked.add(index);
+      span.classList.add('marked');
+    }
+  }
+
+  function checkRound2() {
+    if (round2Checked) return;
+    round2Checked = true;
+
+    const totalErrors = badAnswer2.filter(c => c.clickable && c.error).length;
+    let correctlyIdentified = 0;
+    let missed = 0;
+    let falsePositive = 0;
+
+    const explanationsArea = document.getElementById('round2-explanations');
+    explanationsArea.innerHTML = '';
+
+    badAnswer2.forEach((chunk, i) => {
+      if (!chunk.clickable) return;
+      const span = document.querySelector(`#bad-answer-2 .chunk[data-index="${i}"]`);
+      if (!span) return;
+      span.classList.remove('marked');
+      span.classList.add('locked');
+
+      const wasMarked = round2Marked.has(i);
+      const isError = chunk.error;
+
+      if (isError && wasMarked) {
+        span.classList.add('show-correct');
+        correctlyIdentified++;
+        const item = document.createElement('div');
+        item.className = 'explanation-item';
+        item.innerHTML = `
+          <div class="quote got-it">✓ Spotted: "${chunk.text}"</div>
+          <div class="issue">${chunk.issue}</div>
+          <div class="explain">${chunk.explain}</div>
+          <div class="better"><strong>Better:</strong> ${chunk.better}</div>
+        `;
+        explanationsArea.appendChild(item);
+      } else if (isError && !wasMarked) {
+        span.classList.add('show-missed');
+        missed++;
+        const item = document.createElement('div');
+        item.className = 'explanation-item';
+        item.innerHTML = `
+          <div class="quote missed-quote">✗ Missed: "${chunk.text}"</div>
+          <div class="issue">${chunk.issue}</div>
+          <div class="explain">${chunk.explain}</div>
+          <div class="better"><strong>Better:</strong> ${chunk.better}</div>
+        `;
+        explanationsArea.appendChild(item);
+      } else if (!isError && wasMarked) {
+        span.classList.add('show-falsepos');
+        falsePositive++;
+      } else {
+        span.classList.add('show-good');
+      }
+    });
+
+    const feedback = document.getElementById('round2-feedback');
+    feedback.classList.add('show');
+
+    if (correctlyIdentified === totalErrors && falsePositive === 0) {
+      feedback.className = 'feedback show success';
+      feedback.textContent = `Perfect — you spotted all ${totalErrors} mistakes and didn't flag any of the good bits. You're ready for the 6-marker.`;
+    } else if (correctlyIdentified === totalErrors) {
+      feedback.className = 'feedback show neutral';
+      feedback.textContent = `You spotted all ${totalErrors} mistakes — but you flagged ${falsePositive} bit${falsePositive !== 1 ? 's' : ''} that ${falsePositive === 1 ? 'was' : 'were'} actually fine (struck through). Re-read those.`;
+    } else {
+      const fpText = falsePositive > 0 ? `, ${falsePositive} false alarm${falsePositive !== 1 ? 's' : ''}` : '';
+      feedback.className = 'feedback show error';
+      feedback.textContent = `You caught ${correctlyIdentified} of ${totalErrors} mistakes. ${missed} missed${fpText}. The missed ones are now underlined in red — read the explanations below.`;
+    }
+  }
+
+  function resetRound2() {
+    round2Marked.clear();
+    round2Checked = false;
+    renderRound2();
+    document.getElementById('round2-feedback').classList.remove('show');
+    document.getElementById('round2-explanations').innerHTML = '';
+  }
+
+  renderRound1();
+  renderRound2();
+  document.getElementById('round2-check').addEventListener('click', checkRound2);
+  document.getElementById('round2-reset').addEventListener('click', resetRound2);
+</script>
+
+</body>
+</html>

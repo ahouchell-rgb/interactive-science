@@ -1,0 +1,1739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chemical Reactions — Year 8 Revision</title>
+<meta name="description" content="A Year 8 KS3 science revision booklet on C4 Chemical reactions — nine short topics covering reactions, physical changes, the signs of a reaction, combustion, thermal decomposition, oxidation, displacement, conservation of mass, and balancing equations.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1E2761;
+  --navy-soft:#2a3478;
+  --warm:#F8F4EC;
+  --warm-deep:#EFE8D6;
+  --paper:#FCFAF4;
+  --soft-blue:#EDF2FA;
+  --ink:#1A1A1A;
+  --muted:#5C6370;
+  --rule:#CFD8E3;
+  --accent:#B85042;
+  --accent-soft:#F4DAD7;
+  --success:#2C5F2D;
+  --success-soft:#DDEBDD;
+  --gold:#C8A24A;
+  --gold-soft:#F2E6BD;
+  --display: 'Instrument Serif', 'Cormorant Garamond', Georgia, serif;
+  --body: 'IBM Plex Sans', 'Helvetica Neue', system-ui, sans-serif;
+  --mono: 'IBM Plex Mono', 'Courier New', monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--body);
+  font-weight:300;
+  font-size:17px;
+  line-height:1.65;
+  color:var(--ink);
+  background:var(--warm);
+  background-image:
+    radial-gradient(ellipse at 10% 0%, rgba(30,39,97,0.04), transparent 50%),
+    radial-gradient(ellipse at 90% 100%, rgba(184,80,66,0.04), transparent 50%);
+  background-attachment:fixed;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+/* ---------- HERO ---------- */
+.hero{background:var(--navy);color:var(--warm);padding:48px 24px 56px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 30%,rgba(75,30,160,0.25),transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(184,80,66,0.18),transparent 60%);pointer-events:none}
+.hero-inner{max-width:720px;margin:0 auto;position:relative;z-index:1}
+.kicker{font-family:var(--mono);font-size:11px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(248,244,236,0.55);margin-bottom:20px}
+.hero h1{font-family:var(--display);font-weight:400;font-size:clamp(40px,8vw,68px);line-height:1.0;letter-spacing:-0.015em;margin-bottom:14px}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero .tag{font-family:var(--display);font-style:italic;font-size:clamp(18px,3.5vw,22px);color:rgba(248,244,236,0.75);font-weight:400;max-width:520px}
+.pace-banner{margin-top:36px;padding:18px 22px;border:1px solid rgba(248,244,236,0.2);border-left:3px solid var(--gold);background:rgba(0,0,0,0.15);display:flex;gap:14px;align-items:flex-start}
+.pace-banner .pace-icon{font-family:var(--display);font-size:30px;line-height:1;color:var(--gold);flex:0 0 auto}
+.pace-banner p{font-size:15px;line-height:1.5;color:rgba(248,244,236,0.92)}
+.pace-banner strong{color:var(--warm);font-weight:500}
+
+/* ---------- LESSON NAV ---------- */
+.lesson-nav{position:sticky;top:0;z-index:100;background:rgba(252,250,244,0.96);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--rule);padding:12px 0}
+.nav-inner{max-width:720px;margin:0 auto;padding:0 16px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-pill{flex:0 0 auto;font-family:var(--mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);padding:8px 14px;border:1px solid var(--rule);background:var(--paper);text-decoration:none;border-radius:100px;transition:all 0.2s;font-weight:500;white-space:nowrap}
+.nav-pill:hover{border-color:var(--navy);color:var(--navy)}
+.nav-pill.done{background:var(--success-soft);border-color:var(--success);color:var(--success)}
+.nav-pill.done::before{content:'✓ ';font-weight:600}
+
+/* ---------- LESSON ---------- */
+main{max-width:720px;margin:0 auto;padding:48px 24px 80px}
+.lesson{margin-bottom:64px;scroll-margin-top:80px}
+.lesson-head{margin-bottom:36px;padding-bottom:24px;border-bottom:1px solid var(--rule);position:relative}
+.lesson-num{font-family:var(--mono);font-size:11px;letter-spacing:0.3em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+.lesson-title{font-family:var(--display);font-weight:400;font-size:clamp(32px,6vw,46px);line-height:1.05;color:var(--navy);letter-spacing:-0.01em;margin-bottom:14px}
+.lesson-title em{font-style:italic}
+.lesson-promise{font-family:var(--display);font-style:italic;font-size:19px;color:var(--muted);line-height:1.4;max-width:540px}
+
+/* ---------- SECTION ---------- */
+.section{margin-bottom:42px}
+.section-head{font-family:var(--display);font-weight:400;font-size:26px;line-height:1.15;color:var(--navy);margin-bottom:16px;letter-spacing:-0.005em}
+.section-head .num{font-family:var(--mono);font-size:12px;color:var(--accent);letter-spacing:0.2em;display:block;margin-bottom:6px}
+.section p{margin-bottom:16px;font-size:17px}
+.section p strong{font-weight:500;color:var(--navy);background:linear-gradient(180deg,transparent 60%,rgba(200,162,74,0.25) 60%);padding:0 2px}
+
+/* ---------- KEYWORD BOX ---------- */
+.keywords{background:var(--soft-blue);border:1px solid #C9D7ED;border-left:3px solid var(--navy);padding:20px 22px;margin:24px 0}
+.keywords h4{font-family:var(--mono);font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:var(--navy);margin-bottom:14px;font-weight:500}
+.keywords dl{display:grid;gap:10px}
+.keywords dt{font-family:var(--display);font-size:20px;font-style:italic;color:var(--navy);font-weight:400}
+.keywords dd{font-size:15px;color:var(--ink);margin-bottom:6px}
+
+/* ---------- HINGE QUESTION ---------- */
+.hinge{background:var(--paper);border:1px solid var(--rule);padding:22px 24px;margin:28px 0;position:relative}
+.hinge-tag{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);padding:4px 10px;margin-bottom:12px;font-weight:500}
+.hinge-q{font-family:var(--display);font-size:22px;line-height:1.3;color:var(--navy);margin-bottom:14px;font-weight:400}
+.choices{list-style:none;display:grid;gap:8px;margin-bottom:16px}
+.choices li{font-size:15px;padding:10px 14px;background:var(--warm);border:1px solid var(--rule);display:flex;gap:10px;align-items:flex-start}
+.choices li .letter{font-family:var(--mono);font-weight:500;color:var(--accent);flex:0 0 auto}
+.reveal{width:100%;background:transparent}
+.reveal summary{cursor:pointer;list-style:none;font-family:var(--mono);font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);padding:10px 0;border-top:1px dashed var(--rule);display:flex;align-items:center;gap:10px;transition:color 0.2s;font-weight:500;user-select:none}
+.reveal summary::-webkit-details-marker{display:none}
+.reveal summary::before{content:'+';font-family:var(--display);font-size:18px;color:var(--accent);width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--accent);border-radius:50%;transition:transform 0.25s}
+.reveal[open] summary::before{transform:rotate(45deg)}
+.reveal summary:hover{color:var(--navy)}
+.reveal-body{padding:14px 16px;margin-top:10px;background:var(--success-soft);border-left:3px solid var(--success);font-size:15px;line-height:1.55;color:var(--ink)}
+.reveal-body strong{color:var(--success);font-weight:500}
+.reveal-body em{color:var(--muted);font-style:italic;font-size:13px;display:block;margin-top:8px}
+
+/* ---------- WATCH OUT ---------- */
+.watch-out{background:var(--accent-soft);border:1px solid #E6BCB7;border-left:3px solid var(--accent);padding:18px 22px;margin:24px 0}
+.watch-out h4{font-family:var(--mono);font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;font-weight:500}
+.watch-out p{font-size:15px;line-height:1.5;margin:0}
+.watch-out p+p{margin-top:8px}
+
+/* ---------- WORKED EXAMPLE / FORMULA ---------- */
+.worked{background:var(--paper);border:1px solid var(--rule);padding:22px;margin:24px 0}
+.worked h4{font-family:var(--mono);font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:var(--navy);margin-bottom:14px;font-weight:500}
+.worked .q{font-size:16px;margin-bottom:14px;line-height:1.5;color:var(--ink);font-weight:400}
+.worked .step{display:grid;grid-template-columns:80px 1fr;gap:14px;padding:8px 0;border-bottom:1px dashed var(--rule);align-items:baseline}
+.worked .step:last-child{border-bottom:0;padding-bottom:0}
+.worked .step .label{font-family:var(--mono);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);font-weight:500}
+.worked .step .v{font-family:var(--mono);font-size:14px;color:var(--ink);line-height:1.5}
+.worked .step.answer .v{font-family:var(--mono);font-size:16px;font-weight:500;color:var(--success);background:var(--success-soft);padding:4px 10px;display:inline-block}
+.formula{font-family:var(--mono);font-size:15px;background:var(--soft-blue);padding:8px 12px;display:inline-block;margin:4px 0;color:var(--navy);font-weight:500}
+
+/* ---------- INLINE DIAGRAM ---------- */
+.diagram{margin:18px 0;padding:20px;background:var(--paper);border:1px solid var(--rule);text-align:center}
+.diagram svg{display:inline-block;width:100%;max-width:560px;height:auto}
+.diagram .caption{font-family:var(--mono);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-top:10px;font-weight:500}
+
+/* ---------- QUIZ ---------- */
+.quiz{background:var(--paper);border:1px solid var(--rule);margin-top:36px;padding:28px 24px 24px}
+.quiz-head{font-family:var(--display);font-size:26px;color:var(--navy);margin-bottom:6px;font-weight:400}
+.quiz-head em{font-style:italic}
+.quiz-sub{font-family:var(--mono);font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:20px}
+.quiz ol{list-style:none;counter-reset:q;display:grid;gap:10px}
+.quiz li{counter-increment:q;border:1px solid var(--rule);background:var(--warm)}
+.quiz details summary{cursor:pointer;list-style:none;padding:14px 18px;display:flex;gap:14px;align-items:flex-start;font-size:16px;line-height:1.45;user-select:none}
+.quiz details summary::-webkit-details-marker{display:none}
+.quiz details summary::before{content:counter(q,decimal-leading-zero);font-family:var(--mono);font-size:13px;font-weight:500;color:var(--accent);flex:0 0 auto;padding-top:2px}
+.quiz details summary::after{content:'show answer';font-family:var(--mono);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-left:auto;flex:0 0 auto;padding-top:4px;white-space:nowrap;align-self:flex-start}
+.quiz details[open] summary::after{content:'hide';}
+.quiz details summary:hover::after{color:var(--accent)}
+.quiz .ans{padding:0 18px 16px 50px;font-size:15px;color:var(--success);line-height:1.5;border-top:1px dashed var(--rule);padding-top:14px;margin-top:4px}
+.quiz .ans strong{font-weight:600}
+
+/* ---------- DONE BUTTON ---------- */
+.done-btn{display:block;width:100%;margin-top:24px;padding:14px;background:var(--navy);color:var(--warm);border:0;font-family:var(--mono);font-size:12px;letter-spacing:0.25em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;font-weight:500}
+.done-btn:hover{background:var(--accent)}
+.done-btn.is-done{background:var(--success);cursor:default}
+.done-btn.is-done::before{content:'✓ '}
+
+/* ---------- DIVIDER ---------- */
+.section-rule{height:1px;background:var(--rule);margin:36px 0;position:relative}
+.section-rule::after{content:'⁂';position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--warm);padding:0 14px;color:var(--accent);font-size:18px}
+
+/* ---------- FOOTER ---------- */
+footer{text-align:center;padding:48px 24px;background:var(--navy);color:rgba(248,244,236,0.6)}
+footer p{font-size:13px;line-height:1.5;margin-bottom:6px}
+footer .sig{font-family:var(--display);font-style:italic;font-size:18px;color:var(--gold);margin-bottom:14px}
+
+/* ---------- SMALL SCREENS ---------- */
+@media (max-width:540px){
+  body{font-size:16px}
+  .hero{padding:36px 20px 44px}
+  main{padding:32px 18px 60px}
+  .keywords,.hinge,.watch-out,.worked{padding:18px 18px}
+  .lesson{margin-bottom:48px}
+  .quiz{padding:22px 16px 18px}
+  .quiz details summary{padding:12px 14px;font-size:15px}
+  .quiz .ans{padding-left:42px;padding-right:14px}
+  .worked .step{grid-template-columns:64px 1fr;gap:10px}
+}
+
+.pdf-btn{display:inline-flex;align-items:center;gap:8px;margin-top:22px;font-family:var(--mono);font-size:12px;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;color:var(--navy);background:var(--gold);padding:12px 18px;text-decoration:none;border-radius:3px;transition:background .2s,color .2s}
+.pdf-btn:hover{background:var(--warm);color:var(--navy)}
+.pdf-btn .ic{font-size:15px;line-height:1}
+.answers-print{margin-top:56px;padding-top:26px;border-top:2px solid var(--navy)}
+.answers-print-title{font-family:var(--display);font-weight:400;font-size:40px;color:var(--navy);line-height:1}
+.answers-print-sub{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin:6px 0 20px}
+.answers-block{margin-bottom:22px}
+.answers-topic{font-family:var(--display);font-weight:400;font-size:23px;color:var(--accent);margin:0 0 8px}
+.answers-qc{font-size:14px;line-height:1.5;margin:0 0 8px}
+.answers-qc strong{color:var(--navy);font-weight:500}
+.answers-list{margin:0;padding-left:22px;display:grid;gap:9px}
+.answers-list li{font-size:14px;line-height:1.5}
+.answers-list .aq{display:block;color:var(--muted)}
+.answers-list .aa{display:block;color:var(--success)}
+.answers-list .aa strong{color:var(--success);font-weight:600}
+@media screen{.answers-print{display:none}}
+@page{size:A4;margin:12mm}
+@media print{
+  .lesson-nav,.pace-banner,.done-btn,.pdf-btn,.embed-slot,.reveal{display:none !important}
+  body{background:white}
+  *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important}
+  main{max-width:100% !important;padding:6px 2px 0 !important}
+  details>summary::after,.quiz details summary::after{content:'' !important}
+  .quiz-sub{display:none !important}
+  .answers-print{break-before:page}
+  .worked,.hinge,.keywords,.watch-out,.diagram,.quiz li,.answers-block{break-inside:avoid}
+  .lesson-head,.section-head,.quiz-head,.answers-topic{break-after:avoid}
+}
+
+/* ---------- INTERACTIVE EMBED SLOT ---------- */
+.embed-slot{margin:28px 0;border:2px dashed var(--navy);background:repeating-linear-gradient(45deg,var(--soft-blue),var(--soft-blue) 12px,var(--paper) 12px,var(--paper) 24px);padding:5px}
+.embed-slot-inner{background:var(--paper);border:1px solid var(--rule);padding:26px 22px;text-align:center}
+.embed-tag{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:var(--navy);background:var(--gold-soft);border:1px solid var(--gold);padding:4px 12px;margin-bottom:14px;font-weight:600}
+.embed-slot h4{font-family:var(--display);font-size:23px;color:var(--navy);font-weight:400;margin-bottom:8px;font-style:italic}
+.embed-slot p{font-size:15px;color:var(--muted);max-width:480px;margin:0 auto}
+.embed-canvas{margin-top:18px;min-height:130px;border:1px dashed var(--rule);display:flex;align-items:center;justify-content:center;color:var(--muted);font-family:var(--mono);font-size:12px;letter-spacing:0.1em;background:var(--warm)}
+.embed-note{font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin-top:14px}
+</style>
+</head>
+<body>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="kicker">KS3 Science · Year 8 · C4 Chemical reactions</div>
+    <h1>Chemical reactions, <em>but bitesize.</em></h1>
+    <p class="tag">A revision booklet — nine short topics, from what a reaction actually is to balancing your own symbol equations.</p>
+    <div class="pace-banner">
+      <span class="pace-icon">i</span>
+      <p><strong>Take it one topic at a time.</strong> There are nine topics. Each one is short — about 10–15 minutes. Do one or two a day, and tick them off as you go.</p>
+    </div>
+    <a class="pdf-btn" href="pdf/chemical-reactions-revision.pdf" download><span class="ic">&#8595;</span> Download printable PDF</a>
+  </div>
+</header>
+
+<!-- ============ STICKY NAV ============ -->
+<nav class="lesson-nav">
+  <div class="nav-inner">
+    <a href="#lesson-1" class="nav-pill" data-lesson="1">What is a reaction?</a>
+    <a href="#lesson-2" class="nav-pill" data-lesson="2">Physical changes</a>
+    <a href="#lesson-3" class="nav-pill" data-lesson="3">Signs of a reaction</a>
+    <a href="#lesson-4" class="nav-pill" data-lesson="4">Combustion</a>
+    <a href="#lesson-5" class="nav-pill" data-lesson="5">Thermal decomposition</a>
+    <a href="#lesson-6" class="nav-pill" data-lesson="6">Oxidation</a>
+    <a href="#lesson-7" class="nav-pill" data-lesson="7">Displacement</a>
+    <a href="#lesson-8" class="nav-pill" data-lesson="8">Conservation of mass</a>
+    <a href="#lesson-9" class="nav-pill" data-lesson="9">Balancing equations</a>
+  </div>
+</nav>
+
+<main>
+
+<!-- ===================================================================== -->
+<!-- TOPIC 1 — WHAT IS A CHEMICAL REACTION?                                  -->
+<!-- ===================================================================== -->
+<section class="lesson" id="lesson-1">
+  <div class="lesson-head">
+    <div class="lesson-num">Topic 01 · C4 · Chemical reactions</div>
+    <h2 class="lesson-title">What is a <em>chemical reaction</em>?</h2>
+    <p class="lesson-promise">By the end of this topic you'll know what happens to atoms in a reaction, the difference between reactants and products, and how to write a word equation.</p>
+  </div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 1</span>The big idea: atoms rearrange</h3>
+    <p>Sodium is a soft metal so reactive it bursts into flame in water. Chlorine is a poisonous green gas that was once used as a weapon. Yet when they react, they make sodium chloride — the salt on your chips. How can two dangerous things make something safe to eat?</p>
+    <p>The answer is what happens to the atoms. In a chemical reaction, the bonds in the starting substances <strong>break</strong>, the atoms <strong>rearrange</strong>, and brand-new substances <strong>form</strong>. The product has completely different properties from the things you started with — salt is nothing like sodium or chlorine.</p>
+    <p>We have names for the two sides of any reaction. The starting chemicals are the <strong>REACTANTS</strong>. The new chemicals that are made are the <strong>PRODUCTS</strong>. Reactants always go on the left; products always go on the right.</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg">
+        <!-- Reactants: separate atoms -->
+        <text x="110" y="28" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" font-weight="700" fill="#B85042" letter-spacing="2">REACTANTS</text>
+        <g>
+          <circle cx="70" cy="80" r="22" fill="#EDF2FA" stroke="#1E2761" stroke-width="2"/>
+          <text x="70" y="85" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="15" font-weight="700" fill="#1E2761">A</text>
+          <circle cx="70" cy="140" r="22" fill="#EDF2FA" stroke="#1E2761" stroke-width="2"/>
+          <text x="70" y="145" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="15" font-weight="700" fill="#1E2761">A</text>
+          <circle cx="130" cy="80" r="22" fill="#F2E6BD" stroke="#C8A24A" stroke-width="2"/>
+          <text x="130" y="85" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="15" font-weight="700" fill="#1E2761">B</text>
+          <circle cx="130" cy="140" r="22" fill="#F2E6BD" stroke="#C8A24A" stroke-width="2"/>
+          <text x="130" y="145" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="15" font-weight="700" fill="#1E2761">B</text>
+        </g>
+        <!-- Arrow -->
+        <g transform="translate(280,110)">
+          <line x1="-50" y1="0" x2="50" y2="0" stroke="#1E2761" stroke-width="2.5"/>
+          <path d="M 42 -9 L 58 0 L 42 9 Z" fill="#1E2761"/>
+          <text x="4" y="-14" text-anchor="middle" font-family="Instrument Serif,serif" font-style="italic" font-size="14" fill="#5C6370">turn into</text>
+        </g>
+        <!-- Products: joined atoms -->
+        <text x="450" y="28" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" font-weight="700" fill="#2C5F2D" letter-spacing="2">PRODUCTS</text>
+        <g>
+          <circle cx="420" cy="80" r="22" fill="#EDF2FA" stroke="#1E2761" stroke-width="2"/>
+          <text x="420" y="85" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="15" font-weight="700" fill="#1E2761">A</text>
+          <circle cx="468" cy="80" r="22" fill="#F2E6BD" stroke="#C8A24A" stroke-width="2"/>
+          <text x="468" y="85" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="15" font-weight="700" fill="#1E2761">B</text>
+          <circle cx="420" cy="140" r="22" fill="#EDF2FA" stroke="#1E2761" stroke-width="2"/>
+          <text x="420" y="145" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="15" font-weight="700" fill="#1E2761">A</text>
+          <circle cx="468" cy="140" r="22" fill="#F2E6BD" stroke="#C8A24A" stroke-width="2"/>
+          <text x="468" y="145" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="15" font-weight="700" fill="#1E2761">B</text>
+        </g>
+        <text x="280" y="205" text-anchor="middle" font-family="Instrument Serif,serif" font-style="italic" font-size="14" fill="#5C6370">Same atoms before and after — just joined together differently.</text>
+      </svg>
+      <div class="caption">A reaction rearranges atoms into new substances</div>
+    </div>
+
+    <div class="keywords">
+      <h4>Keywords for Part 1</h4>
+      <dl>
+        <dt>Reactant</dt>
+        <dd>From <em>re-</em> (again) + <em>agere</em> (to act) — a substance that acts in the reaction. The starting chemical, written on the LEFT of the arrow.</dd>
+        <dt>Product</dt>
+        <dd>From <em>pro-</em> (forth) + <em>ducere</em> (to lead) — what is "led out". The new chemical that is made, written on the RIGHT of the arrow.</dd>
+        <dt>Chemical reaction</dt>
+        <dd>A change in which bonds break, atoms rearrange, and new substances form.</dd>
+      </dl>
+    </div>
+
+    <div class="embed-slot" id="embed-rearrange-atoms">
+      <div class="embed-slot-inner">
+        <span class="embed-tag">Interactive · drop-in</span>
+        <h4>Drag the atoms to make the products</h4>
+        <p>Pull the reactant atoms apart and re-join them to build the products, seeing for yourself that the same atoms appear on both sides.</p>
+        <div class="embed-canvas" style="padding:0;border:none;display:block;background:transparent"><iframe src="interactives/rearrange-atoms.html" title="Rearranging atoms in a reaction" loading="lazy" style="width:100%;height:430px;border:0;display:block;border-radius:2px"></iframe></div>
+        <div class="embed-note"><a href="interactives/rearrange-atoms.html" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none">Open this interactive in a new tab ↗</a></div>
+      </div>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">Where are the products written in a chemical equation?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>To the left of the arrow</span></li>
+        <li><span class="letter">B</span><span>To the right of the arrow</span></li>
+        <li><span class="letter">C</span><span>Above the arrow</span></li>
+        <li><span class="letter">D</span><span>There are no products</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>B — to the right of the arrow.</strong> Reactants (the starting chemicals) go on the left; products (the new chemicals made) go on the right. <em>D is wrong because every reaction makes at least one product — that's the whole point of a reaction.</em></div>
+      </details>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 2</span>Why an arrow, not an equals sign</h3>
+    <p>In maths, "equation" comes from <em>aequare</em>, meaning "to make equal", and you use an equals sign because both sides are the same. But in chemistry the two sides are NOT the same — the reactants have turned into different products. So we use an arrow (→) instead. The arrow means "turn into".</p>
+    <p>The same reaction can be written two ways. A <strong>word equation</strong> uses only the names. A <strong>symbol equation</strong> uses chemical formulae:</p>
+    <p style="text-align:center"><span class="formula">sodium + chlorine → sodium chloride</span></p>
+    <p style="text-align:center"><span class="formula">Na + Cl₂ → NaCl</span></p>
+
+    <div class="watch-out">
+      <h4>⚠ Watch out — never use '='</h4>
+      <p>A student who writes "methane + oxygen = carbon dioxide + water" has made a mistake. An equals sign would mean both sides are the <strong>same substance</strong>. They aren't — the products are completely different chemicals from the reactants. Always use the arrow →, which means "turn into".</p>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 3</span>What goes in a word equation (and what doesn't)</h3>
+    <p>A word equation contains <strong>only the names</strong> of the reactants and products. Everything else gets left out:</p>
+    <p>· <strong>No descriptions</strong> — no colours, and no states (solid/liquid/gas).<br>
+    · <strong>No catalysts</strong> — a catalyst speeds a reaction up but is not used up, so it isn't a reactant or product.<br>
+    · <strong>No energy</strong> — heat, flames and sunlight are not chemicals, so they are never included.</p>
+    <p>For example: "Hydrogen peroxide, a colourless liquid, turns into water and oxygen, sped up by manganese oxide (a catalyst)." Strip out everything but the chemicals and you are left with:</p>
+    <p style="text-align:center"><span class="formula">hydrogen peroxide → water + oxygen</span></p>
+    <p>The colour and the catalyst are not written — only the reactant and the products.</p>
+
+    <div class="keywords">
+      <h4>Keywords for Part 3</h4>
+      <dl>
+        <dt>Catalyst</dt>
+        <dd>A chemical that speeds up a reaction without being used up. Because it isn't a reactant or product, it is left out of the equation.</dd>
+        <dt>Chemical formula</dt>
+        <dd>Symbols and numbers showing how many of each atom are in a chemical (e.g. CO₂ = one carbon, two oxygen).</dd>
+      </dl>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">A reaction is sped up by a catalyst. Why is the catalyst NOT written in the equation?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>It is too small to see</span></li>
+        <li><span class="letter">B</span><span>It is not really a chemical</span></li>
+        <li><span class="letter">C</span><span>It is not used up in the reaction</span></li>
+        <li><span class="letter">D</span><span>It is always a gas</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>C — it is not used up.</strong> A catalyst speeds the reaction up but is chemically unchanged at the end, so it is neither a reactant nor a product — we leave it out. <em>B is the trap: a catalyst very much IS a chemical, it just isn't consumed by the reaction.</em></div>
+      </details>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <h3 class="quiz-head">Test <em>yourself</em></h3>
+    <p class="quiz-sub">7 questions · click to reveal each answer</p>
+    <ol>
+      <li><details>
+        <summary>Define 'chemical reaction'.</summary>
+        <div class="ans">A change where the <strong>reactants turn into new substances (products)</strong> — bonds break, atoms rearrange, and new substances form.</div>
+      </details></li>
+      <li><details>
+        <summary>What is a reactant, and what is a product?</summary>
+        <div class="ans">A <strong>reactant</strong> is a starting chemical (left of the arrow). A <strong>product</strong> is a new chemical made (right of the arrow).</div>
+      </details></li>
+      <li><details>
+        <summary>Why is '→' used and not '='?</summary>
+        <div class="ans">Because the products are <strong>different substances</strong> from the reactants — they are not equal. The arrow means "turn into".</div>
+      </details></li>
+      <li><details>
+        <summary>What three things are NEVER included in a word equation?</summary>
+        <div class="ans">Descriptions/colours and states; catalysts; and energy (heat, flames, light).</div>
+      </details></li>
+      <li><details>
+        <summary>Turn this into a word equation: methane gas burns in oxygen, producing water and carbon dioxide.</summary>
+        <div class="ans"><strong>methane + oxygen → carbon dioxide + water</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>In: lithium + oxygen → lithium oxide — name the product and say how many reactants there are.</summary>
+        <div class="ans">Product: <strong>lithium oxide</strong>. There are <strong>two reactants</strong> (lithium and oxygen).</div>
+      </details></li>
+      <li><details>
+        <summary>Salt is safe to eat, but sodium and chlorine are dangerous. What does this tell you about products?</summary>
+        <div class="ans">The product is a <strong>completely new substance</strong> with different properties from the reactants it was made from.</div>
+      </details></li>
+    </ol>
+    <button class="done-btn" data-lesson-done="1">Mark this topic complete</button>
+  </div>
+</section>
+
+<!-- ===================================================================== -->
+<!-- TOPIC 2 — PHYSICAL CHANGES                                              -->
+<!-- ===================================================================== -->
+<section class="lesson" id="lesson-2">
+  <div class="lesson-head">
+    <div class="lesson-num">Topic 02 · C4 · Chemical reactions</div>
+    <h2 class="lesson-title">When is a change <em>NOT</em> a reaction?</h2>
+    <p class="lesson-promise">By the end of this topic you'll be able to tell a PHYSICAL change from a CHEMICAL reaction, use state symbols, and explain why melting and dissolving are not reactions.</p>
+  </div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 1</span>Physical changes of state</h3>
+    <p>Melt an ice cube, then put it back in the freezer — and you get ice again. After a real chemical reaction you cannot easily get the starting substances back. So is melting ice a reaction? No.</p>
+    <p>Melting and boiling are <strong>PHYSICAL changes</strong>. The substance changes its form, but its chemical formula does <strong>not</strong> change. Ice, water and steam are all H₂O:</p>
+    <p style="text-align:center"><span class="formula">melting: H₂O(s) → H₂O(l)</span></p>
+    <p style="text-align:center"><span class="formula">boiling: H₂O(l) → H₂O(g)</span></p>
+    <p>The same formula appears on both sides, so <strong>no new substance is MADE</strong>. And because nothing new was created, the change is reversible — cool it down and it freezes straight back to ice.</p>
+    <p>Those little brackets are <strong>state symbols</strong>. They tell you what physical state each chemical is in.</p>
+
+    <div class="keywords">
+      <h4>Keywords for Part 1</h4>
+      <dl>
+        <dt>Physical change</dt>
+        <dd>A change of form with no new substance — the chemical formula stays the same, and the change can be reversed.</dd>
+        <dt>State symbols</dt>
+        <dd>(s) solid · (l) liquid · (g) gas · (aq) aqueous, meaning dissolved in water.</dd>
+      </dl>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">Why is melting ice NOT a chemical reaction?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>It gets colder</span></li>
+        <li><span class="letter">B</span><span>The formula stays H₂O — no new substance is made</span></li>
+        <li><span class="letter">C</span><span>Water is a liquid</span></li>
+        <li><span class="letter">D</span><span>It cannot be reversed</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>B — the formula stays H₂O.</strong> A reaction makes a new substance with a new formula. Ice and water are both H₂O, so only the physical state changed — it is a PHYSICAL change. <em>D is actually back-to-front: melting ice CAN be reversed by freezing, which is another clue it isn't a reaction.</em></div>
+      </details>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 2</span>Mixtures and dissolving</h3>
+    <p>Dissolve salt in water, then boil the water away — and the salt comes back. Dissolving makes a <strong>mixture</strong>: two or more substances mixed together but NOT chemically joined.</p>
+    <p>When salt dissolves, NaCl(s) becomes NaCl(aq). The formula doesn't change — it's still NaCl, just spread out in water. So the salt hasn't been destroyed and no new substance has formed. Evaporate the water and the salt comes back, completely unchanged. That makes dissolving a PHYSICAL change.</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 560 200" xmlns="http://www.w3.org/2000/svg">
+        <!-- Salt + water -->
+        <g>
+          <rect x="30" y="60" width="100" height="90" rx="6" fill="#EDF2FA" stroke="#1E2761" stroke-width="2"/>
+          <g fill="#1E2761"><circle cx="55" cy="90" r="4"/><circle cx="80" cy="110" r="4"/><circle cx="100" cy="85" r="4"/><circle cx="70" cy="130" r="4"/></g>
+          <text x="80" y="50" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="11" font-weight="700" fill="#1E2761">salt + water</text>
+          <text x="80" y="170" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" fill="#5C6370">NaCl(s)</text>
+        </g>
+        <text x="160" y="110" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="24" font-weight="300" fill="#1E2761">→</text>
+        <!-- Dissolved -->
+        <g>
+          <rect x="185" y="60" width="100" height="90" rx="6" fill="#DDEBDD" stroke="#2C5F2D" stroke-width="2"/>
+          <text x="235" y="50" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="11" font-weight="700" fill="#1E2761">solution</text>
+          <text x="235" y="110" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" fill="#2C5F2D">NaCl(aq)</text>
+          <text x="235" y="170" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="#5C6370">dissolved</text>
+        </g>
+        <g transform="translate(315,110)">
+          <text x="0" y="-4" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="24" font-weight="300" fill="#B85042">→</text>
+          <text x="0" y="-20" text-anchor="middle" font-family="Instrument Serif,serif" font-style="italic" font-size="11" fill="#B85042">evaporate</text>
+        </g>
+        <!-- Salt back -->
+        <g>
+          <rect x="345" y="60" width="100" height="90" rx="6" fill="#EDF2FA" stroke="#1E2761" stroke-width="2"/>
+          <g fill="#1E2761"><circle cx="370" cy="90" r="4"/><circle cx="395" cy="110" r="4"/><circle cx="415" cy="85" r="4"/><circle cx="385" cy="130" r="4"/></g>
+          <text x="395" y="50" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="11" font-weight="700" fill="#1E2761">salt back</text>
+          <text x="395" y="170" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" fill="#5C6370">NaCl(s)</text>
+        </g>
+        <text x="500" y="105" text-anchor="middle" font-family="Instrument Serif,serif" font-style="italic" font-size="13" fill="#5C6370">same salt,</text>
+        <text x="500" y="122" text-anchor="middle" font-family="Instrument Serif,serif" font-style="italic" font-size="13" fill="#5C6370">unchanged</text>
+      </svg>
+      <div class="caption">Dissolving and recovering salt — a reversible, PHYSICAL change</div>
+    </div>
+
+    <div class="embed-slot" id="embed-physical-vs-chemical">
+      <div class="embed-slot-inner">
+        <span class="embed-tag">Interactive · drop-in</span>
+        <h4>Sort it: PHYSICAL or CHEMICAL?</h4>
+        <p>Drag everyday examples (melting chocolate, burning toast, dissolving sugar, rusting…) into the right bin and get instant feedback.</p>
+        <div class="embed-canvas" style="padding:0;border:none;display:block;background:transparent"><iframe src="interactives/physical-vs-chemical.html" title="Physical change or chemical reaction?" loading="lazy" style="width:100%;height:430px;border:0;display:block;border-radius:2px"></iframe></div>
+        <div class="embed-note"><a href="interactives/physical-vs-chemical.html" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none">Open this interactive in a new tab ↗</a></div>
+      </div>
+    </div>
+
+    <div class="watch-out">
+      <h4>⚠ Watch out — "the salt disappeared" is not a reaction</h4>
+      <p>A student dissolves salt and says a reaction happened because the salt "disappeared". They are wrong. Dissolving makes a <strong>mixture</strong>, not a new substance. The salt is still there — evaporate the water and it comes straight back, unchanged. No new substance means no reaction.</p>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 3</span>A 6-marker: iron and sulfur</h3>
+    <p>This is the classic question that pulls it all together — practise writing it out fully.</p>
+
+    <div class="worked">
+      <h4>6-mark model answer · iron + sulfur</h4>
+      <p class="q">A student mixes grey iron filings with yellow sulfur and separates them with a magnet. Later they heat a fresh mixture; it glows and forms black iron sulfide, which the magnet cannot separate. Explain which change is PHYSICAL and which is CHEMICAL, and how you can tell. [6 marks]</p>
+      <div class="step"><div class="label">Point 1</div><div class="v">Mixing the iron and sulfur is a physical change because no new substance is made — they keep their own formulae (1)</div></div>
+      <div class="step"><div class="label">Point 2</div><div class="v">They are only mixed, not chemically joined, so a magnet can separate the iron from the sulfur (1)</div></div>
+      <div class="step"><div class="label">Point 3</div><div class="v">Heating the mixture is a chemical reaction because a new substance, iron sulfide, is formed — shown by the glow and colour change (1)</div></div>
+      <div class="step"><div class="label">Point 4</div><div class="v">The atoms have rearranged and joined chemically, so the iron is now part of a compound (1)</div></div>
+      <div class="step answer"><div class="label">Point 5</div><div class="v">The magnet can no longer separate them, because the iron is locked inside the new compound (1)</div></div>
+    </div>
+
+    <div class="watch-out">
+      <h4>⚠ Mark scheme — 1 mark each</h4>
+      <p>Mixing = no new substance; mixture not joined / separable; heating makes a new substance (iron sulfide); evidence (glow / colour change); atoms rearranged and joined; can't be separated. Max 6.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <h3 class="quiz-head">Test <em>yourself</em></h3>
+    <p class="quiz-sub">7 questions · click to reveal each answer</p>
+    <ol>
+      <li><details>
+        <summary>Define 'physical change'.</summary>
+        <div class="ans">A change of form with <strong>no new substance</strong> — the formula stays the same, and it can usually be reversed.</div>
+      </details></li>
+      <li><details>
+        <summary>What do the state symbols (s), (l), (g) and (aq) mean?</summary>
+        <div class="ans">(s) solid · (l) liquid · (g) gas · (aq) <strong>aqueous</strong> (dissolved in water).</div>
+      </details></li>
+      <li><details>
+        <summary>Write an equation, with states, for ice melting.</summary>
+        <div class="ans"><strong>H₂O(s) → H₂O(l)</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>Why is boiling water not a chemical reaction?</summary>
+        <div class="ans">The water is still <strong>H₂O</strong> — only its state changes from liquid to gas. No new substance is made.</div>
+      </details></li>
+      <li><details>
+        <summary>A student tears paper into four pieces. Is this a chemical reaction? Explain.</summary>
+        <div class="ans"><strong>No.</strong> It is still paper — same substance, no new substance is made, so it is a physical change.</div>
+      </details></li>
+      <li><details>
+        <summary>Is dissolving sugar a chemical reaction? Explain.</summary>
+        <div class="ans"><strong>No.</strong> The sugar is unchanged and can be recovered by evaporating the water — it is a physical change (a mixture).</div>
+      </details></li>
+      <li><details>
+        <summary>Why can the substances in a mixture be separated again, but the products of a reaction usually cannot?</summary>
+        <div class="ans">In a mixture the substances are <strong>not chemically joined</strong>; in a reaction the atoms are rearranged and bonded into new substances, so a chemical change is needed to separate them.</div>
+      </details></li>
+    </ol>
+    <button class="done-btn" data-lesson-done="2">Mark this topic complete</button>
+  </div>
+</section>
+
+<!-- ===================================================================== -->
+<!-- TOPIC 3 — SIGNS OF A REACTION                                           -->
+<!-- ===================================================================== -->
+<section class="lesson" id="lesson-3">
+  <div class="lesson-head">
+    <div class="lesson-num">Topic 03 · C4 · Chemical reactions</div>
+    <h2 class="lesson-title">How can we tell a <em>reaction</em> happened?</h2>
+    <p class="lesson-promise">By the end of this topic you'll know the five signs of a chemical reaction, and why a new substance is the only sure proof one has taken place.</p>
+  </div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 1</span>The five signs</h3>
+    <p>A firework bangs and flashes. Vinegar and baking soda fizz over the glass. Bread turns golden in the oven. There are clues that tell you a reaction is probably happening. There are five to remember:</p>
+    <p>· <strong>Temperature change</strong> — the mixture gets hotter or colder.<br>
+    · <strong>Light or flame</strong> — light is given out, e.g. when something burns.<br>
+    · <strong>Colour change</strong> — a new colour appears that wasn't there before.<br>
+    · <strong>Effervescence</strong> — fizzing, because a gas is being produced.<br>
+    · <strong>Precipitate</strong> — a solid forms in a liquid, turning it cloudy.</p>
+
+    <div class="keywords">
+      <h4>Keywords for Part 1</h4>
+      <dl>
+        <dt>Effervescence</dt>
+        <dd>From <em>effervescere</em> (to boil up / foam) — fizzing, as bubbles of a gas are produced in a reaction.</dd>
+        <dt>Precipitate</dt>
+        <dd>From <em>prae-</em> (before) + <em>caput</em> (head) → "to throw down" — a solid that falls out of a solution, turning it cloudy.</dd>
+      </dl>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">What is effervescence?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>A solid forming in a liquid</span></li>
+        <li><span class="letter">B</span><span>Fizzing as a gas is produced</span></li>
+        <li><span class="letter">C</span><span>A change in colour</span></li>
+        <li><span class="letter">D</span><span>A rise in temperature</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>B — fizzing as a gas is produced.</strong> Effervescence is the scientific word for fizzing — bubbles of a gas being made during a reaction. <em>A describes a precipitate, which is a different sign — don't mix the two up.</em></div>
+      </details>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 2</span>The health warning: signs are only clues</h3>
+    <p>Here's the catch. These five signs are <strong>CLUES, not proof</strong>. The only sure sign that a reaction has happened is that a <strong>NEW substance has formed</strong>. Why? Because some of these signs also happen in physical changes:</p>
+    <p>A boiling kettle gives off bubbles and gets hot — but it's only water turning to steam (still H₂O), so it's a physical change, not a reaction. Dissolving can give a temperature change. Mixing coloured liquids gives a colour change. None of those are reactions.</p>
+
+    <div class="watch-out">
+      <h4>⚠ Watch out — bubbles and heat can mislead you</h4>
+      <p>A boiling kettle bubbles and gets hot, but no new substance forms — it's a PHYSICAL change. A colour change alone can also be misleading, because some substances simply darken or lighten when heated. Always ask the real question: <strong>has a new substance been made?</strong></p>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">A kettle boils: bubbles form and it gets hot. Is this a chemical reaction?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>Yes — there are bubbles and heat</span></li>
+        <li><span class="letter">B</span><span>No — only water vapour forms; no new substance is made</span></li>
+        <li><span class="letter">C</span><span>Yes — steam is a new substance</span></li>
+        <li><span class="letter">D</span><span>No — water is a liquid</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>B — no new substance is made.</strong> Bubbles and heat are only clues. Here the water just turns to steam, which is still H₂O — a physical change. <em>C is the trap: steam is NOT a new substance, it's the same H₂O in gas form.</em></div>
+      </details>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 3</span>A 6-marker: marble chip and acid</h3>
+
+    <div class="worked">
+      <h4>6-mark model answer · marble chip + acid</h4>
+      <p class="q">A student drops a marble chip (calcium carbonate) into hydrochloric acid. Describe what they would observe, and explain how they know a chemical reaction has happened rather than a physical change. [6 marks]</p>
+      <div class="step"><div class="label">Point 1</div><div class="v">The student would observe effervescence (fizzing) as a gas is produced (1)</div></div>
+      <div class="step"><div class="label">Point 2</div><div class="v">They may also feel a temperature change and see the marble chip shrink / disappear (1)</div></div>
+      <div class="step"><div class="label">Point 3</div><div class="v">Fizzing shows a gas (carbon dioxide) is being produced, which is a sign of a reaction (1)</div></div>
+      <div class="step"><div class="label">Point 4</div><div class="v">A new substance (the gas) has been made, so it cannot simply be a physical change (1)</div></div>
+      <div class="step answer"><div class="label">Point 5</div><div class="v">In a physical change no new substance forms and it can be reversed, which is not the case here (1)</div></div>
+    </div>
+
+    <div class="watch-out">
+      <h4>⚠ Mark scheme — 1 mark each</h4>
+      <p>Effervescence observed; temperature change / chip disappears; fizzing = gas produced; gas is a new substance; physical change makes no new substance / is irreversible. Max 6.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <h3 class="quiz-head">Test <em>yourself</em></h3>
+    <p class="quiz-sub">7 questions · click to reveal each answer</p>
+    <ol>
+      <li><details>
+        <summary>List the five signs of a chemical reaction.</summary>
+        <div class="ans">Temperature change, light/flame, colour change, effervescence, precipitate.</div>
+      </details></li>
+      <li><details>
+        <summary>Define effervescence and define precipitate.</summary>
+        <div class="ans"><strong>Effervescence</strong> = fizzing, a gas being produced. <strong>Precipitate</strong> = a solid forming in a solution, turning it cloudy.</div>
+      </details></li>
+      <li><details>
+        <summary>Magnesium burns in oxygen with a bright light, leaving a white powder. Name two signs of a reaction.</summary>
+        <div class="ans"><strong>Light/flame</strong> and a <strong>colour change</strong> (to white powder).</div>
+      </details></li>
+      <li><details>
+        <summary>Lead nitrate + potassium iodide makes a yellow solid. Which sign is this?</summary>
+        <div class="ans">A <strong>precipitate</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>Why is heat alone not proof of a reaction?</summary>
+        <div class="ans">Heat can also be released or absorbed in <strong>physical changes</strong> (e.g. dissolving), so it is only a clue.</div>
+      </details></li>
+      <li><details>
+        <summary>What is the only sure sign that a reaction has happened?</summary>
+        <div class="ans">A <strong>new substance</strong> has been formed.</div>
+      </details></li>
+      <li><details>
+        <summary>Effervescence can make a reaction appear to 'lose mass'. Why? (And how could you test the gas is CO₂?)</summary>
+        <div class="ans">The gas escapes into the air, so the balance reading falls — but mass is still conserved. To test the gas, bubble it through <strong>limewater</strong>: if it turns cloudy, it is carbon dioxide.</div>
+      </details></li>
+    </ol>
+    <button class="done-btn" data-lesson-done="3">Mark this topic complete</button>
+  </div>
+</section>
+
+<!-- ===================================================================== -->
+<!-- TOPIC 4 — COMBUSTION                                                    -->
+<!-- ===================================================================== -->
+<section class="lesson" id="lesson-4">
+  <div class="lesson-head">
+    <div class="lesson-num">Topic 04 · C4 · Chemical reactions</div>
+    <h2 class="lesson-title"><em>Combustion</em>: burning fuels</h2>
+    <p class="lesson-promise">By the end of this topic you'll know the three things a fire needs, how every extinguisher works, and how to write combustion equations.</p>
+  </div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 1</span>The fire triangle</h3>
+    <p>Combustion comes from <em>com-</em> (up) + <em>burere</em> (to burn) — "burning up". It is a fuel reacting quickly with oxygen, giving out heat and light. A <strong>fuel</strong> is a substance that stores chemical energy, released by burning (wax, methane, petrol).</p>
+    <p>A fire needs <strong>three</strong> things, often drawn as the fire triangle:</p>
+    <p>· <strong>Fuel</strong> — a large store of chemical energy.<br>
+    · <strong>Oxygen</strong> — usually from the air, which is about 20% oxygen.<br>
+    · <strong>Heat</strong> — a source of heat to start AND keep the reaction going.</p>
+    <p>Remove <strong>any one</strong> side of the triangle and the fire goes out. That is exactly how every fire extinguisher works — by taking away the fuel, the oxygen, or the heat.</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 560 240" xmlns="http://www.w3.org/2000/svg">
+        <!-- Triangle -->
+        <polygon points="280,40 130,200 430,200" fill="none" stroke="#B85042" stroke-width="3"/>
+        <!-- Flame in centre -->
+        <path d="M 280 110 C 262 130 268 150 280 165 C 292 150 298 130 280 110 Z" fill="#C8A24A"/>
+        <path d="M 280 128 C 272 138 274 150 280 160 C 286 150 288 138 280 128 Z" fill="#B85042"/>
+        <text x="280" y="195" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" font-weight="700" fill="#1E2761" letter-spacing="2">COMBUSTION</text>
+        <!-- Side labels -->
+        <text x="280" y="32" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="14" font-weight="700" fill="#1E2761">HEAT</text>
+        <text x="118" y="218" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="14" font-weight="700" fill="#1E2761">FUEL</text>
+        <text x="442" y="218" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="14" font-weight="700" fill="#1E2761">OXYGEN</text>
+      </svg>
+      <div class="caption">The fire triangle — remove any side and the fire goes out</div>
+    </div>
+
+    <div class="embed-slot" id="embed-fire-triangle">
+      <div class="embed-slot-inner">
+        <span class="embed-tag">Interactive · drop-in</span>
+        <h4>Take a side off the fire triangle</h4>
+        <p>Tap fuel, oxygen or heat to remove it and watch the flame go out — then link it to a real extinguisher.</p>
+        <div class="embed-canvas" style="padding:0;border:none;display:block;background:transparent"><iframe src="interactives/fire-triangle.html" title="The fire triangle" loading="lazy" style="width:100%;height:430px;border:0;display:block;border-radius:2px"></iframe></div>
+        <div class="embed-note"><a href="interactives/fire-triangle.html" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none">Open this interactive in a new tab ↗</a></div>
+      </div>
+    </div>
+
+    <div class="keywords">
+      <h4>Keywords for Part 1</h4>
+      <dl>
+        <dt>Combustion</dt>
+        <dd>The burning of a fuel — a fuel reacting quickly with oxygen, giving out heat and light.</dd>
+        <dt>Fuel</dt>
+        <dd>A substance that stores chemical energy, released by burning.</dd>
+      </dl>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">A fire blanket puts out a chip-pan fire by…</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>removing the fuel</span></li>
+        <li><span class="letter">B</span><span>removing the heat</span></li>
+        <li><span class="letter">C</span><span>removing the oxygen</span></li>
+        <li><span class="letter">D</span><span>adding more oxygen</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>C — removing the oxygen.</strong> A fire blanket smothers the fire, cutting off the oxygen supply. Remove the oxygen side of the triangle and the fire goes out. <em>D would make a fire worse — never add oxygen to a fire.</em></div>
+      </details>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 2</span>Combustion equations</h3>
+    <p>When most fuels burn <strong>completely</strong>, the two products are always the same: <strong>carbon dioxide and water</strong>. So there is one general equation you can use for any fuel:</p>
+    <p style="text-align:center"><span class="formula">fuel + oxygen → carbon dioxide + water</span></p>
+    <p>To write the equation for a particular fuel, just swap "fuel" for its name.</p>
+
+    <div class="worked">
+      <h4>Worked example · burning methane</h4>
+      <p class="q">Write the combustion of methane as a word equation and a symbol equation.</p>
+      <div class="step"><div class="label">General</div><div class="v">fuel + oxygen → carbon dioxide + water</div></div>
+      <div class="step"><div class="label">Swap in</div><div class="v">replace "fuel" with methane</div></div>
+      <div class="step"><div class="label">Word</div><div class="v">methane + oxygen → carbon dioxide + water</div></div>
+      <div class="step answer"><div class="label">Symbol</div><div class="v">CH₄ + O₂ → CO₂ + H₂O</div></div>
+    </div>
+
+    <div class="worked">
+      <h4>Worked example · burning butane (barbecue gas)</h4>
+      <p class="q">Butane (C₄H₁₀) is a barbecue fuel. Write a word equation for its complete combustion.</p>
+      <div class="step"><div class="label">General</div><div class="v">fuel + oxygen → carbon dioxide + water</div></div>
+      <div class="step"><div class="label">Swap in</div><div class="v">the fuel is butane</div></div>
+      <div class="step answer"><div class="label">Word</div><div class="v">butane + oxygen → carbon dioxide + water</div></div>
+    </div>
+
+    <div class="watch-out">
+      <h4>⚠ Watch out — complete vs incomplete combustion</h4>
+      <p>Complete combustion (plenty of oxygen) gives <strong>carbon dioxide and water</strong>. But if there is <strong>too little oxygen</strong>, you get <strong>incomplete combustion</strong>, which can produce poisonous <strong>carbon monoxide</strong> (CO) and black <strong>soot</strong> (carbon) instead. That is why faulty gas boilers are dangerous.</p>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">What are the two products when a fuel burns completely?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>carbon dioxide and water</span></li>
+        <li><span class="letter">B</span><span>hydrogen and oxygen</span></li>
+        <li><span class="letter">C</span><span>carbon and water</span></li>
+        <li><span class="letter">D</span><span>smoke and ash</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>A — carbon dioxide and water.</strong> Complete combustion of a fuel always makes carbon dioxide and water. <em>C (carbon) and D (smoke / soot) are products of INCOMPLETE combustion, when there isn't enough oxygen.</em></div>
+      </details>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <h3 class="quiz-head">Test <em>yourself</em></h3>
+    <p class="quiz-sub">8 questions · click to reveal each answer</p>
+    <ol>
+      <li><details>
+        <summary>What is combustion?</summary>
+        <div class="ans">The burning of a fuel — a <strong>fuel reacting quickly with oxygen</strong>, giving out heat and light.</div>
+      </details></li>
+      <li><details>
+        <summary>Name the three sides of the fire triangle.</summary>
+        <div class="ans"><strong>Fuel, oxygen and heat.</strong></div>
+      </details></li>
+      <li><details>
+        <summary>What are the two products of complete combustion?</summary>
+        <div class="ans"><strong>Carbon dioxide and water.</strong></div>
+      </details></li>
+      <li><details>
+        <summary>Write the symbol equation for the combustion of methane.</summary>
+        <div class="ans"><strong>CH₄ + O₂ → CO₂ + H₂O.</strong></div>
+      </details></li>
+      <li><details>
+        <summary>How does a fire blanket put out a fire?</summary>
+        <div class="ans">It smothers the fire, <strong>removing the oxygen</strong> side of the triangle.</div>
+      </details></li>
+      <li><details>
+        <summary>Why does blowing on embers make them burn faster?</summary>
+        <div class="ans">Blowing supplies <strong>more oxygen</strong>, so the combustion reaction speeds up.</div>
+      </details></li>
+      <li><details>
+        <summary>Explain why a candle under a small jar goes out, using the fire triangle.</summary>
+        <div class="ans">The candle uses up the oxygen in the jar; with the <strong>oxygen side gone</strong>, the flame goes out.</div>
+      </details></li>
+      <li><details>
+        <summary>STRETCH: Why is incomplete combustion (too little oxygen) dangerous?</summary>
+        <div class="ans">It can produce poisonous <strong>carbon monoxide</strong> instead of carbon dioxide.</div>
+      </details></li>
+    </ol>
+    <button class="done-btn" data-lesson-done="4">Mark this topic complete</button>
+  </div>
+</section>
+
+<!-- ===================================================================== -->
+<!-- TOPIC 5 — THERMAL DECOMPOSITION                                         -->
+<!-- ===================================================================== -->
+<section class="lesson" id="lesson-5">
+  <div class="lesson-head">
+    <div class="lesson-num">Topic 05 · C4 · Chemical reactions</div>
+    <h2 class="lesson-title">Thermal <em>decomposition</em></h2>
+    <p class="lesson-promise">By the end of this topic you'll be able to explain how heat breaks one substance into two, write metal-carbonate equations, and describe the limewater test for carbon dioxide.</p>
+  </div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 1</span>Breaking one substance into two</h3>
+    <p>Heat green copper carbonate strongly and it turns black, while a gas is given off. One substance has become two — just by heating it. That's <strong>thermal decomposition</strong>.</p>
+    <p>The words tell you exactly what it is: <em>thermal</em> (from <em>thermos</em>, "heat") and <em>decomposition</em> (from <em>de-</em> "apart" + <em>componere</em> "to put together") — breaking something down into simpler parts using heat.</p>
+    <p>The key feature: <strong>ONE reactant is broken down by heat into two or more products</strong>. The heat energy is what breaks the bonds inside the compound. A classic example is metal carbonates:</p>
+    <p style="text-align:center"><span class="formula">metal carbonate → metal oxide + carbon dioxide</span></p>
+
+    <div class="worked">
+      <h4>Worked example · decomposing carbonates</h4>
+      <p class="q">Write the decomposition of copper carbonate as words, and of calcium carbonate as symbols.</p>
+      <div class="step"><div class="label">General</div><div class="v">metal carbonate → metal oxide + carbon dioxide</div></div>
+      <div class="step"><div class="label">Copper</div><div class="v">copper carbonate → copper oxide + carbon dioxide</div></div>
+      <div class="step"><div class="label">Note</div><div class="v">the metal oxide keeps the same metal; the other product is always CO₂</div></div>
+      <div class="step answer"><div class="label">Calcium</div><div class="v">CaCO₃ → CaO + CO₂</div></div>
+    </div>
+
+    <div class="keywords">
+      <h4>Keywords for Part 1</h4>
+      <dl>
+        <dt>Thermal decomposition</dt>
+        <dd>A reaction where ONE reactant is broken down by heat into two or more products.</dd>
+        <dt>Metal carbonate</dt>
+        <dd>A compound of a metal with carbon and oxygen (e.g. CaCO₃). On heating, it breaks into a metal oxide + carbon dioxide.</dd>
+      </dl>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">How many reactants are there in a thermal decomposition reaction?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>One</span></li>
+        <li><span class="letter">B</span><span>Two</span></li>
+        <li><span class="letter">C</span><span>Three</span></li>
+        <li><span class="letter">D</span><span>None</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>A — one.</strong> Thermal decomposition starts with just ONE reactant, which heat breaks down into two or more products. <em>This is the opposite of combustion, where a fuel reacts WITH oxygen — that's two reactants.</em></div>
+      </details>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 2</span>Testing the gas: the limewater test</h3>
+    <p>When a metal carbonate decomposes, the gas given off is <strong>carbon dioxide</strong>. You can prove it with the <strong>limewater test</strong>: bubble the gas through limewater and it turns <strong>cloudy white</strong>. No other gas in this topic does this, so cloudy limewater is the chemical test for CO₂.</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 560 200" xmlns="http://www.w3.org/2000/svg">
+        <!-- Heated tube -->
+        <g>
+          <rect x="40" y="70" width="120" height="40" rx="6" fill="#EDF2FA" stroke="#1E2761" stroke-width="2"/>
+          <text x="100" y="95" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="11" font-weight="700" fill="#1E2761">copper carbonate</text>
+          <!-- Bunsen flame -->
+          <path d="M 95 118 C 88 130 92 142 100 150 C 108 142 112 130 105 118 Z" fill="#C8A24A"/>
+          <text x="100" y="172" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="#B85042" letter-spacing="1">HEAT</text>
+        </g>
+        <!-- Delivery tube -->
+        <path d="M 160 90 L 250 90 L 250 140 L 330 140" fill="none" stroke="#1E2761" stroke-width="2"/>
+        <!-- Limewater -->
+        <g>
+          <rect x="320" y="100" width="90" height="80" rx="6" fill="#DDEBDD" stroke="#2C5F2D" stroke-width="2"/>
+          <g fill="#FFFFFF" opacity="0.8"><circle cx="345" cy="130" r="4"/><circle cx="375" cy="150" r="4"/><circle cx="390" cy="125" r="4"/><circle cx="358" cy="165" r="4"/></g>
+          <text x="365" y="195" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="11" font-weight="700" fill="#1E2761">limewater</text>
+        </g>
+        <text x="500" y="135" text-anchor="middle" font-family="Instrument Serif,serif" font-style="italic" font-size="13" fill="#5C6370">turns cloudy</text>
+        <text x="500" y="152" text-anchor="middle" font-family="Instrument Serif,serif" font-style="italic" font-size="13" fill="#5C6370">→ CO₂</text>
+        <text x="280" y="20" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" fill="#5C6370">copper carbonate → copper oxide + carbon dioxide</text>
+        <text x="280" y="38" text-anchor="middle" font-family="Instrument Serif,serif" font-style="italic" font-size="12" fill="#B85042">green → black + gas</text>
+      </svg>
+      <div class="caption">The limewater test: cloudy white limewater means carbon dioxide</div>
+    </div>
+
+    <div class="watch-out">
+      <h4>⚠ Watch out — remove the tube before you stop heating</h4>
+      <p>When testing the gas, lift the delivery tube out of the limewater <strong>before</strong> you turn off the heat. If you don't, the cooling tube can suck limewater back up the delivery tube into the hot test tube, which may crack it. This is called "suck-back".</p>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">Copper carbonate is heated and the gas turns limewater cloudy. The gas is…</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>oxygen</span></li>
+        <li><span class="letter">B</span><span>hydrogen</span></li>
+        <li><span class="letter">C</span><span>carbon dioxide</span></li>
+        <li><span class="letter">D</span><span>water vapour</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>C — carbon dioxide.</strong> Carbon dioxide turns limewater cloudy white — that is the chemical test for CO₂. <em>None of the other gases listed turn limewater cloudy, so the test is a reliable identifier.</em></div>
+      </details>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 3</span>A 6-marker: proving decomposition</h3>
+
+    <div class="worked">
+      <h4>6-mark model answer · copper carbonate</h4>
+      <p class="q">Describe how you could show that heating copper carbonate is a thermal decomposition reaction that produces carbon dioxide. Include the apparatus and the test for the gas. [6 marks]</p>
+      <div class="step"><div class="label">Point 1</div><div class="v">Heat the copper carbonate strongly in a test tube, connected by a delivery tube to a tube of limewater (1)</div></div>
+      <div class="step"><div class="label">Point 2</div><div class="v">The green copper carbonate turns black (forming copper oxide) — a colour change shows a reaction (1)</div></div>
+      <div class="step"><div class="label">Point 3</div><div class="v">The gas given off is bubbled through limewater, which turns cloudy white (1)</div></div>
+      <div class="step"><div class="label">Point 4</div><div class="v">Cloudy limewater is the test for carbon dioxide, so the gas produced is CO₂ (1)</div></div>
+      <div class="step answer"><div class="label">Point 5</div><div class="v">It is thermal decomposition because ONE reactant is broken down by heat into two products (1)</div></div>
+    </div>
+
+    <div class="watch-out">
+      <h4>⚠ Mark scheme — 1 mark each</h4>
+      <p>Heat in tube + delivery to limewater; green → black colour change; gas through limewater; limewater cloudy = CO₂; one reactant → two products; identifies as thermal decomposition. Max 6.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <h3 class="quiz-head">Test <em>yourself</em></h3>
+    <p class="quiz-sub">7 questions · click to reveal each answer</p>
+    <ol>
+      <li><details>
+        <summary>Define thermal decomposition, and say how many reactants it has.</summary>
+        <div class="ans"><strong>One reactant</strong> broken down by heat into two or more products. It has just one reactant.</div>
+      </details></li>
+      <li><details>
+        <summary>Complete: ______ → calcium oxide + carbon dioxide</summary>
+        <div class="ans"><strong>calcium carbonate</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>Write the symbol equation: MgCO₃ →</summary>
+        <div class="ans"><strong>MgCO₃ → MgO + CO₂.</strong></div>
+      </details></li>
+      <li><details>
+        <summary>What is the test for carbon dioxide, and the positive result?</summary>
+        <div class="ans">Bubble the gas through <strong>limewater</strong>; it turns <strong>cloudy white</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>Copper carbonate is green; copper oxide is black. Which sign of a reaction is this?</summary>
+        <div class="ans">A <strong>colour change</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>Why does decomposing a carbonate need a continuous supply of heat?</summary>
+        <div class="ans">Heat energy is needed to keep <strong>breaking the strong bonds</strong> inside the compound.</div>
+      </details></li>
+      <li><details>
+        <summary>STRETCH: Limestone (CaCO₃) is heated in kilns to make quicklime (CaO). Name the reaction and write its symbol equation.</summary>
+        <div class="ans"><strong>Thermal decomposition:</strong> CaCO₃ → CaO + CO₂.</div>
+      </details></li>
+    </ol>
+    <button class="done-btn" data-lesson-done="5">Mark this topic complete</button>
+  </div>
+</section>
+
+<!-- ===================================================================== -->
+<!-- TOPIC 6 — OXIDATION                                                     -->
+<!-- ===================================================================== -->
+<section class="lesson" id="lesson-6">
+  <div class="lesson-head">
+    <div class="lesson-num">Topic 06 · C4 · Chemical reactions</div>
+    <h2 class="lesson-title"><em>Oxidation</em>: reacting with oxygen</h2>
+    <p class="lesson-promise">By the end of this topic you'll know that oxidation is gaining oxygen, how to write metal-oxide equations, and why rusting is just slow oxidation.</p>
+  </div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 1</span>Gaining oxygen</h3>
+    <p>A bike chain left in the rain slowly turns orange and flaky. Magnesium ribbon burns with a blinding white light, leaving a white powder. Both reacted with the same gas from the air — <strong>oxygen</strong>.</p>
+    <p><strong>Oxidation</strong> is a reaction in which a substance <strong>gains oxygen</strong>. Even though oxygen is only about 20% of the air, it is reactive enough to react with most metals. The general equation is:</p>
+    <p style="text-align:center"><span class="formula">metal + oxygen → metal oxide</span></p>
+    <p>The product always ends in <strong>-ide</strong> — magnesium oxide, iron oxide, and so on.</p>
+
+    <div class="worked">
+      <h4>Worked example · oxidation equations</h4>
+      <p class="q">Write the rusting of iron as a word equation, and magnesium reacting with oxygen as a symbol equation.</p>
+      <div class="step"><div class="label">General</div><div class="v">metal + oxygen → metal oxide</div></div>
+      <div class="step"><div class="label">Iron</div><div class="v">iron + oxygen → iron oxide &nbsp;(iron oxide is rust)</div></div>
+      <div class="step answer"><div class="label">Magnesium</div><div class="v">Mg + O₂ → MgO</div></div>
+    </div>
+
+    <div class="keywords">
+      <h4>Keywords for Part 1</h4>
+      <dl>
+        <dt>Oxidation</dt>
+        <dd>A reaction in which a substance gains oxygen, forming an oxide.</dd>
+        <dt>Oxide</dt>
+        <dd>A compound of an element with oxygen — its name ends in "-ide" (e.g. magnesium oxide).</dd>
+        <dt>Rust</dt>
+        <dd>The common name for iron oxide, formed when iron is oxidised by oxygen (and water) in the air.</dd>
+      </dl>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">Iron + oxygen → ?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>iron oxygen</span></li>
+        <li><span class="letter">B</span><span>iron oxide</span></li>
+        <li><span class="letter">C</span><span>iron dioxide</span></li>
+        <li><span class="letter">D</span><span>iron hydroxide</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>B — iron oxide.</strong> A metal reacting with oxygen makes a metal OXIDE. Iron oxide is the orange substance we call rust. <em>D (hydroxide) would need hydrogen too — here we only have iron and oxygen.</em></div>
+      </details>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 2</span>Rusting — and stopping it</h3>
+    <p>Rusting is just <strong>slow oxidation</strong> of iron: iron + oxygen → iron oxide. It happens faster when water (and especially salt water) is present. Note that salt water <strong>speeds up</strong> rusting but is not used up, so it acts like a catalyst — it isn't written in the equation.</p>
+    <p>To stop iron rusting, you keep the oxygen and water away from it — that's why iron railings are <strong>painted</strong>, and bike chains are <strong>oiled</strong>. A barrier of paint or oil means oxygen can't reach the iron, so it can't oxidise.</p>
+
+    <div class="watch-out">
+      <h4>⚠ Watch out — oxidation is not the same as combustion</h4>
+      <p>Both reactions involve oxygen, but they're different. <strong>Combustion</strong> needs a fuel and gives out lots of heat and light quickly (and makes carbon dioxide + water). <strong>Oxidation</strong> just adds oxygen to an element to make an oxide — and it can be very slow, like rusting, with no flame at all.</p>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">Rust is the common name for…</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>iron oxide</span></li>
+        <li><span class="letter">B</span><span>iron carbonate</span></li>
+        <li><span class="letter">C</span><span>magnesium oxide</span></li>
+        <li><span class="letter">D</span><span>iron chloride</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>A — iron oxide.</strong> Rusting is the slow oxidation of iron: iron + oxygen → iron oxide. Iron oxide is rust. <em>C is the trap if you mix up the metals — rust is iron, not magnesium.</em></div>
+      </details>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <h3 class="quiz-head">Test <em>yourself</em></h3>
+    <p class="quiz-sub">7 questions · click to reveal each answer</p>
+    <ol>
+      <li><details>
+        <summary>Define oxidation, and name the gas involved.</summary>
+        <div class="ans">A reaction in which a substance <strong>gains oxygen</strong> (to form an oxide). The gas is <strong>oxygen</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>Write the general equation for the oxidation of a metal.</summary>
+        <div class="ans"><strong>metal + oxygen → metal oxide.</strong></div>
+      </details></li>
+      <li><details>
+        <summary>Complete: sodium + oxygen → ______, and lead + oxygen → ______</summary>
+        <div class="ans"><strong>sodium oxide</strong>; and <strong>lead oxide</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>Write a word equation for the rusting of iron.</summary>
+        <div class="ans"><strong>iron + oxygen → iron oxide.</strong></div>
+      </details></li>
+      <li><details>
+        <summary>Why is salt water NOT written in the rusting equation, even though it speeds rusting up?</summary>
+        <div class="ans">It acts like a <strong>catalyst</strong> — it speeds the reaction but is not used up, so it isn't a reactant or product.</div>
+      </details></li>
+      <li><details>
+        <summary>Use oxidation to explain why iron railings are painted.</summary>
+        <div class="ans">Paint keeps <strong>oxygen (and water) away</strong> from the iron, so it cannot oxidise / rust.</div>
+      </details></li>
+      <li><details>
+        <summary>STRETCH: Aluminium forms an oxide layer that protects it. Explain why it doesn't 'rust away' like iron.</summary>
+        <div class="ans">Aluminium oxide forms a thin, <strong>sealed layer</strong> that stops further oxygen reaching the metal underneath.</div>
+      </details></li>
+    </ol>
+    <button class="done-btn" data-lesson-done="6">Mark this topic complete</button>
+  </div>
+</section>
+
+<!-- ===================================================================== -->
+<!-- TOPIC 7 — DISPLACEMENT                                                  -->
+<!-- ===================================================================== -->
+<section class="lesson" id="lesson-7">
+  <div class="lesson-head">
+    <div class="lesson-num">Topic 07 · C4 · Chemical reactions</div>
+    <h2 class="lesson-title"><em>Displacement</em> reactions</h2>
+    <p class="lesson-promise">By the end of this topic you'll know how a more reactive element pushes out a less reactive one, when displacement happens (and doesn't), and how to tell the four reaction types apart.</p>
+  </div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 1</span>Swapping places</h3>
+    <p>In the Bronze Age, people built wood fires on green copper rocks and found flecks of pink copper metal in the ashes. The carbon in the wood had "stolen" the oxygen from the copper compound. How can one element push another out of a compound?</p>
+    <p><strong>Displacement</strong> (from <em>dis-</em> "apart" + <em>place</em>) is when a <strong>MORE reactive</strong> element takes the place of a <strong>LESS reactive</strong> element in a compound. The general pattern is:</p>
+    <p style="text-align:center"><span class="formula">element 1 oxide + element 2 → element 2 oxide + element 1</span></p>
+    <p>But there's a vital condition: this <strong>only happens if element 2 is more reactive</strong> than element 1. A less reactive element cannot push out a more reactive one.</p>
+
+    <div class="worked">
+      <h4>Worked example · copper oxide + magnesium</h4>
+      <p class="q">Magnesium is more reactive than copper. Write the reaction as words and as symbols.</p>
+      <div class="step"><div class="label">General</div><div class="v">element 1 oxide + element 2 → element 2 oxide + element 1</div></div>
+      <div class="step"><div class="label">Why</div><div class="v">magnesium is more reactive, so it takes the oxygen</div></div>
+      <div class="step"><div class="label">Word</div><div class="v">copper oxide + magnesium → magnesium oxide + copper</div></div>
+      <div class="step answer"><div class="label">Symbol</div><div class="v">CuO + Mg → MgO + Cu</div></div>
+    </div>
+
+    <div class="embed-slot" id="embed-reactivity-displacement">
+      <div class="embed-slot-inner">
+        <span class="embed-tag">Interactive · drop-in</span>
+        <h4>Will it displace?</h4>
+        <p>Pick a metal and a metal compound, check them against the reactivity series, and see whether a displacement reaction happens.</p>
+        <div class="embed-canvas" style="padding:0;border:none;display:block;background:transparent"><iframe src="interactives/reactivity-displacement.html" title="Reactivity and displacement" loading="lazy" style="width:100%;height:450px;border:0;display:block;border-radius:2px"></iframe></div>
+        <div class="embed-note"><a href="interactives/reactivity-displacement.html" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none">Open this interactive in a new tab ↗</a></div>
+      </div>
+    </div>
+
+    <div class="keywords">
+      <h4>Keywords for Part 1</h4>
+      <dl>
+        <dt>Displacement</dt>
+        <dd>A reaction where a more reactive element takes the place of a less reactive element in a compound.</dd>
+        <dt>Reactive</dt>
+        <dd>From <em>re-</em> (again) + <em>agere</em> (to act) — how easily a substance takes part in a reaction.</dd>
+      </dl>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">copper oxide + magnesium → ? (magnesium is more reactive than copper)</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>magnesium oxide + copper</span></li>
+        <li><span class="letter">B</span><span>copper oxide + magnesium</span></li>
+        <li><span class="letter">C</span><span>no reaction</span></li>
+        <li><span class="letter">D</span><span>magnesium copper oxide</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>A — magnesium oxide + copper.</strong> Magnesium is more reactive, so it takes the oxygen to form magnesium oxide, leaving copper on its own. <em>C would be right only if the added element were LESS reactive — but here magnesium is more reactive, so it does react.</em></div>
+      </details>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 2</span>When displacement does NOT happen</h3>
+    <p>Heat magnesium oxide with carbon and... nothing happens. Why? Because magnesium is <strong>more</strong> reactive than carbon, so carbon cannot push it out. A less reactive element can never displace a more reactive one.</p>
+    <p>That's also why you can prove iron has been displaced from iron oxide with a magnet: iron oxide is <strong>not</strong> magnetic, but the iron metal produced <strong>is</strong>. Move a magnet under the cooled ash and the specks of iron move — proof a displacement reaction has happened.</p>
+
+    <div class="watch-out">
+      <h4>⚠ Watch out — direction matters</h4>
+      <p>Carbon can displace copper from copper oxide (carbon is more reactive than copper). But copper <strong>cannot</strong> displace carbon from carbon dioxide (copper is less reactive). Displacement only ever runs one way: <strong>MORE reactive pushes out LESS reactive</strong>, never the reverse.</p>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 3</span>Telling the four reaction types apart</h3>
+    <p>You've now met four reaction types. Use this checklist to classify any reaction you're given:</p>
+    <p>· <strong>Combustion</strong> — a fuel + oxygen → carbon dioxide + water.<br>
+    · <strong>Thermal decomposition</strong> — ONE reactant broken by heat into two or more products.<br>
+    · <strong>Oxidation</strong> — a substance reacts with oxygen → an oxide.<br>
+    · <strong>Displacement</strong> — a more reactive element takes another's place in a compound.</p>
+
+    <div class="worked">
+      <h4>6-mark model answer · carbon, copper and reactivity</h4>
+      <p class="q">Explain what a displacement reaction is, and why carbon can displace copper from copper oxide, but copper cannot displace carbon from carbon dioxide. [6 marks]</p>
+      <div class="step"><div class="label">Point 1</div><div class="v">A displacement reaction is one where a more reactive element takes the place of a less reactive element in a compound (1)</div></div>
+      <div class="step"><div class="label">Point 2</div><div class="v">Carbon is more reactive than copper, so it can take the oxygen from copper oxide (1)</div></div>
+      <div class="step"><div class="label">Point 3</div><div class="v">The products are copper and carbon dioxide: copper oxide + carbon → copper + carbon dioxide (1)</div></div>
+      <div class="step"><div class="label">Point 4</div><div class="v">Copper is less reactive than carbon, so it cannot take the oxygen back (1)</div></div>
+      <div class="step answer"><div class="label">Point 5</div><div class="v">A less reactive element can never displace a more reactive one, so no reaction happens (1)</div></div>
+    </div>
+
+    <div class="watch-out">
+      <h4>⚠ Mark scheme — 1 mark each</h4>
+      <p>More reactive takes place of less reactive; carbon more reactive than copper; correct products/equation; copper less reactive than carbon; less reactive can't displace more reactive. Max 6.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <h3 class="quiz-head">Test <em>yourself</em></h3>
+    <p class="quiz-sub">8 questions · click to reveal each answer</p>
+    <ol>
+      <li><details>
+        <summary>Define a displacement reaction.</summary>
+        <div class="ans">A reaction where a <strong>more reactive element takes the place of a less reactive one</strong> in a compound.</div>
+      </details></li>
+      <li><details>
+        <summary>What must be true of the added element for displacement to happen?</summary>
+        <div class="ans">It must be <strong>MORE reactive</strong> than the element already in the compound.</div>
+      </details></li>
+      <li><details>
+        <summary>Complete: lead oxide + aluminium → ______ + ______ (aluminium is more reactive)</summary>
+        <div class="ans"><strong>aluminium oxide + lead.</strong></div>
+      </details></li>
+      <li><details>
+        <summary>Complete: tin oxide + carbon → ______ + ______</summary>
+        <div class="ans"><strong>tin + carbon dioxide.</strong></div>
+      </details></li>
+      <li><details>
+        <summary>Write the symbol equation: CuO + Mg →</summary>
+        <div class="ans"><strong>CuO + Mg → MgO + Cu.</strong></div>
+      </details></li>
+      <li><details>
+        <summary>Classify each: (a) tin + oxygen → tin oxide; (b) propane + oxygen → carbon dioxide + water; (c) barium oxide + lithium → lithium oxide + barium.</summary>
+        <div class="ans">(a) <strong>oxidation</strong>; (b) <strong>combustion</strong>; (c) <strong>displacement</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>How can a magnet prove iron has been displaced from iron oxide?</summary>
+        <div class="ans">Iron oxide is <strong>not magnetic</strong> but iron <strong>is</strong>, so a magnet moves the iron specks produced.</div>
+      </details></li>
+      <li><details>
+        <summary>STRETCH: Use reactivity to explain why gold is found as pure metal in nature, but iron is not.</summary>
+        <div class="ans">Gold is very <strong>unreactive</strong>, so it stays as the pure metal; iron reacts (oxidises) and is found as a compound.</div>
+      </details></li>
+    </ol>
+    <button class="done-btn" data-lesson-done="7">Mark this topic complete</button>
+  </div>
+</section>
+
+<!-- ===================================================================== -->
+<!-- TOPIC 8 — CONSERVATION OF MASS                                          -->
+<!-- ===================================================================== -->
+<section class="lesson" id="lesson-8">
+  <div class="lesson-head">
+    <div class="lesson-num">Topic 08 · C4 · Chemical reactions</div>
+    <h2 class="lesson-title">Conservation of <em>mass</em></h2>
+    <p class="lesson-promise">By the end of this topic you'll be able to state the law of conservation of mass, calculate a missing mass, and explain why mass can appear to change in an open container.</p>
+  </div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 1</span>The law: mass before = mass after</h3>
+    <p>In a reaction, bonds break, atoms rearrange, and new bonds form. But <strong>no atoms are MADE or DESTROYED</strong> — they are only rearranged. Every atom you start with is still there at the end. That gives us the <strong>law of conservation of mass</strong>:</p>
+    <p style="text-align:center"><span class="formula">total mass of REACTANTS = total mass of PRODUCTS</span></p>
+    <p>So if 100 g of reactants react, you must get exactly 100 g of products. And if you know all the masses but one, you can work out the missing mass.</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg">
+        <!-- Balance fulcrum -->
+        <polygon points="280,180 260,210 300,210" fill="#1E2761"/>
+        <!-- Level beam -->
+        <line x1="90" y1="120" x2="470" y2="120" stroke="#1E2761" stroke-width="4"/>
+        <line x1="280" y1="120" x2="280" y2="180" stroke="#1E2761" stroke-width="4"/>
+        <!-- Left pan: reactants -->
+        <line x1="150" y1="120" x2="150" y2="150" stroke="#1E2761" stroke-width="2"/>
+        <path d="M 110 150 A 40 22 0 0 0 190 150 Z" fill="#EDF2FA" stroke="#1E2761" stroke-width="2"/>
+        <g fill="#1E2761"><circle cx="135" cy="152" r="6"/><circle cx="150" cy="160" r="6"/><circle cx="165" cy="152" r="6"/></g>
+        <text x="150" y="98" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" font-weight="700" fill="#B85042" letter-spacing="1">REACTANTS</text>
+        <!-- Right pan: products -->
+        <line x1="410" y1="120" x2="410" y2="150" stroke="#1E2761" stroke-width="2"/>
+        <path d="M 370 150 A 40 22 0 0 0 450 150 Z" fill="#DDEBDD" stroke="#2C5F2D" stroke-width="2"/>
+        <g fill="#2C5F2D"><circle cx="395" cy="152" r="6"/><circle cx="410" cy="160" r="6"/><circle cx="425" cy="152" r="6"/></g>
+        <text x="410" y="98" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" font-weight="700" fill="#2C5F2D" letter-spacing="1">PRODUCTS</text>
+        <!-- Equals -->
+        <text x="280" y="70" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="40" font-weight="300" fill="#C8A24A">=</text>
+        <text x="280" y="40" text-anchor="middle" font-family="Instrument Serif,serif" font-style="italic" font-size="14" fill="#5C6370">same atoms, same mass</text>
+      </svg>
+      <div class="caption">The balance stays level — reactant mass equals product mass</div>
+    </div>
+
+    <div class="worked">
+      <h4>Worked example · find the missing mass</h4>
+      <p class="q">4 g of methane burns completely, making 11 g of carbon dioxide and 9 g of water. What mass of oxygen reacted?</p>
+      <div class="step"><div class="label">Equation</div><div class="v">methane + oxygen → carbon dioxide + water</div></div>
+      <div class="step"><div class="label">Known</div><div class="v">4 g + ? → 11 g + 9 g</div></div>
+      <div class="step"><div class="label">Total side</div><div class="v">products = 11 + 9 = 20 g</div></div>
+      <div class="step"><div class="label">Apply law</div><div class="v">reactants must also total 20 g</div></div>
+      <div class="step answer"><div class="label">Answer</div><div class="v">oxygen = 20 − 4 = 16 g</div></div>
+    </div>
+
+    <div class="watch-out">
+      <h4>⚠ Tip — total the side you know completely first</h4>
+      <p>The safest method: find the side where you know <strong>every</strong> mass and add them up. Then use conservation of mass — the other side has the same total — and subtract to find the missing value.</p>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">100 g of reactants react together. What is the total mass of the products?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>100 g</span></li>
+        <li><span class="letter">B</span><span>Less than 100 g</span></li>
+        <li><span class="letter">C</span><span>More than 100 g</span></li>
+        <li><span class="letter">D</span><span>You cannot tell</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>A — 100 g.</strong> By conservation of mass, no atoms are made or destroyed, so the products have the same total mass as the reactants. <em>D is tempting, but the law lets you be certain: the totals always match exactly.</em></div>
+      </details>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 2</span>When mass APPEARS to change</h3>
+    <p>Burn a log and the ash weighs far less. Leave an iron nail in damp air and the rusty nail weighs MORE. Yet not a single atom was made or destroyed. How can this be?</p>
+    <p>The answer is always a <strong>gas</strong> that isn't sitting on the balance:</p>
+    <p>· <strong>Appears to GAIN mass</strong> — a gas reactant (e.g. oxygen) joins from the air. When iron wool burns, oxygen atoms from the air join the iron, so the reading goes UP.<br>
+    · <strong>Appears to LOSE mass</strong> — a gas product escapes. When acid reacts with a carbonate in an open beaker, CO₂ escapes into the air, so the reading goes DOWN.</p>
+    <p>In both cases mass is really conserved — the gas just isn't being weighed. Weigh everything (gas included, in a sealed container) and the masses are equal.</p>
+
+    <div class="embed-slot" id="embed-mass-balance">
+      <div class="embed-slot-inner">
+        <span class="embed-tag">Interactive · drop-in</span>
+        <h4>The balance that stays level</h4>
+        <p>Run a reaction on a balance and toggle between a sealed and an open container to see why the reading does — or doesn't — appear to change.</p>
+        <div class="embed-canvas" style="padding:0;border:none;display:block;background:transparent"><iframe src="interactives/mass-balance.html" title="Conservation of mass" loading="lazy" style="width:100%;height:430px;border:0;display:block;border-radius:2px"></iframe></div>
+        <div class="embed-note"><a href="interactives/mass-balance.html" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none">Open this interactive in a new tab ↗</a></div>
+      </div>
+    </div>
+
+    <div class="watch-out">
+      <h4>⚠ Watch out — mass never "disappears"</h4>
+      <p>When a fizzing reaction loses mass on the balance, the mass has NOT been destroyed — the gas has simply escaped into the air. To prove conservation of mass for a fizzing reaction, do it in a <strong>sealed container</strong> (a conical flask with a bung or a balloon). The gas is trapped, and the mass stays exactly the same.</p>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">Marble chips react with acid in an OPEN beaker on a balance. The reading falls. Why?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>Mass has been destroyed</span></li>
+        <li><span class="letter">B</span><span>Carbon dioxide gas escapes into the air</span></li>
+        <li><span class="letter">C</span><span>The acid evaporates away</span></li>
+        <li><span class="letter">D</span><span>The balance is broken</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>B — carbon dioxide gas escapes.</strong> A gas is produced and leaves the open beaker, so it no longer pushes down on the balance — but mass is still conserved. <em>A is the classic misconception: mass is never destroyed, it just left as a gas.</em></div>
+      </details>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 3</span>A 6-marker: magnesium vs marble</h3>
+
+    <div class="worked">
+      <h4>6-mark model answer · explaining both observations</h4>
+      <p class="q">When magnesium is burned in air its mass increases, but when marble chips react with acid in an open beaker the mass decreases. Explain BOTH observations using the law of conservation of mass. [6 marks]</p>
+      <div class="step"><div class="label">Point 1</div><div class="v">The law of conservation of mass says no atoms are created or destroyed — the mass of reactants equals the mass of products (1)</div></div>
+      <div class="step"><div class="label">Point 2</div><div class="v">When magnesium burns, oxygen atoms from the air join the magnesium to form magnesium oxide, so the solid gains mass (1)</div></div>
+      <div class="step"><div class="label">Point 3</div><div class="v">When marble reacts with acid, carbon dioxide gas is produced and escapes the open beaker, so the reading falls (1)</div></div>
+      <div class="step answer"><div class="label">Point 4</div><div class="v">In both cases mass is really conserved — the gas (oxygen joining, or CO₂ escaping) is simply not measured on the balance (1)</div></div>
+    </div>
+
+    <div class="watch-out">
+      <h4>⚠ Mark scheme — 1 mark each</h4>
+      <p>States the law; Mg gains mass as oxygen joins from air; marble loses mass as CO₂ escapes; mass still conserved (gas not on balance). Extra marks for naming the gases/products. Max 6.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <h3 class="quiz-head">Test <em>yourself</em></h3>
+    <p class="quiz-sub">8 questions · click to reveal each answer</p>
+    <ol>
+      <li><details>
+        <summary>State the law of conservation of mass, and say why no atoms can be lost.</summary>
+        <div class="ans">The total mass of products <strong>equals</strong> the total mass of reactants. No atoms are lost because they are only <strong>rearranged</strong>, not made or destroyed.</div>
+      </details></li>
+      <li><details>
+        <summary>4.6 g sodium reacts completely with 7.1 g chlorine. What mass of sodium chloride forms?</summary>
+        <div class="ans">4.6 + 7.1 = <strong>11.7 g</strong> (all the mass ends up in the product).</div>
+      </details></li>
+      <li><details>
+        <summary>4 g hydrogen + 32 g oxygen → water. What mass of water forms?</summary>
+        <div class="ans">4 + 32 = <strong>36 g</strong> of water.</div>
+      </details></li>
+      <li><details>
+        <summary>39 g of sodium chloride forms from 15.3 g of sodium. What mass of chlorine reacted?</summary>
+        <div class="ans">39 − 15.3 = <strong>23.7 g</strong> of chlorine.</div>
+      </details></li>
+      <li><details>
+        <summary>Heating a carbonate in an open tube: does the mass rise, fall or stay the same? Why?</summary>
+        <div class="ans">It <strong>falls</strong> — carbon dioxide gas is given off and escapes.</div>
+      </details></li>
+      <li><details>
+        <summary>A rusting nail gains mass. Explain why. Why does burning a log leave much lighter ash?</summary>
+        <div class="ans">Rust: <strong>oxygen atoms from the air join the iron</strong>. Log: most of the mass leaves as <strong>gases</strong> (CO₂ and water vapour).</div>
+      </details></li>
+      <li><details>
+        <summary>How could you stop a fizzing reaction appearing to lose mass?</summary>
+        <div class="ans">Carry it out in a <strong>sealed container</strong> so the gas cannot escape.</div>
+      </details></li>
+      <li><details>
+        <summary>STRETCH: 16 g aluminium + iron oxide → 10.2 g iron + aluminium oxide, total products 21.4 g. Find the mass of iron oxide.</summary>
+        <div class="ans">Reactants total = products total = 21.4 g. Iron oxide = 21.4 − 16 = <strong>5.4 g</strong>.</div>
+      </details></li>
+    </ol>
+    <button class="done-btn" data-lesson-done="8">Mark this topic complete</button>
+  </div>
+</section>
+
+<!-- ===================================================================== -->
+<!-- TOPIC 9 — BALANCING SYMBOL EQUATIONS                                    -->
+<!-- ===================================================================== -->
+<section class="lesson" id="lesson-9">
+  <div class="lesson-head">
+    <div class="lesson-num">Topic 09 · C4 · Chemical reactions</div>
+    <h2 class="lesson-title">Balancing <em>symbol equations</em></h2>
+    <p class="lesson-promise">By the end of this topic you'll know the two golden rules of balancing, how to use the seesaw method, and how to check that an equation truly balances.</p>
+  </div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 1</span>Why we balance — and the two rules</h3>
+    <p>The equation Mg + O₂ → MgO has <strong>two</strong> oxygen atoms on the left, but only <strong>one</strong> on the right. An atom can't simply vanish — that would break conservation of mass. So a symbol equation must be <strong>balanced</strong>: the same number AND the same type of atom on each side.</p>
+    <p>There are two golden rules:</p>
+    <p><strong>Rule 1 — you may NEVER change a chemical formula.</strong> MgO must stay MgO. The small subscript numbers describe the actual chemical; change them and you've written a different substance.</p>
+    <p><strong>Rule 2 — you may ONLY add big numbers in front</strong> (called coefficients). Think of each formula as a "box" — you can add whole boxes, but you can't change what's inside one.</p>
+
+    <div class="watch-out">
+      <h4>⚠ Watch out — BIG numbers, never the small ones</h4>
+      <p>Balancing means changing the <strong>BIG numbers in front</strong> of a formula, never the small subscript numbers inside it. Writing "MgO₂" to balance the oxygen is wrong — MgO₂ is a completely different substance the reaction doesn't even make. Only add coefficients (big numbers).</p>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">When balancing an equation, what are you NOT allowed to change?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>The big numbers in front</span></li>
+        <li><span class="letter">B</span><span>The chemical formulae</span></li>
+        <li><span class="letter">C</span><span>Which side is the reactant</span></li>
+        <li><span class="letter">D</span><span>How many boxes you add</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>B — the chemical formulae.</strong> You may only add whole boxes (big coefficient numbers). You must never change a chemical formula — that would change the chemical itself. <em>A is the opposite of the rule: the big numbers are exactly what you ARE allowed to change.</em></div>
+      </details>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 2</span>The seesaw method, step by step</h3>
+    <p>To balance, count the atoms of each element on both sides, add a whole box to the lighter side, then recount. Repeat until both sides match. Here's the classic example, worked fully:</p>
+
+    <div class="worked">
+      <h4>Worked example · balance Mg + O₂ → MgO</h4>
+      <p class="q">Use the seesaw method to balance Mg + O₂ → MgO.</p>
+      <div class="step"><div class="label">Count</div><div class="v">left: 1 Mg, 2 O &nbsp;|&nbsp; right: 1 Mg, 1 O &nbsp;(not balanced)</div></div>
+      <div class="step"><div class="label">Step 1</div><div class="v">right is short of O → add a box of MgO. Right now has 2 Mg, 2 O</div></div>
+      <div class="step"><div class="label">Step 2</div><div class="v">left is now short of Mg → add a box of Mg. Left has 2 Mg, 2 O</div></div>
+      <div class="step"><div class="label">Recount</div><div class="v">left: 2 Mg, 2 O &nbsp;|&nbsp; right: 2 Mg, 2 O &nbsp;✓</div></div>
+      <div class="step answer"><div class="label">Balanced</div><div class="v">2Mg + O₂ → 2MgO</div></div>
+    </div>
+
+    <div class="diagram">
+      <svg viewBox="0 0 560 200" xmlns="http://www.w3.org/2000/svg">
+        <text x="280" y="24" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="14" font-weight="700" fill="#1E2761">2Mg + O₂ → 2MgO</text>
+        <!-- LEFT side count -->
+        <text x="140" y="56" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" font-weight="700" fill="#B85042" letter-spacing="1">LEFT</text>
+        <g>
+          <circle cx="110" cy="90" r="18" fill="#EDF2FA" stroke="#1E2761" stroke-width="2"/><text x="110" y="95" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" font-weight="700" fill="#1E2761">Mg</text>
+          <circle cx="150" cy="90" r="18" fill="#EDF2FA" stroke="#1E2761" stroke-width="2"/><text x="150" y="95" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" font-weight="700" fill="#1E2761">Mg</text>
+          <circle cx="110" cy="135" r="18" fill="#F2E6BD" stroke="#C8A24A" stroke-width="2"/><text x="110" y="140" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" font-weight="700" fill="#1E2761">O</text>
+          <circle cx="150" cy="135" r="18" fill="#F2E6BD" stroke="#C8A24A" stroke-width="2"/><text x="150" y="140" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" font-weight="700" fill="#1E2761">O</text>
+        </g>
+        <text x="130" y="172" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="11" fill="#5C6370">2 Mg · 2 O</text>
+        <!-- equals -->
+        <text x="280" y="120" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="32" font-weight="300" fill="#2C5F2D">=</text>
+        <!-- RIGHT side count -->
+        <text x="420" y="56" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" font-weight="700" fill="#2C5F2D" letter-spacing="1">RIGHT</text>
+        <g>
+          <circle cx="390" cy="90" r="18" fill="#EDF2FA" stroke="#1E2761" stroke-width="2"/><text x="390" y="95" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" font-weight="700" fill="#1E2761">Mg</text>
+          <circle cx="430" cy="90" r="18" fill="#EDF2FA" stroke="#1E2761" stroke-width="2"/><text x="430" y="95" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" font-weight="700" fill="#1E2761">Mg</text>
+          <circle cx="390" cy="135" r="18" fill="#F2E6BD" stroke="#C8A24A" stroke-width="2"/><text x="390" y="140" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" font-weight="700" fill="#1E2761">O</text>
+          <circle cx="430" cy="135" r="18" fill="#F2E6BD" stroke="#C8A24A" stroke-width="2"/><text x="430" y="140" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="12" font-weight="700" fill="#1E2761">O</text>
+        </g>
+        <text x="410" y="172" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="11" fill="#5C6370">2 Mg · 2 O</text>
+      </svg>
+      <div class="caption">Balanced: 2 Mg and 2 O on each side — count them to check</div>
+    </div>
+
+    <div class="worked">
+      <h4>Worked example · balance H₂ + O₂ → H₂O</h4>
+      <p class="q">Balance H₂ + O₂ → H₂O using the seesaw method.</p>
+      <div class="step"><div class="label">Count</div><div class="v">left: 2 H, 2 O &nbsp;|&nbsp; right: 2 H, 1 O &nbsp;(right short of O)</div></div>
+      <div class="step"><div class="label">Step 1</div><div class="v">add a box of H₂O → right now has 4 H, 2 O</div></div>
+      <div class="step"><div class="label">Step 2</div><div class="v">left is now short of H → add a box of H₂. Left: 4 H, 2 O</div></div>
+      <div class="step"><div class="label">Recount</div><div class="v">left: 4 H, 2 O &nbsp;|&nbsp; right: 4 H, 2 O &nbsp;✓</div></div>
+      <div class="step answer"><div class="label">Balanced</div><div class="v">2H₂ + O₂ → 2H₂O</div></div>
+    </div>
+
+    <div class="embed-slot" id="embed-equation-balancer">
+      <div class="embed-slot-inner">
+        <span class="embed-tag">Interactive · drop-in</span>
+        <h4>Drag the big numbers to balance it</h4>
+        <p>Drag coefficients in front of each formula and watch a live atom counter on both sides turn green when the equation finally balances.</p>
+        <div class="embed-canvas" style="padding:0;border:none;display:block;background:transparent"><iframe src="interactives/equation-balancer.html" title="Balancing symbol equations" loading="lazy" style="width:100%;height:470px;border:0;display:block;border-radius:2px"></iframe></div>
+        <div class="embed-note"><a href="interactives/equation-balancer.html" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none">Open this interactive in a new tab ↗</a></div>
+      </div>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">Which is the correctly balanced version of H₂ + Cl₂ → HCl?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>H₂ + Cl₂ → 2HCl</span></li>
+        <li><span class="letter">B</span><span>2H₂ + Cl₂ → HCl</span></li>
+        <li><span class="letter">C</span><span>H₂ + Cl₂ → HCl</span></li>
+        <li><span class="letter">D</span><span>2H₂ + 2Cl₂ → 2HCl</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>A — H₂ + Cl₂ → 2HCl.</strong> The left has 2 H and 2 Cl. Putting a 2 in front of HCl gives 2 H and 2 Cl on the right — balanced. <em>D also has equal atoms on each side, but it isn't in the simplest whole-number form — always cancel down to the smallest coefficients.</em></div>
+      </details>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 3</span>A 6-marker: spotting the error</h3>
+
+    <div class="worked">
+      <h4>6-mark model answer · the MgO₂ mistake</h4>
+      <p class="q">A student writes 'Mg + O₂ → MgO₂' to balance the oxygen atoms. Explain why this is wrong, and describe how to balance the equation correctly using the rules. [6 marks]</p>
+      <div class="step"><div class="label">Point 1</div><div class="v">The student is wrong because they changed a chemical formula: MgO₂ is a different substance the reaction doesn't make (1)</div></div>
+      <div class="step"><div class="label">Point 2</div><div class="v">The only thing we may change is the big number in front (the coefficient) — never the formula itself (1)</div></div>
+      <div class="step"><div class="label">Point 3</div><div class="v">We add whole boxes to the lighter side until there is the same number AND type of atom on each side (1)</div></div>
+      <div class="step"><div class="label">Point 4</div><div class="v">Adding a box of MgO balances the oxygen, then a box of Mg balances the magnesium (1)</div></div>
+      <div class="step answer"><div class="label">Point 5</div><div class="v">The correctly balanced equation is 2Mg + O₂ → 2MgO (1)</div></div>
+    </div>
+
+    <div class="watch-out">
+      <h4>⚠ Mark scheme — 1 mark each</h4>
+      <p>Changing the formula is not allowed; only coefficients may change; add whole boxes; same number and type each side; correct method; correct answer 2Mg + O₂ → 2MgO. Max 6.</p>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <h3 class="quiz-head">Test <em>yourself</em></h3>
+    <p class="quiz-sub">8 questions · click to reveal each answer</p>
+    <ol>
+      <li><details>
+        <summary>What is a balanced symbol equation, and why must equations be balanced?</summary>
+        <div class="ans">One with the <strong>same number and type of atom</strong> on both sides. They must balance to obey <strong>conservation of mass</strong> — no atoms can be lost.</div>
+      </details></li>
+      <li><details>
+        <summary>What is the only thing you may change when balancing?</summary>
+        <div class="ans">The <strong>big numbers in front</strong> of formulae (the coefficients).</div>
+      </details></li>
+      <li><details>
+        <summary>Balance: H₂ + Br₂ → HBr</summary>
+        <div class="ans"><strong>H₂ + Br₂ → 2HBr.</strong></div>
+      </details></li>
+      <li><details>
+        <summary>Balance: Na + O₂ → Na₂O</summary>
+        <div class="ans"><strong>4Na + O₂ → 2Na₂O.</strong> (Check: 4 Na and 2 O each side.)</div>
+      </details></li>
+      <li><details>
+        <summary>Balance: Mg + HCl → MgCl₂ + H₂</summary>
+        <div class="ans"><strong>Mg + 2HCl → MgCl₂ + H₂.</strong> (Check: 1 Mg, 2 H, 2 Cl each side.)</div>
+      </details></li>
+      <li><details>
+        <summary>Balance: Cl₂ + Al → AlCl₃</summary>
+        <div class="ans"><strong>3Cl₂ + 2Al → 2AlCl₃.</strong> (Check: 6 Cl and 2 Al each side.)</div>
+      </details></li>
+      <li><details>
+        <summary>Is CuCO₃ → CuO + CO₂ already balanced? Explain.</summary>
+        <div class="ans"><strong>Yes</strong> — 1 Cu, 1 C and 3 O on each side, so no balancing is needed.</div>
+      </details></li>
+      <li><details>
+        <summary>STRETCH: Balance and name the type — Fe₂O₃ + Al → Fe + Al₂O₃</summary>
+        <div class="ans"><strong>Fe₂O₃ + 2Al → 2Fe + Al₂O₃</strong> — a <strong>displacement</strong> reaction (aluminium is more reactive than iron).</div>
+      </details></li>
+    </ol>
+    <button class="done-btn" data-lesson-done="9">Mark this topic complete</button>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="sig">⁂</div>
+  <p>Year 8 · KS3 Science · C4 Chemical reactions</p>
+  <p>A revision booklet</p>
+</footer>
+
+<script>
+(function(){
+  var STORAGE_KEY = 'c4-chemical-reactions-done';
+  var done = {};
+  try {
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) done = JSON.parse(raw);
+  } catch(e) {}
+
+  function save(){
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(done)); } catch(e){}
+  }
+
+  function refresh(){
+    document.querySelectorAll('[data-lesson-done]').forEach(function(btn){
+      var n = btn.getAttribute('data-lesson-done');
+      if (done[n]){
+        btn.classList.add('is-done');
+        btn.textContent = '✓ Done — nice work';
+      }
+    });
+    document.querySelectorAll('.nav-pill').forEach(function(pill){
+      var n = pill.getAttribute('data-lesson');
+      if (done[n]) pill.classList.add('done');
+      else pill.classList.remove('done');
+    });
+  }
+
+  document.querySelectorAll('[data-lesson-done]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var n = btn.getAttribute('data-lesson-done');
+      if (done[n]) return;
+      done[n] = true;
+      save();
+      refresh();
+    });
+  });
+
+  refresh();
+})();
+</script>
+
+<script>
+/* For printing / "Save as PDF": questions stay in place; all answers are gathered into a separate "Answers" section at the end (grouped by topic). Removed again after printing so the on-screen booklet is unchanged. */
+(function(){
+  var sec=null;
+  function build(){
+    if(sec) return;
+    var main=document.querySelector('main'); if(!main) return;
+    sec=document.createElement('section'); sec.className='answers-print';
+    sec.innerHTML='<h2 class="answers-print-title">Answers</h2><p class="answers-print-sub">Check your work — grouped by topic, in order</p>';
+    document.querySelectorAll('.lesson').forEach(function(lesson){
+      var t=lesson.querySelector('.lesson-title'), nu=lesson.querySelector('.lesson-num');
+      var qc=[], qz=[];
+      lesson.querySelectorAll('.hinge .reveal-body').forEach(function(a){ qc.push(a.innerHTML.trim()); });
+      lesson.querySelectorAll('.quiz li details').forEach(function(d){
+        var q=d.querySelector('summary'), a=d.querySelector('.ans');
+        if(a) qz.push({q:q?q.textContent.trim():'', a:a.innerHTML.trim()});
+      });
+      if(!qc.length && !qz.length) return;
+      var b=document.createElement('div'); b.className='answers-block';
+      var h='<h3 class="answers-topic">'+((nu?nu.textContent.trim()+' · ':'')+(t?t.textContent.trim():''))+'</h3>';
+      qc.forEach(function(a){ h+='<p class="answers-qc"><strong>Quick check.</strong> '+a+'</p>'; });
+      if(qz.length){ h+='<ol class="answers-list">'; qz.forEach(function(it){ h+='<li><span class="aq">'+it.q+'</span><span class="aa">'+it.a+'</span></li>'; }); h+='</ol>'; }
+      b.innerHTML=h; sec.appendChild(b);
+    });
+    main.appendChild(sec);
+  }
+  function teardown(){ if(sec){ sec.remove(); sec=null; } }
+  window.__buildPrintLayout=build;
+  window.addEventListener('beforeprint',build);
+  window.addEventListener('afterprint',teardown);
+})();
+</script>
+
+</body>
+</html>

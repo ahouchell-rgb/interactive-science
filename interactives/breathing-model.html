@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How the lungs work — breathing</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1E2761;--navy-soft:#2a3478;--warm:#F8F4EC;--warm-deep:#EFE8D6;
+  --paper:#FCFAF4;--soft-blue:#EDF2FA;--ink:#1A1A1A;--muted:#5C6370;
+  --rule:#CFD8E3;--accent:#B85042;--accent-soft:#F4DAD7;--success:#2C5F2D;
+  --success-soft:#DDEBDD;--gold:#C8A24A;--gold-soft:#F2E6BD;--bone:#BBA86F;
+  --display:'Instrument Serif',Georgia,serif;
+  --body:'IBM Plex Sans',system-ui,sans-serif;
+  --mono:'IBM Plex Mono','Courier New',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{margin:0;background:var(--paper);font-family:var(--body);color:var(--ink);font-weight:300}
+.wrap{padding:16px;max-width:700px;margin:0 auto}
+.instruction{font-family:var(--mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.layout{display:flex;gap:18px;align-items:stretch}
+.diagram{flex:0 0 auto;width:250px}
+svg{width:100%;height:auto;display:block}
+.panel{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:10px}
+.controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+button{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:500;
+  background:var(--navy);color:var(--warm);border:0;padding:9px 14px;cursor:pointer;transition:background .2s;border-radius:2px}
+button:hover{background:var(--accent)}
+button.on{background:var(--accent)}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.slider-row{display:flex;flex-direction:column;gap:4px}
+.slider-row label{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+input[type=range]{width:100%;accent-color:var(--accent);cursor:pointer}
+.readouts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.read{background:var(--soft-blue);border:1px solid #C9D7ED;border-left:3px solid var(--navy);padding:8px 10px}
+.read .k{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.read .v{font-family:var(--display);font-size:24px;color:var(--navy);line-height:1.1}
+.read .v .ar{font-size:20px}
+.state{background:var(--paper);border:1px solid var(--rule);padding:10px 12px;font-size:14px;line-height:1.45}
+.state b{color:var(--accent);font-weight:500}
+.legend{font-family:var(--mono);font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);line-height:1.7}
+.legend span{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:4px;vertical-align:middle}
+.takeaway{font-family:var(--display);font-style:italic;font-size:17px;color:var(--muted);margin-top:14px;line-height:1.35;border-top:1px solid var(--rule);padding-top:10px}
+.takeaway b{color:var(--accent);font-style:normal;font-weight:400}
+.flow{font-family:var(--display);font-style:italic;fill:var(--accent);font-size:13px}
+.lbl{font-family:var(--mono);font-size:9px;letter-spacing:.06em;text-transform:uppercase;fill:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="instruction">Drag the diaphragm, or toggle inhale / exhale — watch the chest</p>
+  <div class="layout">
+    <div class="diagram">
+      <svg viewBox="0 0 252 268" role="img" aria-label="Diagram of the thorax (chest) showing the ribcage, lungs and diaphragm during breathing">
+        <!-- shoulders / neck silhouette for context -->
+        <path d="M104 30 Q126 18 148 30 L148 50 Q200 56 214 92 L214 250 L38 250 L38 92 Q52 56 104 50 Z"
+              fill="var(--warm-deep)" opacity="0.35"/>
+
+        <!-- airflow -->
+        <text id="flowLabel" class="flow" x="126" y="12" text-anchor="middle">air in &darr;</text>
+
+        <!-- trachea + bronchi -->
+        <rect x="120" y="20" width="12" height="46" rx="4" fill="#C9D7ED" stroke="var(--navy)" stroke-width="1.5"/>
+        <g stroke="var(--navy)" stroke-width="1" opacity="0.7">
+          <line x1="121" y1="28" x2="131" y2="28"/><line x1="121" y1="36" x2="131" y2="36"/>
+          <line x1="121" y1="44" x2="131" y2="44"/><line x1="121" y1="52" x2="131" y2="52"/>
+          <line x1="121" y1="60" x2="131" y2="60"/>
+        </g>
+        <path d="M126 64 C 122 76 110 84 104 94" fill="none" stroke="#9DB2D6" stroke-width="6" stroke-linecap="round"/>
+        <path d="M126 64 C 130 76 142 84 148 94" fill="none" stroke="#9DB2D6" stroke-width="6" stroke-linecap="round"/>
+
+        <!-- lungs -->
+        <g id="lungL"><path d="M112 92 C 92 90 72 100 64 122 C 56 148 58 178 72 194 C 84 204 108 200 112 186 C 116 150 116 118 112 92 Z"
+              fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.8"/></g>
+        <g id="lungR"><path d="M140 92 C 160 90 180 100 188 122 C 196 148 194 178 180 194 C 168 204 144 200 140 186 C 136 150 136 118 140 92 Z"
+              fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.8"/></g>
+
+        <!-- diaphragm (dome of muscle) -->
+        <path id="diaphragm" d="M46 204 Q126 182 206 204" fill="none" stroke="var(--success)" stroke-width="7" stroke-linecap="round"/>
+        <text class="lbl" x="126" y="242" text-anchor="middle" style="fill:var(--success)">diaphragm (muscle)</text>
+
+        <!-- ribcage: ribs + sternum (drawn over the lungs, like an anatomical view) -->
+        <g id="ribcage">
+          <rect x="120" y="78" width="12" height="74" rx="5" fill="#EDE3C4" opacity="0.85" stroke="var(--bone)" stroke-width="1"/>
+          <g fill="none" stroke="var(--bone)" stroke-width="3.4" stroke-linecap="round" opacity="0.92">
+            <path d="M120 82 C 98 80 74 88 66 106"/>
+            <path d="M120 94 C 94 92 64 102 56 122"/>
+            <path d="M120 106 C 90 104 56 116 50 138"/>
+            <path d="M120 118 C 90 116 54 130 52 152"/>
+            <path d="M120 130 C 92 130 58 144 60 164"/>
+            <path d="M120 142 C 96 144 70 156 74 172"/>
+            <path d="M132 82 C 154 80 178 88 186 106"/>
+            <path d="M132 94 C 158 92 188 102 196 122"/>
+            <path d="M132 106 C 162 104 196 116 202 138"/>
+            <path d="M132 118 C 162 116 198 130 200 152"/>
+            <path d="M132 130 C 160 130 194 144 192 164"/>
+            <path d="M132 142 C 156 144 182 156 178 172"/>
+          </g>
+        </g>
+
+        <!-- labels -->
+        <text class="lbl" x="138" y="34">trachea</text>
+        <line x1="137" y1="31" x2="132" y2="40" stroke="var(--rule)" stroke-width="1"/>
+        <text class="lbl" x="206" y="112">ribs</text>
+        <line x1="204" y1="109" x2="194" y2="120" stroke="var(--rule)" stroke-width="1"/>
+        <text class="lbl" x="6" y="150">lung</text>
+        <line x1="26" y1="147" x2="58" y2="150" stroke="var(--rule)" stroke-width="1"/>
+      </svg>
+    </div>
+    <div class="panel">
+      <div class="controls">
+        <button id="toggle" aria-pressed="false" aria-label="Toggle inhale or exhale">Inhale</button>
+      </div>
+      <div class="slider-row">
+        <label for="dia">Diaphragm — pull down to breathe in</label>
+        <input type="range" id="dia" min="0" max="100" value="0" aria-label="Diaphragm position, 0 is exhale, 100 is full inhale">
+      </div>
+      <div class="readouts">
+        <div class="read"><div class="k">Chest volume</div><div class="v" id="volV">low <span class="ar"></span></div></div>
+        <div class="read"><div class="k">Lung pressure</div><div class="v" id="presV">high <span class="ar"></span></div></div>
+      </div>
+      <div class="state" id="state">Pull the diaphragm down (or press <b>Inhale</b>) to flatten it, lift the ribcage and inflate the lungs.</div>
+      <div class="legend">
+        <span style="background:var(--success)"></span>diaphragm &nbsp;
+        <span style="background:var(--accent-soft);border:1px solid var(--accent)"></span>lungs &nbsp;
+        <span style="background:#EDE3C4;border:1px solid var(--bone)"></span>ribs
+      </div>
+    </div>
+  </div>
+  <p class="takeaway">It's the change in <b>volume</b> that changes the <b>pressure</b> — and pressure differences make the air move.</p>
+</div>
+<script>
+(function(){
+  var dia=document.getElementById('dia'),toggle=document.getElementById('toggle');
+  var diaphragm=document.getElementById('diaphragm'),ribcage=document.getElementById('ribcage');
+  var lungL=document.getElementById('lungL'),lungR=document.getElementById('lungR');
+  var flow=document.getElementById('flowLabel'),state=document.getElementById('state');
+  var volV=document.getElementById('volV'),presV=document.getElementById('presV');
+  // scale (sx,sy) about pivot (px,py), then translate (tx,ty) — baked into one transform string
+  function tf(sx,sy,px,py,tx,ty){
+    return 'translate('+(tx+px*(1-sx)).toFixed(2)+','+(ty+py*(1-sy)).toFixed(2)+') scale('+sx.toFixed(3)+','+sy.toFixed(3)+')';
+  }
+  function render(t){ // t: 0 = exhale, 1 = full inhale
+    // diaphragm: domed up (relaxed, t=0) -> flattened & pulled down (contracted, t=1)
+    diaphragm.setAttribute('d','M46 '+(204+t*8).toFixed(1)+' Q126 '+(182+t*44).toFixed(1)+' 206 '+(204+t*8).toFixed(1));
+    // ribcage lifts up and swings out
+    ribcage.setAttribute('transform',tf(1+t*0.07,1+t*0.035,126,150,0,-t*8));
+    // lungs inflate into the enlarged chest
+    lungL.setAttribute('transform',tf(1+t*0.38,1+t*0.42,88,150,-t*5,t*2));
+    lungR.setAttribute('transform',tf(1+t*0.38,1+t*0.42,164,150,t*5,t*2));
+    // readouts + narration
+    if(t>0.5){
+      volV.innerHTML='high <span class="ar" style="color:var(--success)">&uarr;</span>';
+      presV.innerHTML='low <span class="ar" style="color:var(--accent)">&darr;</span>';
+      flow.innerHTML='air in &darr;';flow.style.fill='var(--success)';
+      state.innerHTML='<b>Inhaling:</b> the diaphragm contracts and flattens down while the ribcage lifts up and out, so chest <b>volume increases</b>. Bigger space = lower pressure inside, so air rushes <b>in</b>.';
+    }else{
+      volV.innerHTML='low <span class="ar" style="color:var(--accent)">&darr;</span>';
+      presV.innerHTML='high <span class="ar" style="color:var(--success)">&uarr;</span>';
+      flow.innerHTML='air out &uarr;';flow.style.fill='var(--accent)';
+      state.innerHTML='<b>Exhaling:</b> the diaphragm relaxes and domes up while the ribcage drops down and in, so chest <b>volume decreases</b>. Smaller space = higher pressure inside, so air is forced <b>out</b>.';
+    }
+  }
+  dia.addEventListener('input',function(){
+    var t=dia.value/100;render(t);
+    toggle.textContent=t>0.5?'Exhale':'Inhale';
+    toggle.setAttribute('aria-pressed',t>0.5?'true':'false');
+    toggle.classList.toggle('on',t>0.5);
+  });
+  toggle.addEventListener('click',function(){
+    var inhaling=dia.value<50;
+    animateTo(inhaling?100:0);
+    toggle.textContent=inhaling?'Exhale':'Inhale';
+    toggle.classList.toggle('on',inhaling);
+    toggle.setAttribute('aria-pressed',inhaling?'true':'false');
+  });
+  var raf=null;
+  function animateTo(target){
+    if(raf)cancelAnimationFrame(raf);
+    var start=parseFloat(dia.value),t0=null,dur=700;
+    function frame(ts){
+      if(!t0)t0=ts;var p=Math.min(1,(ts-t0)/dur);
+      var e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
+      var v=start+(target-start)*e;dia.value=v;render(v/100);
+      if(p<1)raf=requestAnimationFrame(frame);
+    }
+    raf=requestAnimationFrame(frame);
+  }
+  render(0);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Metal + acid</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1E2761; --navy-soft:#2a3478; --warm:#F8F4EC; --warm-deep:#EFE8D6;
+  --paper:#FCFAF4; --soft-blue:#EDF2FA; --ink:#1A1A1A; --muted:#5C6370;
+  --rule:#CFD8E3; --accent:#B85042; --accent-soft:#F4DAD7; --success:#2C5F2D;
+  --success-soft:#DDEBDD; --gold:#C8A24A; --gold-soft:#F2E6BD;
+  --display:'Instrument Serif',Georgia,serif;
+  --body:'IBM Plex Sans',system-ui,sans-serif;
+  --mono:'IBM Plex Mono','Courier New',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{margin:0;background:var(--paper);font-family:var(--body);color:var(--ink);font-weight:300}
+.wrap{max-width:700px;margin:0 auto;padding:16px 18px}
+.instr{font-family:var(--mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;text-align:center}
+.pick{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end}
+.field{flex:1;min-width:150px}
+label.lbl{display:block;font-family:var(--mono);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--navy);margin-bottom:5px;font-weight:500}
+select{width:100%;font-family:var(--body);font-size:14px;padding:9px 10px;border:1px solid var(--rule);border-radius:3px;background:var(--warm);color:var(--ink);cursor:pointer}
+select:focus-visible{outline:none;border-color:var(--navy);box-shadow:0 0 0 3px var(--gold-soft)}
+.stage{display:flex;gap:18px;align-items:center;margin-top:16px}
+.beaker-col{flex:0 0 120px;display:flex;flex-direction:column;align-items:center}
+.beaker{position:relative;width:100px;height:140px;border:3px solid var(--navy);border-top:none;border-radius:0 0 16px 16px;background:var(--warm);overflow:hidden}
+.beaker .rim{position:absolute;top:-3px;left:-7px;right:-7px;height:5px;border-top:3px solid var(--navy);border-radius:3px}
+.liquid{position:absolute;left:0;right:0;bottom:0;height:74%;background:linear-gradient(180deg,#F6D9D5,#EFC4BE)}
+.liquid::before{content:'';position:absolute;top:0;left:0;right:0;height:7px;background:rgba(255,255,255,0.35)}
+.metal{position:absolute;left:50%;transform:translateX(-50%);bottom:8px;width:30px;height:14px;border-radius:3px;background:#8a8f99;box-shadow:inset 0 -2px 3px rgba(0,0,0,0.3)}
+.bubble{position:absolute;bottom:14px;width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.85);border:1px solid rgba(46,139,87,0.5);pointer-events:none}
+.beaker-cap{font-family:var(--mono);font-size:9px;letter-spacing:0.08em;color:var(--muted);margin-top:8px;text-transform:uppercase;text-align:center}
+.right{flex:1;min-width:0}
+.status{font-family:var(--display);font-style:italic;font-size:23px;color:var(--navy);line-height:1.2}
+.rate{font-family:var(--mono);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-top:8px}
+.rate b{color:var(--accent)}
+.pop{margin-top:12px;font-family:var(--mono);font-size:14px;font-weight:500;letter-spacing:0.08em;padding:8px 12px;border-radius:3px;min-height:38px;display:flex;align-items:center}
+.pop.yes{background:var(--gold-soft);border:1px solid var(--gold);color:#8a6d1f}
+.pop.no{background:var(--soft-blue);border:1px solid #C9D7ED;color:var(--navy)}
+.pop.idle{background:var(--warm-deep);color:var(--muted)}
+.eq{font-family:var(--display);font-size:18px;font-style:italic;color:var(--navy);text-align:center;margin:16px 0 4px;line-height:1.35}
+.eq b{font-style:normal;font-weight:500;background:linear-gradient(180deg,transparent 60%,var(--gold-soft) 60%);padding:0 2px}
+.btns{display:flex;gap:8px;justify-content:center;margin-top:10px;flex-wrap:wrap}
+button{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;background:var(--navy);color:var(--warm);border:none;padding:10px 16px;border-radius:3px;cursor:pointer;transition:background 0.2s}
+button:hover,button:focus-visible{background:var(--accent);outline:none}
+button:focus-visible{box-shadow:0 0 0 3px var(--gold-soft)}
+button.alt{background:var(--warm-deep);color:var(--navy)}
+button.alt:hover,button.alt:focus-visible{background:var(--gold-soft)}
+.takeaway{font-family:var(--display);font-style:italic;font-size:18px;color:var(--muted);text-align:center;margin-top:16px;padding-top:14px;border-top:1px solid var(--rule)}
+@media(max-width:430px){.beaker-col{flex:0 0 96px}.beaker{width:84px;height:118px}.status{font-size:19px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="instr">Drop a metal into acid, then test the gas with a lit splint</p>
+  <div class="pick">
+    <div class="field">
+      <label class="lbl" for="metal">Metal</label>
+      <select id="metal" aria-label="Choose a metal">
+        <option value="mg" selected>Magnesium</option>
+        <option value="zn">Zinc</option>
+        <option value="fe">Iron</option>
+        <option value="cu">Copper</option>
+      </select>
+    </div>
+    <div class="field">
+      <label class="lbl" for="acid">Acid</label>
+      <select id="acid" aria-label="Choose an acid">
+        <option value="hcl" selected>Hydrochloric acid</option>
+        <option value="h2so4">Sulfuric acid</option>
+      </select>
+    </div>
+  </div>
+  <div class="stage">
+    <div class="beaker-col">
+      <div class="beaker" id="beaker"><span class="rim"></span><div class="liquid"></div><div class="metal" id="metalChip"></div></div>
+      <div class="beaker-cap" id="beakerCap">magnesium in acid</div>
+    </div>
+    <div class="right">
+      <div class="status" id="status">Bubbling steadily…</div>
+      <div class="rate" id="rate"></div>
+      <div class="pop idle" id="pop">Press “Test the gas” to bring a lit splint.</div>
+    </div>
+  </div>
+  <p class="eq" id="eq"></p>
+  <div class="btns">
+    <button id="testBtn" type="button">Test the gas 🔥</button>
+    <button id="resetBtn" class="alt" type="button">Reset</button>
+  </div>
+  <p class="takeaway">Metal + acid → a salt + hydrogen; hydrogen gives a squeaky pop with a lit splint.</p>
+</div>
+<script>
+(function(){
+  // metal -> reactivity rank (bubbles/sec), saltbase word, reacts?
+  var metals={
+    mg:{name:'magnesium',reacts:true,rate:5,salt:'magnesium'},
+    zn:{name:'zinc',reacts:true,rate:3,salt:'zinc'},
+    fe:{name:'iron',reacts:true,rate:1.5,salt:'iron'},
+    cu:{name:'copper',reacts:false,rate:0,salt:'copper'}
+  };
+  var acids={hcl:{name:'hydrochloric acid',ending:'chloride'},h2so4:{name:'sulfuric acid',ending:'sulfate'}};
+  var selMetal=document.getElementById('metal'),selAcid=document.getElementById('acid'),
+      beaker=document.getElementById('beaker'),metalChip=document.getElementById('metalChip'),
+      status=document.getElementById('status'),rate=document.getElementById('rate'),
+      pop=document.getElementById('pop'),eq=document.getElementById('eq'),
+      beakerCap=document.getElementById('beakerCap');
+  var spawnTimer=null, bubbles=[];
+  function clearBubbles(){
+    bubbles.forEach(function(b){if(b.el&&b.el.parentNode)b.el.parentNode.removeChild(b.el);});
+    bubbles=[];
+  }
+  function spawnBubble(){
+    var el=document.createElement('div');el.className='bubble';
+    var left=30+Math.random()*40;          // % across beaker
+    el.style.left=left+'%';
+    var size=5+Math.random()*5;el.style.width=size+'px';el.style.height=size+'px';
+    beaker.appendChild(el);
+    var b={el:el,y:0,speed:0.8+Math.random()*0.8,wob:Math.random()*6};
+    bubbles.push(b);
+  }
+  var raf=null,last=0;
+  function animate(t){
+    var dt=last?(t-last):16;last=t;
+    for(var i=bubbles.length-1;i>=0;i--){
+      var b=bubbles[i];b.y+=b.speed*dt/16;
+      b.el.style.bottom=(14+b.y)+'px';
+      b.el.style.transform='translateX('+Math.sin(b.y/12)*b.wob+'px)';
+      b.el.style.opacity=Math.max(0,1-b.y/110);
+      if(b.y>108){if(b.el.parentNode)b.el.parentNode.removeChild(b.el);bubbles.splice(i,1);}
+    }
+    raf=requestAnimationFrame(animate);
+  }
+  function start(){
+    var m=metals[selMetal.value],a=acids[selAcid.value];
+    clearBubbles();
+    if(spawnTimer){clearInterval(spawnTimer);spawnTimer=null;}
+    metalChip.style.background=(selMetal.value==='cu')?'#b06a3a':(selMetal.value==='fe')?'#6f7480':'#9aa0aa';
+    beakerCap.textContent=m.name+' in '+a.name.replace(' acid','');
+    var salt=m.salt+' '+a.ending;
+    if(m.reacts){
+      eq.innerHTML=m.name+' + '+a.name+' → <b>'+salt+'</b> + <b>hydrogen</b>';
+      status.textContent=m.rate>=5?'Fizzing vigorously!':m.rate>=3?'Bubbling steadily…':'Slow, gentle bubbles…';
+      rate.innerHTML='Reactivity: <b>'+(m.rate>=5?'high':m.rate>=3?'medium':'low')+'</b> — '+
+        (m.rate>=5?'lots of hydrogen, fast':m.rate>=3?'a steady stream of hydrogen':'hydrogen comes off slowly');
+      // spawn rate scales with reactivity
+      var interval=Math.max(120,700/m.rate);
+      spawnTimer=setInterval(spawnBubble,interval);
+    }else{
+      eq.innerHTML='copper + '+a.name+' → <b>no reaction</b>';
+      status.textContent='No bubbles — nothing happens.';
+      rate.innerHTML='Reactivity: <b>too low</b> — copper is below hydrogen, so it does not react with acid.';
+    }
+    pop.className='pop idle';
+    pop.textContent='Press “Test the gas” to bring a lit splint.';
+  }
+  function test(){
+    var m=metals[selMetal.value];
+    if(m.reacts){
+      pop.className='pop yes';
+      pop.textContent='💥 SQUEAKY POP! Hydrogen was collected.';
+    }else{
+      pop.className='pop no';
+      pop.textContent='No pop — no hydrogen, because copper did not react.';
+    }
+  }
+  selMetal.addEventListener('change',start);
+  selAcid.addEventListener('change',start);
+  document.getElementById('testBtn').addEventListener('click',test);
+  document.getElementById('resetBtn').addEventListener('click',start);
+  raf=requestAnimationFrame(animate);
+  start();
+})();
+</script>
+</body>
+</html>

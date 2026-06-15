@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Force Diagram Builder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Bricolage+Grotesque:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f6f1e7;
+    --paper-dark: #ebe3d2;
+    --ink: #1e1d1a;
+    --ink-soft: #555148;
+    --ink-faint: #a19b8c;
+    --force: #c23a2a;
+    --force-dark: #8f2516;
+    --motion: #6b6a67;
+    --resultant: #0e6b3c;
+    --resultant-soft: #e0f0e5;
+    --accent: #1b3a63;
+    --accent-soft: #dce5f0;
+    --warn: #b8782a;
+    --rule: #c9c0ab;
+    --shadow: 0 1px 0 rgba(30,29,26,0.08), 0 4px 12px rgba(30,29,26,0.06);
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Bricolage Grotesque', system-ui, sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  body {
+    background-image:
+      linear-gradient(var(--paper-dark) 1px, transparent 1px),
+      linear-gradient(90deg, var(--paper-dark) 1px, transparent 1px);
+    background-size: 40px 40px;
+    background-position: -1px -1px;
+    min-height: 100vh;
+  }
+
+  .page {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 24px 28px 48px;
+  }
+
+  header.masthead {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--ink);
+    margin-bottom: 22px;
+  }
+
+  .masthead h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(28px, 4vw, 42px);
+    letter-spacing: -0.02em;
+    margin: 0;
+    line-height: 1;
+  }
+
+  .masthead h1 em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--force);
+  }
+
+  .masthead .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  /* Control strip */
+  .controls {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 14px 18px;
+    background: white;
+    border: 1.5px solid var(--ink);
+    box-shadow: var(--shadow);
+    margin-bottom: 18px;
+  }
+
+  .control-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .control-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    font-weight: 700;
+  }
+
+  .motion-options {
+    display: flex;
+    gap: 4px;
+    background: var(--paper);
+    padding: 3px;
+    border: 1px solid var(--rule);
+  }
+
+  .motion-options label {
+    font-size: 14px;
+    padding: 6px 12px;
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.12s;
+    font-weight: 500;
+  }
+
+  .motion-options label:hover {
+    background: var(--paper-dark);
+  }
+
+  .motion-options input[type="radio"] {
+    display: none;
+  }
+
+  .motion-options input[type="radio"]:checked + span {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .motion-options label span {
+    padding: 4px 10px;
+    transition: all 0.12s;
+  }
+
+  .spacer { flex: 1; }
+
+  button {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 10px 18px;
+    border: 1.5px solid var(--ink);
+    background: white;
+    color: var(--ink);
+    cursor: pointer;
+    transition: all 0.12s;
+    letter-spacing: 0.01em;
+  }
+
+  button:hover {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  button.primary {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  button.primary:hover {
+    background: var(--resultant);
+    border-color: var(--resultant);
+  }
+
+  /* Workspace */
+  .workspace {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 18px;
+    align-items: start;
+  }
+
+  /* Palette */
+  .palette {
+    background: white;
+    border: 1.5px solid var(--ink);
+    box-shadow: var(--shadow);
+    padding: 18px;
+  }
+
+  .palette h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 18px;
+    margin: 0 0 4px;
+    letter-spacing: -0.01em;
+  }
+
+  .palette .hint {
+    font-size: 12px;
+    color: var(--ink-soft);
+    line-height: 1.45;
+    margin: 0 0 18px;
+    padding-bottom: 14px;
+    border-bottom: 1px dashed var(--rule);
+  }
+
+  .palette-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .palette-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 12px 8px;
+    background: var(--paper);
+    border: 1.5px solid var(--rule);
+    cursor: grab;
+    user-select: none;
+    touch-action: none;
+    transition: all 0.12s;
+    position: relative;
+  }
+
+  .palette-item:hover {
+    border-color: var(--force);
+    background: #fbeeea;
+  }
+
+  .palette-item:active {
+    cursor: grabbing;
+  }
+
+  .palette-item.dragging {
+    opacity: 0.4;
+  }
+
+  .palette-arrow {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .palette-arrow svg {
+    width: 100%;
+    height: 100%;
+    stroke: var(--force);
+    fill: var(--force);
+  }
+
+  .palette-item .dir-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-soft);
+    font-weight: 700;
+  }
+
+  .palette-item .mag-row {
+    display: flex;
+    align-items: baseline;
+    gap: 3px;
+  }
+
+  .palette-item input[type="number"] {
+    width: 46px;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 4px 2px;
+    border: 1px solid var(--rule);
+    background: white;
+    color: var(--ink);
+  }
+
+  .palette-item input[type="number"]:focus {
+    outline: 2px solid var(--force);
+    outline-offset: 1px;
+  }
+
+  .palette-item .unit {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink-soft);
+  }
+
+  .palette-foot {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px dashed var(--rule);
+    font-size: 11px;
+    color: var(--ink-faint);
+    line-height: 1.5;
+  }
+
+  .palette-foot strong {
+    color: var(--ink-soft);
+  }
+
+  /* Canvas */
+  .canvas-wrap {
+    background: white;
+    border: 1.5px solid var(--ink);
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .canvas-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 16px;
+    border-bottom: 1.5px solid var(--ink);
+    background: var(--paper);
+  }
+
+  .canvas-header .state-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .canvas-header .state-label .muted {
+    color: var(--ink-soft);
+    margin-right: 6px;
+  }
+
+  .canvas-header .state-label .value {
+    color: var(--ink);
+    font-weight: 700;
+  }
+
+  .canvas-header .coord {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--ink-faint);
+  }
+
+  #canvas {
+    width: 100%;
+    height: auto;
+    display: block;
+    background:
+      linear-gradient(var(--paper-dark) 1px, transparent 1px),
+      linear-gradient(90deg, var(--paper-dark) 1px, transparent 1px);
+    background-size: 40px 40px;
+    background-color: white;
+    touch-action: none;
+  }
+
+  /* Drag ghost */
+  .drag-ghost {
+    position: fixed;
+    pointer-events: none;
+    z-index: 1000;
+    transform: translate(-50%, -50%);
+    opacity: 0.85;
+  }
+
+  /* Canvas drop target highlight */
+  .canvas-wrap.drop-active {
+    outline: 3px dashed var(--force);
+    outline-offset: -3px;
+  }
+
+  /* Reveal panel */
+  .reveal-panel {
+    margin-top: 18px;
+    background: white;
+    border: 1.5px solid var(--ink);
+    box-shadow: var(--shadow);
+    padding: 0;
+    overflow: hidden;
+    display: none;
+  }
+
+  .reveal-panel.shown {
+    display: block;
+    animation: slideDown 0.3s ease;
+  }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal-header {
+    padding: 12px 20px;
+    background: var(--ink);
+    color: var(--paper);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .reveal-header h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 20px;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  .reveal-header .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--paper);
+    opacity: 0.7;
+  }
+
+  .reveal-body {
+    padding: 22px 24px;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 1.3fr;
+    gap: 24px;
+    align-items: center;
+  }
+
+  @media (max-width: 900px) {
+    .reveal-body { grid-template-columns: 1fr; }
+    .workspace { grid-template-columns: 1fr; }
+  }
+
+  .reveal-block h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin: 0 0 8px;
+    font-weight: 700;
+  }
+
+  .reveal-block .big {
+    font-family: 'Fraunces', serif;
+    font-size: 44px;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .reveal-block .big .unit {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 22px;
+    color: var(--ink-soft);
+    font-weight: 500;
+    margin-left: 4px;
+  }
+
+  .reveal-block .sub {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-top: 4px;
+    line-height: 1.4;
+  }
+
+  .verdict-card {
+    background: var(--resultant-soft);
+    padding: 14px 16px;
+    border-left: 4px solid var(--resultant);
+  }
+
+  .verdict-card.balanced { background: var(--accent-soft); border-left-color: var(--accent); }
+  .verdict-card.decelerating { background: #f5e6d4; border-left-color: var(--warn); }
+  .verdict-card.perpendicular { background: #ede4f0; border-left-color: #6a3889; }
+
+  .verdict-card .verdict-label {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+
+  .verdict-card .verdict-detail {
+    font-size: 13px;
+    margin-top: 6px;
+    color: var(--ink-soft);
+    line-height: 1.45;
+  }
+
+  .breakdown {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+  }
+
+  .breakdown-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    border-bottom: 1px dashed var(--rule);
+  }
+
+  .breakdown-row:last-child {
+    border-bottom: none;
+    padding-top: 6px;
+    font-weight: 700;
+    font-size: 13px;
+  }
+
+  .breakdown-row .calc { color: var(--ink-soft); }
+  .breakdown-row .result { color: var(--ink); }
+
+  /* footer */
+  footer.foot {
+    margin-top: 32px;
+    padding-top: 14px;
+    border-top: 1px solid var(--rule);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    display: flex;
+    justify-content: space-between;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+<header class="masthead">
+  <h1>Force Diagram <em>Builder</em></h1>
+  <div class="meta">
+    <div>Physics · KS3</div>
+    <div>Drag → Drop → Predict</div>
+  </div>
+</header>
+
+<div class="controls">
+  <div class="control-group">
+    <span class="control-label">Initial state</span>
+    <div class="motion-options" id="motionOptions">
+      <label><input type="radio" name="motion" value="stationary" checked><span>Stationary</span></label>
+      <label><input type="radio" name="motion" value="up"><span>Moving ↑</span></label>
+      <label><input type="radio" name="motion" value="down"><span>Moving ↓</span></label>
+      <label><input type="radio" name="motion" value="left"><span>Moving ←</span></label>
+      <label><input type="radio" name="motion" value="right"><span>Moving →</span></label>
+    </div>
+  </div>
+
+  <div class="spacer"></div>
+
+  <div class="control-group">
+    <button id="clearBtn">Clear forces</button>
+    <button id="revealBtn" class="primary">Reveal resultant</button>
+  </div>
+</div>
+
+<div class="workspace">
+
+  <aside class="palette">
+    <h2>Force palette</h2>
+    <p class="hint">Set the size of each force in newtons. <strong>Click and drag</strong> an arrow onto the box to apply it. Drag the same arrow again to add another.</p>
+
+    <div class="palette-grid">
+      <div class="palette-item" data-direction="up">
+        <div class="palette-arrow">
+          <svg viewBox="0 0 44 44"><line x1="22" y1="40" x2="22" y2="10" stroke-width="3.5" stroke-linecap="round"/><polygon points="22,4 14,16 30,16" stroke="none"/></svg>
+        </div>
+        <div class="dir-label">Up</div>
+        <div class="mag-row">
+          <input type="number" value="5" min="1" max="99" data-mag-for="up">
+          <span class="unit">N</span>
+        </div>
+      </div>
+
+      <div class="palette-item" data-direction="down">
+        <div class="palette-arrow">
+          <svg viewBox="0 0 44 44"><line x1="22" y1="4" x2="22" y2="34" stroke-width="3.5" stroke-linecap="round"/><polygon points="22,40 14,28 30,28" stroke="none"/></svg>
+        </div>
+        <div class="dir-label">Down</div>
+        <div class="mag-row">
+          <input type="number" value="5" min="1" max="99" data-mag-for="down">
+          <span class="unit">N</span>
+        </div>
+      </div>
+
+      <div class="palette-item" data-direction="left">
+        <div class="palette-arrow">
+          <svg viewBox="0 0 44 44"><line x1="40" y1="22" x2="10" y2="22" stroke-width="3.5" stroke-linecap="round"/><polygon points="4,22 16,14 16,30" stroke="none"/></svg>
+        </div>
+        <div class="dir-label">Left</div>
+        <div class="mag-row">
+          <input type="number" value="5" min="1" max="99" data-mag-for="left">
+          <span class="unit">N</span>
+        </div>
+      </div>
+
+      <div class="palette-item" data-direction="right">
+        <div class="palette-arrow">
+          <svg viewBox="0 0 44 44"><line x1="4" y1="22" x2="34" y2="22" stroke-width="3.5" stroke-linecap="round"/><polygon points="40,22 28,14 28,30" stroke="none"/></svg>
+        </div>
+        <div class="dir-label">Right</div>
+        <div class="mag-row">
+          <input type="number" value="5" min="1" max="99" data-mag-for="right">
+          <span class="unit">N</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="palette-foot">
+      <strong>Tip:</strong> Click any red arrow on the diagram to remove it. Motion is shown in grey — don't confuse motion with force!
+    </div>
+  </aside>
+
+  <div class="canvas-wrap" id="canvasWrap">
+    <div class="canvas-header">
+      <div class="state-label">
+        <span class="muted">Object is</span><span class="value" id="stateText">stationary</span>
+      </div>
+      <div class="coord" id="forceCount">0 forces applied</div>
+    </div>
+    <svg id="canvas" viewBox="0 0 800 560" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <marker id="arrowhead-force" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#c23a2a"/>
+        </marker>
+        <marker id="arrowhead-motion" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#6b6a67"/>
+        </marker>
+        <marker id="arrowhead-resultant" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#0e6b3c"/>
+        </marker>
+      </defs>
+      <g id="layer-motion"></g>
+      <g id="layer-box"></g>
+      <g id="layer-forces"></g>
+      <g id="layer-resultant"></g>
+    </svg>
+  </div>
+</div>
+
+<div class="reveal-panel" id="revealPanel">
+  <div class="reveal-header">
+    <h2>Resultant force &amp; motion</h2>
+    <div class="tag">Answer revealed</div>
+  </div>
+  <div class="reveal-body">
+    <div class="reveal-block">
+      <h3>Resultant magnitude</h3>
+      <div class="big" id="resMagnitude">0<span class="unit">N</span></div>
+      <div class="sub" id="resDirection">No resultant force — the forces are balanced.</div>
+    </div>
+    <div class="reveal-block">
+      <h3>Horizontal &amp; vertical</h3>
+      <div class="breakdown" id="breakdown"></div>
+    </div>
+    <div class="reveal-block">
+      <h3>What happens</h3>
+      <div class="verdict-card" id="verdictCard">
+        <div class="verdict-label" id="verdictLabel">—</div>
+        <div class="verdict-detail" id="verdictDetail">—</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="foot">
+  <div>James Hornsby · Physics department</div>
+  <div>Newton's 2nd Law · F = ma</div>
+</footer>
+
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  // ---------- Colors (hex mirrors of CSS vars for reliable SVG rendering) ----------
+  const C = {
+    ink: '#1e1d1a',
+    inkSoft: '#555148',
+    force: '#c23a2a',
+    forceDark: '#8f2516',
+    motion: '#6b6a67',
+    resultant: '#0e6b3c',
+    paper: '#f6f1e7'
+  };
+
+  // ---------- State ----------
+  const state = {
+    forces: [], // { id, direction, magnitude }
+    motion: 'stationary',
+    revealed: false
+  };
+  let nextId = 1;
+
+  // Canvas geometry (in SVG units, viewBox 800x560)
+  const CANVAS_W = 800;
+  const CANVAS_H = 560;
+  const BOX_CX = 400;
+  const BOX_CY = 280;
+  const BOX_SIZE = 130;
+  const BOX_LEFT = BOX_CX - BOX_SIZE / 2;
+  const BOX_RIGHT = BOX_CX + BOX_SIZE / 2;
+  const BOX_TOP = BOX_CY - BOX_SIZE / 2;
+  const BOX_BOTTOM = BOX_CY + BOX_SIZE / 2;
+
+  // Arrow length scaling: base + N * perN, capped
+  const ARROW_BASE = 30;
+  const ARROW_PER_N = 7;
+  const ARROW_MAX = 165;
+
+  function arrowLength(magnitude) {
+    return Math.min(ARROW_MAX, ARROW_BASE + magnitude * ARROW_PER_N);
+  }
+
+  // ---------- Rendering ----------
+  const SVG_NS = 'http://www.w3.org/2000/svg';
+
+  function el(tag, attrs = {}, text) {
+    const node = document.createElementNS(SVG_NS, tag);
+    for (const k in attrs) node.setAttribute(k, attrs[k]);
+    if (text !== undefined) node.textContent = text;
+    return node;
+  }
+
+  function renderBox() {
+    const layer = document.getElementById('layer-box');
+    layer.innerHTML = '';
+    // Subtle shadow
+    layer.appendChild(el('rect', {
+      x: BOX_LEFT + 4, y: BOX_TOP + 4, width: BOX_SIZE, height: BOX_SIZE,
+      fill: 'rgba(30,29,26,0.08)'
+    }));
+    // Box body
+    layer.appendChild(el('rect', {
+      x: BOX_LEFT, y: BOX_TOP, width: BOX_SIZE, height: BOX_SIZE,
+      fill: '#fdfbf5',
+      stroke: 'var(--ink)',
+      'stroke-width': '2.5'
+    }));
+    // Centre dot
+    layer.appendChild(el('circle', {
+      cx: BOX_CX, cy: BOX_CY, r: 3, fill: 'var(--ink)'
+    }));
+    // Label
+    layer.appendChild(el('text', {
+      x: BOX_CX, y: BOX_CY + 22,
+      'text-anchor': 'middle',
+      'font-family': 'JetBrains Mono, monospace',
+      'font-size': '11',
+      'letter-spacing': '0.1em',
+      fill: 'var(--ink-soft)'
+    }, 'OBJECT'));
+  }
+
+  function renderMotion() {
+    const layer = document.getElementById('layer-motion');
+    layer.innerHTML = '';
+    if (state.motion === 'stationary') return;
+
+    // Dashed grey motion arrow — placed well away from the box so students
+    // don't confuse it with a force arrow. Positioned top-right corner.
+    const arrowLen = 70;
+    const ox = 690;  // origin x
+    const oy = 70;   // origin y
+
+    let x1 = ox, y1 = oy, x2 = ox, y2 = oy;
+    if (state.motion === 'right') { x1 = ox - arrowLen; x2 = ox; }
+    if (state.motion === 'left')  { x1 = ox; x2 = ox - arrowLen; }
+    if (state.motion === 'up')    { y1 = oy + arrowLen; y2 = oy; }
+    if (state.motion === 'down')  { y1 = oy; y2 = oy + arrowLen; }
+
+    // Background label pill
+    layer.appendChild(el('rect', {
+      x: 620, y: 20, width: 140, height: 80,
+      fill: '#f4f1ea', stroke: 'var(--motion)', 'stroke-width': '1',
+      'stroke-dasharray': '3 3', rx: '2'
+    }));
+    layer.appendChild(el('text', {
+      x: 690, y: 40,
+      'text-anchor': 'middle',
+      'font-family': 'JetBrains Mono, monospace',
+      'font-size': '10',
+      'letter-spacing': '0.15em',
+      fill: 'var(--motion)',
+      'font-weight': '700'
+    }, 'INITIAL MOTION'));
+    layer.appendChild(el('line', {
+      x1, y1, x2, y2,
+      stroke: 'var(--motion)',
+      'stroke-width': '2',
+      'stroke-dasharray': '6 4',
+      'marker-end': 'url(#arrowhead-motion)'
+    }));
+  }
+
+  function renderForces() {
+    const layer = document.getElementById('layer-forces');
+    layer.innerHTML = '';
+
+    // Group forces by direction for stacking
+    const bySide = { up: [], down: [], left: [], right: [] };
+    state.forces.forEach(f => bySide[f.direction].push(f));
+
+    Object.keys(bySide).forEach(dir => {
+      const list = bySide[dir];
+      if (list.length === 0) return;
+
+      // Figure out start positions along the relevant edge
+      // Edge span = BOX_SIZE, spread n forces evenly as interior points
+      const n = list.length;
+      list.forEach((force, i) => {
+        const t = (i + 1) / (n + 1); // 0..1 along edge
+        let startX, startY, endX, endY;
+        const len = arrowLength(force.magnitude);
+
+        if (dir === 'up') {
+          startX = BOX_LEFT + BOX_SIZE * t;
+          startY = BOX_TOP;
+          endX = startX;
+          endY = startY - len;
+        } else if (dir === 'down') {
+          startX = BOX_LEFT + BOX_SIZE * t;
+          startY = BOX_BOTTOM;
+          endX = startX;
+          endY = startY + len;
+        } else if (dir === 'left') {
+          startX = BOX_LEFT;
+          startY = BOX_TOP + BOX_SIZE * t;
+          endX = startX - len;
+          endY = startY;
+        } else if (dir === 'right') {
+          startX = BOX_RIGHT;
+          startY = BOX_TOP + BOX_SIZE * t;
+          endX = startX + len;
+          endY = startY;
+        }
+
+        // Hit target (wider invisible line for easier clicking)
+        const hit = el('line', {
+          x1: startX, y1: startY, x2: endX, y2: endY,
+          stroke: 'transparent',
+          'stroke-width': '22',
+          'data-force-id': force.id,
+          style: 'cursor: pointer;'
+        });
+        hit.addEventListener('click', () => removeForce(force.id));
+        layer.appendChild(hit);
+
+        // Visible arrow
+        layer.appendChild(el('line', {
+          x1: startX, y1: startY, x2: endX, y2: endY,
+          stroke: 'var(--force)',
+          'stroke-width': '3',
+          'stroke-linecap': 'round',
+          'marker-end': 'url(#arrowhead-force)',
+          'pointer-events': 'none'
+        }));
+
+        // Label position (offset from arrow tip, perpendicular to arrow)
+        let labelX = endX, labelY = endY;
+        if (dir === 'up')    { labelY -= 12; }
+        if (dir === 'down')  { labelY += 20; }
+        if (dir === 'left')  { labelX -= 16; labelY += 4; }
+        if (dir === 'right') { labelX += 16; labelY += 4; }
+
+        const anchor = (dir === 'left') ? 'end' : (dir === 'right') ? 'start' : 'middle';
+
+        // Label background for readability
+        const labelText = force.magnitude + ' N';
+        const approxW = labelText.length * 7.5 + 8;
+        const approxH = 18;
+        let bgX = labelX - approxW / 2;
+        if (anchor === 'end') bgX = labelX - approxW + 4;
+        if (anchor === 'start') bgX = labelX - 4;
+        layer.appendChild(el('rect', {
+          x: bgX, y: labelY - 13,
+          width: approxW, height: approxH,
+          fill: 'white', 'fill-opacity': '0.85',
+          rx: '2',
+          'pointer-events': 'none'
+        }));
+        layer.appendChild(el('text', {
+          x: labelX, y: labelY + 1,
+          'text-anchor': anchor,
+          'font-family': 'JetBrains Mono, monospace',
+          'font-size': '14',
+          'font-weight': '700',
+          fill: 'var(--force-dark)',
+          'pointer-events': 'none'
+        }, labelText));
+      });
+    });
+  }
+
+  function computeNet() {
+    // Physics convention: right = +x, up = +y
+    let fx = 0, fy = 0;
+    let sumUp = 0, sumDown = 0, sumLeft = 0, sumRight = 0;
+    state.forces.forEach(f => {
+      if (f.direction === 'right') { fx += f.magnitude; sumRight += f.magnitude; }
+      if (f.direction === 'left')  { fx -= f.magnitude; sumLeft += f.magnitude; }
+      if (f.direction === 'up')    { fy += f.magnitude; sumUp += f.magnitude; }
+      if (f.direction === 'down')  { fy -= f.magnitude; sumDown += f.magnitude; }
+    });
+    const mag = Math.sqrt(fx * fx + fy * fy);
+    return { fx, fy, mag, sumUp, sumDown, sumLeft, sumRight };
+  }
+
+  function renderResultant() {
+    const layer = document.getElementById('layer-resultant');
+    layer.innerHTML = '';
+    if (!state.revealed) return;
+    const net = computeNet();
+    if (net.mag < 0.01) return;
+    // Draw resultant from box centre
+    // Map physics (up = +y) to screen (up = -y)
+    const scale = ARROW_PER_N;
+    const endX = BOX_CX + net.fx * scale;
+    const endY = BOX_CY - net.fy * scale; // invert y
+    // Cap length
+    const dx = endX - BOX_CX;
+    const dy = endY - BOX_CY;
+    const len = Math.sqrt(dx * dx + dy * dy);
+    const maxLen = 180;
+    let fx_px = dx, fy_px = dy;
+    if (len > maxLen) {
+      fx_px = dx * maxLen / len;
+      fy_px = dy * maxLen / len;
+    }
+
+    layer.appendChild(el('line', {
+      x1: BOX_CX, y1: BOX_CY,
+      x2: BOX_CX + fx_px, y2: BOX_CY + fy_px,
+      stroke: 'var(--resultant)',
+      'stroke-width': '5',
+      'stroke-linecap': 'round',
+      'marker-end': 'url(#arrowhead-resultant)',
+      opacity: '0.95'
+    }));
+
+    // Label
+    const labelX = BOX_CX + fx_px * 0.6;
+    const labelY = BOX_CY + fy_px * 0.6 - 10;
+    layer.appendChild(el('rect', {
+      x: labelX - 40, y: labelY - 13,
+      width: 80, height: 20,
+      fill: 'white', 'fill-opacity': '0.9',
+      rx: '2'
+    }));
+    layer.appendChild(el('text', {
+      x: labelX, y: labelY + 2,
+      'text-anchor': 'middle',
+      'font-family': 'JetBrains Mono, monospace',
+      'font-size': '13',
+      'font-weight': '700',
+      fill: 'var(--resultant)'
+    }, 'R = ' + Math.round(net.mag * 10) / 10 + ' N'));
+  }
+
+  function updateStateLabel() {
+    const txt = document.getElementById('stateText');
+    const arrow = { up: '↑', down: '↓', left: '←', right: '→' };
+    if (state.motion === 'stationary') {
+      txt.textContent = 'stationary';
+    } else {
+      txt.textContent = 'moving ' + state.motion + ' ' + arrow[state.motion];
+    }
+    const count = state.forces.length;
+    document.getElementById('forceCount').textContent =
+      count + ' force' + (count === 1 ? '' : 's') + ' applied';
+  }
+
+  function render() {
+    renderBox();
+    renderMotion();
+    renderForces();
+    renderResultant();
+    updateStateLabel();
+    if (state.revealed) renderRevealPanel();
+  }
+
+  // ---------- Actions ----------
+  function addForce(direction, magnitude) {
+    const mag = Math.max(1, Math.min(99, Math.round(Number(magnitude) || 1)));
+    state.forces.push({ id: nextId++, direction, magnitude: mag });
+    // Adding a force invalidates the previous reveal — make students re-reveal
+    hideReveal();
+    render();
+  }
+
+  function removeForce(id) {
+    state.forces = state.forces.filter(f => f.id !== id);
+    hideReveal();
+    render();
+  }
+
+  function clearForces() {
+    state.forces = [];
+    hideReveal();
+    render();
+  }
+
+  function hideReveal() {
+    state.revealed = false;
+    document.getElementById('revealPanel').classList.remove('shown');
+    document.getElementById('layer-resultant').innerHTML = '';
+  }
+
+  function reveal() {
+    state.revealed = true;
+    document.getElementById('revealPanel').classList.add('shown');
+    renderRevealPanel();
+    renderResultant();
+  }
+
+  function renderRevealPanel() {
+    const net = computeNet();
+    // Magnitude display
+    document.getElementById('resMagnitude').innerHTML =
+      (Math.round(net.mag * 10) / 10) + '<span class="unit">N</span>';
+
+    // Direction text
+    let dirText = '';
+    if (net.mag < 0.01) {
+      dirText = 'The forces are balanced — the resultant force is zero.';
+    } else if (net.fy === 0) {
+      dirText = 'Acting purely horizontally, ' + (net.fx > 0 ? 'to the right →' : 'to the left ←') + '.';
+    } else if (net.fx === 0) {
+      dirText = 'Acting purely vertically, ' + (net.fy > 0 ? 'upward ↑' : 'downward ↓') + '.';
+    } else {
+      const horiz = net.fx > 0 ? 'right' : 'left';
+      const vert  = net.fy > 0 ? 'up' : 'down';
+      dirText = 'Acting ' + vert + ' and to the ' + horiz + ' (diagonal).';
+    }
+    document.getElementById('resDirection').textContent = dirText;
+
+    // Breakdown
+    const bd = document.getElementById('breakdown');
+    const hLine = net.sumRight + ' − ' + net.sumLeft + ' = ' + net.fx;
+    const vLine = net.sumUp + ' − ' + net.sumDown + ' = ' + net.fy;
+    bd.innerHTML =
+      '<div class="breakdown-row"><span class="calc">Horizontal: right − left</span><span class="result">' + hLine + ' N</span></div>' +
+      '<div class="breakdown-row"><span class="calc">Vertical: up − down</span><span class="result">' + vLine + ' N</span></div>' +
+      '<div class="breakdown-row"><span class="calc">Resultant magnitude</span><span class="result">' + (Math.round(net.mag * 10) / 10) + ' N</span></div>';
+
+    // Verdict
+    const { label, detail, cssClass } = deriveVerdict(net);
+    const card = document.getElementById('verdictCard');
+    card.className = 'verdict-card ' + cssClass;
+    document.getElementById('verdictLabel').textContent = label;
+    document.getElementById('verdictDetail').textContent = detail;
+  }
+
+  function deriveVerdict(net) {
+    const motion = state.motion;
+    const balanced = net.mag < 0.01;
+
+    // Stationary cases
+    if (motion === 'stationary') {
+      if (balanced) {
+        return {
+          label: 'Stays stationary',
+          detail: 'The forces are balanced, so there is no resultant force. An object at rest stays at rest.',
+          cssClass: 'balanced'
+        };
+      } else {
+        let dir = '';
+        if (net.fx !== 0 && net.fy !== 0) dir = 'diagonally';
+        else if (net.fx > 0) dir = 'to the right';
+        else if (net.fx < 0) dir = 'to the left';
+        else if (net.fy > 0) dir = 'upward';
+        else if (net.fy < 0) dir = 'downward';
+        return {
+          label: 'Starts to move ' + dir,
+          detail: 'A stationary object with an unbalanced force accelerates in the direction of the resultant force.',
+          cssClass: ''
+        };
+      }
+    }
+
+    // Moving cases — decompose net force relative to motion direction
+    // Parallel = component along motion; Perp = component perpendicular
+    let parallel = 0, perp = 0;
+    if (motion === 'right') { parallel = net.fx; perp = net.fy; }
+    if (motion === 'left')  { parallel = -net.fx; perp = net.fy; }
+    if (motion === 'up')    { parallel = net.fy; perp = net.fx; }
+    if (motion === 'down')  { parallel = -net.fy; perp = net.fx; }
+
+    if (balanced) {
+      return {
+        label: 'Continues at constant velocity',
+        detail: 'The forces are balanced, so there is no resultant force. A moving object with balanced forces keeps moving at the same speed in the same direction.',
+        cssClass: 'balanced'
+      };
+    }
+
+    if (perp === 0 && parallel > 0) {
+      return {
+        label: 'Speeds up',
+        detail: 'The resultant force acts in the same direction as the motion, so the object accelerates (gets faster).',
+        cssClass: ''
+      };
+    }
+    if (perp === 0 && parallel < 0) {
+      return {
+        label: 'Slows down',
+        detail: 'The resultant force acts opposite to the motion, so the object decelerates (gets slower). It will eventually stop, then reverse direction.',
+        cssClass: 'decelerating'
+      };
+    }
+    if (parallel === 0 && perp !== 0) {
+      return {
+        label: 'Changes direction',
+        detail: 'The resultant force is perpendicular to the motion, so it pushes the object sideways. Speed along the original direction doesn\u2019t change, but its path curves.',
+        cssClass: 'perpendicular'
+      };
+    }
+    // Mixed — parallel and perpendicular components both non-zero
+    const speedWord = parallel > 0 ? 'speeds up' : 'slows down';
+    return {
+      label: 'Changes direction AND ' + speedWord,
+      detail: 'The resultant force has one part along the motion (' +
+        (parallel > 0 ? 'making it speed up' : 'making it slow down') +
+        ') and one part across the motion (pushing it sideways).',
+      cssClass: 'perpendicular'
+    };
+  }
+
+  // ---------- Drag & drop ----------
+  let drag = null;
+
+  function startDrag(e, item) {
+    const direction = item.getAttribute('data-direction');
+    const magInput = item.querySelector('input[type="number"]');
+    const magnitude = Number(magInput.value) || 1;
+
+    // Create ghost
+    const ghost = document.createElement('div');
+    ghost.className = 'drag-ghost';
+    const arrowSvg = item.querySelector('.palette-arrow svg').cloneNode(true);
+    arrowSvg.style.width = '60px';
+    arrowSvg.style.height = '60px';
+    const label = document.createElement('div');
+    label.textContent = magnitude + ' N';
+    label.style.fontFamily = 'JetBrains Mono, monospace';
+    label.style.fontSize = '14px';
+    label.style.fontWeight = '700';
+    label.style.color = 'var(--force-dark)';
+    label.style.textAlign = 'center';
+    label.style.background = 'white';
+    label.style.padding = '2px 6px';
+    label.style.marginTop = '-4px';
+    ghost.appendChild(arrowSvg);
+    ghost.appendChild(label);
+    document.body.appendChild(ghost);
+
+    drag = {
+      direction, magnitude, ghost, item,
+      pointerId: e.pointerId
+    };
+    item.classList.add('dragging');
+
+    try { item.setPointerCapture(e.pointerId); } catch (err) {}
+    moveGhost(e.clientX, e.clientY);
+    e.preventDefault();
+  }
+
+  function moveGhost(x, y) {
+    if (!drag) return;
+    drag.ghost.style.left = x + 'px';
+    drag.ghost.style.top = y + 'px';
+    // Check if over canvas
+    const wrap = document.getElementById('canvasWrap');
+    const rect = wrap.getBoundingClientRect();
+    const over = x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
+    wrap.classList.toggle('drop-active', over);
+  }
+
+  function endDrag(x, y) {
+    if (!drag) return;
+    const wrap = document.getElementById('canvasWrap');
+    const rect = wrap.getBoundingClientRect();
+    const over = x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
+    if (over) {
+      addForce(drag.direction, drag.magnitude);
+    }
+    drag.ghost.remove();
+    drag.item.classList.remove('dragging');
+    wrap.classList.remove('drop-active');
+    drag = null;
+  }
+
+  // Wire up palette items
+  document.querySelectorAll('.palette-item').forEach(item => {
+    item.addEventListener('pointerdown', (e) => {
+      // Ignore if starting drag from the number input
+      if (e.target.tagName === 'INPUT') return;
+      startDrag(e, item);
+    });
+    item.addEventListener('pointermove', (e) => {
+      if (drag && drag.pointerId === e.pointerId) {
+        moveGhost(e.clientX, e.clientY);
+      }
+    });
+    item.addEventListener('pointerup', (e) => {
+      if (drag && drag.pointerId === e.pointerId) {
+        endDrag(e.clientX, e.clientY);
+      }
+    });
+    item.addEventListener('pointercancel', (e) => {
+      if (drag && drag.pointerId === e.pointerId) {
+        drag.ghost.remove();
+        drag.item.classList.remove('dragging');
+        document.getElementById('canvasWrap').classList.remove('drop-active');
+        drag = null;
+      }
+    });
+  });
+
+  // ---------- Motion radio ----------
+  document.querySelectorAll('input[name="motion"]').forEach(r => {
+    r.addEventListener('change', () => {
+      state.motion = r.value;
+      hideReveal();
+      render();
+    });
+  });
+
+  // ---------- Buttons ----------
+  document.getElementById('clearBtn').addEventListener('click', clearForces);
+  document.getElementById('revealBtn').addEventListener('click', reveal);
+
+  // ---------- Input validation ----------
+  document.querySelectorAll('.palette-item input[type="number"]').forEach(inp => {
+    inp.addEventListener('change', () => {
+      let v = Number(inp.value) || 1;
+      v = Math.max(1, Math.min(99, Math.round(v)));
+      inp.value = v;
+    });
+  });
+
+  // ---------- Keyboard ----------
+  document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'INPUT') return;
+    if (e.key === 'Enter') { reveal(); }
+    if (e.key === 'Escape') { clearForces(); }
+  });
+
+  // Initial render
+  render();
+
+})();
+</script>
+</body>
+</html>

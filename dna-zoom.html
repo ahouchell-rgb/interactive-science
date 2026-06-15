@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Zoom into DNA — GCSE AQA Triple Biology</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-deep:#070a1a;--bg-mid:#0f1530;--bg-glow:#1a2050;
+  --ink:#f2f4ff;--ink-dim:#9aa3cf;--rule:rgba(255,255,255,0.12);
+  --chromo-a:#c77dff;--chromo-b:#7b2cbf;
+  --helix-a:#ff6b9d;--helix-b:#4ac5ff;
+  --gene-a:#ffb84a;--gene-b:#ff8c2a;
+  --nuc-phos:#ff8c2a;--nuc-sugar:#c77dff;--nuc-base:#2ee6a8;
+  --base-a:#2ee6a8;--base-t:#ff5a7f;--base-c:#4ac5ff;--base-g:#ffd93d;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:var(--bg-deep);color:var(--ink);font-family:'IBM Plex Sans',sans-serif;user-select:none;-webkit-user-select:none}
+.starfield{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse at 20% 30%,rgba(75,30,160,0.35),transparent 50%),radial-gradient(ellipse at 80% 70%,rgba(180,40,110,0.25),transparent 50%),radial-gradient(ellipse at 50% 50%,var(--bg-glow),var(--bg-deep) 70%)}
+.stars{position:fixed;inset:0;z-index:0;opacity:0.6;background-image:radial-gradient(1px 1px at 20% 30%,rgba(255,255,255,0.8),transparent),radial-gradient(1px 1px at 60% 70%,rgba(255,255,255,0.5),transparent),radial-gradient(1px 1px at 80% 20%,rgba(255,255,255,0.7),transparent),radial-gradient(1px 1px at 30% 80%,rgba(255,255,255,0.4),transparent),radial-gradient(1px 1px at 90% 90%,rgba(255,255,255,0.6),transparent),radial-gradient(1px 1px at 10% 60%,rgba(255,255,255,0.3),transparent),radial-gradient(1px 1px at 70% 40%,rgba(255,255,255,0.5),transparent),radial-gradient(1px 1px at 45% 15%,rgba(255,255,255,0.7),transparent),radial-gradient(1px 1px at 15% 45%,rgba(255,255,255,0.4),transparent),radial-gradient(1px 1px at 85% 55%,rgba(255,255,255,0.6),transparent);background-size:800px 800px;animation:drift 120s linear infinite}
+@keyframes drift{from{transform:translate(0,0)}to{transform:translate(-800px,-800px)}}
+.stage{position:fixed;inset:0;z-index:1;display:flex;align-items:center;justify-content:center}
+.layer{position:absolute;width:min(78vh,82vw);height:min(78vh,82vw);max-width:820px;max-height:820px;opacity:0;transform:scale(0.35);transition:opacity 0.7s cubic-bezier(0.4,0,0.2,1),transform 0.9s cubic-bezier(0.4,0,0.2,1),filter 0.9s cubic-bezier(0.4,0,0.2,1);filter:blur(8px);pointer-events:none}
+.layer.active{opacity:1;transform:scale(1);filter:blur(0);pointer-events:auto}
+.layer.past{opacity:0;transform:scale(3.2);filter:blur(14px)}
+.layer svg{width:100%;height:100%;overflow:hidden;display:block}
+
+/* HUD */
+.hud{position:fixed;inset:0;z-index:10;pointer-events:none}
+.hud > *{pointer-events:auto}
+.scale-bar{position:absolute;top:32px;left:32px;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-dim)}
+.scale-bar .label{display:block;font-size:10px;opacity:0.6;margin-bottom:4px}
+.scale-bar .value{font-size:18px;color:var(--ink);font-weight:500;transition:color 0.5s}
+.level-name{position:absolute;top:32px;right:32px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.3em;text-transform:uppercase;color:var(--ink-dim);text-align:right}
+.level-name .num{display:block;font-size:10px;margin-bottom:4px;opacity:0.6}
+.level-name .current{font-size:22px;color:var(--ink);font-weight:500;font-family:'Instrument Serif',serif;letter-spacing:0.02em;text-transform:none}
+
+.info-card{position:absolute;left:50%;bottom:28px;transform:translateX(-50%);width:min(620px,calc(100vw - 60px));background:rgba(15,21,48,0.78);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--rule);border-radius:2px;padding:16px 28px 18px;text-align:center}
+.info-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent,var(--ink)) 20%,var(--accent,var(--ink)) 80%,transparent);opacity:0.6;transition:background 0.5s}
+.info-card h1{font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(20px,2.6vw,28px);line-height:1.1;margin-bottom:6px;letter-spacing:-0.01em;color:var(--accent,var(--ink));transition:color 0.5s}
+.info-card h1 em{font-style:italic;opacity:0.85;margin-left:6px;font-size:0.75em;color:var(--ink-dim)}
+.info-card p{font-size:clamp(13px,1.3vw,14.5px);line-height:1.5;color:var(--ink);max-width:60ch;margin:0 auto;font-weight:300}
+.info-card .hint-note{display:block;margin-top:10px;padding-top:10px;border-top:1px solid var(--rule);font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--ink-dim)}
+.info-card.changing h1,.info-card.changing p{animation:fadeSwap 0.7s ease}
+@keyframes fadeSwap{0%{opacity:0;transform:translateY(8px)}40%{opacity:0;transform:translateY(8px)}100%{opacity:1;transform:translateY(0)}}
+
+.progress{position:absolute;bottom:40px;left:40px;display:flex;flex-direction:column;gap:14px;align-items:flex-start}
+.progress-dots{display:flex;gap:10px;align-items:center}
+.dot{width:10px;height:10px;border-radius:50%;border:1px solid var(--ink-dim);background:transparent;cursor:pointer;transition:all 0.3s;padding:0}
+.dot:hover{border-color:var(--ink);transform:scale(1.2)}
+.dot.active{background:var(--accent,var(--ink));border-color:var(--accent,var(--ink));transform:scale(1.3);box-shadow:0 0 12px var(--accent,var(--ink))}
+.dot.past-dot{background:var(--ink-dim);border-color:var(--ink-dim)}
+.progress-label{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink-dim)}
+
+.controls{position:absolute;bottom:40px;right:40px;display:flex;gap:10px;align-items:center}
+.btn{background:rgba(15,21,48,0.72);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--rule);color:var(--ink);font-family:'IBM Plex Sans',sans-serif;font-size:13px;font-weight:500;letter-spacing:0.05em;padding:12px 20px;cursor:pointer;transition:all 0.2s;display:inline-flex;align-items:center;gap:8px}
+.btn:hover:not(:disabled){background:rgba(30,40,90,0.9);border-color:var(--ink-dim);transform:translateY(-1px)}
+.btn:disabled{opacity:0.3;cursor:not-allowed}
+.btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2}
+
+.help-hint{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink-dim);opacity:0;pointer-events:none;animation:hintFade 5s ease-out forwards;animation-delay:1s;text-align:center}
+.help-hint span{display:block;margin-top:6px;opacity:0.7;font-size:10px}
+@keyframes hintFade{0%{opacity:0}20%{opacity:0.8}80%{opacity:0.8}100%{opacity:0}}
+
+/* Spec badge */
+.spec-badge{position:absolute;top:90px;right:32px;font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink-dim);text-align:right;opacity:0.7}
+.spec-badge .chip{display:inline-block;margin-top:3px;padding:3px 7px;border:1px solid var(--rule);border-radius:2px;color:var(--gene-a);border-color:rgba(255,184,74,0.3)}
+
+/* Layer-specific styles */
+@keyframes softPulse{0%,100%{opacity:0.85}50%{opacity:1}}
+.chromo-arm{animation:softPulse 4s ease-in-out infinite;transform-origin:center;transform-box:fill-box}
+.chromo-arm:nth-child(odd){animation-delay:-2s}
+
+@keyframes helixFlow{from{transform:translateY(0)}to{transform:translateY(-180px)}}
+.helix-flow{animation:helixFlow 9s linear infinite}
+
+@keyframes hoverGlow{0%,100%{filter:drop-shadow(0 0 8px rgba(255,255,255,0.2))}50%{filter:drop-shadow(0 0 14px rgba(255,255,255,0.5))}}
+
+.gene-seg{transition:opacity 0.3s}
+.gene-highlight{animation:hoverGlow 2.4s ease-in-out infinite}
+
+[data-part]{cursor:pointer;transition:filter 0.2s ease,transform 0.2s ease;transform-origin:center;transform-box:fill-box}
+[data-part]:hover{filter:brightness(1.25) drop-shadow(0 0 14px rgba(255,255,255,0.5))}
+
+.pair-group{transition:transform 0.3s}
+
+/* Popup */
+.popup-backdrop{position:fixed;inset:0;background:rgba(7,10,26,0.55);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity 0.25s ease;z-index:20}
+.popup-backdrop.visible{opacity:1;pointer-events:auto}
+.part-popup{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.94);width:min(520px,calc(100vw - 48px));background:rgba(15,21,48,0.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--rule);border-radius:4px;padding:36px 40px 34px;opacity:0;pointer-events:none;transition:all 0.3s cubic-bezier(0.4,0,0.2,1);z-index:21}
+.part-popup.visible{opacity:1;transform:translate(-50%,-50%) scale(1);pointer-events:auto}
+.part-popup::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--popup-accent,var(--ink));opacity:0.9}
+.popup-kicker{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:10px}
+.popup-name{font-family:'Instrument Serif',serif;font-weight:400;font-size:38px;line-height:1.05;color:var(--popup-accent,var(--ink));margin-bottom:4px;letter-spacing:-0.01em}
+.popup-tagline{font-family:'Instrument Serif',serif;font-style:italic;font-size:18px;color:var(--ink-dim);margin-bottom:20px}
+.popup-function{font-size:15.5px;line-height:1.6;color:var(--ink);font-weight:300}
+.popup-exam{margin-top:20px;padding-top:18px;border-top:1px solid var(--rule);font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-dim);line-height:1.6}
+.popup-exam strong{color:var(--gene-a);font-weight:500}
+.popup-close{position:absolute;top:14px;right:14px;width:30px;height:30px;background:transparent;border:1px solid var(--rule);border-radius:50%;color:var(--ink-dim);font-size:18px;line-height:1;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center}
+.popup-close:hover{color:var(--ink);border-color:var(--ink)}
+
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition-duration:0.3s !important}.layer{transition-duration:0.3s !important}.helix-flow{animation:none !important}}
+@media (max-width:720px){
+  .scale-bar,.level-name{top:16px}
+  .scale-bar{left:16px}
+  .level-name{right:16px}
+  .scale-bar .value,.level-name .current{font-size:16px}
+  .info-card{bottom:16px;padding:18px 22px 22px;width:calc(100vw - 32px)}
+  .progress{bottom:210px;left:16px}
+  .controls{bottom:210px;right:16px}
+  .spec-badge{top:68px;right:16px}
+  .part-popup{padding:28px 26px 26px}
+  .popup-name{font-size:30px}
+}
+</style>
+</head>
+<body>
+<div class="starfield"></div>
+<div class="stars"></div>
+
+<div class="stage" id="stage">
+
+<!-- LEVEL 0: CHROMOSOME -->
+<div class="layer" data-level="0">
+<svg viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="chromoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+<stop offset="0%" stop-color="#d9a4ff"/>
+<stop offset="50%" stop-color="#c77dff"/>
+<stop offset="100%" stop-color="#7b2cbf"/>
+</linearGradient>
+<filter id="chromoGlow"><feGaussianBlur stdDeviation="10" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+<pattern id="chromoCoil" x="0" y="0" width="22" height="22" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+<path d="M 0,11 Q 5.5,0 11,11 Q 16.5,22 22,11" stroke="rgba(255,255,255,0.22)" stroke-width="1.2" fill="none"/>
+</pattern>
+</defs>
+
+<g filter="url(#chromoGlow)">
+<!-- Four chromatid arms, each a gently curved path (quadratic Bezier) -->
+<!-- Top-left arm: bows down-left so the arm fans outward -->
+<g class="chromo-arm">
+<path d="M 290,290 Q 350,415 475,475" stroke="url(#chromoGrad)" stroke-width="115" stroke-linecap="round" fill="none"/>
+<path d="M 290,290 Q 350,415 475,475" stroke="url(#chromoCoil)" stroke-width="115" stroke-linecap="round" opacity="0.9" fill="none"/>
+</g>
+<!-- Top-right arm: bows down-right -->
+<g class="chromo-arm">
+<path d="M 710,290 Q 650,415 525,475" stroke="url(#chromoGrad)" stroke-width="115" stroke-linecap="round" fill="none"/>
+<path d="M 710,290 Q 650,415 525,475" stroke="url(#chromoCoil)" stroke-width="115" stroke-linecap="round" opacity="0.9" fill="none"/>
+</g>
+<!-- Bottom-left arm: bows up-left -->
+<g class="chromo-arm">
+<path d="M 290,710 Q 350,585 475,525" stroke="url(#chromoGrad)" stroke-width="115" stroke-linecap="round" fill="none"/>
+<path d="M 290,710 Q 350,585 475,525" stroke="url(#chromoCoil)" stroke-width="115" stroke-linecap="round" opacity="0.9" fill="none"/>
+</g>
+<!-- Bottom-right arm: bows up-right -->
+<g class="chromo-arm">
+<path d="M 710,710 Q 650,585 525,525" stroke="url(#chromoGrad)" stroke-width="115" stroke-linecap="round" fill="none"/>
+<path d="M 710,710 Q 650,585 525,525" stroke="url(#chromoCoil)" stroke-width="115" stroke-linecap="round" opacity="0.9" fill="none"/>
+</g>
+<circle cx="500" cy="500" r="62" fill="url(#chromoGrad)"/>
+<ellipse cx="500" cy="500" rx="46" ry="16" fill="rgba(7,10,26,0.45)"/>
+</g>
+
+<!-- Labels -->
+<g font-family="IBM Plex Mono,monospace" font-size="13" fill="#9aa3cf" letter-spacing="0.15em">
+<text x="500" y="495" text-anchor="middle" font-size="10">CENTROMERE</text>
+<text x="185" y="195" text-anchor="middle">CHROMATID</text>
+<line x1="215" y1="205" x2="280" y2="275" stroke="#9aa3cf" stroke-width="1" opacity="0.5"/>
+</g>
+</svg>
+</div>
+
+<!-- LEVEL 1: DOUBLE HELIX -->
+<div class="layer" data-level="1">
+<svg viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="strandA" x1="0%" y1="0%" x2="0%" y2="100%">
+<stop offset="0%" stop-color="#ffb3cc"/>
+<stop offset="100%" stop-color="#ff3d7f"/>
+</linearGradient>
+<linearGradient id="strandB" x1="0%" y1="0%" x2="0%" y2="100%">
+<stop offset="0%" stop-color="#8ed6ff"/>
+<stop offset="100%" stop-color="#1b8bd6"/>
+</linearGradient>
+<filter id="helixGlow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+<clipPath id="helixClip"><rect x="0" y="0" width="1000" height="1000"/></clipPath>
+</defs>
+
+<g clip-path="url(#helixClip)">
+<g class="helix-flow" id="helixGroup" filter="url(#helixGlow)">
+<!-- Paths and rungs injected by JS -->
+</g>
+</g>
+
+<!-- Static labels -->
+<g font-family="IBM Plex Mono,monospace" font-size="11" fill="#9aa3cf" letter-spacing="0.18em">
+<text x="60" y="500" transform="rotate(-90 60 500)" text-anchor="middle">SUGAR-PHOSPHATE BACKBONE</text>
+<text x="940" y="500" transform="rotate(90 940 500)" text-anchor="middle">SUGAR-PHOSPHATE BACKBONE</text>
+</g>
+</svg>
+</div>
+
+<!-- LEVEL 2: GENE -->
+<div class="layer" data-level="2">
+<svg viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="geneBgGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+<stop offset="0%" stop-color="rgba(255,255,255,0.05)"/>
+<stop offset="50%" stop-color="rgba(255,255,255,0.18)"/>
+<stop offset="100%" stop-color="rgba(255,255,255,0.05)"/>
+</linearGradient>
+<linearGradient id="geneMain" x1="0%" y1="0%" x2="100%" y2="0%">
+<stop offset="0%" stop-color="#ffd280"/>
+<stop offset="50%" stop-color="#ffb84a"/>
+<stop offset="100%" stop-color="#ff8c2a"/>
+</linearGradient>
+<filter id="geneGlow"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+
+<!-- Full DNA strand (context) -->
+<g>
+<!-- Background strand -->
+<rect x="40" y="420" width="920" height="50" rx="4" fill="url(#geneBgGrad)"/>
+<!-- Tick marks suggesting base pairs -->
+<g stroke="rgba(255,255,255,0.15)" stroke-width="1">
+<line x1="40" y1="420" x2="40" y2="470"/>
+<line x1="60" y1="420" x2="60" y2="470"/>
+<line x1="80" y1="420" x2="80" y2="470"/>
+<line x1="100" y1="420" x2="100" y2="470"/>
+<line x1="120" y1="420" x2="120" y2="470"/>
+<line x1="140" y1="420" x2="140" y2="470"/>
+<line x1="900" y1="420" x2="900" y2="470"/>
+<line x1="920" y1="420" x2="920" y2="470"/>
+<line x1="940" y1="420" x2="940" y2="470"/>
+<line x1="960" y1="420" x2="960" y2="470"/>
+</g>
+
+<!-- Other gene segments (smaller, muted) -->
+<rect class="gene-seg" x="90" y="420" width="90" height="50" rx="4" fill="#5a3a8a" opacity="0.7"/>
+<rect class="gene-seg" x="220" y="420" width="60" height="50" rx="4" fill="#4a7a8a" opacity="0.7"/>
+<rect class="gene-seg" x="760" y="420" width="70" height="50" rx="4" fill="#7a4a5a" opacity="0.7"/>
+<rect class="gene-seg" x="850" y="420" width="50" height="50" rx="4" fill="#4a5a3a" opacity="0.7"/>
+
+<!-- The highlighted gene -->
+<g class="gene-highlight" filter="url(#geneGlow)">
+<rect x="350" y="415" width="320" height="60" rx="5" fill="url(#geneMain)"/>
+</g>
+
+<!-- Bracket showing gene extent -->
+<g stroke="#fff" stroke-width="1.5" fill="none" opacity="0.9">
+<path d="M 350,500 L 350,520 L 670,520 L 670,500"/>
+<line x1="510" y1="520" x2="510" y2="545"/>
+</g>
+<text x="510" y="575" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="13" fill="#fff" letter-spacing="0.25em">ONE GENE</text>
+<text x="510" y="600" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="#9aa3cf" letter-spacing="0.15em">A SECTION OF DNA</text>
+
+<!-- Arrow down to protein -->
+<g stroke="#ffb84a" stroke-width="2" fill="none" opacity="0.7">
+<line x1="510" y1="630" x2="510" y2="720"/>
+<polyline points="500,710 510,725 520,710"/>
+</g>
+<text x="510" y="665" text-anchor="middle" font-family="Instrument Serif,serif" font-style="italic" font-size="18" fill="#ffb84a">codes for</text>
+
+<!-- Protein (stylised folded shape) -->
+<g transform="translate(510,800)">
+<path d="M -80,-30 Q -60,-50 -40,-30 Q -20,-10 0,-30 Q 20,-50 40,-30 Q 60,-10 80,-30"
+      stroke="#4ac5ff" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.85"/>
+<path d="M -70,0 Q -50,20 -30,0 Q -10,-20 10,0 Q 30,20 50,0 Q 70,-20 70,0"
+      stroke="#4ac5ff" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.85"/>
+<circle cx="-80" cy="-30" r="7" fill="#4ac5ff"/>
+<circle cx="80" cy="0" r="7" fill="#4ac5ff"/>
+</g>
+<text x="510" y="895" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" fill="#9aa3cf" letter-spacing="0.2em">A SPECIFIC PROTEIN</text>
+
+<!-- Top label: context -->
+<text x="40" y="380" font-family="IBM Plex Mono,monospace" font-size="11" fill="#9aa3cf" letter-spacing="0.2em">DNA —</text>
+<text x="110" y="380" font-family="IBM Plex Mono,monospace" font-size="11" fill="#9aa3cf" letter-spacing="0.2em">~3 BILLION BASE PAIRS</text>
+
+</g>
+</svg>
+</div>
+
+<!-- LEVEL 3: POLYMER / DNA STRAND -->
+<div class="layer" data-level="3">
+<svg viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<radialGradient id="polyPhos" cx="35%" cy="35%">
+<stop offset="0%" stop-color="#ffd48a"/>
+<stop offset="100%" stop-color="#ff8c2a"/>
+</radialGradient>
+<linearGradient id="polySugar" x1="0%" y1="0%" x2="100%" y2="100%">
+<stop offset="0%" stop-color="#e0b5ff"/>
+<stop offset="100%" stop-color="#9d5de0"/>
+</linearGradient>
+<filter id="polyHighlight"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+
+<!-- Heading -->
+<text x="500" y="105" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" fill="#9aa3cf" letter-spacing="0.3em">A POLYMER OF NUCLEOTIDES</text>
+<text x="500" y="135" text-anchor="middle" font-family="Instrument Serif,serif" font-style="italic" font-size="17" fill="#f2f4ff">DNA strands are long chains of repeating units</text>
+
+<!-- Strand labels -->
+<text x="140" y="172" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="#9aa3cf" letter-spacing="0.18em">STRAND 1</text>
+<text x="860" y="172" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="#9aa3cf" letter-spacing="0.18em">STRAND 2</text>
+
+<g>
+
+<!-- PAIR 1 -->
+<circle cx="140" cy="200" r="13" fill="url(#polyPhos)"/>
+<line x1="140" y1="213" x2="140" y2="220" stroke="#ff8c2a" stroke-width="2.5"/>
+<polygon points="140,222 153,231 148,247 132,247 127,231" fill="url(#polySugar)"/>
+<line x1="153" y1="239" x2="200" y2="239" stroke="#9aa3cf" stroke-width="1.5" opacity="0.5"/>
+<rect x="200" y="225" width="290" height="28" rx="3" fill="#5a6a8a" opacity="0.5"/>
+<rect x="510" y="225" width="290" height="28" rx="3" fill="#5a6a8a" opacity="0.5"/>
+<line x1="800" y1="239" x2="847" y2="239" stroke="#9aa3cf" stroke-width="1.5" opacity="0.5"/>
+<polygon points="860,222 873,231 868,247 852,247 847,231" fill="url(#polySugar)"/>
+<line x1="860" y1="213" x2="860" y2="220" stroke="#ff8c2a" stroke-width="2.5"/>
+<circle cx="860" cy="200" r="13" fill="url(#polyPhos)"/>
+<line x1="140" y1="247" x2="140" y2="290" stroke="#ff8c2a" stroke-width="2.5"/>
+<line x1="860" y1="247" x2="860" y2="290" stroke="#ff8c2a" stroke-width="2.5"/>
+
+<!-- PAIR 2 -->
+<circle cx="140" cy="290" r="13" fill="url(#polyPhos)"/>
+<line x1="140" y1="303" x2="140" y2="310" stroke="#ff8c2a" stroke-width="2.5"/>
+<polygon points="140,312 153,321 148,337 132,337 127,321" fill="url(#polySugar)"/>
+<line x1="153" y1="329" x2="200" y2="329" stroke="#9aa3cf" stroke-width="1.5" opacity="0.5"/>
+<rect x="200" y="315" width="290" height="28" rx="3" fill="#5a6a8a" opacity="0.5"/>
+<rect x="510" y="315" width="290" height="28" rx="3" fill="#5a6a8a" opacity="0.5"/>
+<line x1="800" y1="329" x2="847" y2="329" stroke="#9aa3cf" stroke-width="1.5" opacity="0.5"/>
+<polygon points="860,312 873,321 868,337 852,337 847,321" fill="url(#polySugar)"/>
+<line x1="860" y1="303" x2="860" y2="310" stroke="#ff8c2a" stroke-width="2.5"/>
+<circle cx="860" cy="290" r="13" fill="url(#polyPhos)"/>
+<line x1="140" y1="337" x2="140" y2="380" stroke="#ff8c2a" stroke-width="2.5"/>
+<line x1="860" y1="337" x2="860" y2="380" stroke="#ff8c2a" stroke-width="2.5"/>
+
+<!-- PAIR 3 — HIGHLIGHTED (left nucleotide is the 'one' we'll zoom into next) -->
+<g filter="url(#polyHighlight)">
+<circle cx="140" cy="380" r="14" fill="url(#polyPhos)"/>
+<line x1="140" y1="394" x2="140" y2="400" stroke="#ff8c2a" stroke-width="3"/>
+<polygon points="140,402 154,412 149,428 131,428 126,412" fill="url(#polySugar)"/>
+<line x1="154" y1="420" x2="200" y2="420" stroke="#f2f4ff" stroke-width="1.8" opacity="0.7"/>
+<rect x="200" y="406" width="290" height="28" rx="3" fill="#2ee6a8" opacity="0.85"/>
+</g>
+<rect x="510" y="406" width="290" height="28" rx="3" fill="#ff5a7f" opacity="0.4"/>
+<line x1="800" y1="420" x2="847" y2="420" stroke="#9aa3cf" stroke-width="1.5" opacity="0.5"/>
+<polygon points="860,402 873,411 868,427 852,427 847,411" fill="url(#polySugar)" opacity="0.7"/>
+<line x1="860" y1="393" x2="860" y2="400" stroke="#ff8c2a" stroke-width="2.5" opacity="0.7"/>
+<circle cx="860" cy="380" r="13" fill="url(#polyPhos)" opacity="0.7"/>
+
+<!-- Highlight box around the singled-out nucleotide -->
+<rect x="105" y="368" width="400" height="68" rx="4" fill="none" stroke="#ffd48a" stroke-width="1.5" stroke-dasharray="6,4"/>
+
+<line x1="140" y1="428" x2="140" y2="470" stroke="#ff8c2a" stroke-width="2.5"/>
+<line x1="860" y1="427" x2="860" y2="470" stroke="#ff8c2a" stroke-width="2.5" opacity="0.7"/>
+
+<!-- PAIR 4 -->
+<circle cx="140" cy="470" r="13" fill="url(#polyPhos)"/>
+<line x1="140" y1="483" x2="140" y2="490" stroke="#ff8c2a" stroke-width="2.5"/>
+<polygon points="140,492 153,501 148,517 132,517 127,501" fill="url(#polySugar)"/>
+<line x1="153" y1="509" x2="200" y2="509" stroke="#9aa3cf" stroke-width="1.5" opacity="0.5"/>
+<rect x="200" y="495" width="290" height="28" rx="3" fill="#5a6a8a" opacity="0.5"/>
+<rect x="510" y="495" width="290" height="28" rx="3" fill="#5a6a8a" opacity="0.5"/>
+<line x1="800" y1="509" x2="847" y2="509" stroke="#9aa3cf" stroke-width="1.5" opacity="0.5"/>
+<polygon points="860,492 873,501 868,517 852,517 847,501" fill="url(#polySugar)"/>
+<line x1="860" y1="483" x2="860" y2="490" stroke="#ff8c2a" stroke-width="2.5"/>
+<circle cx="860" cy="470" r="13" fill="url(#polyPhos)"/>
+<line x1="140" y1="517" x2="140" y2="560" stroke="#ff8c2a" stroke-width="2.5"/>
+<line x1="860" y1="517" x2="860" y2="560" stroke="#ff8c2a" stroke-width="2.5"/>
+
+<!-- PAIR 5 -->
+<circle cx="140" cy="560" r="13" fill="url(#polyPhos)"/>
+<line x1="140" y1="573" x2="140" y2="580" stroke="#ff8c2a" stroke-width="2.5"/>
+<polygon points="140,582 153,591 148,607 132,607 127,591" fill="url(#polySugar)"/>
+<line x1="153" y1="599" x2="200" y2="599" stroke="#9aa3cf" stroke-width="1.5" opacity="0.5"/>
+<rect x="200" y="585" width="290" height="28" rx="3" fill="#5a6a8a" opacity="0.5"/>
+<rect x="510" y="585" width="290" height="28" rx="3" fill="#5a6a8a" opacity="0.5"/>
+<line x1="800" y1="599" x2="847" y2="599" stroke="#9aa3cf" stroke-width="1.5" opacity="0.5"/>
+<polygon points="860,582 873,591 868,607 852,607 847,591" fill="url(#polySugar)"/>
+<line x1="860" y1="573" x2="860" y2="580" stroke="#ff8c2a" stroke-width="2.5"/>
+<circle cx="860" cy="560" r="13" fill="url(#polyPhos)"/>
+
+<!-- Continuation -->
+<line x1="140" y1="607" x2="140" y2="640" stroke="#ff8c2a" stroke-width="2.5" opacity="0.5"/>
+<line x1="860" y1="607" x2="860" y2="640" stroke="#ff8c2a" stroke-width="2.5" opacity="0.5"/>
+<text x="140" y="668" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="20" fill="#9aa3cf" opacity="0.6">⋮</text>
+<text x="860" y="668" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="20" fill="#9aa3cf" opacity="0.6">⋮</text>
+
+</g>
+
+<!-- Annotation pointer -->
+<g>
+<line x1="510" y1="402" x2="600" y2="365" stroke="#ffd48a" stroke-width="1.5" opacity="0.85"/>
+<line x1="600" y1="365" x2="710" y2="365" stroke="#ffd48a" stroke-width="1.5" opacity="0.85"/>
+<text x="722" y="362" font-family="IBM Plex Mono,monospace" font-size="12" fill="#ffd48a" letter-spacing="0.2em">ONE NUCLEOTIDE</text>
+<text x="722" y="380" font-family="IBM Plex Mono,monospace" font-size="9" fill="#9aa3cf" letter-spacing="0.15em">PHOSPHATE + SUGAR + BASE</text>
+</g>
+
+<!-- Footer + key -->
+<g>
+<text x="500" y="745" text-anchor="middle" font-family="Instrument Serif,serif" font-style="italic" font-size="22" fill="#ff9d4d">repeating units · linked by their backbones</text>
+<g transform="translate(300,790)"><circle cx="10" cy="10" r="8" fill="url(#polyPhos)"/><text x="26" y="14" font-family="IBM Plex Mono,monospace" font-size="10" fill="#9aa3cf" letter-spacing="0.15em">PHOSPHATE</text></g>
+<g transform="translate(440,790)"><polygon points="10,1 19,8 16,18 4,18 1,8" fill="url(#polySugar)"/><text x="26" y="14" font-family="IBM Plex Mono,monospace" font-size="10" fill="#9aa3cf" letter-spacing="0.15em">SUGAR</text></g>
+<g transform="translate(550,790)"><rect x="0" y="2" width="18" height="14" rx="2" fill="#5a6a8a" opacity="0.7"/><text x="26" y="14" font-family="IBM Plex Mono,monospace" font-size="10" fill="#9aa3cf" letter-spacing="0.15em">BASE</text></g>
+<g transform="translate(640,790)"><line x1="0" y1="10" x2="22" y2="10" stroke="#ff8c2a" stroke-width="2.5"/><text x="30" y="14" font-family="IBM Plex Mono,monospace" font-size="10" fill="#9aa3cf" letter-spacing="0.15em">BACKBONE</text></g>
+</g>
+</svg>
+</div>
+
+<!-- LEVEL 4: NUCLEOTIDE -->
+<div class="layer" data-level="4">
+<svg viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<radialGradient id="phosGrad" cx="35%" cy="35%">
+<stop offset="0%" stop-color="#ffd48a"/>
+<stop offset="100%" stop-color="#ff8c2a"/>
+</radialGradient>
+<linearGradient id="sugarGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+<stop offset="0%" stop-color="#e0b5ff"/>
+<stop offset="100%" stop-color="#9d5de0"/>
+</linearGradient>
+<linearGradient id="baseGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+<stop offset="0%" stop-color="#66f2b8"/>
+<stop offset="100%" stop-color="#2ee6a8"/>
+</linearGradient>
+<filter id="nucGlow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+
+<!-- Heading -->
+<text x="500" y="120" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" fill="#9aa3cf" letter-spacing="0.3em">ONE NUCLEOTIDE · TAP A PART</text>
+
+<!-- Connecting bonds -->
+<g stroke="#f2f4ff" stroke-width="2.5" opacity="0.4" stroke-dasharray="0">
+<line x1="295" y1="500" x2="395" y2="500"/>
+<line x1="585" y1="500" x2="685" y2="500"/>
+</g>
+
+<!-- Phosphate -->
+<g data-part="phosphate" filter="url(#nucGlow)">
+<circle cx="230" cy="500" r="68" fill="url(#phosGrad)"/>
+<text x="230" y="518" text-anchor="middle" font-family="Instrument Serif,serif" font-size="52" fill="#fff">P</text>
+</g>
+<text x="230" y="625" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="13" fill="#9aa3cf" letter-spacing="0.18em">PHOSPHATE</text>
+<text x="230" y="648" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="#6b7499" letter-spacing="0.15em">GROUP</text>
+
+<!-- Sugar (pentagon = 5-carbon ring) -->
+<g data-part="sugar" filter="url(#nucGlow)">
+<polygon points="490,420 575,475 548,578 432,578 405,475" fill="url(#sugarGrad)"/>
+<text x="490" y="520" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="15" font-weight="500" fill="#fff" letter-spacing="0.1em">SUGAR</text>
+</g>
+<text x="490" y="625" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="13" fill="#9aa3cf" letter-spacing="0.18em">SUGAR</text>
+<text x="490" y="648" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="#6b7499" letter-spacing="0.15em">(DEOXYRIBOSE)</text>
+
+<!-- Base -->
+<g data-part="base" filter="url(#nucGlow)">
+<rect x="685" y="432" width="160" height="136" rx="10" fill="url(#baseGrad)"/>
+<text x="765" y="530" text-anchor="middle" font-family="Instrument Serif,serif" font-size="78" fill="#0a2010">A</text>
+</g>
+<text x="765" y="625" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="13" fill="#9aa3cf" letter-spacing="0.18em">BASE</text>
+<text x="765" y="648" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="#6b7499" letter-spacing="0.15em">A · T · C · G</text>
+
+<!-- Polymer hint (faded nucleotides on either side) -->
+<g opacity="0.22">
+<circle cx="-10" cy="500" r="40" fill="#ff8c2a"/>
+<polygon points="110,455 160,490 144,555 76,555 60,490" fill="#9d5de0"/>
+<line x1="40" y1="500" x2="60" y2="500" stroke="#f2f4ff" stroke-width="1.8"/>
+<line x1="160" y1="500" x2="180" y2="500" stroke="#f2f4ff" stroke-width="1.8"/>
+<circle cx="990" cy="500" r="40" fill="#ff8c2a"/>
+<line x1="840" y1="500" x2="860" y2="500" stroke="#f2f4ff" stroke-width="1.8"/>
+<line x1="940" y1="500" x2="960" y2="500" stroke="#f2f4ff" stroke-width="1.8"/>
+<polygon points="890,455 940,490 924,555 856,555 840,490" fill="#9d5de0"/>
+<rect x="200" y="468" width="60" height="64" rx="6" fill="#2ee6a8"/>
+<rect x="730" y="468" width="60" height="64" rx="6" fill="#ffd93d"/>
+</g>
+<text x="40" y="420" font-family="IBM Plex Mono,monospace" font-size="10" fill="#6b7499" letter-spacing="0.2em">…</text>
+<text x="950" y="420" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="10" fill="#6b7499" letter-spacing="0.2em">…</text>
+
+<!-- Footer equation -->
+<text x="500" y="780" text-anchor="middle" font-family="Instrument Serif,serif" font-style="italic" font-size="22" fill="#c77dff">
+<tspan fill="#ff8c2a">phosphate</tspan> <tspan fill="#f2f4ff">+</tspan> <tspan fill="#c77dff">sugar</tspan> <tspan fill="#f2f4ff">+</tspan> <tspan fill="#2ee6a8">base</tspan> <tspan fill="#f2f4ff">=</tspan> <tspan fill="#ffb84a">1 nucleotide</tspan>
+</text>
+<text x="500" y="820" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="#9aa3cf" letter-spacing="0.25em">DNA IS A POLYMER OF NUCLEOTIDES</text>
+</svg>
+</div>
+
+<!-- LEVEL 5: BASE PAIRS -->
+<div class="layer" data-level="5">
+<svg viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="bpSugar" x1="0%" y1="0%" x2="100%" y2="100%">
+<stop offset="0%" stop-color="#e0b5ff"/>
+<stop offset="100%" stop-color="#9d5de0"/>
+</linearGradient>
+<radialGradient id="bpPhos" cx="35%" cy="35%">
+<stop offset="0%" stop-color="#ffd48a"/>
+<stop offset="100%" stop-color="#ff8c2a"/>
+</radialGradient>
+<filter id="bpGlow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+
+<!-- Heading -->
+<text x="500" y="95" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" fill="#9aa3cf" letter-spacing="0.3em">COMPLEMENTARY BASE PAIRS</text>
+<text x="500" y="120" text-anchor="middle" font-family="Instrument Serif,serif" font-style="italic" font-size="18" fill="#f2f4ff">A pairs with T &nbsp;·&nbsp; C pairs with G</text>
+
+<!-- Backbones -->
+<g opacity="0.35">
+<line x1="140" y1="170" x2="140" y2="870" stroke="#9aa3cf" stroke-width="2"/>
+<line x1="860" y1="170" x2="860" y2="870" stroke="#9aa3cf" stroke-width="2"/>
+</g>
+
+<!-- Pair 1: A - T (y = 230) -->
+<g class="pair-group">
+<!-- Left backbone: phosphate + sugar -->
+<circle cx="140" cy="205" r="22" fill="url(#bpPhos)"/>
+<polygon points="140,250 170,270 160,300 120,300 110,270" fill="url(#bpSugar)"/>
+<!-- Connection sugar -> base -->
+<line x1="155" y1="283" x2="230" y2="283" stroke="#f2f4ff" stroke-width="1.8" opacity="0.5"/>
+<!-- A base -->
+<rect x="230" y="250" width="200" height="66" rx="6" fill="#2ee6a8" filter="url(#bpGlow)"/>
+<text x="330" y="297" text-anchor="middle" font-family="Instrument Serif,serif" font-size="48" fill="#0a2010">A</text>
+<!-- Bond dashes -->
+<line x1="440" y1="275" x2="560" y2="275" stroke="#f2f4ff" stroke-width="1.5" stroke-dasharray="5,4" opacity="0.55"/>
+<line x1="440" y1="295" x2="560" y2="295" stroke="#f2f4ff" stroke-width="1.5" stroke-dasharray="5,4" opacity="0.55"/>
+<!-- T base -->
+<rect x="570" y="250" width="200" height="66" rx="6" fill="#ff5a7f" filter="url(#bpGlow)"/>
+<text x="670" y="297" text-anchor="middle" font-family="Instrument Serif,serif" font-size="48" fill="#2a0010">T</text>
+<!-- Connection base -> sugar -->
+<line x1="770" y1="283" x2="845" y2="283" stroke="#f2f4ff" stroke-width="1.8" opacity="0.5"/>
+<!-- Right backbone -->
+<polygon points="860,250 890,270 880,300 840,300 830,270" fill="url(#bpSugar)"/>
+<circle cx="860" cy="205" r="22" fill="url(#bpPhos)"/>
+</g>
+
+<!-- Pair 2: C - G (y = 410) -->
+<g class="pair-group">
+<circle cx="140" cy="385" r="22" fill="url(#bpPhos)"/>
+<polygon points="140,430 170,450 160,480 120,480 110,450" fill="url(#bpSugar)"/>
+<line x1="155" y1="463" x2="230" y2="463" stroke="#f2f4ff" stroke-width="1.8" opacity="0.5"/>
+<rect x="230" y="430" width="200" height="66" rx="6" fill="#4ac5ff" filter="url(#bpGlow)"/>
+<text x="330" y="477" text-anchor="middle" font-family="Instrument Serif,serif" font-size="48" fill="#00142a">C</text>
+<line x1="440" y1="450" x2="560" y2="450" stroke="#f2f4ff" stroke-width="1.5" stroke-dasharray="5,4" opacity="0.55"/>
+<line x1="440" y1="465" x2="560" y2="465" stroke="#f2f4ff" stroke-width="1.5" stroke-dasharray="5,4" opacity="0.55"/>
+<line x1="440" y1="480" x2="560" y2="480" stroke="#f2f4ff" stroke-width="1.5" stroke-dasharray="5,4" opacity="0.55"/>
+<rect x="570" y="430" width="200" height="66" rx="6" fill="#ffd93d" filter="url(#bpGlow)"/>
+<text x="670" y="477" text-anchor="middle" font-family="Instrument Serif,serif" font-size="48" fill="#2a2000">G</text>
+<line x1="770" y1="463" x2="845" y2="463" stroke="#f2f4ff" stroke-width="1.8" opacity="0.5"/>
+<polygon points="860,430 890,450 880,480 840,480 830,450" fill="url(#bpSugar)"/>
+<circle cx="860" cy="385" r="22" fill="url(#bpPhos)"/>
+</g>
+
+<!-- Pair 3: T - A (reversed to show it goes either way) -->
+<g class="pair-group">
+<circle cx="140" cy="565" r="22" fill="url(#bpPhos)"/>
+<polygon points="140,610 170,630 160,660 120,660 110,630" fill="url(#bpSugar)"/>
+<line x1="155" y1="643" x2="230" y2="643" stroke="#f2f4ff" stroke-width="1.8" opacity="0.5"/>
+<rect x="230" y="610" width="200" height="66" rx="6" fill="#ff5a7f" filter="url(#bpGlow)"/>
+<text x="330" y="657" text-anchor="middle" font-family="Instrument Serif,serif" font-size="48" fill="#2a0010">T</text>
+<line x1="440" y1="635" x2="560" y2="635" stroke="#f2f4ff" stroke-width="1.5" stroke-dasharray="5,4" opacity="0.55"/>
+<line x1="440" y1="655" x2="560" y2="655" stroke="#f2f4ff" stroke-width="1.5" stroke-dasharray="5,4" opacity="0.55"/>
+<rect x="570" y="610" width="200" height="66" rx="6" fill="#2ee6a8" filter="url(#bpGlow)"/>
+<text x="670" y="657" text-anchor="middle" font-family="Instrument Serif,serif" font-size="48" fill="#0a2010">A</text>
+<line x1="770" y1="643" x2="845" y2="643" stroke="#f2f4ff" stroke-width="1.8" opacity="0.5"/>
+<polygon points="860,610 890,630 880,660 840,660 830,630" fill="url(#bpSugar)"/>
+<circle cx="860" cy="565" r="22" fill="url(#bpPhos)"/>
+</g>
+
+<!-- Pair 4: G - C -->
+<g class="pair-group">
+<circle cx="140" cy="745" r="22" fill="url(#bpPhos)"/>
+<polygon points="140,790 170,810 160,840 120,840 110,810" fill="url(#bpSugar)"/>
+<line x1="155" y1="823" x2="230" y2="823" stroke="#f2f4ff" stroke-width="1.8" opacity="0.5"/>
+<rect x="230" y="790" width="200" height="66" rx="6" fill="#ffd93d" filter="url(#bpGlow)"/>
+<text x="330" y="837" text-anchor="middle" font-family="Instrument Serif,serif" font-size="48" fill="#2a2000">G</text>
+<line x1="440" y1="810" x2="560" y2="810" stroke="#f2f4ff" stroke-width="1.5" stroke-dasharray="5,4" opacity="0.55"/>
+<line x1="440" y1="823" x2="560" y2="823" stroke="#f2f4ff" stroke-width="1.5" stroke-dasharray="5,4" opacity="0.55"/>
+<line x1="440" y1="836" x2="560" y2="836" stroke="#f2f4ff" stroke-width="1.5" stroke-dasharray="5,4" opacity="0.55"/>
+<rect x="570" y="790" width="200" height="66" rx="6" fill="#4ac5ff" filter="url(#bpGlow)"/>
+<text x="670" y="837" text-anchor="middle" font-family="Instrument Serif,serif" font-size="48" fill="#00142a">C</text>
+<line x1="770" y1="823" x2="845" y2="823" stroke="#f2f4ff" stroke-width="1.8" opacity="0.5"/>
+<polygon points="860,790 890,810 880,840 840,840 830,810" fill="url(#bpSugar)"/>
+<circle cx="860" cy="745" r="22" fill="url(#bpPhos)"/>
+</g>
+
+<!-- Labels -->
+<g font-family="IBM Plex Mono,monospace" font-size="10" fill="#9aa3cf" letter-spacing="0.18em">
+<text x="95" y="180" text-anchor="middle">STRAND 1</text>
+<text x="905" y="180" text-anchor="middle">STRAND 2</text>
+</g>
+
+<!-- Bottom triplet hint -->
+<g transform="translate(0,900)">
+<rect x="230" y="-20" width="540" height="40" rx="3" fill="rgba(255,184,74,0.12)" stroke="rgba(255,184,74,0.4)" stroke-width="1"/>
+<text x="500" y="5" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" fill="#ffb84a" letter-spacing="0.22em">3 BASES (A TRIPLET) CODE FOR 1 AMINO ACID</text>
+</g>
+</svg>
+</div>
+
+</div>
+<!-- end stage -->
+
+<!-- HUD -->
+<div class="hud">
+
+<div class="scale-bar">
+<span class="label">Scale</span>
+<span class="value" id="scaleValue">5 μm</span>
+</div>
+
+<div class="level-name">
+<span class="num" id="levelNum">01 / 06</span>
+<span class="current" id="levelCurrent">Chromosome</span>
+</div>
+
+<div class="spec-badge">
+<span>AQA BIOLOGY · TRIPLE ONLY</span><br>
+<span class="chip" id="specChip">4.6.1.5</span>
+</div>
+
+<div class="info-card" id="infoCard">
+<h1 id="cardTitle">Chromosome <em>condensed DNA</em></h1>
+<p id="cardDesc">Chromosomes are made of DNA coiled up tight. Humans have 23 pairs of chromosomes, stored inside the nucleus of every body cell. Packing the DNA this way protects it and lets the cell copy and separate it during division.</p>
+<span class="hint-note" id="hintNote">Scroll, arrow keys, or click dots to zoom in</span>
+</div>
+
+<div class="progress">
+<div class="progress-dots" id="dots">
+<button class="dot active" data-level="0" aria-label="Level 1"></button>
+<button class="dot" data-level="1" aria-label="Level 2"></button>
+<button class="dot" data-level="2" aria-label="Level 3"></button>
+<button class="dot" data-level="3" aria-label="Level 4"></button>
+<button class="dot" data-level="4" aria-label="Level 5"></button>
+<button class="dot" data-level="5" aria-label="Level 6"></button>
+</div>
+<span class="progress-label">Level <span id="levelLabel">1</span> of 6</span>
+</div>
+
+<div class="controls">
+<button class="btn" id="zoomOutBtn" disabled>
+<svg viewBox="0 0 24 24"><path d="M19 12H5"/></svg>
+Zoom out
+</button>
+<button class="btn" id="zoomInBtn">
+Zoom in
+<svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+</button>
+</div>
+
+<div class="help-hint" id="helpHint">
+Scroll to zoom · Click parts to explore
+<span>Press 1-5 to jump · Esc to reset</span>
+</div>
+
+</div>
+<!-- end hud -->
+
+<!-- Popup for nucleotide parts -->
+<div class="popup-backdrop" id="popupBackdrop"></div>
+<div class="part-popup" id="partPopup">
+<button class="popup-close" id="popupClose">×</button>
+<div class="popup-kicker" id="popupKicker">Nucleotide component</div>
+<h2 class="popup-name" id="popupName">Phosphate</h2>
+<div class="popup-tagline" id="popupTagline">the anchor of the backbone</div>
+<p class="popup-function" id="popupFunction">Description goes here.</p>
+<div class="popup-exam" id="popupExam"><strong>EXAM TIP:</strong> something.</div>
+</div>
+
+<script>
+// ---------- Levels data ----------
+const levels = [
+  {
+    id: 0,
+    name: 'Chromosome',
+    scale: '≈ 5 μm',
+    spec: '6.1.4',
+    accent: '#c77dff',
+    title: 'Chromosome',
+    tagSmall: 'condensed DNA',
+    desc: 'Chromosomes are made of DNA coiled up tight. Humans have 23 pairs of chromosomes, stored inside the nucleus of every body cell. Packing the DNA this way protects it and lets the cell copy and separate it during division.',
+    hint: 'Scroll, arrow keys, or click dots to zoom in'
+  },
+  {
+    id: 1,
+    name: 'Double Helix',
+    scale: '≈ 2 nm wide',
+    spec: '6.1.5',
+    accent: '#ff6b9d',
+    title: 'DNA',
+    tagSmall: 'a double helix',
+    desc: 'Unwind a chromosome and you get DNA — a polymer of two long strands twisted around each other into a double helix. Each strand has a sugar-phosphate backbone, with bases sticking out like the rungs of a twisted ladder.',
+    hint: 'The two strands are held together by the bases in the middle'
+  },
+  {
+    id: 2,
+    name: 'Gene',
+    scale: '≈ 1,000+ base pairs',
+    spec: '6.1.4',
+    accent: '#ffb84a',
+    title: 'Gene',
+    tagSmall: 'the code for one protein',
+    desc: 'A gene is a short section of DNA that codes for a particular sequence of amino acids. Those amino acids join together to form one specific protein. Humans have around 20,000 genes spread across their chromosomes.',
+    hint: 'Different genes → different proteins → different functions'
+  },
+  {
+    id: 3,
+    name: 'DNA Strand',
+    scale: '≈ 1.7 nm long',
+    spec: '6.1.5',
+    accent: '#ff9d4d',
+    title: 'DNA Strand',
+    tagSmall: 'a polymer of nucleotides',
+    desc: 'DNA is a polymer — a long chain of repeating units called nucleotides. Each nucleotide links to the next through its sugar and phosphate, forming a continuous backbone. Two strands run alongside each other, joined in the middle by their bases.',
+    hint: 'One nucleotide = one phosphate + one sugar + one base'
+  },
+  {
+    id: 4,
+    name: 'Nucleotide',
+    scale: '≈ 0.3 nm',
+    spec: '6.1.5',
+    accent: '#c77dff',
+    title: 'Nucleotide',
+    tagSmall: 'the monomer of DNA',
+    desc: 'DNA is a polymer built from repeating units called nucleotides. Each nucleotide has three parts: a phosphate group, a sugar (deoxyribose), and one of four bases — A, T, C or G. The phosphate and sugar form the backbone; the base sticks out to the side.',
+    hint: 'Tap any part to learn more'
+  },
+  {
+    id: 5,
+    name: 'Base Pairs',
+    scale: '≈ 0.34 nm rise',
+    spec: '6.1.5',
+    accent: '#2ee6a8',
+    title: 'Complementary Base Pairs',
+    tagSmall: 'A–T, C–G',
+    desc: 'The two strands are held together by bonds between the bases. Adenine always pairs with Thymine, and Cytosine always pairs with Guanine. The order of bases along a gene is the genetic code — three bases (a triplet) codes for one amino acid.',
+    hint: 'The sequence of bases IS the code for the protein'
+  }
+];
+
+// ---------- Nucleotide part details ----------
+const parts = {
+  phosphate: {
+    kicker: 'Nucleotide component · 1 of 3',
+    name: 'Phosphate',
+    tagline: 'the anchor of the backbone',
+    function: 'The phosphate group links to the sugar of the next nucleotide, forming the alternating sugar-phosphate backbone that runs along each DNA strand. It is the same phosphate in every nucleotide — only the base changes.',
+    exam: 'EXAM TIP: When describing DNA structure, always mention the "sugar-phosphate backbone" — it\'s the wording examiners look for.',
+    accent: '#ff8c2a'
+  },
+  sugar: {
+    kicker: 'Nucleotide component · 2 of 3',
+    name: 'Deoxyribose',
+    tagline: 'the five-carbon sugar',
+    function: 'Deoxyribose is a five-carbon sugar (that\'s why it\'s drawn as a pentagon). Each sugar bonds to a phosphate on one side — building the backbone — and to a base on the other side, which sticks out to pair with the opposite strand.',
+    exam: 'EXAM TIP: You don\'t need to memorise the chemistry of deoxyribose. Just know it\'s a sugar, and it joins phosphate + base together.',
+    accent: '#c77dff'
+  },
+  base: {
+    kicker: 'Nucleotide component · 3 of 3',
+    name: 'Base',
+    tagline: 'A, T, C, or G',
+    function: 'The base is the only part of the nucleotide that varies. There are four possibilities: Adenine (A), Thymine (T), Cytosine (C), and Guanine (G). The order of bases along a gene determines the order of amino acids in the protein — so the base IS the genetic information.',
+    exam: 'EXAM TIP: You only need the letters — A, T, C, G — not the full names. But remember the pairing rules: A↔T, C↔G.',
+    accent: '#2ee6a8'
+  }
+};
+
+// ---------- Build the double helix procedurally ----------
+function buildHelix() {
+  const group = document.getElementById('helixGroup');
+  if (!group) return;
+
+  const cx = 500;
+  const amp = 145;
+  const period = 180;
+  const totalY = 1180; // extends past viewBox for seamless loop
+  const step = 4;
+
+  // Build two sinusoidal backbone paths
+  let p1 = 'M ' + (cx + amp * Math.sin(0)).toFixed(1) + ',0';
+  let p2 = 'M ' + (cx - amp * Math.sin(0)).toFixed(1) + ',0';
+
+  for (let y = step; y <= totalY; y += step) {
+    const phase = 2 * Math.PI * y / period;
+    const x1 = cx + amp * Math.sin(phase);
+    const x2 = cx - amp * Math.sin(phase);
+    p1 += ' L ' + x1.toFixed(1) + ',' + y;
+    p2 += ' L ' + x2.toFixed(1) + ',' + y;
+  }
+
+  // Strand 1
+  const path1 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  path1.setAttribute('d', p1);
+  path1.setAttribute('stroke', 'url(#strandA)');
+  path1.setAttribute('stroke-width', '9');
+  path1.setAttribute('stroke-linecap', 'round');
+  path1.setAttribute('fill', 'none');
+  group.appendChild(path1);
+
+  // Strand 2
+  const path2 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  path2.setAttribute('d', p2);
+  path2.setAttribute('stroke', 'url(#strandB)');
+  path2.setAttribute('stroke-width', '9');
+  path2.setAttribute('stroke-linecap', 'round');
+  path2.setAttribute('fill', 'none');
+  group.appendChild(path2);
+
+  // Rungs (base pairs) — subtle at this zoom level
+  const rungStep = 20;
+  for (let y = 10; y < totalY; y += rungStep) {
+    const phase = 2 * Math.PI * y / period;
+    const x1 = cx + amp * Math.sin(phase);
+    const x2 = cx - amp * Math.sin(phase);
+    const width = Math.abs(x1 - x2);
+    if (width < 25) continue;
+
+    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    line.setAttribute('x1', x1.toFixed(1));
+    line.setAttribute('y1', y);
+    line.setAttribute('x2', x2.toFixed(1));
+    line.setAttribute('y2', y);
+    line.setAttribute('stroke', '#f2f4ff');
+    line.setAttribute('stroke-width', '2.5');
+    line.setAttribute('stroke-linecap', 'round');
+    // Fade rungs when strands cross
+    const op = Math.min(0.7, width / 280);
+    line.setAttribute('opacity', op.toFixed(2));
+    group.appendChild(line);
+  }
+}
+
+// ---------- Navigation state ----------
+let currentLevel = 0;
+let isTransitioning = false;
+let isPopupOpen = false;
+const TRANSITION_LOCK = 700;
+
+const layers = document.querySelectorAll('.layer');
+const dots = document.querySelectorAll('.dot');
+const zoomInBtn = document.getElementById('zoomInBtn');
+const zoomOutBtn = document.getElementById('zoomOutBtn');
+const scaleValue = document.getElementById('scaleValue');
+const levelNum = document.getElementById('levelNum');
+const levelCurrent = document.getElementById('levelCurrent');
+const levelLabel = document.getElementById('levelLabel');
+const cardTitle = document.getElementById('cardTitle');
+const cardDesc = document.getElementById('cardDesc');
+const hintNote = document.getElementById('hintNote');
+const specChip = document.getElementById('specChip');
+const infoCard = document.getElementById('infoCard');
+const popup = document.getElementById('partPopup');
+const popupBackdrop = document.getElementById('popupBackdrop');
+const popupClose = document.getElementById('popupClose');
+const popupKicker = document.getElementById('popupKicker');
+const popupName = document.getElementById('popupName');
+const popupTagline = document.getElementById('popupTagline');
+const popupFunction = document.getElementById('popupFunction');
+const popupExam = document.getElementById('popupExam');
+
+function render(direction) {
+  const level = levels[currentLevel];
+
+  // Layer visibility
+  layers.forEach((layer) => {
+    const lvl = parseInt(layer.dataset.level, 10);
+    layer.classList.remove('active', 'past');
+    if (lvl === currentLevel) {
+      layer.classList.add('active');
+    } else if (lvl < currentLevel) {
+      layer.classList.add('past');
+    }
+  });
+
+  // HUD
+  scaleValue.textContent = level.scale;
+  scaleValue.style.color = level.accent;
+  levelNum.textContent = String(currentLevel + 1).padStart(2, '0') + ' / 06';
+  levelCurrent.textContent = level.name;
+  levelLabel.textContent = currentLevel + 1;
+  specChip.textContent = level.spec;
+
+  // Dots
+  dots.forEach((dot) => {
+    const dlvl = parseInt(dot.dataset.level, 10);
+    dot.classList.remove('active', 'past-dot');
+    if (dlvl === currentLevel) {
+      dot.classList.add('active');
+      dot.style.setProperty('--accent', level.accent);
+    } else if (dlvl < currentLevel) {
+      dot.classList.add('past-dot');
+    }
+  });
+
+  // Buttons
+  zoomOutBtn.disabled = currentLevel === 0;
+  zoomInBtn.disabled = currentLevel === levels.length - 1;
+
+  // Info card animation
+  infoCard.classList.remove('changing');
+  void infoCard.offsetWidth; // reflow to restart animation
+  infoCard.classList.add('changing');
+  cardTitle.innerHTML = level.title + ' <em>' + level.tagSmall + '</em>';
+  cardDesc.textContent = level.desc;
+  hintNote.textContent = level.hint;
+  infoCard.style.setProperty('--accent', level.accent);
+}
+
+function goTo(level, direction) {
+  if (level < 0 || level >= levels.length || level === currentLevel) return;
+  if (isTransitioning) return;
+  isTransitioning = true;
+  const dir = direction || (level > currentLevel ? 'in' : 'out');
+  currentLevel = level;
+  render(dir);
+  setTimeout(() => { isTransitioning = false; }, TRANSITION_LOCK);
+}
+
+function zoomIn() {
+  goTo(currentLevel + 1, 'in');
+}
+function zoomOut() {
+  goTo(currentLevel - 1, 'out');
+}
+
+// ---------- Popup ----------
+function openPopup(partId) {
+  const part = parts[partId];
+  if (!part) return;
+  popupKicker.textContent = part.kicker;
+  popupName.textContent = part.name;
+  popupTagline.textContent = part.tagline;
+  popupFunction.textContent = part.function;
+  popupExam.innerHTML = '<strong>' + part.exam.split(':')[0] + ':</strong>' + part.exam.substring(part.exam.indexOf(':') + 1);
+  popup.style.setProperty('--popup-accent', part.accent);
+  popup.classList.add('visible');
+  popupBackdrop.classList.add('visible');
+  isPopupOpen = true;
+}
+
+function closePopup() {
+  popup.classList.remove('visible');
+  popupBackdrop.classList.remove('visible');
+  isPopupOpen = false;
+}
+
+// ---------- Events ----------
+zoomInBtn.addEventListener('click', zoomIn);
+zoomOutBtn.addEventListener('click', zoomOut);
+
+dots.forEach((dot) => {
+  dot.addEventListener('click', () => {
+    goTo(parseInt(dot.dataset.level, 10));
+  });
+});
+
+document.getElementById('stage').addEventListener('click', (e) => {
+  let el = e.target;
+  while (el && el !== document.getElementById('stage')) {
+    if (el.dataset && el.dataset.part) {
+      openPopup(el.dataset.part);
+      return;
+    }
+    el = el.parentElement;
+  }
+});
+
+popupClose.addEventListener('click', closePopup);
+popupBackdrop.addEventListener('click', closePopup);
+
+let wheelLock = false;
+window.addEventListener('wheel', (e) => {
+  if (isPopupOpen) return;
+  e.preventDefault();
+  if (wheelLock) return;
+  if (Math.abs(e.deltaY) < 8) return;
+  wheelLock = true;
+  if (e.deltaY > 0) zoomIn(); else zoomOut();
+  setTimeout(() => { wheelLock = false; }, TRANSITION_LOCK);
+}, { passive: false });
+
+window.addEventListener('keydown', (e) => {
+  if (isPopupOpen) {
+    if (e.key === 'Escape') { closePopup(); e.preventDefault(); }
+    return;
+  }
+  if (e.key >= '1' && e.key <= '6') {
+    goTo(parseInt(e.key, 10) - 1);
+    return;
+  }
+  switch (e.key) {
+    case 'ArrowRight':
+    case 'ArrowDown':
+    case ' ':
+    case 'Enter':
+      e.preventDefault(); zoomIn(); break;
+    case 'ArrowLeft':
+    case 'ArrowUp':
+    case 'Backspace':
+      e.preventDefault(); zoomOut(); break;
+    case 'Home':
+    case 'Escape':
+      e.preventDefault(); goTo(0); break;
+    case 'End':
+      e.preventDefault(); goTo(levels.length - 1); break;
+  }
+});
+
+// Touch swipe support
+let touchStartY = null;
+window.addEventListener('touchstart', (e) => {
+  if (isPopupOpen) return;
+  touchStartY = e.touches[0].clientY;
+}, { passive: true });
+window.addEventListener('touchend', (e) => {
+  if (touchStartY === null || isPopupOpen) return;
+  const dy = e.changedTouches[0].clientY - touchStartY;
+  if (Math.abs(dy) > 40) {
+    if (dy < 0) zoomIn(); else zoomOut();
+  }
+  touchStartY = null;
+});
+
+// ---------- Init ----------
+buildHelix();
+render('in');
+</script>
+</body>
+</html>

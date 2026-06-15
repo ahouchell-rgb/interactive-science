@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Power — Year 7 Revision</title>
+<meta name="description" content="A Year 7 revision booklet on power — six short topics covering what power is, the power equation, calculating energy, kilowatts and kilojoules, working with minutes, and energy stores.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1E2761;
+  --navy-soft:#2a3478;
+  --warm:#F8F4EC;
+  --warm-deep:#EFE8D6;
+  --paper:#FCFAF4;
+  --soft-blue:#EDF2FA;
+  --ink:#1A1A1A;
+  --muted:#5C6370;
+  --rule:#CFD8E3;
+  --accent:#B85042;
+  --accent-soft:#F4DAD7;
+  --success:#2C5F2D;
+  --success-soft:#DDEBDD;
+  --gold:#C8A24A;
+  --gold-soft:#F2E6BD;
+  --display: 'Instrument Serif', 'Cormorant Garamond', Georgia, serif;
+  --body: 'IBM Plex Sans', 'Helvetica Neue', system-ui, sans-serif;
+  --mono: 'IBM Plex Mono', 'Courier New', monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--body);
+  font-weight:300;
+  font-size:17px;
+  line-height:1.65;
+  color:var(--ink);
+  background:var(--warm);
+  background-image:
+    radial-gradient(ellipse at 10% 0%, rgba(30,39,97,0.04), transparent 50%),
+    radial-gradient(ellipse at 90% 100%, rgba(184,80,66,0.04), transparent 50%);
+  background-attachment:fixed;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+/* ---------- HERO ---------- */
+.hero{background:var(--navy);color:var(--warm);padding:48px 24px 56px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 30%,rgba(75,30,160,0.25),transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(184,80,66,0.18),transparent 60%);pointer-events:none}
+.hero-inner{max-width:720px;margin:0 auto;position:relative;z-index:1}
+.kicker{font-family:var(--mono);font-size:11px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(248,244,236,0.55);margin-bottom:20px}
+.hero h1{font-family:var(--display);font-weight:400;font-size:clamp(40px,8vw,68px);line-height:1.0;letter-spacing:-0.015em;margin-bottom:14px}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero .tag{font-family:var(--display);font-style:italic;font-size:clamp(18px,3.5vw,22px);color:rgba(248,244,236,0.75);font-weight:400;max-width:520px}
+.pace-banner{margin-top:36px;padding:18px 22px;border:1px solid rgba(248,244,236,0.2);border-left:3px solid var(--gold);background:rgba(0,0,0,0.15);display:flex;gap:14px;align-items:flex-start}
+.pace-banner .pace-icon{font-family:var(--display);font-size:30px;line-height:1;color:var(--gold);flex:0 0 auto}
+.pace-banner p{font-size:15px;line-height:1.5;color:rgba(248,244,236,0.92)}
+.pace-banner strong{color:var(--warm);font-weight:500}
+
+/* ---------- LESSON NAV ---------- */
+.lesson-nav{position:sticky;top:0;z-index:100;background:rgba(252,250,244,0.96);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--rule);padding:12px 0}
+.nav-inner{max-width:720px;margin:0 auto;padding:0 16px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-pill{flex:0 0 auto;font-family:var(--mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);padding:8px 14px;border:1px solid var(--rule);background:var(--paper);text-decoration:none;border-radius:100px;transition:all 0.2s;font-weight:500;white-space:nowrap}
+.nav-pill:hover{border-color:var(--navy);color:var(--navy)}
+.nav-pill.done{background:var(--success-soft);border-color:var(--success);color:var(--success)}
+.nav-pill.done::before{content:'✓ ';font-weight:600}
+
+/* ---------- LESSON ---------- */
+main{max-width:720px;margin:0 auto;padding:48px 24px 80px}
+.lesson{margin-bottom:64px;scroll-margin-top:80px}
+.lesson-head{margin-bottom:36px;padding-bottom:24px;border-bottom:1px solid var(--rule);position:relative}
+.lesson-num{font-family:var(--mono);font-size:11px;letter-spacing:0.3em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+.lesson-title{font-family:var(--display);font-weight:400;font-size:clamp(32px,6vw,46px);line-height:1.05;color:var(--navy);letter-spacing:-0.01em;margin-bottom:14px}
+.lesson-title em{font-style:italic}
+.lesson-promise{font-family:var(--display);font-style:italic;font-size:19px;color:var(--muted);line-height:1.4;max-width:540px}
+
+/* ---------- SECTION ---------- */
+.section{margin-bottom:42px}
+.section-head{font-family:var(--display);font-weight:400;font-size:26px;line-height:1.15;color:var(--navy);margin-bottom:16px;letter-spacing:-0.005em}
+.section-head .num{font-family:var(--mono);font-size:12px;color:var(--accent);letter-spacing:0.2em;display:block;margin-bottom:6px}
+.section p{margin-bottom:16px;font-size:17px}
+.section p strong{font-weight:500;color:var(--navy);background:linear-gradient(180deg,transparent 60%,rgba(200,162,74,0.25) 60%);padding:0 2px}
+
+/* ---------- KEYWORD BOX ---------- */
+.keywords{background:var(--soft-blue);border:1px solid #C9D7ED;border-left:3px solid var(--navy);padding:20px 22px;margin:24px 0}
+.keywords h4{font-family:var(--mono);font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:var(--navy);margin-bottom:14px;font-weight:500}
+.keywords dl{display:grid;gap:10px}
+.keywords dt{font-family:var(--display);font-size:20px;font-style:italic;color:var(--navy);font-weight:400}
+.keywords dd{font-size:15px;color:var(--ink);margin-bottom:6px}
+
+/* ---------- HINGE QUESTION ---------- */
+.hinge{background:var(--paper);border:1px solid var(--rule);padding:22px 24px;margin:28px 0;position:relative}
+.hinge-tag{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);padding:4px 10px;margin-bottom:12px;font-weight:500}
+.hinge-q{font-family:var(--display);font-size:22px;line-height:1.3;color:var(--navy);margin-bottom:14px;font-weight:400}
+.choices{list-style:none;display:grid;gap:8px;margin-bottom:16px}
+.choices li{font-size:15px;padding:10px 14px;background:var(--warm);border:1px solid var(--rule);display:flex;gap:10px;align-items:flex-start}
+.choices li .letter{font-family:var(--mono);font-weight:500;color:var(--accent);flex:0 0 auto}
+.reveal{width:100%;background:transparent}
+.reveal summary{cursor:pointer;list-style:none;font-family:var(--mono);font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);padding:10px 0;border-top:1px dashed var(--rule);display:flex;align-items:center;gap:10px;transition:color 0.2s;font-weight:500;user-select:none}
+.reveal summary::-webkit-details-marker{display:none}
+.reveal summary::before{content:'+';font-family:var(--display);font-size:18px;color:var(--accent);width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--accent);border-radius:50%;transition:transform 0.25s}
+.reveal[open] summary::before{transform:rotate(45deg)}
+.reveal summary:hover{color:var(--navy)}
+.reveal-body{padding:14px 16px;margin-top:10px;background:var(--success-soft);border-left:3px solid var(--success);font-size:15px;line-height:1.55;color:var(--ink)}
+.reveal-body strong{color:var(--success);font-weight:500}
+.reveal-body em{color:var(--muted);font-style:italic;font-size:13px;display:block;margin-top:8px}
+
+/* ---------- WATCH OUT ---------- */
+.watch-out{background:var(--accent-soft);border:1px solid #E6BCB7;border-left:3px solid var(--accent);padding:18px 22px;margin:24px 0}
+.watch-out h4{font-family:var(--mono);font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;font-weight:500}
+.watch-out p{font-size:15px;line-height:1.5;margin:0}
+.watch-out p+p{margin-top:8px}
+
+/* ---------- WORKED EXAMPLE / FORMULA ---------- */
+.worked{background:var(--paper);border:1px solid var(--rule);padding:22px;margin:24px 0}
+.worked h4{font-family:var(--mono);font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:var(--navy);margin-bottom:14px;font-weight:500}
+.worked .q{font-size:16px;margin-bottom:14px;line-height:1.5;color:var(--ink);font-weight:400}
+.worked .step{display:grid;grid-template-columns:80px 1fr;gap:14px;padding:8px 0;border-bottom:1px dashed var(--rule);align-items:baseline}
+.worked .step:last-child{border-bottom:0;padding-bottom:0}
+.worked .step .label{font-family:var(--mono);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);font-weight:500}
+.worked .step .v{font-family:var(--mono);font-size:14px;color:var(--ink);line-height:1.5}
+.worked .step.answer .v{font-family:var(--mono);font-size:16px;font-weight:500;color:var(--success);background:var(--success-soft);padding:4px 10px;display:inline-block}
+.formula{font-family:var(--mono);font-size:15px;background:var(--soft-blue);padding:8px 12px;display:inline-block;margin:4px 0;color:var(--navy);font-weight:500}
+
+/* ---------- INLINE DIAGRAM ---------- */
+.diagram{margin:18px 0;padding:20px;background:var(--paper);border:1px solid var(--rule);text-align:center}
+.diagram svg{display:inline-block;width:100%;max-width:560px;height:auto}
+.diagram .caption{font-family:var(--mono);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-top:10px;font-weight:500}
+
+/* ---------- QUIZ ---------- */
+.quiz{background:var(--paper);border:1px solid var(--rule);margin-top:36px;padding:28px 24px 24px}
+.quiz-head{font-family:var(--display);font-size:26px;color:var(--navy);margin-bottom:6px;font-weight:400}
+.quiz-head em{font-style:italic}
+.quiz-sub{font-family:var(--mono);font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:20px}
+.quiz ol{list-style:none;counter-reset:q;display:grid;gap:10px}
+.quiz li{counter-increment:q;border:1px solid var(--rule);background:var(--warm)}
+.quiz details summary{cursor:pointer;list-style:none;padding:14px 18px;display:flex;gap:14px;align-items:flex-start;font-size:16px;line-height:1.45;user-select:none}
+.quiz details summary::-webkit-details-marker{display:none}
+.quiz details summary::before{content:counter(q,decimal-leading-zero);font-family:var(--mono);font-size:13px;font-weight:500;color:var(--accent);flex:0 0 auto;padding-top:2px}
+.quiz details summary::after{content:'show answer';font-family:var(--mono);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-left:auto;flex:0 0 auto;padding-top:4px;white-space:nowrap;align-self:flex-start}
+.quiz details[open] summary::after{content:'hide';}
+.quiz details summary:hover::after{color:var(--accent)}
+.quiz .ans{padding:0 18px 16px 50px;font-size:15px;color:var(--success);line-height:1.5;border-top:1px dashed var(--rule);padding-top:14px;margin-top:4px}
+.quiz .ans strong{font-weight:600}
+
+/* ---------- DONE BUTTON ---------- */
+.done-btn{display:block;width:100%;margin-top:24px;padding:14px;background:var(--navy);color:var(--warm);border:0;font-family:var(--mono);font-size:12px;letter-spacing:0.25em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;font-weight:500}
+.done-btn:hover{background:var(--accent)}
+.done-btn.is-done{background:var(--success);cursor:default}
+.done-btn.is-done::before{content:'✓ '}
+
+/* ---------- DIVIDER ---------- */
+.section-rule{height:1px;background:var(--rule);margin:36px 0;position:relative}
+.section-rule::after{content:'⁂';position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--warm);padding:0 14px;color:var(--accent);font-size:18px}
+
+/* ---------- FOOTER ---------- */
+footer{text-align:center;padding:48px 24px;background:var(--navy);color:rgba(248,244,236,0.6)}
+footer p{font-size:13px;line-height:1.5;margin-bottom:6px}
+footer .sig{font-family:var(--display);font-style:italic;font-size:18px;color:var(--gold);margin-bottom:14px}
+
+/* ---------- SMALL SCREENS ---------- */
+@media (max-width:540px){
+  body{font-size:16px}
+  .hero{padding:36px 20px 44px}
+  main{padding:32px 18px 60px}
+  .keywords,.hinge,.watch-out,.worked{padding:18px 18px}
+  .lesson{margin-bottom:48px}
+  .quiz{padding:22px 16px 18px}
+  .quiz details summary{padding:12px 14px;font-size:15px}
+  .quiz .ans{padding-left:42px;padding-right:14px}
+  .worked .step{grid-template-columns:64px 1fr;gap:10px}
+}
+
+@media print{
+  .lesson-nav,.pace-banner,.done-btn{display:none}
+  body{background:white}
+  details[open] summary::after,details>summary::after{content:''}
+  details>.ans,details>.reveal-body{display:block !important}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="kicker">Year 7 · Physics · P1.3 Power</div>
+    <h1>Power, <em>but bitesize.</em></h1>
+    <p class="tag">A revision booklet — six short topics, from what power means to working with kilowatts and minutes.</p>
+    <div class="pace-banner">
+      <span class="pace-icon">i</span>
+      <p><strong>Take it one topic at a time.</strong> There are six topics. Each one is short — about 10 minutes. Do one or two a day.</p>
+    </div>
+  </div>
+</header>
+
+<!-- ============ STICKY NAV ============ -->
+<nav class="lesson-nav">
+  <div class="nav-inner">
+    <a href="#lesson-1" class="nav-pill" data-lesson="1">What is power?</a>
+    <a href="#lesson-2" class="nav-pill" data-lesson="2">The power equation</a>
+    <a href="#lesson-3" class="nav-pill" data-lesson="3">Calculating energy</a>
+    <a href="#lesson-4" class="nav-pill" data-lesson="4">kW &amp; kJ</a>
+    <a href="#lesson-5" class="nav-pill" data-lesson="5">Working with minutes</a>
+    <a href="#lesson-6" class="nav-pill" data-lesson="6">Energy stores</a>
+  </div>
+</nav>
+
+<main>
+
+<!-- ===================================================================== -->
+<!-- TOPIC 1 — P1.3 WHAT IS POWER                                            -->
+<!-- ===================================================================== -->
+<section class="lesson" id="lesson-1">
+  <div class="lesson-head">
+    <div class="lesson-num">Topic 01 · P1.3 · Power</div>
+    <h2 class="lesson-title">What is <em>power</em>?</h2>
+    <p class="lesson-promise">By the end of this topic you'll know what power means in physics, and how to compare two devices to say which one is more powerful.</p>
+  </div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 1</span>Comparing two toasters</h3>
+    <p>Imagine two toasters. They both toast bread. But one of them toasts the bread <strong>faster</strong> than the other. Why?</p>
+    <p>It's because they transfer energy at different rates. The fast toaster pushes more energy into the bread <strong>every second</strong>. The slow one pushes less. In physics, we say the fast toaster has a <strong>higher power</strong>.</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg">
+        <!-- Toaster A: high power -->
+        <g>
+          <rect x="40" y="80" width="140" height="80" rx="6" fill="#EDF2FA" stroke="#1E2761" stroke-width="2"/>
+          <rect x="55" y="65" width="20" height="18" rx="2" fill="#B85042"/>
+          <rect x="85" y="65" width="20" height="18" rx="2" fill="#B85042"/>
+          <rect x="115" y="65" width="20" height="18" rx="2" fill="#B85042"/>
+          <rect x="145" y="65" width="20" height="18" rx="2" fill="#B85042"/>
+          <text x="110" y="125" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="11" font-weight="700" fill="#1E2761">TOASTER A</text>
+          <text x="110" y="142" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="#5C6370">500 J in 1 s</text>
+          <!-- Energy units flowing up (lots) -->
+          <g fill="#C8A24A">
+            <circle cx="60" cy="50" r="3"/>
+            <circle cx="75" cy="35" r="3"/>
+            <circle cx="90" cy="50" r="3"/>
+            <circle cx="105" cy="30" r="3"/>
+            <circle cx="120" cy="45" r="3"/>
+            <circle cx="135" cy="32" r="3"/>
+            <circle cx="150" cy="48" r="3"/>
+            <circle cx="165" cy="38" r="3"/>
+          </g>
+          <text x="110" y="20" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9" font-weight="700" fill="#C8A24A" letter-spacing="1">HIGH POWER</text>
+        </g>
+
+        <!-- Toaster B: low power -->
+        <g>
+          <rect x="380" y="80" width="140" height="80" rx="6" fill="#EDF2FA" stroke="#1E2761" stroke-width="2"/>
+          <rect x="395" y="68" width="20" height="15" rx="2" fill="#B85042" opacity="0.6"/>
+          <rect x="425" y="68" width="20" height="15" rx="2" fill="#B85042" opacity="0.6"/>
+          <rect x="455" y="68" width="20" height="15" rx="2" fill="#B85042" opacity="0.6"/>
+          <rect x="485" y="68" width="20" height="15" rx="2" fill="#B85042" opacity="0.6"/>
+          <text x="450" y="125" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="11" font-weight="700" fill="#1E2761">TOASTER B</text>
+          <text x="450" y="142" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="#5C6370">100 J in 1 s</text>
+          <!-- Energy units flowing up (few) -->
+          <g fill="#C8A24A">
+            <circle cx="420" cy="50" r="3"/>
+            <circle cx="470" cy="48" r="3"/>
+          </g>
+          <text x="450" y="20" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9" font-weight="700" fill="#5C6370" letter-spacing="1">LOW POWER</text>
+        </g>
+
+        <!-- Labels -->
+        <text x="280" y="200" text-anchor="middle" font-family="Instrument Serif,serif" font-style="italic" font-size="14" fill="#5C6370">Same time. Different amounts of energy.</text>
+      </svg>
+      <div class="caption">Power = how much energy gets transferred every second</div>
+    </div>
+
+    <p>Toaster A is more powerful because it transfers <strong>more energy per second</strong>. It doesn't matter that they're both toasters — what matters is the rate.</p>
+
+    <div class="keywords">
+      <h4>Keywords for Part 1</h4>
+      <dl>
+        <dt>Power</dt>
+        <dd>How much energy a device transfers every second. The faster the transfer, the higher the power.</dd>
+        <dt>Energy transfer</dt>
+        <dd>Energy moving from one store to another (e.g. from a battery to a motor, or from a heater to the air).</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 2</span>The proper definition</h3>
+    <p>Here it is, the definition you need to know:</p>
+    <p style="text-align:center"><span class="formula">Power is the amount of energy transferred per second.</span></p>
+    <p>Two things to lock in:</p>
+    <p><strong>1. Power is a rate.</strong> It tells you how <em>fast</em> energy is being transferred, not the total amount. A really powerful device can transfer a lot of energy in a tiny amount of time. A weak one takes ages to transfer the same amount.</p>
+    <p><strong>2. Power and energy are NOT the same thing.</strong> Energy is the "stuff" being transferred (measured in joules). Power is how fast it's being transferred (joules per second).</p>
+
+    <div class="watch-out">
+      <h4>⚠ Watch out — power isn't the same as energy</h4>
+      <p>A 60 W lamp left on for an hour can transfer <strong>more total energy</strong> than a 2000 W kettle that's on for 30 seconds. The kettle is much more <strong>powerful</strong>, but the lamp is on for longer, so the lamp transfers more energy overall. <strong>Power = rate. Energy = total amount.</strong></p>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">Fan A transfers 800 J in 1 s. Fan B transfers 801 J in 1 s. Which fan has the higher power?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>Fan A — it works harder for less</span></li>
+        <li><span class="letter">B</span><span>Fan B — it transfers more energy in the same time</span></li>
+        <li><span class="letter">C</span><span>They're the same — 1 joule difference doesn't count</span></li>
+        <li><span class="letter">D</span><span>You can't tell without knowing how long they're switched on</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>B — Fan B has the higher power.</strong> Even by just 1 joule per second. Power is about the <em>rate</em> of energy transfer, so any difference in joules-per-second is a difference in power. Time isn't relevant here because we're already given the energy transferred in 1 second.</div>
+      </details>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <h3 class="quiz-head">Test <em>yourself</em></h3>
+    <p class="quiz-sub">5 questions · click to reveal each answer</p>
+    <ol>
+      <li><details>
+        <summary>What is power?</summary>
+        <div class="ans">The amount of <strong>energy transferred per second</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>Toaster A transfers 500 J in 1 second. Toaster B transfers 600 J in 1 second. Which has the higher power, and why?</summary>
+        <div class="ans"><strong>Toaster B</strong>, because it transfers more energy in the same time. Higher rate of transfer = higher power.</div>
+      </details></li>
+      <li><details>
+        <summary>What's the difference between "energy" and "power"?</summary>
+        <div class="ans"><strong>Energy</strong> is the total amount of "stuff" being transferred. <strong>Power</strong> is how fast it's being transferred. A device can have low power but transfer a lot of energy if it's left on for a long time.</div>
+      </details></li>
+      <li><details>
+        <summary>Two TVs are switched on. TV A transfers 1000 J in 10 seconds. TV B transfers 400 J in 2 seconds. Which has more power?</summary>
+        <div class="ans"><strong>TV B</strong>. TV A transfers 100 J every second (1000 ÷ 10). TV B transfers 200 J every second (400 ÷ 2). TV B is more powerful, even though TV A transfers more energy overall.</div>
+      </details></li>
+      <li><details>
+        <summary>"A more powerful device always transfers more energy." Is this true?</summary>
+        <div class="ans"><strong>No.</strong> A more powerful device transfers energy <strong>faster</strong>, but if a less powerful device is left on for longer, it could transfer more energy in total. Power is a rate, not a total.</div>
+      </details></li>
+    </ol>
+    <button class="done-btn" data-lesson-done="1">Mark this topic complete</button>
+  </div>
+</section>
+
+<!-- ===================================================================== -->
+<!-- TOPIC 2 — P1.3 THE POWER EQUATION                                       -->
+<!-- ===================================================================== -->
+<section class="lesson" id="lesson-2">
+  <div class="lesson-head">
+    <div class="lesson-num">Topic 02 · P1.3 · Power</div>
+    <h2 class="lesson-title">The <em>power equation</em></h2>
+    <p class="lesson-promise">By the end of this topic you'll know the power equation, the units of power and energy, and how to calculate the power of a device.</p>
+  </div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 1</span>Units: joules and watts</h3>
+    <p>Two units to remember. They go together and they sound similar — don't mix them up.</p>
+    <p><strong>Energy</strong> is measured in <strong>joules (J)</strong>. A joule is a small amount of energy — about what you use to lift an apple a metre off the floor.</p>
+    <p><strong>Power</strong> is measured in <strong>watts (W)</strong>. One watt means <strong>one joule per second</strong>. So a 60 W lamp transfers 60 joules of energy every second. A 2000 W kettle transfers 2000 joules every second.</p>
+
+    <div class="keywords">
+      <h4>Keywords for Part 1</h4>
+      <dl>
+        <dt>Joule (J)</dt>
+        <dd>The unit of energy.</dd>
+        <dt>Watt (W)</dt>
+        <dd>The unit of power. 1 watt = 1 joule per second.</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 2</span>The equation</h3>
+    <p>To calculate power, you divide the energy transferred by the time it took:</p>
+    <p style="text-align:center"><span class="formula">power = energy ÷ time</span></p>
+    <p style="text-align:center"><span class="formula">P = E ÷ t</span></p>
+    <p>This is just maths putting the definition into symbols. If a device transfers 500 J in 5 seconds, you divide: 500 ÷ 5 = 100 J every second. That's 100 W.</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 560 180" xmlns="http://www.w3.org/2000/svg">
+        <!-- Equation triangle visual -->
+        <g transform="translate(280,90)">
+          <!-- Triangle -->
+          <path d="M 0 -55 L -75 50 L 75 50 Z" fill="#EDF2FA" stroke="#1E2761" stroke-width="2"/>
+          <line x1="-65" y1="20" x2="65" y2="20" stroke="#1E2761" stroke-width="2"/>
+          <line x1="0" y1="20" x2="0" y2="50" stroke="#1E2761" stroke-width="2"/>
+          <text x="0" y="0" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="26" font-weight="700" fill="#1E2761">E</text>
+          <text x="-32" y="42" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="22" font-weight="700" fill="#1E2761">P</text>
+          <text x="32" y="42" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="22" font-weight="700" fill="#1E2761">t</text>
+        </g>
+        <!-- Side labels -->
+        <g font-family="IBM Plex Sans,sans-serif" font-size="11" fill="#5C6370">
+          <text x="100" y="55" font-weight="700" fill="#1E2761">E = energy transferred</text>
+          <text x="100" y="70">measured in joules (J)</text>
+          <text x="100" y="100" font-weight="700" fill="#1E2761">P = power</text>
+          <text x="100" y="115">measured in watts (W)</text>
+          <text x="100" y="145" font-weight="700" fill="#1E2761">t = time taken</text>
+          <text x="100" y="160">measured in seconds (s)</text>
+        </g>
+        <!-- Formula triangle helper -->
+        <text x="280" y="170" text-anchor="middle" font-family="Instrument Serif,serif" font-style="italic" font-size="13" fill="#5C6370">cover E to find E = P × t, cover P to find P = E ÷ t</text>
+      </svg>
+      <div class="caption">The power equation as a formula triangle</div>
+    </div>
+
+    <div class="worked">
+      <h4>Worked example 1</h4>
+      <p class="q">A toaster transfers <strong>5000 J</strong> in <strong>10 seconds</strong>. Calculate its power.</p>
+      <div class="step"><div class="label">Formula</div><div class="v">P = E ÷ t</div></div>
+      <div class="step"><div class="label">Insert</div><div class="v">P = 5000 ÷ 10</div></div>
+      <div class="step"><div class="label">Fix</div><div class="v">units already in J and s, no conversion needed</div></div>
+      <div class="step answer"><div class="label">Answer</div><div class="v">P = 500 W</div></div>
+    </div>
+
+    <div class="worked">
+      <h4>Worked example 2</h4>
+      <p class="q">A bulb transfers <strong>600 J</strong> in <strong>50 seconds</strong>. Calculate its power.</p>
+      <div class="step"><div class="label">Formula</div><div class="v">P = E ÷ t</div></div>
+      <div class="step"><div class="label">Insert</div><div class="v">P = 600 ÷ 50</div></div>
+      <div class="step"><div class="label">Fix</div><div class="v">units already in J and s, no conversion needed</div></div>
+      <div class="step answer"><div class="label">Answer</div><div class="v">P = 12 W</div></div>
+    </div>
+
+    <div class="watch-out">
+      <h4>⚠ Watch out — divide, don't multiply</h4>
+      <p>To find power, you <strong>divide</strong> energy by time. Multiplying gives you a much bigger (and wrong) number. If you find yourself with an answer in the millions when the device is a kettle, you've probably multiplied.</p>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">A computer transfers <strong>4000 J</strong> in <strong>20 seconds</strong>. What is its power?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>80 000 W (multiply)</span></li>
+        <li><span class="letter">B</span><span>200 W (divide)</span></li>
+        <li><span class="letter">C</span><span>20 W (divide the other way)</span></li>
+        <li><span class="letter">D</span><span>4020 W (add them)</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>B — 200 W.</strong> P = E ÷ t = 4000 ÷ 20 = 200 W. A laptop or desktop computer typically sits around 50–300 W, so this is a sensible answer. <em>A would be the answer if you multiplied — a useful sanity check is "does that number make sense for a real device?"</em></div>
+      </details>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <h3 class="quiz-head">Test <em>yourself</em></h3>
+    <p class="quiz-sub">6 questions · click to reveal each answer</p>
+    <ol>
+      <li><details>
+        <summary>What is the unit of energy?</summary>
+        <div class="ans"><strong>Joules (J)</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>What is the unit of power?</summary>
+        <div class="ans"><strong>Watts (W)</strong>. One watt = one joule per second.</div>
+      </details></li>
+      <li><details>
+        <summary>Write the power equation.</summary>
+        <div class="ans"><strong>P = E ÷ t</strong> (power = energy ÷ time).</div>
+      </details></li>
+      <li><details>
+        <summary>A hairdryer transfers 2000 J in 4 seconds. What is its power?</summary>
+        <div class="ans">P = E ÷ t = 2000 ÷ 4 = <strong>500 W</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>If a device has a power of 200 W, how much energy does it transfer in one second?</summary>
+        <div class="ans"><strong>200 joules</strong>. A watt is a joule per second, so 200 W means 200 J per second.</div>
+      </details></li>
+      <li><details>
+        <summary>Why do we need an equation for power instead of just saying "more" or "less"?</summary>
+        <div class="ans">Because "more" or "less" isn't precise enough for science. The equation lets us put a <strong>number</strong> on power, so we can compare different devices fairly.</div>
+      </details></li>
+    </ol>
+    <button class="done-btn" data-lesson-done="2">Mark this topic complete</button>
+  </div>
+</section>
+
+<!-- ===================================================================== -->
+<!-- TOPIC 3 — P1.3 CALCULATING ENERGY                                       -->
+<!-- ===================================================================== -->
+<section class="lesson" id="lesson-3">
+  <div class="lesson-head">
+    <div class="lesson-num">Topic 03 · P1.3 · Power</div>
+    <h2 class="lesson-title">Calculating <em>energy transferred</em></h2>
+    <p class="lesson-promise">By the end of this topic you'll be able to rearrange the power equation, use the FIFA method to lay out calculations cleanly, and use the clock face to picture what's happening.</p>
+  </div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 1</span>Rearranging the equation</h3>
+    <p>Sometimes you're not asked for the power — you already know the power, and you need to find the <strong>energy</strong> transferred. To do that, rearrange P = E ÷ t into:</p>
+    <p style="text-align:center"><span class="formula">energy = power × time</span></p>
+    <p style="text-align:center"><span class="formula">E = P × t</span></p>
+    <p>This makes sense: if a device transfers 50 J every second, and it runs for 5 seconds, the total energy is 50 × 5 = 250 J.</p>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 2</span>The clock face method</h3>
+    <p>Here's a way to picture what's happening. Imagine a clock face with one section for each second.</p>
+    <p>A 20 W device transfers 20 joules every second. If it's left on for 5 seconds, draw a clock face with 5 sections. Write "20 J" in each section. Add them up: 20 + 20 + 20 + 20 + 20 = 100 J.</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg">
+        <!-- Clock face -->
+        <g transform="translate(170,110)">
+          <circle cx="0" cy="0" r="80" fill="#FCFAF4" stroke="#1E2761" stroke-width="2"/>
+          <!-- 5 sections (pentagon-like) -->
+          <g stroke="#1E2761" stroke-width="1" opacity="0.5">
+            <line x1="0" y1="0" x2="0" y2="-80"/>
+            <line x1="0" y1="0" x2="76.08" y2="-24.72"/>
+            <line x1="0" y1="0" x2="47.02" y2="64.72"/>
+            <line x1="0" y1="0" x2="-47.02" y2="64.72"/>
+            <line x1="0" y1="0" x2="-76.08" y2="-24.72"/>
+          </g>
+          <!-- Section labels -->
+          <g font-family="IBM Plex Mono,monospace" font-size="13" font-weight="700" fill="#C8A24A" text-anchor="middle">
+            <text x="22" y="-40">20 J</text>
+            <text x="42" y="20">20 J</text>
+            <text x="0" y="48">20 J</text>
+            <text x="-42" y="20">20 J</text>
+            <text x="-22" y="-40">20 J</text>
+          </g>
+          <!-- Centre dot -->
+          <circle cx="0" cy="0" r="3" fill="#1E2761"/>
+        </g>
+        <!-- Equation breakdown -->
+        <g font-family="IBM Plex Sans,sans-serif" font-size="13" fill="#1A1A1A">
+          <text x="290" y="60" font-weight="700" fill="#1E2761">A 20 W device, on for 5 seconds:</text>
+          <text x="290" y="90" font-family="IBM Plex Mono,monospace" font-size="14">5 sections × 20 J = 100 J</text>
+          <text x="290" y="120" font-style="italic" fill="#5C6370">or in symbols:</text>
+          <text x="290" y="145" font-family="IBM Plex Mono,monospace" font-size="14">E = P × t</text>
+          <text x="290" y="170" font-family="IBM Plex Mono,monospace" font-size="14">E = 20 × 5 = 100 J</text>
+        </g>
+        <text x="170" y="210" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9" font-weight="700" fill="#5C6370" letter-spacing="2">CLOCK FACE: 1 SECTION PER SECOND</text>
+      </svg>
+      <div class="caption">Each section = one second of energy transfer</div>
+    </div>
+
+    <p>It's the same calculation as E = P × t, just drawn out. Once you trust the equation, you don't need the clock — but it helps when the numbers feel abstract.</p>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 3</span>The FIFA method</h3>
+    <p>To answer power calculations cleanly, use the <strong>FIFA</strong> method. Four steps, every time:</p>
+    <p><strong>F — Formula.</strong> Write the equation.<br>
+    <strong>I — Insert.</strong> Put the values into the equation.<br>
+    <strong>F — Fix.</strong> Sort out any unit conversions (we'll cover these in the next topics).<br>
+    <strong>A — Answer.</strong> Calculate and write the number with its unit.</p>
+
+    <div class="worked">
+      <h4>Worked example 1</h4>
+      <p class="q">A TV set has a power of <strong>800 W</strong> and is switched on for <strong>30 seconds</strong>. Calculate the energy transferred.</p>
+      <div class="step"><div class="label">Formula</div><div class="v">E = P × t</div></div>
+      <div class="step"><div class="label">Insert</div><div class="v">E = 800 × 30</div></div>
+      <div class="step"><div class="label">Fix</div><div class="v">units already in W and s, no conversion needed</div></div>
+      <div class="step answer"><div class="label">Answer</div><div class="v">E = 24 000 J</div></div>
+    </div>
+
+    <div class="worked">
+      <h4>Worked example 2</h4>
+      <p class="q">A 60 W lamp is left on for <strong>10 seconds</strong>. How much energy is transferred?</p>
+      <div class="step"><div class="label">Formula</div><div class="v">E = P × t</div></div>
+      <div class="step"><div class="label">Insert</div><div class="v">E = 60 × 10</div></div>
+      <div class="step"><div class="label">Fix</div><div class="v">units already in W and s, no conversion needed</div></div>
+      <div class="step answer"><div class="label">Answer</div><div class="v">E = 600 J</div></div>
+    </div>
+
+    <div class="watch-out">
+      <h4>⚠ Watch out — always write the unit</h4>
+      <p>An answer of "<strong>24 000</strong>" by itself is not a full answer. <strong>24 000 J</strong> is. Units carry meaning — 24 000 joules and 24 000 watts are completely different things. Examiners take marks off when units are missing.</p>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">A washing machine has a power of <strong>900 W</strong> and is switched on for <strong>20 s</strong>. How much energy is transferred?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>45 J (divided)</span></li>
+        <li><span class="letter">B</span><span>920 J (added)</span></li>
+        <li><span class="letter">C</span><span>18 000 J (multiplied)</span></li>
+        <li><span class="letter">D</span><span>18 000 W (multiplied, wrong unit)</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>C — 18 000 J.</strong> E = P × t = 900 × 20 = 18 000 J. <em>D is the trap — the maths is right but the unit is wrong. Energy is measured in joules, not watts.</em></div>
+      </details>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <h3 class="quiz-head">Test <em>yourself</em></h3>
+    <p class="quiz-sub">6 questions · click to reveal each answer</p>
+    <ol>
+      <li><details>
+        <summary>Write the equation for calculating energy transferred.</summary>
+        <div class="ans"><strong>E = P × t</strong> (energy = power × time).</div>
+      </details></li>
+      <li><details>
+        <summary>What do the letters F, I, F, A stand for in the FIFA method?</summary>
+        <div class="ans"><strong>F</strong>ormula, <strong>I</strong>nsert (values), <strong>F</strong>ix (units), <strong>A</strong>nswer (with unit).</div>
+      </details></li>
+      <li><details>
+        <summary>A toaster has a power of 1800 W and is switched on for 25 seconds. Calculate the energy transferred.</summary>
+        <div class="ans">E = P × t = 1800 × 25 = <strong>45 000 J</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>An electric fan has a power of 350 W and is switched on for 120 seconds. Calculate the energy transferred.</summary>
+        <div class="ans">E = P × t = 350 × 120 = <strong>42 000 J</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>A kettle has a power of 850 W and is switched on for 45 seconds. Calculate the energy transferred.</summary>
+        <div class="ans">E = P × t = 850 × 45 = <strong>38 250 J</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>A computer has a power of 200 W and is left on for 2 s. A lamp has a power of 60 W and is left on for 20 s. Which transfers more energy?</summary>
+        <div class="ans">Computer: E = 200 × 2 = <strong>400 J</strong>. Lamp: E = 60 × 20 = <strong>1200 J</strong>. The <strong>lamp transfers more energy</strong>, even though the computer is more powerful — because the lamp is on for longer.</div>
+      </details></li>
+    </ol>
+    <button class="done-btn" data-lesson-done="3">Mark this topic complete</button>
+  </div>
+</section>
+
+<!-- ===================================================================== -->
+<!-- TOPIC 4 — P1.3 KILOWATTS AND KILOJOULES                                 -->
+<!-- ===================================================================== -->
+<section class="lesson" id="lesson-4">
+  <div class="lesson-head">
+    <div class="lesson-num">Topic 04 · P1.3 · Power</div>
+    <h2 class="lesson-title">Kilowatts &amp; <em>kilojoules</em></h2>
+    <p class="lesson-promise">By the end of this topic you'll know what "kilo" means, how to convert between W and kW (and J and kJ), and why this matters in the power equation.</p>
+  </div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 1</span>What "kilo" means</h3>
+    <p>"Kilo" is a prefix that means <strong>one thousand</strong>. You've already met it: a kilogram is 1000 grams, a kilometre is 1000 metres.</p>
+    <p>So:</p>
+    <p style="text-align:center"><span class="formula">1 kilowatt (kW) = 1000 watts (W)</span></p>
+    <p style="text-align:center"><span class="formula">1 kilojoule (kJ) = 1000 joules (J)</span></p>
+    <p>Kilowatts and kilojoules are used for bigger numbers, when "1000 W" would be a mouthful. A kettle's power is much easier to say as "2 kW" than "2000 W". They mean the same thing.</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 560 180" xmlns="http://www.w3.org/2000/svg">
+        <!-- 1 kW box -->
+        <g>
+          <rect x="40" y="40" width="120" height="100" rx="6" fill="#EDF2FA" stroke="#1E2761" stroke-width="2"/>
+          <text x="100" y="85" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="32" font-weight="700" fill="#1E2761">1 kW</text>
+          <text x="100" y="110" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="12" fill="#5C6370">one kilowatt</text>
+          <text x="100" y="160" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9" font-weight="700" fill="#5C6370" letter-spacing="2">EQUALS</text>
+        </g>
+
+        <!-- Equals sign -->
+        <text x="200" y="100" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="34" font-weight="300" fill="#1E2761">=</text>
+
+        <!-- 1000 W grid -->
+        <g transform="translate(240,40)">
+          <rect x="0" y="0" width="280" height="100" rx="6" fill="none" stroke="#1E2761" stroke-width="2"/>
+          <!-- 10x10 grid representing 1000 (showing as a pattern) -->
+          <g fill="#C8A24A">
+            <!-- Rows of dots indicating 1000 -->
+            <text x="140" y="40" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="28" font-weight="700" fill="#1E2761">1000 W</text>
+            <text x="140" y="62" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="12" fill="#5C6370">one thousand watts</text>
+            <text x="140" y="82" text-anchor="middle" font-family="Instrument Serif,serif" font-style="italic" font-size="12" fill="#B85042">(same amount of power)</text>
+          </g>
+          <text x="140" y="160" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9" font-weight="700" fill="#5C6370" letter-spacing="2">JUST WRITTEN DIFFERENTLY</text>
+        </g>
+      </svg>
+      <div class="caption">Kilo means thousand — kW and kJ are just bigger units</div>
+    </div>
+
+    <div class="keywords">
+      <h4>Keywords for Part 1</h4>
+      <dl>
+        <dt>Kilowatt (kW)</dt>
+        <dd>1 kW = 1000 W. A bigger unit of power.</dd>
+        <dt>Kilojoule (kJ)</dt>
+        <dd>1 kJ = 1000 J. A bigger unit of energy.</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 2</span>Converting between units</h3>
+    <p>To go from kW to W (or kJ to J), <strong>multiply by 1000</strong>. To go the other way, <strong>divide by 1000</strong>.</p>
+    <p style="text-align:center"><span class="formula">kW × 1000 = W</span> &nbsp; &nbsp; <span class="formula">W ÷ 1000 = kW</span></p>
+    <p>Quick examples:</p>
+    <p>· <strong>1.2 kW</strong> = 1.2 × 1000 = <strong>1200 W</strong><br>
+    · <strong>3 kW</strong> = 3 × 1000 = <strong>3000 W</strong><br>
+    · <strong>4000 J</strong> = 4000 ÷ 1000 = <strong>4 kJ</strong><br>
+    · <strong>800 J</strong> = 800 ÷ 1000 = <strong>0.8 kJ</strong></p>
+
+    <div class="watch-out">
+      <h4>⚠ Watch out — 1.2 kW is NOT 12 W</h4>
+      <p>A common mistake. People see "1.2" and write "12". But you multiply by 1000, not by 10. <strong>1.2 kW = 1200 W</strong>. If you write 12 W, you've lost a factor of 100, and your answer will be wildly wrong.</p>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 3</span>Using kW in the equation</h3>
+    <p>The power equation, E = P × t, only works if your units match. Power has to be in <strong>watts</strong>, time has to be in <strong>seconds</strong>, and you'll get energy in <strong>joules</strong>.</p>
+    <p>If a question gives you the power in kW, your first job is to <strong>convert it to W</strong> before you put it into the equation. That's the "Fix" step of FIFA.</p>
+
+    <div class="worked">
+      <h4>Worked example 1</h4>
+      <p class="q">A kettle has a power of <strong>2.7 kW</strong> and is switched on for <strong>70 seconds</strong>. Calculate the energy transferred.</p>
+      <div class="step"><div class="label">Formula</div><div class="v">E = P × t</div></div>
+      <div class="step"><div class="label">Insert</div><div class="v">E = 2.7 × 70 &nbsp; <em style="color:#B85042">← wait, power is in kW</em></div></div>
+      <div class="step"><div class="label">Fix</div><div class="v">convert 2.7 kW to W: 2.7 × 1000 = 2700 W<br>E = 2700 × 70</div></div>
+      <div class="step answer"><div class="label">Answer</div><div class="v">E = 189 000 J</div></div>
+    </div>
+
+    <div class="worked">
+      <h4>Worked example 2</h4>
+      <p class="q">A heater has a power of <strong>3.1 kW</strong> and is switched on for <strong>40 seconds</strong>. Calculate the energy transferred.</p>
+      <div class="step"><div class="label">Formula</div><div class="v">E = P × t</div></div>
+      <div class="step"><div class="label">Insert</div><div class="v">E = 3.1 × 40</div></div>
+      <div class="step"><div class="label">Fix</div><div class="v">convert 3.1 kW to W: 3.1 × 1000 = 3100 W<br>E = 3100 × 40</div></div>
+      <div class="step answer"><div class="label">Answer</div><div class="v">E = 124 000 J</div></div>
+    </div>
+
+    <div class="worked">
+      <h4>Worked example 3 — giving answer in kJ</h4>
+      <p class="q">A computer has a power of <strong>1.5 kW</strong>. How much energy does it transfer in <strong>5 s</strong>? Give your answer in J <strong>and</strong> kJ.</p>
+      <div class="step"><div class="label">Formula</div><div class="v">E = P × t</div></div>
+      <div class="step"><div class="label">Insert</div><div class="v">E = 1.5 × 5</div></div>
+      <div class="step"><div class="label">Fix</div><div class="v">convert 1.5 kW to W: 1.5 × 1000 = 1500 W<br>E = 1500 × 5</div></div>
+      <div class="step answer"><div class="label">Answer</div><div class="v">E = 7500 J, or 7.5 kJ</div></div>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">A hairdryer has a power of <strong>1.5 kW</strong> and is switched on for <strong>35 seconds</strong>. How much energy is transferred?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>52.5 J (forgot to convert kW)</span></li>
+        <li><span class="letter">B</span><span>525 J (converted wrongly, × 10)</span></li>
+        <li><span class="letter">C</span><span>52 500 J (converted correctly, × 1000)</span></li>
+        <li><span class="letter">D</span><span>52 500 W (wrong unit)</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>C — 52 500 J.</strong> First fix the units: 1.5 kW = 1500 W. Then E = 1500 × 35 = 52 500 J. <em>A is what you'd get if you used 1.5 directly without converting — always check whether the power is in W or kW before calculating.</em></div>
+      </details>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <h3 class="quiz-head">Test <em>yourself</em></h3>
+    <p class="quiz-sub">7 questions · click to reveal each answer</p>
+    <ol>
+      <li><details>
+        <summary>What does "kilo" mean?</summary>
+        <div class="ans"><strong>One thousand</strong> (1000).</div>
+      </details></li>
+      <li><details>
+        <summary>Convert 3 kW to W.</summary>
+        <div class="ans">3 × 1000 = <strong>3000 W</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>Convert 1.2 kJ to J.</summary>
+        <div class="ans">1.2 × 1000 = <strong>1200 J</strong>. (Not 12 J!)</div>
+      </details></li>
+      <li><details>
+        <summary>Convert 4000 J to kJ.</summary>
+        <div class="ans">4000 ÷ 1000 = <strong>4 kJ</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>Convert 800 J to kJ.</summary>
+        <div class="ans">800 ÷ 1000 = <strong>0.8 kJ</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>A kettle has a power of 2 kW. It is left on for 30 s. How much energy is transferred? Give your answer in J and kJ.</summary>
+        <div class="ans">Convert: 2 kW = 2000 W. E = 2000 × 30 = <strong>60 000 J, or 60 kJ</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>A student writes "1.2 kW = 12 W". Are they right? Explain.</summary>
+        <div class="ans"><strong>No.</strong> 1.2 kW = 1.2 × 1000 = <strong>1200 W</strong>, not 12 W. They've multiplied by 10 instead of 1000.</div>
+      </details></li>
+    </ol>
+    <button class="done-btn" data-lesson-done="4">Mark this topic complete</button>
+  </div>
+</section>
+
+<!-- ===================================================================== -->
+<!-- TOPIC 5 — P1.3 WORKING WITH MINUTES                                     -->
+<!-- ===================================================================== -->
+<section class="lesson" id="lesson-5">
+  <div class="lesson-head">
+    <div class="lesson-num">Topic 05 · P1.3 · Power</div>
+    <h2 class="lesson-title">Working with <em>minutes</em></h2>
+    <p class="lesson-promise">By the end of this topic you'll be able to convert minutes to seconds, and use the power equation when a problem gives time in minutes.</p>
+  </div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 1</span>Converting minutes to seconds</h3>
+    <p>The power equation, E = P × t, only works when <strong>time is in seconds</strong>. If a question tells you the device is on for 3 minutes, you have to convert that to seconds first.</p>
+    <p>There are <strong>60 seconds in a minute</strong>. So to convert minutes to seconds, <strong>multiply by 60</strong>.</p>
+    <p style="text-align:center"><span class="formula">seconds = minutes × 60</span></p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 560 180" xmlns="http://www.w3.org/2000/svg">
+        <!-- Big "1 min" box -->
+        <g>
+          <rect x="40" y="40" width="120" height="100" rx="6" fill="#EDF2FA" stroke="#1E2761" stroke-width="2"/>
+          <text x="100" y="85" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="32" font-weight="700" fill="#1E2761">1 min</text>
+          <text x="100" y="108" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="12" fill="#5C6370">one minute</text>
+        </g>
+
+        <text x="200" y="100" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="34" font-weight="300" fill="#1E2761">=</text>
+
+        <!-- 60 seconds visual -->
+        <g transform="translate(240,40)">
+          <rect x="0" y="0" width="280" height="100" rx="6" fill="none" stroke="#1E2761" stroke-width="2"/>
+          <text x="140" y="40" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="32" font-weight="700" fill="#1E2761">60 s</text>
+          <text x="140" y="60" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="12" fill="#5C6370">sixty seconds</text>
+          <!-- Tick marks -->
+          <g stroke="#C8A24A" stroke-width="1">
+            <line x1="20" y1="82" x2="260" y2="82"/>
+            <g>
+              <line x1="20" y1="78" x2="20" y2="86"/>
+              <line x1="80" y1="78" x2="80" y2="86"/>
+              <line x1="140" y1="78" x2="140" y2="86"/>
+              <line x1="200" y1="78" x2="200" y2="86"/>
+              <line x1="260" y1="78" x2="260" y2="86"/>
+            </g>
+          </g>
+          <text x="140" y="95" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9" fill="#5C6370" letter-spacing="2">SECOND BY SECOND</text>
+        </g>
+
+        <text x="280" y="170" text-anchor="middle" font-family="Instrument Serif,serif" font-style="italic" font-size="13" fill="#5C6370">to convert minutes to seconds, multiply by 60</text>
+      </svg>
+      <div class="caption">1 minute = 60 seconds</div>
+    </div>
+
+    <p>Quick examples:</p>
+    <p>· <strong>2 minutes</strong> = 2 × 60 = <strong>120 s</strong><br>
+    · <strong>3 minutes</strong> = 3 × 60 = <strong>180 s</strong><br>
+    · <strong>5 minutes</strong> = 5 × 60 = <strong>300 s</strong><br>
+    · <strong>1.5 minutes</strong> = 1.5 × 60 = <strong>90 s</strong></p>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 2</span>Putting it all together</h3>
+    <p>Now you've got all the conversions you need. A typical exam question might give you a power in kW <strong>and</strong> a time in minutes — you have to fix both.</p>
+
+    <div class="worked">
+      <h4>Worked example 1</h4>
+      <p class="q">A microwave has a power of <strong>700 W</strong> and is switched on for <strong>3 minutes</strong>. Calculate the energy transferred.</p>
+      <div class="step"><div class="label">Formula</div><div class="v">E = P × t</div></div>
+      <div class="step"><div class="label">Insert</div><div class="v">E = 700 × 3 &nbsp; <em style="color:#B85042">← wait, time is in minutes</em></div></div>
+      <div class="step"><div class="label">Fix</div><div class="v">convert 3 min to s: 3 × 60 = 180 s<br>E = 700 × 180</div></div>
+      <div class="step answer"><div class="label">Answer</div><div class="v">E = 126 000 J</div></div>
+    </div>
+
+    <div class="worked">
+      <h4>Worked example 2</h4>
+      <p class="q">A microwave has a power of <strong>200 W</strong> and is switched on for <strong>7 minutes</strong>. Calculate the energy transferred.</p>
+      <div class="step"><div class="label">Formula</div><div class="v">E = P × t</div></div>
+      <div class="step"><div class="label">Insert</div><div class="v">E = 200 × 7</div></div>
+      <div class="step"><div class="label">Fix</div><div class="v">convert 7 min to s: 7 × 60 = 420 s<br>E = 200 × 420</div></div>
+      <div class="step answer"><div class="label">Answer</div><div class="v">E = 84 000 J</div></div>
+    </div>
+
+    <div class="worked">
+      <h4>Worked example 3 — both kW and minutes</h4>
+      <p class="q">A microwave has a power of <strong>0.5 kW</strong> and is switched on for <strong>1.5 minutes</strong>. Calculate the energy transferred.</p>
+      <div class="step"><div class="label">Formula</div><div class="v">E = P × t</div></div>
+      <div class="step"><div class="label">Insert</div><div class="v">E = 0.5 × 1.5 &nbsp; <em style="color:#B85042">← both units are wrong!</em></div></div>
+      <div class="step"><div class="label">Fix</div><div class="v">0.5 kW → 0.5 × 1000 = 500 W<br>1.5 min → 1.5 × 60 = 90 s<br>E = 500 × 90</div></div>
+      <div class="step answer"><div class="label">Answer</div><div class="v">E = 45 000 J, or 45 kJ</div></div>
+    </div>
+
+    <div class="watch-out">
+      <h4>⚠ Watch out — check BOTH units before calculating</h4>
+      <p>A question can hide unit conversions in <strong>two places at once</strong> — power in kW and time in minutes. Before you reach the "Answer" step, check both: is the power in watts? Is the time in seconds? If not, fix them first.</p>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">A microwave has a power of <strong>950 W</strong> and is on for <strong>1.5 minutes</strong>. What is the energy transferred?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>1425 J (1.5 minutes used directly)</span></li>
+        <li><span class="letter">B</span><span>85 500 J (correct: 1.5 min converted to 90 s)</span></li>
+        <li><span class="letter">C</span><span>57 000 J (used 60 s instead of 90 s)</span></li>
+        <li><span class="letter">D</span><span>85 500 W (correct number, wrong unit)</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>B — 85 500 J.</strong> Fix the time first: 1.5 min × 60 = 90 s. Then E = 950 × 90 = 85 500 J. <em>In kilojoules that's 85.5 kJ.</em></div>
+      </details>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <h3 class="quiz-head">Test <em>yourself</em></h3>
+    <p class="quiz-sub">6 questions · click to reveal each answer</p>
+    <ol>
+      <li><details>
+        <summary>How many seconds are there in a minute?</summary>
+        <div class="ans"><strong>60</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>Convert 2 minutes to seconds.</summary>
+        <div class="ans">2 × 60 = <strong>120 s</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>Convert 12.5 minutes to seconds.</summary>
+        <div class="ans">12.5 × 60 = <strong>750 s</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>A 1 W bulb is on for 80 seconds. How much energy is transferred?</summary>
+        <div class="ans">E = P × t = 1 × 80 = <strong>80 J</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>A 20 W bulb is on for 5 minutes. How much energy is transferred?</summary>
+        <div class="ans">Convert: 5 min = 5 × 60 = 300 s. E = 20 × 300 = <strong>6000 J</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>A 2 kW kettle is on for 20 minutes. How much energy is transferred? Give your answer in J and kJ.</summary>
+        <div class="ans">Fix both units: 2 kW = 2000 W. 20 min = 20 × 60 = 1200 s. E = 2000 × 1200 = <strong>2 400 000 J, or 2400 kJ</strong>.</div>
+      </details></li>
+    </ol>
+    <button class="done-btn" data-lesson-done="5">Mark this topic complete</button>
+  </div>
+</section>
+
+<!-- ===================================================================== -->
+<!-- TOPIC 6 — P1.3 ENERGY STORES & CONSERVATION                             -->
+<!-- ===================================================================== -->
+<section class="lesson" id="lesson-6">
+  <div class="lesson-head">
+    <div class="lesson-num">Topic 06 · P1.3 · Power</div>
+    <h2 class="lesson-title">Power, <em>stores &amp; conservation</em></h2>
+    <p class="lesson-promise">By the end of this topic you'll be able to describe where the energy in a power calculation comes from and goes to, and apply the law of conservation of energy.</p>
+  </div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 1</span>Energy doesn't appear from nowhere</h3>
+    <p>When a device transfers energy, that energy has to <strong>come from somewhere</strong> and <strong>go somewhere</strong>. This is the <strong>law of conservation of energy</strong>:</p>
+    <p style="text-align:center"><span class="formula">energy cannot be created or destroyed — only transferred between stores</span></p>
+    <p>So when an electric car drives up a hill, the energy isn't appearing from thin air. It's being transferred out of one store and into another.</p>
+
+    <div class="diagram">
+      <svg viewBox="0 0 560 200" xmlns="http://www.w3.org/2000/svg">
+        <!-- Chemical store (battery, decreasing) -->
+        <g>
+          <rect x="40" y="50" width="140" height="100" rx="6" fill="#EDF2FA" stroke="#1E2761" stroke-width="2"/>
+          <text x="110" y="40" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9" font-weight="700" fill="#5C6370" letter-spacing="2">BEFORE</text>
+          <!-- Battery icon -->
+          <rect x="80" y="75" width="60" height="35" rx="3" fill="none" stroke="#1E2761" stroke-width="2"/>
+          <rect x="140" y="83" width="6" height="19" fill="#1E2761"/>
+          <!-- Fill level (full) -->
+          <rect x="83" y="78" width="54" height="29" fill="#C8A24A" opacity="0.6"/>
+          <text x="110" y="98" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="11" font-weight="700" fill="#1E2761">FULL</text>
+          <text x="110" y="135" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="11" font-weight="700" fill="#1E2761">Chemical store</text>
+          <text x="110" y="148" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="10" fill="#5C6370">in the battery</text>
+        </g>
+
+        <!-- Arrow -->
+        <g transform="translate(280,100)">
+          <line x1="-60" y1="0" x2="60" y2="0" stroke="#B85042" stroke-width="2"/>
+          <path d="M 50 -8 L 65 0 L 50 8 Z" fill="#B85042"/>
+          <text x="0" y="-12" text-anchor="middle" font-family="Instrument Serif,serif" font-style="italic" font-size="13" fill="#B85042">transfer</text>
+          <text x="0" y="20" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="10" fill="#5C6370">by an electric current</text>
+        </g>
+
+        <!-- Kinetic + gravity store (car moving up, increasing) -->
+        <g>
+          <rect x="380" y="50" width="140" height="100" rx="6" fill="#EDF2FA" stroke="#1E2761" stroke-width="2"/>
+          <text x="450" y="40" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9" font-weight="700" fill="#5C6370" letter-spacing="2">AFTER</text>
+          <!-- Car silhouette -->
+          <g transform="translate(400,85)">
+            <rect x="0" y="6" width="55" height="15" rx="3" fill="#1E2761"/>
+            <path d="M 5 6 L 12 -3 L 38 -3 L 48 6 Z" fill="#1E2761"/>
+            <circle cx="14" cy="22" r="5" fill="#1A1A1A"/>
+            <circle cx="42" cy="22" r="5" fill="#1A1A1A"/>
+            <!-- Motion lines -->
+            <line x1="-12" y1="10" x2="-3" y2="10" stroke="#C8A24A" stroke-width="2"/>
+            <line x1="-12" y1="16" x2="-3" y2="16" stroke="#C8A24A" stroke-width="2"/>
+          </g>
+          <text x="450" y="135" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="11" font-weight="700" fill="#1E2761">Kinetic store</text>
+          <text x="450" y="148" text-anchor="middle" font-family="IBM Plex Sans,sans-serif" font-size="10" fill="#5C6370">of the moving car</text>
+        </g>
+
+        <text x="280" y="185" text-anchor="middle" font-family="Instrument Serif,serif" font-style="italic" font-size="13" fill="#5C6370">chemical store decreases · kinetic store increases · total energy unchanged</text>
+      </svg>
+      <div class="caption">An electric car: chemical → kinetic transfer</div>
+    </div>
+
+    <p>The chemical energy store in the battery <strong>decreases</strong>. The kinetic energy store of the moving car <strong>increases</strong>. If the car is also going uphill, the gravitational store increases too.</p>
+    <p>The total amount of energy is the same — it's just been moved from one store to another.</p>
+
+    <div class="keywords">
+      <h4>Keywords for Part 1</h4>
+      <dl>
+        <dt>Conservation of energy</dt>
+        <dd>Energy cannot be created or destroyed, only transferred between stores.</dd>
+        <dt>Energy store</dt>
+        <dd>A way energy can be held — e.g. chemical (in fuels, food, batteries), kinetic (in moving objects), gravitational (in raised objects), thermal (in hot objects).</dd>
+        <dt>Transfer</dt>
+        <dd>Energy moving from one store to another. Common ways: by an electric current, by a force, by heating, by light/sound.</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 2</span>Bringing it all together</h3>
+    <p>An exam question on power might ask you to do the calculation <strong>and</strong> describe where the energy comes from and goes to. Both halves matter.</p>
+    <p>The calculation gives you a number (in joules). The energy stores description tells the story behind the number.</p>
+
+    <div class="worked">
+      <h4>Worked example — the electric car</h4>
+      <p class="q">An electric car reverses for <strong>8 s</strong> up a slope. It has a power output of <strong>110 kW</strong>.<br>
+      a) How much energy is transferred? Give your answer in J and kJ.<br>
+      b) Which store decreased while the car was reversing?<br>
+      c) Which store increased by the end?<br>
+      d) What is the name of this transfer?</p>
+      <div class="step"><div class="label">Formula</div><div class="v">E = P × t</div></div>
+      <div class="step"><div class="label">Insert</div><div class="v">E = 110 × 8</div></div>
+      <div class="step"><div class="label">Fix</div><div class="v">convert 110 kW to W: 110 × 1000 = 110 000 W<br>E = 110 000 × 8</div></div>
+      <div class="step answer"><div class="label">Answer (a)</div><div class="v">E = 880 000 J, or 880 kJ</div></div>
+      <div class="step"><div class="label">Answer (b)</div><div class="v">The chemical store in the car's battery decreased.</div></div>
+      <div class="step"><div class="label">Answer (c)</div><div class="v">The gravitational store (and kinetic store, briefly) of the car increased.</div></div>
+      <div class="step"><div class="label">Answer (d)</div><div class="v">Energy transfer by a force (the motor pushing the car).</div></div>
+    </div>
+
+    <div class="worked">
+      <h4>Worked example — two-stage problem</h4>
+      <p class="q">A jacuzzi heater has two settings: <strong>Normal</strong> at 900 W, and <strong>Rapid Heating</strong> at 2.1 kW.<br>
+      a) Why is one setting called Rapid Heating?<br>
+      b) The heater is on Normal for 10 s, then Rapid Heating for 40 s. How much energy is transferred in total?</p>
+      <div class="step"><div class="label">Answer (a)</div><div class="v">Rapid Heating has a higher power, so it transfers more energy per second — heating the water faster.</div></div>
+      <div class="step"><div class="label">Formula</div><div class="v">E = P × t (calculated for each stage, then added)</div></div>
+      <div class="step"><div class="label">Stage 1</div><div class="v">E = 900 × 10 = 9000 J</div></div>
+      <div class="step"><div class="label">Stage 2</div><div class="v">convert 2.1 kW = 2100 W<br>E = 2100 × 40 = 84 000 J</div></div>
+      <div class="step answer"><div class="label">Total</div><div class="v">9000 + 84 000 = 93 000 J</div></div>
+    </div>
+
+    <div class="watch-out">
+      <h4>⚠ Watch out — when there's more than one stage, add the energies</h4>
+      <p>If a device runs at different powers for different times (like the jacuzzi heater), <strong>calculate the energy for each stage separately</strong>, then add them. Don't try to find a single "average" power — it's much easier to do the two calculations and add.</p>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">A motor lifts a heavy box upwards. Which two stores change, and how?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>Chemical store of the motor decreases · gravitational store of the box increases</span></li>
+        <li><span class="letter">B</span><span>Kinetic store of the motor decreases · chemical store of the box increases</span></li>
+        <li><span class="letter">C</span><span>Gravitational store of the motor decreases · kinetic store of the box increases</span></li>
+        <li><span class="letter">D</span><span>The total amount of energy increases as the box rises</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>A — chemical store of the motor decreases, gravitational store of the box increases.</strong> The motor uses electrical energy (originally from a chemical store somewhere — battery or fuel at the power station) to lift the box. As the box rises, its gravitational store goes up. <em>D is the trap — total energy never increases. Energy is conserved.</em></div>
+      </details>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <h3 class="quiz-head">Test <em>yourself</em></h3>
+    <p class="quiz-sub">6 questions · click to reveal each answer</p>
+    <ol>
+      <li><details>
+        <summary>State the law of conservation of energy.</summary>
+        <div class="ans">Energy cannot be <strong>created or destroyed</strong>, only <strong>transferred</strong> between stores.</div>
+      </details></li>
+      <li><details>
+        <summary>Name three energy stores.</summary>
+        <div class="ans">Any three from: <strong>chemical, kinetic, gravitational, thermal, elastic, magnetic, electrostatic, nuclear</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>A torch is switched on. Which store decreases, and which increases?</summary>
+        <div class="ans">The <strong>chemical store</strong> in the battery decreases. The <strong>thermal store</strong> of the surroundings increases (the bulb also gives out light, but the energy ends up as heat in the room).</div>
+      </details></li>
+      <li><details>
+        <summary>A car battery is connected to a fan. The fan has a power of 32 W and runs for 4 seconds. (a) How much energy is transferred? (b) Which store decreases? (c) Which store increases?</summary>
+        <div class="ans">(a) E = 32 × 4 = <strong>128 J</strong>. (b) Chemical store of the battery <strong>decreases</strong>. (c) Kinetic store of the fan blades <strong>increases</strong> (and a thermal store too, as the motor warms slightly).</div>
+      </details></li>
+      <li><details>
+        <summary>A 30 W bulb is on for 30 seconds. A 60 W bulb is on for 15 seconds. Which transfers more energy?</summary>
+        <div class="ans">Bulb 1: E = 30 × 30 = <strong>900 J</strong>. Bulb 2: E = 60 × 15 = <strong>900 J</strong>. They transfer <strong>the same amount of energy</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>A heater is on its low setting (800 W) for 30 minutes, then on its high setting (1200 W) for 20 minutes. Calculate the total energy transferred in J and kJ.</summary>
+        <div class="ans">Stage 1: 30 min = 1800 s. E = 800 × 1800 = 1 440 000 J. Stage 2: 20 min = 1200 s. E = 1200 × 1200 = 1 440 000 J. Total: <strong>2 880 000 J, or 2880 kJ</strong>.</div>
+      </details></li>
+    </ol>
+    <button class="done-btn" data-lesson-done="6">Mark this topic complete</button>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="sig">⁂</div>
+  <p>Year 7 Physics · P1.3 Power</p>
+  <p>A revision booklet</p>
+</footer>
+
+<script>
+(function(){
+  var STORAGE_KEY = 'power-p13-done';
+  var done = {};
+  try {
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) done = JSON.parse(raw);
+  } catch(e) {}
+
+  function save(){
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(done)); } catch(e){}
+  }
+
+  function refresh(){
+    document.querySelectorAll('[data-lesson-done]').forEach(function(btn){
+      var n = btn.getAttribute('data-lesson-done');
+      if (done[n]){
+        btn.classList.add('is-done');
+        btn.textContent = '✓ Done — nice work';
+      }
+    });
+    document.querySelectorAll('.nav-pill').forEach(function(pill){
+      var n = pill.getAttribute('data-lesson');
+      if (done[n]) pill.classList.add('done');
+      else pill.classList.remove('done');
+    });
+  }
+
+  document.querySelectorAll('[data-lesson-done]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var n = btn.getAttribute('data-lesson-done');
+      if (done[n]) return;
+      done[n] = true;
+      save();
+      refresh();
+    });
+  });
+
+  refresh();
+})();
+</script>
+
+</body>
+</html>

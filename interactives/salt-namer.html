@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Salt namer</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1E2761; --navy-soft:#2a3478; --warm:#F8F4EC; --warm-deep:#EFE8D6;
+  --paper:#FCFAF4; --soft-blue:#EDF2FA; --ink:#1A1A1A; --muted:#5C6370;
+  --rule:#CFD8E3; --accent:#B85042; --accent-soft:#F4DAD7; --success:#2C5F2D;
+  --success-soft:#DDEBDD; --gold:#C8A24A; --gold-soft:#F2E6BD;
+  --display:'Instrument Serif',Georgia,serif;
+  --body:'IBM Plex Sans',system-ui,sans-serif;
+  --mono:'IBM Plex Mono','Courier New',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{margin:0;background:var(--paper);font-family:var(--body);color:var(--ink);font-weight:300}
+.wrap{max-width:700px;margin:0 auto;padding:16px 18px}
+.instr{font-family:var(--mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;text-align:center}
+.pick{display:flex;gap:12px;flex-wrap:wrap}
+.field{flex:1;min-width:170px}
+label.lbl{display:block;font-family:var(--mono);font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--navy);margin-bottom:5px;font-weight:500}
+select{width:100%;font-family:var(--body);font-size:14px;padding:9px 10px;border:1px solid var(--rule);border-radius:3px;background:var(--warm);color:var(--ink);cursor:pointer}
+select:focus-visible{outline:none;border-color:var(--navy);box-shadow:0 0 0 3px var(--gold-soft)}
+.saltcard{margin-top:20px;background:var(--success-soft);border:1px solid #BBD6BB;border-left:3px solid var(--success);padding:18px 20px;text-align:center}
+.saltcard .lab{font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--success);margin-bottom:6px;font-weight:600}
+.saltcard .salt{font-family:var(--display);font-size:34px;color:var(--navy);line-height:1.1}
+.eqbox{margin-top:18px;background:var(--paper);border:1px solid var(--rule);padding:18px 20px;text-align:center}
+.eqbox .lab{font-family:var(--mono);font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.eq{font-family:var(--display);font-style:italic;font-size:21px;color:var(--ink);line-height:1.4}
+.eq b{font-style:normal;font-weight:500;color:var(--navy);background:linear-gradient(180deg,transparent 60%,var(--gold-soft) 60%);padding:0 2px}
+.rule-note{margin-top:14px;background:var(--soft-blue);border:1px solid #C9D7ED;border-left:3px solid var(--navy);padding:11px 14px;font-size:13px;line-height:1.5}
+.rule-note strong{color:var(--navy);font-weight:600}
+.takeaway{font-family:var(--display);font-style:italic;font-size:18px;color:var(--muted);text-align:center;margin-top:18px;padding-top:14px;border-top:1px solid var(--rule)}
+@media(max-width:430px){.saltcard .salt{font-size:26px}.eq{font-size:17px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="instr">Combine an acid with a base — build the salt and the word equation</p>
+  <div class="pick">
+    <div class="field">
+      <label class="lbl" for="acid">Acid</label>
+      <select id="acid" aria-label="Choose an acid">
+        <option value="hcl" selected>Hydrochloric acid</option>
+        <option value="h2so4">Sulfuric acid</option>
+        <option value="hno3">Nitric acid</option>
+      </select>
+    </div>
+    <div class="field">
+      <label class="lbl" for="base">Metal / base</label>
+      <select id="base" aria-label="Choose a metal or base">
+        <option value="naoh" selected>Sodium hydroxide</option>
+        <option value="koh">Potassium hydroxide</option>
+        <option value="caoh">Calcium hydroxide</option>
+        <option value="mgo">Magnesium oxide</option>
+        <option value="cuo">Copper oxide</option>
+        <option value="zno">Zinc oxide</option>
+      </select>
+    </div>
+  </div>
+  <div class="saltcard">
+    <div class="lab">Salt produced</div>
+    <div class="salt" id="saltName">sodium chloride</div>
+  </div>
+  <div class="eqbox">
+    <div class="lab">Word equation</div>
+    <div class="eq" id="eq"></div>
+  </div>
+  <div class="rule-note" id="ruleNote"></div>
+  <p class="takeaway">The metal names the first part; the acid names the ending — chloride, sulfate or nitrate.</p>
+</div>
+<script>
+(function(){
+  // acid -> {fullname, ending}
+  var acids={
+    hcl:{name:'hydrochloric acid',ending:'chloride'},
+    h2so4:{name:'sulfuric acid',ending:'sulfate'},
+    hno3:{name:'nitric acid',ending:'nitrate'}
+  };
+  // base -> {fullname, metal (first word of salt)}
+  var bases={
+    naoh:{name:'sodium hydroxide',metal:'sodium'},
+    koh:{name:'potassium hydroxide',metal:'potassium'},
+    caoh:{name:'calcium hydroxide',metal:'calcium'},
+    mgo:{name:'magnesium oxide',metal:'magnesium'},
+    cuo:{name:'copper oxide',metal:'copper'},
+    zno:{name:'zinc oxide',metal:'zinc'}
+  };
+  var selAcid=document.getElementById('acid'),selBase=document.getElementById('base'),
+      saltName=document.getElementById('saltName'),eq=document.getElementById('eq'),
+      ruleNote=document.getElementById('ruleNote');
+  function update(){
+    var a=acids[selAcid.value],b=bases[selBase.value];
+    var salt=b.metal+' '+a.ending;
+    saltName.textContent=salt;
+    eq.innerHTML=a.name+' + '+b.name+' → <b>'+salt+'</b> + water';
+    ruleNote.innerHTML='<strong>'+a.name.charAt(0).toUpperCase()+a.name.slice(1)+
+      '</strong> always makes a <strong>'+a.ending+'</strong>, and the metal in <strong>'+b.name+
+      '</strong> gives the first word. So the salt is <strong>'+salt+'</strong>.';
+  }
+  selAcid.addEventListener('change',update);
+  selBase.addEventListener('change',update);
+  update();
+})();
+</script>
+</body>
+</html>

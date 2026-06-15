@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inside the Earth &amp; Igneous Rocks</title>
+<style>
+  :root{
+    --cream:#f6f0e4;
+    --cream-2:#fbf7ef;
+    --card:#fffdf8;
+    --ink:#23262e;
+    --muted:#5d5a52;
+    --navy:#1f2a66;
+    --navy-2:#33409a;
+    --line:#e6dcc8;
+    --line-strong:#d8cab0;
+    --hot:#d4621f;
+    --hot-2:#f0a23a;
+    --shadow:0 14px 40px -20px rgba(31,42,102,.45);
+    --r:18px;
+    --font:'IBM Plex Sans','Segoe UI',system-ui,-apple-system,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:var(--font);
+    color:var(--ink);
+    background:
+      radial-gradient(1200px 700px at 85% -10%, #fbf6ec 0%, transparent 60%),
+      radial-gradient(900px 600px at -10% 110%, #f1e8d6 0%, transparent 55%),
+      var(--cream);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  .wrap{max-width:980px;margin:0 auto;padding:32px 22px 56px;}
+
+  /* ---------- header ---------- */
+  header.site{margin-bottom:26px;}
+  .eyebrow{
+    font-size:.74rem;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--navy-2);font-weight:600;margin:0 0 6px;
+  }
+  h1.title{
+    font-size:clamp(1.9rem,4.6vw,2.9rem);
+    line-height:1.04;letter-spacing:-.015em;
+    color:var(--navy);font-weight:700;margin:0;
+  }
+  .sub{color:var(--muted);margin:10px 0 0;max-width:60ch;font-size:1.02rem;}
+
+  /* ---------- tabs ---------- */
+  .tabs{display:flex;gap:8px;margin:26px 0 22px;flex-wrap:wrap;}
+  .tab{
+    appearance:none;border:1.5px solid var(--line-strong);
+    background:var(--cream-2);color:var(--navy);
+    font-family:inherit;font-weight:600;font-size:.98rem;
+    padding:11px 18px;border-radius:999px;cursor:pointer;
+    display:inline-flex;align-items:center;gap:9px;
+    transition:transform .15s ease, background .2s, border-color .2s, box-shadow .2s;
+  }
+  .tab .n{
+    width:22px;height:22px;border-radius:50%;display:grid;place-items:center;
+    background:var(--line);color:var(--navy);font-size:.78rem;font-weight:700;
+    transition:background .2s,color .2s;
+  }
+  .tab:hover{transform:translateY(-1px);border-color:var(--navy-2);}
+  .tab[aria-selected="true"]{background:var(--navy);color:#fff;border-color:var(--navy);box-shadow:var(--shadow);}
+  .tab[aria-selected="true"] .n{background:rgba(255,255,255,.22);color:#fff;}
+
+  /* ---------- sections ---------- */
+  section.view{display:none;animation:rise .45s ease both;}
+  section.view.active{display:block;}
+  @keyframes rise{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:none;}}
+
+  .sec-head{margin:0 0 4px;}
+  h2{font-size:clamp(1.4rem,3vw,1.9rem);color:var(--navy);font-weight:700;letter-spacing:-.01em;margin:0;}
+  .lead{color:var(--muted);margin:8px 0 22px;max-width:62ch;}
+
+  /* ---------- earth panel ---------- */
+  .earth-grid{
+    display:grid;grid-template-columns:minmax(280px,1fr) 1.05fr;gap:30px;align-items:center;
+  }
+  @media(max-width:760px){.earth-grid{grid-template-columns:1fr;gap:22px;}}
+
+  .earth-stage{position:relative;display:flex;flex-direction:column;align-items:center;gap:14px;}
+  .earth-svg{width:100%;max-width:360px;height:auto;display:block;cursor:pointer;}
+  .earth-svg text{font-family:var(--font);}
+  .layer-g{transition:opacity .35s ease;}
+  .earth-svg.has-sel .layer-g{opacity:.32;}
+  .earth-svg.has-sel .layer-g.sel{opacity:1;}
+  .layer-g .ring-line{transition:stroke-width .25s, stroke .25s;}
+  .layer-g.sel .ring-line{stroke:#fff;stroke-width:3;}
+  .layer-hit{cursor:pointer;}
+  .scale-note{font-size:.74rem;color:var(--muted);letter-spacing:.04em;}
+
+  .stepper{display:flex;gap:8px;}
+  .btn{
+    appearance:none;font-family:inherit;font-weight:600;cursor:pointer;
+    border-radius:999px;padding:10px 18px;font-size:.92rem;
+    border:1.5px solid var(--navy);background:var(--navy);color:#fff;
+    transition:transform .15s, box-shadow .2s, background .2s, color .2s;
+  }
+  .btn:hover{transform:translateY(-1px);box-shadow:var(--shadow);}
+  .btn.ghost{background:transparent;color:var(--navy);}
+  .btn.ghost:hover{background:var(--cream-2);}
+  .btn:disabled{opacity:.4;cursor:default;transform:none;box-shadow:none;}
+
+  /* ---------- legend / selector ---------- */
+  .legend{display:flex;flex-direction:column;gap:10px;}
+  .leg-btn{
+    appearance:none;font-family:inherit;text-align:left;cursor:pointer;width:100%;
+    border:1.5px solid var(--line);background:var(--card);border-radius:14px;
+    padding:12px 14px;display:flex;align-items:center;gap:13px;
+    transition:border-color .2s, transform .15s, box-shadow .2s;
+  }
+  .leg-btn:hover{transform:translateX(3px);border-color:var(--line-strong);}
+  .leg-btn[aria-pressed="true"]{border-color:var(--navy);box-shadow:var(--shadow);}
+  .swatch{width:18px;height:18px;border-radius:5px;flex:none;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12);}
+  .leg-name{font-weight:700;color:var(--navy);letter-spacing:.02em;font-size:1.02rem;}
+
+  /* ---------- info card ---------- */
+  .info{
+    margin-top:18px;background:var(--card);border:1.5px solid var(--line);
+    border-radius:var(--r);padding:20px 22px;min-height:120px;
+    box-shadow:var(--shadow);
+  }
+  .info .iname{font-size:1.25rem;font-weight:700;color:var(--navy);letter-spacing:.04em;text-transform:uppercase;margin:0 0 12px;}
+  .facts{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;}
+  .facts li{position:relative;padding-left:22px;color:var(--ink);font-size:1.04rem;}
+  .facts li::before{content:"";position:absolute;left:2px;top:.55em;width:9px;height:9px;border-radius:50%;background:var(--navy-2);}
+  .facts em{font-style:normal;font-weight:700;color:var(--navy);}
+  .placeholder{color:var(--muted);font-size:1rem;margin:0;}
+
+  /* ---------- igneous ---------- */
+  .def{
+    background:linear-gradient(180deg,#fffdf8,#fbf5ea);
+    border:1.5px solid var(--line);border-left:5px solid var(--hot);
+    border-radius:14px;padding:16px 20px;margin:0 0 26px;
+  }
+  .def b{color:var(--navy);}
+  .ign-controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:18px;}
+  .seg{display:inline-flex;background:var(--cream-2);border:1.5px solid var(--line-strong);border-radius:999px;padding:4px;gap:4px;}
+  .seg button{
+    appearance:none;font-family:inherit;font-weight:600;font-size:.92rem;cursor:pointer;
+    border:none;background:transparent;color:var(--navy);padding:8px 15px;border-radius:999px;
+    transition:background .2s,color .2s;
+  }
+  .seg button[aria-pressed="true"]{background:var(--navy);color:#fff;}
+
+  .ign-grid{display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:start;}
+  @media(max-width:720px){.ign-grid{grid-template-columns:1fr;}}
+
+  .canvas-card{
+    background:#171922;border-radius:16px;padding:14px;box-shadow:var(--shadow);
+    display:inline-flex;flex-direction:column;gap:10px;align-items:center;
+  }
+  canvas{border-radius:10px;display:block;width:340px;max-width:78vw;height:auto;background:#23150c;}
+  .gauge{display:flex;justify-content:space-between;width:100%;color:#f3e7d4;font-size:.82rem;font-variant-numeric:tabular-nums;}
+  .gauge .t{font-weight:700;}
+  .gauge .lab{color:#c8b59a;}
+
+  .result{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);padding:20px 22px;box-shadow:var(--shadow);min-height:120px;}
+  .result.empty{display:flex;align-items:center;}
+  .badge{display:inline-block;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:#fff;background:var(--hot);padding:4px 11px;border-radius:999px;margin-bottom:10px;}
+  .badge.intr{background:var(--navy-2);}
+
+  .compare-wrap{margin-top:26px;}
+  .compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  @media(max-width:560px){.compare-grid{grid-template-columns:1fr;}}
+  .cmp{background:#171922;border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:8px;align-items:center;box-shadow:var(--shadow);}
+  .cmp canvas{width:100%;max-width:260px;}
+  .cmp .cap{color:#f3e7d4;font-size:.84rem;text-align:center;}
+  .cmp .cap b{color:#fff;display:block;font-size:.96rem;letter-spacing:.02em;}
+
+  footer.site{margin-top:46px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:.82rem;}
+
+  /* ---------- embed mode ---------- */
+  body.embed{background:var(--cream-2);}
+  body.embed .wrap{padding:18px 16px 24px;}
+  body.embed header.site, body.embed footer.site{display:none;}
+  body.single .tabs{display:none;}
+
+  @media(prefers-reduced-motion:reduce){
+    *{animation-duration:.001ms !important;transition-duration:.001ms !important;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="site">
+    <p class="eyebrow">KS3 Science · Earth structure</p>
+    <h1 class="title">Inside the Earth, and how igneous rocks form</h1>
+    <p class="sub">Explore the layers beneath your feet, then watch how cooling speed decides whether a rock ends up with big crystals or small ones.</p>
+  </header>
+
+  <div class="tabs" role="tablist" aria-label="Sections">
+    <button class="tab" role="tab" id="tab-layers" aria-controls="view-layers" aria-selected="true">
+      <span class="n">1</span> Inside the Earth
+    </button>
+    <button class="tab" role="tab" id="tab-igneous" aria-controls="view-igneous" aria-selected="false">
+      <span class="n">2</span> Igneous rocks
+    </button>
+  </div>
+
+  <!-- ============ VIEW 1: LAYERS ============ -->
+  <section class="view active" id="view-layers" role="tabpanel" aria-labelledby="tab-layers">
+    <div class="sec-head">
+      <h2>The three layers</h2>
+      <p class="lead">Tap a layer on the diagram &mdash; or step through them in order. The crust really is this thin compared with what&rsquo;s below it.</p>
+    </div>
+
+    <div class="earth-grid">
+      <div class="earth-stage">
+        <svg class="earth-svg" id="earth" viewBox="0 0 320 320" role="group" aria-label="Cross-section of the Earth">
+          <defs>
+            <radialGradient id="gMantle" cx="42%" cy="38%" r="72%">
+              <stop offset="0%" stop-color="#f0a23a"/>
+              <stop offset="55%" stop-color="#d4621f"/>
+              <stop offset="100%" stop-color="#9c3d12"/>
+            </radialGradient>
+            <radialGradient id="gOuter" cx="44%" cy="40%" r="70%">
+              <stop offset="0%" stop-color="#ffd27a"/>
+              <stop offset="100%" stop-color="#f29b2e"/>
+            </radialGradient>
+            <radialGradient id="gInner" cx="45%" cy="42%" r="72%">
+              <stop offset="0%" stop-color="#fff6df"/>
+              <stop offset="100%" stop-color="#ffd97a"/>
+            </radialGradient>
+            <radialGradient id="gCrust" cx="42%" cy="38%" r="72%">
+              <stop offset="0%" stop-color="#9c7c57"/>
+              <stop offset="100%" stop-color="#6f5436"/>
+            </radialGradient>
+            <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="rgba(255,255,255,0)"/>
+              <stop offset="82%" stop-color="rgba(255,255,255,0)"/>
+              <stop offset="100%" stop-color="rgba(31,42,102,.18)"/>
+            </radialGradient>
+          </defs>
+
+          <!-- crust (drawn first/largest) -->
+          <g class="layer-g" data-layer="crust">
+            <circle class="ring-line" cx="160" cy="160" r="150" fill="url(#gCrust)" stroke="rgba(0,0,0,.18)" stroke-width="1"/>
+          </g>
+          <!-- mantle -->
+          <g class="layer-g" data-layer="mantle">
+            <circle class="ring-line" cx="160" cy="160" r="141" fill="url(#gMantle)" stroke="rgba(0,0,0,.12)" stroke-width="1"/>
+          </g>
+          <!-- core (outer + inner share data-layer) -->
+          <g class="layer-g" data-layer="core">
+            <circle class="ring-line" cx="160" cy="160" r="64" fill="url(#gOuter)" stroke="rgba(0,0,0,.12)" stroke-width="1"/>
+            <circle class="ring-line" cx="160" cy="160" r="33" fill="url(#gInner)" stroke="rgba(0,0,0,.1)" stroke-width="1"/>
+          </g>
+          <circle cx="160" cy="160" r="150" fill="url(#glow)" pointer-events="none"/>
+
+          <!-- labels -->
+          <g pointer-events="none">
+            <text x="160" y="161" text-anchor="middle" font-size="9.5" font-weight="700" fill="#7a5b1d">CORE</text>
+            <text x="160" y="105" text-anchor="middle" font-size="11" font-weight="700" fill="#fff7ec" opacity=".92">MANTLE</text>
+            <text x="160" y="22" text-anchor="middle" font-size="9" font-weight="700" fill="#fbf4e6" opacity=".9">CRUST</text>
+          </g>
+        </svg>
+        <div class="stepper">
+          <button class="btn ghost" id="step-prev" disabled>&larr; Back</button>
+          <button class="btn" id="step-next">Step through &rarr;</button>
+        </div>
+        <p class="scale-note">Diagram not to scale &mdash; the crust is far thinner in reality.</p>
+      </div>
+
+      <div>
+        <div class="legend">
+          <button class="leg-btn" data-layer="crust" aria-pressed="false">
+            <span class="swatch" style="background:#7e6041"></span><span class="leg-name">Crust</span>
+          </button>
+          <button class="leg-btn" data-layer="mantle" aria-pressed="false">
+            <span class="swatch" style="background:#d4621f"></span><span class="leg-name">Mantle</span>
+          </button>
+          <button class="leg-btn" data-layer="core" aria-pressed="false">
+            <span class="swatch" style="background:#f4b94e"></span><span class="leg-name">Core</span>
+          </button>
+        </div>
+        <div class="info" id="layer-info">
+          <p class="placeholder">Pick a layer to reveal what it&rsquo;s made of.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VIEW 2: IGNEOUS ============ -->
+  <section class="view" id="view-igneous" role="tabpanel" aria-labelledby="tab-igneous">
+    <div class="sec-head">
+      <h2>How igneous rocks form</h2>
+    </div>
+    <p class="def"><b>Igneous rock</b> &mdash; rock formed from cooling magma or lava. The big question: <b>how fast did it cool?</b> That decides the crystal size.</p>
+
+    <div class="ign-controls">
+      <div class="seg" role="group" aria-label="Where does it cool?">
+        <button id="opt-intr" aria-pressed="true">Cools underground</button>
+        <button id="opt-extr" aria-pressed="false">Cools at the surface</button>
+      </div>
+      <button class="btn" id="cool-btn">Cool the rock &rarr;</button>
+      <button class="btn ghost" id="reset-btn" disabled>Reset</button>
+    </div>
+
+    <div class="ign-grid">
+      <div class="canvas-card">
+        <canvas id="cryCanvas" width="340" height="240" aria-label="Crystals forming as the rock cools"></canvas>
+        <div class="gauge">
+          <span class="lab" id="cool-label">Magma · underground</span>
+          <span class="t" id="temp-read">1150&nbsp;&deg;C</span>
+        </div>
+      </div>
+
+      <div class="result empty" id="ign-result">
+        <p class="placeholder">Choose where it cools, then press <b>&ldquo;Cool the rock&rdquo;</b> and watch the crystals grow.</p>
+      </div>
+    </div>
+
+    <div class="compare-wrap">
+      <button class="btn ghost" id="compare-btn">Compare both side by side</button>
+      <div class="compare-grid" id="compare-grid" style="display:none;margin-top:16px;">
+        <div class="cmp">
+          <canvas id="cmpIntr" width="240" height="170"></canvas>
+          <div class="cap"><b>Intrusive &middot; granite</b>cooled slowly underground &rarr; large crystals</div>
+        </div>
+        <div class="cmp">
+          <canvas id="cmpExtr" width="240" height="170"></canvas>
+          <div class="cap"><b>Extrusive &middot; basalt</b>cooled fast at the surface &rarr; small crystals</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site">Interactive science resource · explore freely · not to scale</footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- URL params (search + hash) ---------- */
+  function getParams(){
+    var p={};
+    function read(str){
+      str=(str||"").replace(/^[?#]/,"");
+      str.split("&").forEach(function(kv){
+        if(!kv)return;var i=kv.indexOf("=");
+        var k=decodeURIComponent(i<0?kv:kv.slice(0,i));
+        var v=i<0?"1":decodeURIComponent(kv.slice(i+1));
+        p[k.toLowerCase()]=v.toLowerCase();
+      });
+    }
+    read(location.search);read(location.hash);
+    return p;
+  }
+  var params=getParams();
+  if(params.embed==="1"||params.embed==="true") document.body.classList.add("embed");
+
+  /* ---------- tab switching ---------- */
+  var tabs={layers:document.getElementById("tab-layers"),igneous:document.getElementById("tab-igneous")};
+  var views={layers:document.getElementById("view-layers"),igneous:document.getElementById("view-igneous")};
+  function show(name){
+    Object.keys(views).forEach(function(k){
+      var on=k===name;
+      views[k].classList.toggle("active",on);
+      tabs[k].setAttribute("aria-selected",on?"true":"false");
+    });
+    if(name==="igneous") ensureCrystalInit();
+  }
+  tabs.layers.addEventListener("click",function(){show("layers");});
+  tabs.igneous.addEventListener("click",function(){show("igneous");});
+
+  /* ================= EARTH LAYERS ================= */
+  var LAYERS={
+    crust:{name:"Crust",facts:["Thin <em>outer</em> layer","Solid rock","Where we live"]},
+    mantle:{name:"Mantle",facts:["Thick <em>middle</em> layer","Hot","Slow-flowing molten rock = <em>MAGMA</em>"]},
+    core:{name:"Core",facts:["At the <em>centre</em>","Made of <em>iron + nickel</em>","Outer part liquid, inner part solid","About <em>6000&nbsp;&deg;C</em>"]}
+  };
+  var ORDER=["crust","mantle","core"];
+  var stepIdx=-1;
+  var earth=document.getElementById("earth");
+  var infoBox=document.getElementById("layer-info");
+  var legBtns=Array.prototype.slice.call(document.querySelectorAll(".leg-btn"));
+  var layerGroups=Array.prototype.slice.call(earth.querySelectorAll(".layer-g"));
+
+  function selectLayer(key){
+    earth.classList.add("has-sel");
+    layerGroups.forEach(function(g){g.classList.toggle("sel",g.getAttribute("data-layer")===key);});
+    legBtns.forEach(function(b){b.setAttribute("aria-pressed",b.getAttribute("data-layer")===key?"true":"false");});
+    var L=LAYERS[key];
+    var html='<p class="iname">'+L.name+'</p><ul class="facts">';
+    L.facts.forEach(function(f){html+="<li>"+f+"</li>";});
+    html+="</ul>";
+    infoBox.innerHTML=html;
+    stepIdx=ORDER.indexOf(key);
+    updateStepBtns();
+  }
+  function updateStepBtns(){
+    document.getElementById("step-prev").disabled=stepIdx<=0;
+    document.getElementById("step-next").disabled=stepIdx>=ORDER.length-1 && stepIdx!==-1;
+    document.getElementById("step-next").textContent=stepIdx<0?"Step through \u2192":"Next layer \u2192";
+  }
+  layerGroups.forEach(function(g){
+    g.classList.add("layer-hit");
+    g.addEventListener("click",function(){selectLayer(g.getAttribute("data-layer"));});
+  });
+  legBtns.forEach(function(b){
+    b.addEventListener("click",function(){selectLayer(b.getAttribute("data-layer"));});
+  });
+  document.getElementById("step-next").addEventListener("click",function(){
+    if(stepIdx<ORDER.length-1) selectLayer(ORDER[stepIdx+1]);
+  });
+  document.getElementById("step-prev").addEventListener("click",function(){
+    if(stepIdx>0) selectLayer(ORDER[stepIdx-1]);
+  });
+  updateStepBtns();
+
+  /* ================= IGNEOUS / CRYSTALS ================= */
+  var SCEN={
+    intrusive:{seeds:7, dur:3200, label:"Magma \u00b7 underground", border:[34,28,22],
+      palette:[[214,166,152],[201,196,186],[235,230,221],[126,123,116],[60,58,56]]},
+    extrusive:{seeds:60, dur:1100, label:"Lava \u00b7 surface", border:[92,98,108],
+      palette:[[44,47,54],[55,60,69],[33,36,43],[72,77,86],[26,28,34]]}
+  };
+  var current="intrusive";
+  var cv=document.getElementById("cryCanvas");
+  var ctx=cv.getContext("2d");
+  var W=cv.width, H=cv.height;
+  var maps=null, animId=null, started=false;
+  var tempRead=document.getElementById("temp-read");
+  var coolLabel=document.getElementById("cool-label");
+
+  function buildMaps(seedCount){
+    var seeds=[];
+    for(var s=0;s<seedCount;s++){
+      seeds.push({x:Math.random()*W, y:Math.random()*H, c:s});
+    }
+    var idx=new Int16Array(W*H);
+    var dist=new Float32Array(W*H);
+    var maxD=0;
+    for(var y=0;y<H;y++){
+      for(var x=0;x<W;x++){
+        var best=1e12,bi=0;
+        for(var k=0;k<seeds.length;k++){
+          var dx=x-seeds[k].x, dy=y-seeds[k].y, d=dx*dx+dy*dy;
+          if(d<best){best=d;bi=k;}
+        }
+        var i=y*W+x;
+        var rd=Math.sqrt(best);
+        idx[i]=bi; dist[i]=rd;
+        if(rd>maxD)maxD=rd;
+      }
+    }
+    // boundaries: neighbour with different seed
+    var bnd=new Uint8Array(W*H);
+    for(var yy=0;yy<H;yy++){
+      for(var xx=0;xx<W;xx++){
+        var ii=yy*W+xx, id=idx[ii];
+        if((xx<W-1&&idx[ii+1]!==id)||(yy<H-1&&idx[ii+W]!==id)) bnd[ii]=1;
+      }
+    }
+    return {seeds:seeds, idx:idx, dist:dist, bnd:bnd, maxD:maxD};
+  }
+
+  function renderFrame(m, scen, prog){
+    var radius=m.maxD*prog;
+    var img=ctx.getImageData(0,0,W,H);
+    var data=img.data;
+    var pal=scen.palette, bord=scen.border;
+    for(var i=0;i<m.dist.length;i++){
+      var p=i*4, r,g,b;
+      if(m.dist[i]<=radius){
+        if(m.bnd[i]){r=bord[0];g=bord[1];b=bord[2];}
+        else{var c=pal[m.idx[i]%pal.length];r=c[0];g=c[1];b=c[2];}
+      }else{
+        // hot, uncrystallised melt — warm glow that fades as it cools
+        var heat=1-prog;
+        r=140+70*heat; g=58+34*heat; b=24+12*heat;
+      }
+      data[p]=r;data[p+1]=g;data[p+2]=b;data[p+3]=255;
+    }
+    ctx.putImageData(img,0,0);
+  }
+
+  function setScenario(name){
+    current=name;
+    document.getElementById("opt-intr").setAttribute("aria-pressed",name==="intrusive"?"true":"false");
+    document.getElementById("opt-extr").setAttribute("aria-pressed",name==="extrusive"?"true":"false");
+    coolLabel.textContent=SCEN[name].label;
+    resetCrystal();
+  }
+
+  function resetCrystal(){
+    if(animId)cancelAnimationFrame(animId);
+    animId=null;started=false;
+    ctx.fillStyle="#23150c";ctx.fillRect(0,0,W,H);
+    tempRead.innerHTML="1150&nbsp;&deg;C";
+    document.getElementById("cool-btn").disabled=false;
+    document.getElementById("reset-btn").disabled=true;
+    var res=document.getElementById("ign-result");
+    res.className="result empty";
+    res.innerHTML='<p class="placeholder">Choose where it cools, then press <b>&ldquo;Cool the rock&rdquo;</b> and watch the crystals grow.</p>';
+  }
+
+  function runCool(){
+    if(started)return;
+    started=true;
+    var scen=SCEN[current];
+    maps=buildMaps(scen.seeds);
+    document.getElementById("cool-btn").disabled=true;
+    document.getElementById("reset-btn").disabled=false;
+    var t0=null;
+    var reduce=window.matchMedia&&window.matchMedia("(prefers-reduced-motion:reduce)").matches;
+    var dur=reduce?60:scen.dur;
+    function frame(ts){
+      if(t0===null)t0=ts;
+      var prog=Math.min(1,(ts-t0)/dur);
+      renderFrame(maps,scen,prog);
+      var temp=Math.round(1150-(1150-60)*prog);
+      tempRead.innerHTML=temp+"&nbsp;&deg;C";
+      if(prog<1){animId=requestAnimationFrame(frame);}
+      else{animId=null;showResult();}
+    }
+    animId=requestAnimationFrame(frame);
+  }
+
+  function showResult(){
+    var res=document.getElementById("ign-result");
+    res.className="result";
+    if(current==="intrusive"){
+      res.innerHTML='<span class="badge intr">Intrusive</span>'+
+        '<ul class="facts">'+
+        '<li>Magma cools <em>UNDERGROUND</em></li>'+
+        '<li>Cools <em>slowly</em> &mdash; over thousands of years</li>'+
+        '<li><em>LARGE</em> crystals have time to grow</li>'+
+        '<li>e.g. <em>granite</em></li></ul>';
+    }else{
+      res.innerHTML='<span class="badge">Extrusive</span>'+
+        '<ul class="facts">'+
+        '<li>Lava cools at the <em>SURFACE</em></li>'+
+        '<li>Cools <em>quickly</em> &mdash; in hours to days</li>'+
+        '<li><em>Small</em> crystals &mdash; no time to grow</li>'+
+        '<li>e.g. <em>basalt</em></li></ul>';
+    }
+  }
+
+  document.getElementById("opt-intr").addEventListener("click",function(){setScenario("intrusive");});
+  document.getElementById("opt-extr").addEventListener("click",function(){setScenario("extrusive");});
+  document.getElementById("cool-btn").addEventListener("click",runCool);
+  document.getElementById("reset-btn").addEventListener("click",resetCrystal);
+
+  /* compare */
+  var compareDone=false;
+  function renderStatic(canvas,scen){
+    var c=canvas.getContext("2d");
+    var ww=canvas.width, hh=canvas.height;
+    var n=scen===SCEN.intrusive?6:48;
+    var seeds=[];for(var s=0;s<n;s++)seeds.push({x:Math.random()*ww,y:Math.random()*hh});
+    var img=c.createImageData(ww,hh), d=img.data;
+    // first pass: nearest idx
+    var idx=new Int16Array(ww*hh);
+    for(var y=0;y<hh;y++)for(var x=0;x<ww;x++){
+      var best=1e12,bi=0;
+      for(var k=0;k<seeds.length;k++){var dx=x-seeds[k].x,dy=y-seeds[k].y,dd=dx*dx+dy*dy;if(dd<best){best=dd;bi=k;}}
+      idx[y*ww+x]=bi;
+    }
+    var pal=scen.palette,bord=scen.border;
+    for(var yy=0;yy<hh;yy++)for(var xx=0;xx<ww;xx++){
+      var ii=yy*ww+xx,id=idx[ii],p=ii*4,r,g,b;
+      var edge=(xx<ww-1&&idx[ii+1]!==id)||(yy<hh-1&&idx[ii+ww]!==id);
+      if(edge){r=bord[0];g=bord[1];b=bord[2];}
+      else{var col=pal[id%pal.length];r=col[0];g=col[1];b=col[2];}
+      d[p]=r;d[p+1]=g;d[p+2]=b;d[p+3]=255;
+    }
+    c.putImageData(img,0,0);
+  }
+  document.getElementById("compare-btn").addEventListener("click",function(){
+    var grid=document.getElementById("compare-grid");
+    if(grid.style.display==="none"||!compareDone){
+      grid.style.display="grid";
+      if(!compareDone){
+        renderStatic(document.getElementById("cmpIntr"),SCEN.intrusive);
+        renderStatic(document.getElementById("cmpExtr"),SCEN.extrusive);
+        compareDone=true;
+      }
+      this.textContent="Hide comparison";
+    }else{
+      grid.style.display="none";
+      this.textContent="Compare both side by side";
+    }
+  });
+
+  var crystalReady=false;
+  function ensureCrystalInit(){
+    if(crystalReady)return;
+    crystalReady=true;
+    setScenario("intrusive");
+  }
+  // deep-link handling — runs last, after SCEN and all functions exist
+  if(params.view==="layers"||params.view==="igneous"){
+    document.body.classList.add("single");
+    show(params.view);
+  }
+  // if deep-linked straight to igneous, init now
+  if(views.igneous.classList.contains("active")) ensureCrystalInit();
+
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Energy — Holiday Revision · Year 7</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1E2761;
+  --navy-soft:#2a3478;
+  --warm:#F8F4EC;
+  --warm-deep:#EFE8D6;
+  --paper:#FCFAF4;
+  --soft-blue:#EDF2FA;
+  --ink:#1A1A1A;
+  --muted:#5C6370;
+  --rule:#CFD8E3;
+  --accent:#B85042;
+  --accent-soft:#F4DAD7;
+  --success:#2C5F2D;
+  --success-soft:#DDEBDD;
+  --gold:#C8A24A;
+  --display: 'Instrument Serif', 'Cormorant Garamond', Georgia, serif;
+  --body: 'IBM Plex Sans', 'Helvetica Neue', system-ui, sans-serif;
+  --mono: 'IBM Plex Mono', 'Courier New', monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--body);
+  font-weight:300;
+  font-size:17px;
+  line-height:1.65;
+  color:var(--ink);
+  background:var(--warm);
+  background-image:
+    radial-gradient(ellipse at 10% 0%, rgba(30,39,97,0.04), transparent 50%),
+    radial-gradient(ellipse at 90% 100%, rgba(184,80,66,0.04), transparent 50%);
+  background-attachment:fixed;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+/* ---------- HERO ---------- */
+.hero{background:var(--navy);color:var(--warm);padding:48px 24px 56px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 20% 30%,rgba(75,30,160,0.25),transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(184,80,66,0.18),transparent 60%);pointer-events:none}
+.hero-inner{max-width:720px;margin:0 auto;position:relative;z-index:1}
+.kicker{font-family:var(--mono);font-size:11px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(248,244,236,0.55);margin-bottom:20px}
+.hero h1{font-family:var(--display);font-weight:400;font-size:clamp(40px,8vw,68px);line-height:1.0;letter-spacing:-0.015em;margin-bottom:14px}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero .tag{font-family:var(--display);font-style:italic;font-size:clamp(18px,3.5vw,22px);color:rgba(248,244,236,0.75);font-weight:400;max-width:520px}
+.pace-banner{margin-top:36px;padding:18px 22px;border:1px solid rgba(248,244,236,0.2);border-left:3px solid var(--gold);background:rgba(0,0,0,0.15);display:flex;gap:14px;align-items:flex-start}
+.pace-banner .pace-icon{font-family:var(--display);font-size:30px;line-height:1;color:var(--gold);flex:0 0 auto}
+.pace-banner p{font-size:15px;line-height:1.5;color:rgba(248,244,236,0.92)}
+.pace-banner strong{color:var(--warm);font-weight:500}
+
+/* ---------- LESSON NAV ---------- */
+.lesson-nav{position:sticky;top:0;z-index:100;background:rgba(252,250,244,0.96);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--rule);padding:12px 0}
+.nav-inner{max-width:720px;margin:0 auto;padding:0 16px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-pill{flex:0 0 auto;font-family:var(--mono);font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);padding:8px 14px;border:1px solid var(--rule);background:var(--paper);text-decoration:none;border-radius:100px;transition:all 0.2s;font-weight:500;white-space:nowrap}
+.nav-pill:hover{border-color:var(--navy);color:var(--navy)}
+.nav-pill.done{background:var(--success-soft);border-color:var(--success);color:var(--success)}
+.nav-pill.done::before{content:'✓ ';font-weight:600}
+.nav-divider{flex:0 0 auto;display:flex;align-items:center;color:var(--accent);font-family:var(--mono);font-size:10px;letter-spacing:0.25em;padding:0 6px;opacity:0.6}
+
+/* ---------- LESSON ---------- */
+main{max-width:720px;margin:0 auto;padding:48px 24px 80px}
+.lesson{margin-bottom:64px;scroll-margin-top:80px}
+.lesson-head{margin-bottom:36px;padding-bottom:24px;border-bottom:1px solid var(--rule);position:relative}
+.lesson-num{font-family:var(--mono);font-size:11px;letter-spacing:0.3em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+.lesson-title{font-family:var(--display);font-weight:400;font-size:clamp(32px,6vw,46px);line-height:1.05;color:var(--navy);letter-spacing:-0.01em;margin-bottom:14px}
+.lesson-title em{font-style:italic}
+.lesson-promise{font-family:var(--display);font-style:italic;font-size:19px;color:var(--muted);line-height:1.4;max-width:540px}
+
+/* ---------- PHASE DIVIDER ---------- */
+.phase{margin:72px 0 52px;text-align:center;padding:32px 0;position:relative;scroll-margin-top:100px}
+.phase::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:var(--rule)}
+.phase::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:var(--rule)}
+.phase-label{display:inline-block;font-family:var(--mono);font-size:12px;letter-spacing:0.4em;text-transform:uppercase;color:var(--accent);font-weight:500;margin-bottom:10px}
+.phase-sub{font-family:var(--display);font-style:italic;font-size:22px;color:var(--navy);line-height:1.3}
+
+/* ---------- SECTION ---------- */
+.section{margin-bottom:42px}
+.section-head{font-family:var(--display);font-weight:400;font-size:26px;line-height:1.15;color:var(--navy);margin-bottom:16px;letter-spacing:-0.005em}
+.section-head .num{font-family:var(--mono);font-size:12px;color:var(--accent);letter-spacing:0.2em;display:block;margin-bottom:6px}
+.section p{margin-bottom:16px;font-size:17px}
+.section p strong{font-weight:500;color:var(--navy);background:linear-gradient(180deg,transparent 60%,rgba(200,162,74,0.25) 60%);padding:0 2px}
+
+/* ---------- KEYWORD BOX ---------- */
+.keywords{background:var(--soft-blue);border:1px solid #C9D7ED;border-left:3px solid var(--navy);padding:20px 22px;margin:24px 0}
+.keywords h4{font-family:var(--mono);font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:var(--navy);margin-bottom:14px;font-weight:500}
+.keywords dl{display:grid;gap:10px}
+.keywords dt{font-family:var(--display);font-size:20px;font-style:italic;color:var(--navy);font-weight:400}
+.keywords dd{font-size:15px;color:var(--ink);margin-bottom:6px}
+
+/* ---------- HINGE QUESTION ---------- */
+.hinge{background:var(--paper);border:1px solid var(--rule);padding:22px 24px;margin:28px 0;position:relative}
+.hinge-tag{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);padding:4px 10px;margin-bottom:12px;font-weight:500}
+.hinge-q{font-family:var(--display);font-size:22px;line-height:1.3;color:var(--navy);margin-bottom:14px;font-weight:400}
+.choices{list-style:none;display:grid;gap:8px;margin-bottom:16px}
+.choices li{font-size:15px;padding:10px 14px;background:var(--warm);border:1px solid var(--rule);display:flex;gap:10px;align-items:flex-start}
+.choices li .letter{font-family:var(--mono);font-weight:500;color:var(--accent);flex:0 0 auto}
+.reveal{width:100%;background:transparent}
+.reveal summary{cursor:pointer;list-style:none;font-family:var(--mono);font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);padding:10px 0;border-top:1px dashed var(--rule);display:flex;align-items:center;gap:10px;transition:color 0.2s;font-weight:500;user-select:none}
+.reveal summary::-webkit-details-marker{display:none}
+.reveal summary::before{content:'+';font-family:var(--display);font-size:18px;color:var(--accent);width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--accent);border-radius:50%;transition:transform 0.25s}
+.reveal[open] summary::before{transform:rotate(45deg)}
+.reveal summary:hover{color:var(--navy)}
+.reveal-body{padding:14px 16px;margin-top:10px;background:var(--success-soft);border-left:3px solid var(--success);font-size:15px;line-height:1.55;color:var(--ink)}
+.reveal-body strong{color:var(--success);font-weight:500}
+.reveal-body em{color:var(--muted);font-style:italic;font-size:13px;display:block;margin-top:8px}
+
+/* ---------- IFRAME EMBED ---------- */
+.zoom-frame{margin:28px -8px;position:relative;background:var(--navy);padding:8px;box-shadow:0 14px 40px rgba(7,10,26,0.25),0 2px 6px rgba(7,10,26,0.15)}
+@media (min-width:740px){.zoom-frame{margin-left:-24px;margin-right:-24px;padding:12px}}
+.zoom-frame::before{content:attr(data-label);position:absolute;top:-12px;left:24px;background:var(--warm);color:var(--navy);font-family:var(--mono);font-size:10px;letter-spacing:0.3em;text-transform:uppercase;padding:4px 12px;font-weight:500}
+.zoom-frame iframe{display:block;width:100%;height:min(85vh,720px);min-height:560px;border:0;background:#f6f1e7}
+.zoom-instr{font-family:var(--mono);font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);text-align:center;margin-top:10px;padding:8px 14px;background:var(--paper);border:1px solid var(--rule)}
+
+/* ---------- WATCH OUT ---------- */
+.watch-out{background:var(--accent-soft);border:1px solid #E6BCB7;border-left:3px solid var(--accent);padding:18px 22px;margin:24px 0}
+.watch-out h4{font-family:var(--mono);font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;font-weight:500}
+.watch-out p{font-size:15px;line-height:1.5;margin:0}
+.watch-out p+p{margin-top:8px}
+
+/* ---------- WORKED EXAMPLE BOX ---------- */
+.worked{background:var(--paper);border:1px solid var(--rule);padding:22px;margin:24px 0}
+.worked h4{font-family:var(--mono);font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:var(--navy);margin-bottom:14px;font-weight:500}
+.formula{font-family:var(--mono);font-size:15px;background:var(--soft-blue);padding:8px 12px;display:inline-block;margin:4px 0;color:var(--navy);font-weight:500}
+
+/* ---------- ENERGY DIAGRAM (inline visual) ---------- */
+.energy-diagram{margin:18px 0;padding:24px 18px;background:var(--paper);border:1px solid var(--rule);text-align:center;font-family:var(--mono);font-size:12px;letter-spacing:0.06em}
+.energy-diagram .store{display:inline-block;padding:10px 14px;background:var(--soft-blue);border:1.5px solid var(--navy);color:var(--navy);font-weight:500;vertical-align:middle;line-height:1.3}
+.energy-diagram .store small{display:block;font-size:9px;letter-spacing:0.15em;color:var(--muted);font-weight:400;margin-bottom:3px;text-transform:uppercase}
+.energy-diagram .store.thermal{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.energy-diagram .store.kinetic{background:#E5F0E5;border-color:var(--success);color:var(--success)}
+.energy-diagram .store.gravitational{background:#FAF1D8;border-color:var(--gold);color:#7A621D}
+.energy-diagram .arrow{display:inline-block;vertical-align:middle;color:var(--muted);font-family:var(--mono);font-size:11px;letter-spacing:0.05em;padding:0 12px;font-weight:500}
+.energy-diagram .arrow .label{display:block;font-size:9px;color:var(--accent);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:2px}
+
+/* ---------- QUIZ ---------- */
+.quiz{background:var(--paper);border:1px solid var(--rule);margin-top:36px;padding:28px 24px 24px}
+.quiz-head{font-family:var(--display);font-size:26px;color:var(--navy);margin-bottom:6px;font-weight:400}
+.quiz-head em{font-style:italic}
+.quiz-sub{font-family:var(--mono);font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:20px}
+.quiz ol{list-style:none;counter-reset:q;display:grid;gap:10px}
+.quiz li{counter-increment:q;border:1px solid var(--rule);background:var(--warm)}
+.quiz details summary{cursor:pointer;list-style:none;padding:14px 18px;display:flex;gap:14px;align-items:flex-start;font-size:16px;line-height:1.45;user-select:none}
+.quiz details summary::-webkit-details-marker{display:none}
+.quiz details summary::before{content:counter(q,decimal-leading-zero);font-family:var(--mono);font-size:13px;font-weight:500;color:var(--accent);flex:0 0 auto;padding-top:2px}
+.quiz details summary::after{content:'show answer';font-family:var(--mono);font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-left:auto;flex:0 0 auto;padding-top:4px;white-space:nowrap;align-self:flex-start}
+.quiz details[open] summary::after{content:'hide';}
+.quiz details summary:hover::after{color:var(--accent)}
+.quiz .ans{padding:0 18px 16px 50px;font-size:15px;color:var(--success);line-height:1.5;border-top:1px dashed var(--rule);padding-top:14px;margin-top:4px}
+.quiz .ans strong{font-weight:600}
+
+/* ---------- DONE BUTTON ---------- */
+.done-btn{display:block;width:100%;margin-top:24px;padding:14px;background:var(--navy);color:var(--warm);border:0;font-family:var(--mono);font-size:12px;letter-spacing:0.25em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;font-weight:500}
+.done-btn:hover{background:var(--accent)}
+.done-btn.is-done{background:var(--success);cursor:default}
+.done-btn.is-done::before{content:'✓ '}
+
+/* ---------- DIVIDER ---------- */
+.section-rule{height:1px;background:var(--rule);margin:36px 0;position:relative}
+.section-rule::after{content:'⁂';position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--warm);padding:0 14px;color:var(--accent);font-size:18px}
+
+/* ---------- FOOTER ---------- */
+footer{text-align:center;padding:48px 24px;background:var(--navy);color:rgba(248,244,236,0.6)}
+footer p{font-size:13px;line-height:1.5;margin-bottom:6px}
+footer .sig{font-family:var(--display);font-style:italic;font-size:18px;color:var(--gold);margin-bottom:14px}
+
+/* ---------- SMALL SCREENS ---------- */
+@media (max-width:540px){
+  body{font-size:16px}
+  .hero{padding:36px 20px 44px}
+  main{padding:32px 18px 60px}
+  .keywords,.hinge,.watch-out,.worked{padding:18px 18px}
+  .lesson{margin-bottom:48px}
+  .phase{margin:60px 0 44px}
+  .phase-label{padding:12px 20px;font-size:11px;letter-spacing:0.3em}
+  .quiz{padding:22px 16px 18px}
+  .quiz details summary{padding:12px 14px;font-size:15px}
+  .quiz .ans{padding-left:42px;padding-right:14px}
+  .zoom-frame iframe{height:min(75vh,560px);min-height:480px}
+  .energy-diagram{padding:18px 12px}
+  .energy-diagram .store{display:block;margin:6px auto;max-width:200px}
+  .energy-diagram .arrow{display:block;transform:rotate(90deg);padding:8px 0}
+}
+
+@media print{
+  .lesson-nav,.pace-banner,.done-btn,.zoom-frame{display:none}
+  body{background:white}
+  details[open] summary::after,details>summary::after{content:''}
+  details>.ans,details>.reveal-body{display:block !important}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="kicker">Year 7 · Springboard Physics · Energy</div>
+    <h1>Energy, <em>but bitesize.</em></h1>
+    <p class="tag">A holiday revision booklet — six short topics on stores, transfers, and the joule.</p>
+    <div class="pace-banner">
+      <span class="pace-icon">i</span>
+      <p><strong>Take it one topic at a time.</strong> There are six topics. Each one is short — about 10 minutes. Do one or two a day.</p>
+    </div>
+  </div>
+</header>
+
+<!-- ============ STICKY NAV ============ -->
+<nav class="lesson-nav">
+  <div class="nav-inner">
+    <a href="#lesson-1" class="nav-pill" data-lesson="1">Fuels</a>
+    <a href="#lesson-2" class="nav-pill" data-lesson="2">Joules</a>
+    <a href="#lesson-3" class="nav-pill" data-lesson="3">Heating</a>
+    <span class="nav-divider">·</span>
+    <a href="#lesson-4" class="nav-pill" data-lesson="4">KE & GPE</a>
+    <a href="#lesson-5" class="nav-pill" data-lesson="5">Elastic + Force</a>
+    <a href="#lesson-6" class="nav-pill" data-lesson="6">Current & Waves</a>
+  </div>
+</nav>
+
+<main>
+
+<!-- ============ PART 1 OPENER ============ -->
+<div class="phase" id="part-foundations">
+  <span class="phase-label">Part 1 — Foundations</span>
+  <p class="phase-sub">Fuels, joules, and heating.</p>
+</div>
+
+<!-- ===================================================================== -->
+<!-- TOPIC 1 — FUELS & THE CHEMICAL ENERGY STORE                             -->
+<!-- ===================================================================== -->
+<section class="lesson" id="lesson-1">
+  <div class="lesson-head">
+    <div class="lesson-num">Topic 01 · Foundations</div>
+    <h2 class="lesson-title">A fuel is a <em>store</em> of energy</h2>
+    <p class="lesson-promise">By the end of this topic you'll know what a fuel is, what we mean by an energy store, and why batteries count too.</p>
+  </div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 1</span>What is a fuel?</h3>
+    <p>A <strong>fuel</strong> is anything that <strong>releases energy when it's burned or used</strong>. Wood, petrol, gas, coal — all fuels. When you burn wood in a fire, the wood doesn't just disappear: the energy it was holding is released and heats whatever's around it.</p>
+    <p>In science, we say the wood has a <strong>chemical energy store</strong>. Burning the wood <strong>decreases</strong> that store. The bigger the piece of wood, the more energy is in its chemical store to start with.</p>
+
+    <div class="keywords">
+      <h4>Keywords for Part 1</h4>
+      <dl>
+        <dt>Fuel</dt>
+        <dd>A substance that releases stored energy when burned or used.</dd>
+        <dt>Chemical energy store</dt>
+        <dd>The energy stored inside a fuel (or food, or a battery) that gets released when it's used.</dd>
+      </dl>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">Which candle has the <strong>most</strong> energy in its chemical energy store?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>A new, unlit candle</span></li>
+        <li><span class="letter">B</span><span>A candle that's been burning for an hour</span></li>
+        <li><span class="letter">C</span><span>The wax left at the bottom after the flame goes out</span></li>
+        <li><span class="letter">D</span><span>The flame itself</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>A — the new, unlit candle.</strong> All of the wax is still there, so the chemical store is full. Burning it <em>decreases</em> the store, and the flame itself isn't a store — it's energy being released.</div>
+      </details>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 2</span>Batteries are chemical stores too</h3>
+    <p>Here's a surprise: <strong>batteries</strong> are also chemical energy stores. They don't burn, but the chemicals inside them release energy when you use the battery — and you can <strong>refill</strong> the store by charging the battery up again.</p>
+    <p>So you can <strong>increase</strong> the chemical store by:</p>
+    <p>· charging a phone (refills the battery)<br>· cutting more wood (more wood = more store)<br>· making a bigger candle</p>
+    <p>And you <strong>decrease</strong> the chemical store by:</p>
+    <p>· using the phone (drains the battery)<br>· burning the wood<br>· lighting the candle</p>
+
+    <div class="watch-out">
+      <h4>⚠ Watch out — what counts as a "fuel"?</h4>
+      <p>The wax of a candle is the fuel — not the wick. The wick just lets the flame happen. If you cut the candle in half, the chemical store halves too. If you melt the wax but don't burn it, the store doesn't change — burning is what releases the energy.</p>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">Which of these <strong>increases</strong> the chemical energy store?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>Lighting a candle</span></li>
+        <li><span class="letter">B</span><span>Watching a video on a phone</span></li>
+        <li><span class="letter">C</span><span>Plugging a phone into a charger</span></li>
+        <li><span class="letter">D</span><span>Burning a piece of paper</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>C — charging a phone.</strong> Charging refills the battery's chemical store. Lighting, using and burning all <em>decrease</em> a store.</div>
+      </details>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <h3 class="quiz-head">Test <em>yourself</em></h3>
+    <p class="quiz-sub">6 questions · click to reveal each answer</p>
+    <ol>
+      <li><details>
+        <summary>What is a fuel?</summary>
+        <div class="ans"><strong>A substance that releases stored energy when it is burned or used.</strong></div>
+      </details></li>
+      <li><details>
+        <summary>What store of energy does a candle have?</summary>
+        <div class="ans">A <strong>chemical energy store</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>Does the chemical store of a candle increase or decrease when it burns?</summary>
+        <div class="ans">It <strong>decreases</strong> — the energy is released as the wax burns.</div>
+      </details></li>
+      <li><details>
+        <summary>Name two things that have a chemical energy store.</summary>
+        <div class="ans">Any two from: <strong>wood, candle wax, petrol, gas, coal, food, a battery</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>Does charging a phone increase or decrease its chemical store?</summary>
+        <div class="ans"><strong>Increases.</strong> Charging adds energy to the battery's chemical store.</div>
+      </details></li>
+      <li><details>
+        <summary>Two candles look identical, but one is half the height of the other. Which has the bigger chemical store, and why?</summary>
+        <div class="ans">The <strong>taller candle</strong>. There's more wax (more fuel), so there's more energy stored. <em>The flame doesn't matter — it's the amount of wax that counts.</em></div>
+      </details></li>
+    </ol>
+    <button class="done-btn" data-lesson-done="1">Mark this topic complete</button>
+  </div>
+</section>
+
+<!-- ===================================================================== -->
+<!-- TOPIC 2 — JOULES                                                        -->
+<!-- ===================================================================== -->
+<section class="lesson" id="lesson-2">
+  <div class="lesson-head">
+    <div class="lesson-num">Topic 02 · Foundations</div>
+    <h2 class="lesson-title">Energy is measured in <em>joules</em></h2>
+    <p class="lesson-promise">By the end of this topic you'll know the unit of energy, the symbol, and how to switch between joules and kilojoules.</p>
+  </div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 1</span>The joule (J)</h3>
+    <p>Saying a candle has "a lot" or "a bit" of energy isn't scientific. We need <strong>numbers</strong>. The unit we use to measure energy is the <strong>joule</strong>. The symbol is a capital <strong>J</strong> (always capital — small <em>j</em> means something different).</p>
+    <p>It's exactly like using <strong>metres</strong> for distance or <strong>seconds</strong> for time. If something has 200 J in its chemical store, that's a precise amount we can write down and compare with other things.</p>
+
+    <div class="keywords">
+      <h4>Keywords for Part 1</h4>
+      <dl>
+        <dt>Joule</dt>
+        <dd>The unit for measuring energy.</dd>
+        <dt>J</dt>
+        <dd>The symbol for joule. Always written with a capital J.</dd>
+      </dl>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">What is the unit for measuring energy?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>Metre (m)</span></li>
+        <li><span class="letter">B</span><span>Joule (J)</span></li>
+        <li><span class="letter">C</span><span>Second (s)</span></li>
+        <li><span class="letter">D</span><span>Newton (N)</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>B — joule (J).</strong> Metres measure distance, seconds measure time, newtons measure force, and joules measure energy.</div>
+      </details>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 2</span>When joules get big: kJ</h3>
+    <p>Joules are tiny. A bag of crisps holds about <strong>500,000 J</strong> of energy. Writing big numbers gets annoying, so we use <strong>kilojoules</strong> instead. The symbol is <strong>kJ</strong>, and:</p>
+    <p style="text-align:center"><span class="formula">1 kJ = 1000 J</span></p>
+    <p>So that bag of crisps is <strong>500 kJ</strong> — much easier to read.</p>
+
+    <div class="worked">
+      <h4>Worked examples</h4>
+      <p style="margin-bottom:10px"><strong>1.</strong> Convert <strong>5 kJ</strong> into J.<br>
+        Multiply by 1000: 5 × 1000 = <strong>5000 J</strong>.</p>
+      <p style="margin-bottom:10px"><strong>2.</strong> Convert <strong>2.7 kJ</strong> into J.<br>
+        2.7 × 1000 = <strong>2700 J</strong>.</p>
+      <p><strong>3.</strong> Convert <strong>8000 J</strong> into kJ.<br>
+        Divide by 1000: 8000 ÷ 1000 = <strong>8 kJ</strong>.</p>
+    </div>
+
+    <div class="watch-out">
+      <h4>⚠ Watch out — which way to convert?</h4>
+      <p><strong>kJ → J:</strong> the number gets <em>bigger</em> (multiply by 1000).<br><strong>J → kJ:</strong> the number gets <em>smaller</em> (divide by 1000).</p>
+      <p>If you ever forget, ask: "is the answer going to be a small number or a big one?" Crisps in joules = 500,000 (big). Crisps in kJ = 500 (small).</p>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">Convert <strong>3000 J</strong> into kilojoules.</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>0.3 kJ</span></li>
+        <li><span class="letter">B</span><span>3 kJ</span></li>
+        <li><span class="letter">C</span><span>30 kJ</span></li>
+        <li><span class="letter">D</span><span>3,000,000 kJ</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>B — 3 kJ.</strong> J → kJ means divide by 1000: 3000 ÷ 1000 = 3. <em>(D is the trap if you multiplied instead of dividing.)</em></div>
+      </details>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <h3 class="quiz-head">Test <em>yourself</em></h3>
+    <p class="quiz-sub">6 questions · click to reveal each answer</p>
+    <ol>
+      <li><details>
+        <summary>What is the unit of energy?</summary>
+        <div class="ans">The <strong>joule (J)</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>How many joules are in 1 kJ?</summary>
+        <div class="ans"><strong>1000 J.</strong></div>
+      </details></li>
+      <li><details>
+        <summary>Convert 4 kJ into J.</summary>
+        <div class="ans"><strong>4000 J.</strong> 4 × 1000 = 4000.</div>
+      </details></li>
+      <li><details>
+        <summary>Convert 12,000 J into kJ.</summary>
+        <div class="ans"><strong>12 kJ.</strong> 12,000 ÷ 1000 = 12.</div>
+      </details></li>
+      <li><details>
+        <summary>Convert 0.5 kJ into J.</summary>
+        <div class="ans"><strong>500 J.</strong> 0.5 × 1000 = 500.</div>
+      </details></li>
+      <li><details>
+        <summary>A chocolate bar has 1,200,000 J of energy. Write that in kJ.</summary>
+        <div class="ans"><strong>1200 kJ.</strong> 1,200,000 ÷ 1000 = 1200. <em>(Much easier than writing all those zeros — that's why we use kJ.)</em></div>
+      </details></li>
+    </ol>
+    <button class="done-btn" data-lesson-done="2">Mark this topic complete</button>
+  </div>
+</section>
+
+<!-- ===================================================================== -->
+<!-- TOPIC 3 — HEATING                                                       -->
+<!-- ===================================================================== -->
+<section class="lesson" id="lesson-3">
+  <div class="lesson-head">
+    <div class="lesson-num">Topic 03 · Foundations</div>
+    <h2 class="lesson-title">Heat flows from <em>hot</em> to <em>cold</em></h2>
+    <p class="lesson-promise">By the end of this topic you'll know the thermal energy store, why energy always flows hot to cold, and what conservation of energy means.</p>
+  </div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 1</span>The thermal energy store</h3>
+    <p>Hot things have more energy than cold things. We say a hot object has lots of energy in its <strong>thermal energy store</strong>. Cold objects have less.</p>
+    <p>We measure how hot or cold something is using a <strong>thermometer</strong>, and the unit of <strong>temperature</strong> is degrees Celsius (<strong>°C</strong>). A higher temperature means more energy in the thermal store.</p>
+
+    <div class="keywords">
+      <h4>Keywords for Part 1</h4>
+      <dl>
+        <dt>Thermal energy store</dt>
+        <dd>The energy stored in a hot object. The hotter it is, the more energy in the store.</dd>
+        <dt>Temperature</dt>
+        <dd>How hot or cold something is. Measured in degrees Celsius (°C).</dd>
+        <dt>Thermometer</dt>
+        <dd>The instrument used to measure temperature.</dd>
+      </dl>
+    </div>
+
+    <div class="watch-out">
+      <h4>⚠ Watch out — temperature ≠ energy</h4>
+      <p>Temperature tells you <em>how hot</em> something is. The amount of energy in the thermal store also depends on <em>how big</em> the object is. A swimming pool at 20°C has way more thermal energy than a cup of tea at 20°C — same temperature, much more stuff.</p>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 2</span>Energy flows hot → cold</h3>
+    <p>If you put a hot mug on a cold table, the mug cools down and the table warms up. <strong>Energy flows from hot to cold</strong>, never the other way around. We call this kind of energy movement a <strong>transfer by heating</strong>.</p>
+    <p>So in the mug-on-table example, the thermal store of the <strong>mug decreases</strong> and the thermal store of the <strong>table increases</strong>.</p>
+
+    <div class="energy-diagram">
+      <span class="store thermal"><small>Thermal store</small>of hot mug ↓</span>
+      <span class="arrow"><span class="label">heating</span>→</span>
+      <span class="store thermal"><small>Thermal store</small>of cold table ↑</span>
+    </div>
+
+    <div class="watch-out">
+      <h4>⚠ Watch out — energy doesn't just disappear</h4>
+      <p>When a hot drink cools down, the energy doesn't <em>vanish</em>. It moves into the table, the mug, the air around it. This is called the <strong>conservation of energy</strong>: energy can never be created or destroyed, only transferred between stores. The total amount always stays the same.</p>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">A spoon at room temperature is dropped into a hot mug of tea. Which way does energy flow?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>From the spoon to the tea — the spoon cools the tea down</span></li>
+        <li><span class="letter">B</span><span>From the tea to the spoon — the tea warms the spoon up</span></li>
+        <li><span class="letter">C</span><span>Both ways at the same time</span></li>
+        <li><span class="letter">D</span><span>Neither — the temperatures stay the same</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>B — from tea to spoon.</strong> Energy always flows from the hotter object (the tea) to the colder one (the spoon). The tea cools slightly and the spoon heats up. Eventually they reach the same temperature.</div>
+      </details>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <h3 class="quiz-head">Test <em>yourself</em></h3>
+    <p class="quiz-sub">6 questions · click to reveal each answer</p>
+    <ol>
+      <li><details>
+        <summary>What is the unit of temperature?</summary>
+        <div class="ans"><strong>Degrees Celsius (°C).</strong></div>
+      </details></li>
+      <li><details>
+        <summary>What store of energy does a hot object have?</summary>
+        <div class="ans">A <strong>thermal energy store</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>An ice cube is dropped into warm water. Which direction does energy flow?</summary>
+        <div class="ans">From the <strong>warm water to the ice cube</strong>. Energy always flows from hot to cold, so the water cools down and the ice melts.</div>
+      </details></li>
+      <li><details>
+        <summary>State the law of conservation of energy.</summary>
+        <div class="ans"><strong>Energy cannot be created or destroyed</strong> — only transferred between stores. The total amount always stays the same.</div>
+      </details></li>
+      <li><details>
+        <summary>A bowl of soup is left on the kitchen counter. After an hour it has gone cold. Where has the energy from the soup's thermal store gone?</summary>
+        <div class="ans">It has been <strong>transferred (by heating) to the surroundings</strong> — the bowl, the counter, and the air. The energy hasn't disappeared; it's just spread out.</div>
+      </details></li>
+      <li><details>
+        <summary>A bath at 35°C and a cup of tea at 35°C. Which has more energy in its thermal store?</summary>
+        <div class="ans">The <strong>bath</strong>. Same temperature, but there's much more water in a bath than in a cup, so its thermal store holds more energy. <em>(Temperature ≠ amount of energy.)</em></div>
+      </details></li>
+    </ol>
+    <button class="done-btn" data-lesson-done="3">Mark this topic complete</button>
+  </div>
+</section>
+
+<!-- ============ PART 2 OPENER ============ -->
+<div class="phase" id="part-stores">
+  <span class="phase-label">Part 2 — More Stores &amp; Transfers</span>
+  <p class="phase-sub">How energy moves between things.</p>
+</div>
+
+<!-- ===================================================================== -->
+<!-- TOPIC 4 — KINETIC & GRAVITATIONAL                                       -->
+<!-- ===================================================================== -->
+<section class="lesson" id="lesson-4">
+  <div class="lesson-head">
+    <div class="lesson-num">Topic 04 · Stores</div>
+    <h2 class="lesson-title">Movement and <em>height</em></h2>
+    <p class="lesson-promise">By the end of this topic you'll know the kinetic and gravitational stores, and how energy switches between them when something falls or is lifted.</p>
+  </div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 1</span>Kinetic energy store — anything moving</h3>
+    <p>Any object that's <strong>moving</strong> has energy in its <strong>kinetic energy store</strong>. The faster it moves, the more energy in that store. A stationary object has <strong>zero</strong> kinetic energy.</p>
+    <p>Direction doesn't matter. A car going 30 mph north has the same kinetic energy as the same car going 30 mph south. What matters is how fast.</p>
+
+    <div class="keywords">
+      <h4>Keywords for Part 1</h4>
+      <dl>
+        <dt>Kinetic energy store</dt>
+        <dd>The energy stored in any moving object.</dd>
+        <dt>Stationary</dt>
+        <dd>Not moving. A stationary object has zero kinetic energy.</dd>
+      </dl>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">Which has the <strong>most</strong> energy in its kinetic store?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>A parked car</span></li>
+        <li><span class="letter">B</span><span>A jogger running at 4 m/s</span></li>
+        <li><span class="letter">C</span><span>A cyclist riding at 8 m/s</span></li>
+        <li><span class="letter">D</span><span>A walking dog at 1 m/s</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>C — the cyclist at 8 m/s.</strong> Faster = more kinetic energy. The parked car has zero kinetic energy because it's stationary, even though it's heavy.</div>
+      </details>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 2</span>Gravitational energy store — anything lifted up</h3>
+    <p>If you lift something up off the ground, it gains energy in its <strong>gravitational energy store</strong>. The higher you lift it, the more energy goes into the store. A book on a high shelf has more gravitational energy than the same book on a low shelf.</p>
+    <p>Where does that energy come from? <strong>You</strong>. Lifting takes effort because you're transferring energy from your chemical store (the food you ate) into the book's gravitational store.</p>
+
+    <div class="energy-diagram">
+      <span class="store"><small>Chemical store</small>of you ↓</span>
+      <span class="arrow"><span class="label">by a force</span>→</span>
+      <span class="store gravitational"><small>Gravitational store</small>of book ↑</span>
+    </div>
+
+    <div class="keywords">
+      <h4>Keywords for Part 2</h4>
+      <dl>
+        <dt>Gravitational energy store</dt>
+        <dd>The energy stored in any object that has been lifted up. Higher = more.</dd>
+      </dl>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">Two identical balls. Ball X is on the floor. Ball Y is on a table. Which has more gravitational energy?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>Ball X — it's heavier because of gravity</span></li>
+        <li><span class="letter">B</span><span>Ball Y — it's higher up</span></li>
+        <li><span class="letter">C</span><span>They have the same — they're identical</span></li>
+        <li><span class="letter">D</span><span>It depends on how fast they're moving</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>B — ball Y.</strong> They're identical balls, so the only difference is height. Higher up = more energy in the gravitational store.</div>
+      </details>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 3</span>Falling: gravitational → kinetic</h3>
+    <p>When you let something fall, watch what happens to the two stores. As the object drops, it gets <strong>lower</strong> (gravitational store decreases) and <strong>faster</strong> (kinetic store increases). The energy is transferring from one store to the other.</p>
+
+    <div class="energy-diagram">
+      <span class="store gravitational"><small>Gravitational</small>↓ falling</span>
+      <span class="arrow">→</span>
+      <span class="store kinetic"><small>Kinetic</small>↑ speeding up</span>
+    </div>
+
+    <p>Try the interactive below — drag the cart to different heights on the roller coaster track, and watch the two stores swap energy. Turn the friction toggle on to see what happens when some energy gets transferred to the thermal store of the surroundings as well.</p>
+
+    <div class="zoom-frame" data-label="Interactive · Drag the cart">
+      <iframe src="data:text/html;base64,PCFET0NUWVBFIGh0bWw+CjxodG1sIGxhbmc9ImVuIj4KPGhlYWQ+CjxtZXRhIGNoYXJzZXQ9IlVURi04Ij4KPG1ldGEgbmFtZT0idmlld3BvcnQiIGNvbnRlbnQ9IndpZHRoPWRldmljZS13aWR0aCwgaW5pdGlhbC1zY2FsZT0xLjAiPgo8dGl0bGU+RW5lcmd5IFN0b3JlcyDigJQgUm9sbGVyIENvYXN0ZXIgwrcgU3ByaW5nYm9hcmQgS1MzPC90aXRsZT4KPHN0eWxlPgo6cm9vdHsKICAtLW5hdnk6IzFFMjc2MTsKICAtLW5hdnktc29mdDojMmEzNDc4OwogIC0td2FybTojRjhGNEVDOwogIC0td2FybS1kZWVwOiNFRkU4RDY7CiAgLS1wYXBlcjojRkNGQUY0OwogIC0tc29mdC1ibHVlOiNFREYyRkE7CiAgLS1pbms6IzFBMUExQTsKICAtLW11dGVkOiM1QzYzNzA7CiAgLS1ydWxlOiNDRkQ4RTM7CiAgLS1hY2NlbnQ6I0I4NTA0MjsKICAtLWFjY2VudC1zb2Z0OiNGNERBRDc7CiAgLS1zdWNjZXNzOiMyQzVGMkQ7CiAgLS1zdWNjZXNzLXNvZnQ6I0RERUJERDsKICAtLWdvbGQ6I0M4QTI0QTsKICAtLWdvbGQtc29mdDojRjJFNkJEOwogIC8qIEVuZXJneSBzdG9yZSBjb2xvdXJzICovCiAgLS1ncGUtY29sb3I6I0M4QTI0QTsgICAgICAvKiBnb2xkICovCiAgLS1ncGUtYmc6I0ZBRjFEODsKICAtLWtlLWNvbG9yOiMyQzVGMkQ7ICAgICAgIC8qIGdyZWVuICovCiAgLS1rZS1iZzojRERFQkREOwogIC0tdGhlcm1hbC1jb2xvcjojQjg1MDQyOyAgLyogcmVkICovCiAgLS10aGVybWFsLWJnOiNGNERBRDc7Cn0KKntib3gtc2l6aW5nOmJvcmRlci1ib3g7bWFyZ2luOjA7cGFkZGluZzowfQpodG1sLGJvZHl7aGVpZ2h0OjEwMCV9CmJvZHl7CiAgZm9udC1mYW1pbHk6J0NlbnR1cnkgR290aGljJywnVVJXIEdvdGhpYycsJ0F2YW50IEdhcmRlJywnVHJlYnVjaGV0IE1TJyxzYW5zLXNlcmlmOwogIGNvbG9yOnZhcigtLWluayk7CiAgYmFja2dyb3VuZDp2YXIoLS13YXJtKTsKICAtd2Via2l0LWZvbnQtc21vb3RoaW5nOmFudGlhbGlhc2VkOwogIGRpc3BsYXk6ZmxleDsKICBmbGV4LWRpcmVjdGlvbjpjb2x1bW47CiAgbWluLWhlaWdodDoxMDB2aDsKICBvdmVyZmxvdy14OmhpZGRlbjsKfQoKLyogSGVhZGVyICovCi5oZWFkZXJ7CiAgYmFja2dyb3VuZDp2YXIoLS1uYXZ5KTsKICBjb2xvcjojZmZmOwogIHBhZGRpbmc6MTRweCAyNHB4OwogIGRpc3BsYXk6ZmxleDsKICBqdXN0aWZ5LWNvbnRlbnQ6c3BhY2UtYmV0d2VlbjsKICBhbGlnbi1pdGVtczpjZW50ZXI7CiAgZmxleC1zaHJpbms6MDsKfQouaGVhZGVyIC5sYWJlbHsKICBmb250LXNpemU6MTBweDsKICBsZXR0ZXItc3BhY2luZzozcHg7CiAgdGV4dC10cmFuc2Zvcm06dXBwZXJjYXNlOwogIGNvbG9yOnJnYmEoMjU1LDI1NSwyNTUsMC42KTsKICBtYXJnaW4tYm90dG9tOjJweDsKfQouaGVhZGVyIGgxewogIGZvbnQtc2l6ZToyMHB4OwogIGZvbnQtd2VpZ2h0OjcwMDsKICBsZXR0ZXItc3BhY2luZzowLjNweDsKfQouaGVhZGVyIC5jb3JuZXJ7CiAgZm9udC1zaXplOjEwcHg7CiAgbGV0dGVyLXNwYWNpbmc6MS41cHg7CiAgdGV4dC10cmFuc2Zvcm06dXBwZXJjYXNlOwogIGNvbG9yOnJnYmEoMjU1LDI1NSwyNTUsMC41NSk7CiAgdGV4dC1hbGlnbjpyaWdodDsKICBsaW5lLWhlaWdodDoxLjQ7Cn0KCi8qIE1haW4gKi8KLm1haW57CiAgZmxleDoxOwogIGRpc3BsYXk6Z3JpZDsKICBncmlkLXRlbXBsYXRlLWNvbHVtbnM6MWZyIDIwMHB4OwogIG1pbi1oZWlnaHQ6MDsKICBnYXA6MDsKfQpAbWVkaWEgKG1heC13aWR0aDo1NjBweCl7CiAgLm1haW57Z3JpZC10ZW1wbGF0ZS1jb2x1bW5zOjFmcjtncmlkLXRlbXBsYXRlLXJvd3M6MWZyIGF1dG99Cn0KCi8qIENhbnZhcyBhcmVhICovCi5jYW52YXMtYXJlYXsKICBwb3NpdGlvbjpyZWxhdGl2ZTsKICBkaXNwbGF5OmZsZXg7CiAgZmxleC1kaXJlY3Rpb246Y29sdW1uOwogIGJhY2tncm91bmQ6dmFyKC0td2FybSk7CiAgcGFkZGluZzoxNHB4IDE4cHg7CiAgbWluLWhlaWdodDowOwp9Ci5jYW52YXMtd3JhcHsKICBmbGV4OjE7CiAgYmFja2dyb3VuZDpsaW5lYXItZ3JhZGllbnQoMTgwZGVnLCNFNUVERjggMCUsI0Y0RjBFMiA2MCUsI0U1REVDOCAxMDAlKTsKICBib3JkZXI6MXB4IHNvbGlkIHZhcigtLXJ1bGUpOwogIGJvcmRlci1yYWRpdXM6NHB4OwogIG92ZXJmbG93OmhpZGRlbjsKICBwb3NpdGlvbjpyZWxhdGl2ZTsKICBtaW4taGVpZ2h0OjM0MHB4Owp9Ci5jYW52YXMtd3JhcCBzdmd7CiAgZGlzcGxheTpibG9jazsKICB3aWR0aDoxMDAlOwogIGhlaWdodDoxMDAlOwp9Ci5pbnN0cnsKICBtYXJnaW4tdG9wOjEwcHg7CiAgcGFkZGluZzo4cHggMTRweDsKICBiYWNrZ3JvdW5kOnZhcigtLXNvZnQtYmx1ZSk7CiAgYm9yZGVyOjFweCBzb2xpZCB2YXIoLS1ydWxlKTsKICBib3JkZXItcmFkaXVzOjRweDsKICBmb250LXNpemU6MTFweDsKICBsZXR0ZXItc3BhY2luZzoxLjVweDsKICBjb2xvcjp2YXIoLS1tdXRlZCk7CiAgdGV4dC10cmFuc2Zvcm06dXBwZXJjYXNlOwogIHRleHQtYWxpZ246Y2VudGVyOwogIGZvbnQtd2VpZ2h0OjcwMDsKfQoKLyogUmVhZG91dCBwYW5lbCAqLwoucmVhZG91dHsKICBiYWNrZ3JvdW5kOnZhcigtLXBhcGVyKTsKICBib3JkZXItbGVmdDoxcHggc29saWQgdmFyKC0tcnVsZSk7CiAgcGFkZGluZzoxNHB4IDEycHg7CiAgZGlzcGxheTpmbGV4OwogIGZsZXgtZGlyZWN0aW9uOmNvbHVtbjsKICBnYXA6MTBweDsKICBvdmVyZmxvdy15OmF1dG87Cn0KQG1lZGlhIChtYXgtd2lkdGg6ODgwcHgpewogIC5yZWFkb3V0e2JvcmRlci1sZWZ0Om5vbmU7Ym9yZGVyLXRvcDoxcHggc29saWQgdmFyKC0tcnVsZSl9Cn0KLnJlYWRvdXQtaGVhZHsKICBmb250LXNpemU6MTBweDsKICBsZXR0ZXItc3BhY2luZzozcHg7CiAgdGV4dC10cmFuc2Zvcm06dXBwZXJjYXNlOwogIGNvbG9yOnZhcigtLW11dGVkKTsKICBmb250LXdlaWdodDo3MDA7Cn0KLnBpZS13cmFwewogIHBvc2l0aW9uOnJlbGF0aXZlOwogIHdpZHRoOjEwMCU7CiAgbWF4LXdpZHRoOjEzMHB4OwogIG1hcmdpbjowIGF1dG87CiAgYXNwZWN0LXJhdGlvOjEvMTsKfQoucGllLXdyYXAgc3Zne2Rpc3BsYXk6YmxvY2s7d2lkdGg6MTAwJTtoZWlnaHQ6MTAwJX0KLnBpZS1jZW50ZXItdGV4dHsKICBwb3NpdGlvbjphYnNvbHV0ZTsKICBpbnNldDowOwogIGRpc3BsYXk6ZmxleDsKICBmbGV4LWRpcmVjdGlvbjpjb2x1bW47CiAgYWxpZ24taXRlbXM6Y2VudGVyOwogIGp1c3RpZnktY29udGVudDpjZW50ZXI7CiAgcG9pbnRlci1ldmVudHM6bm9uZTsKICBmb250LWZhbWlseTppbmhlcml0OwogIGdhcDoxcHg7Cn0KLnBpZS1jZW50ZXItdGV4dCAuYmlnewogIGZvbnQtc2l6ZTo4cHg7CiAgbGV0dGVyLXNwYWNpbmc6MS44cHg7CiAgdGV4dC10cmFuc2Zvcm06dXBwZXJjYXNlOwogIGNvbG9yOnZhcigtLW11dGVkKTsKICBmb250LXdlaWdodDo3MDA7Cn0KLnBpZS1jZW50ZXItdGV4dCAucXsKICBmb250LXNpemU6MzBweDsKICBjb2xvcjp2YXIoLS1hY2NlbnQpOwogIGZvbnQtd2VpZ2h0OjcwMDsKICBsaW5lLWhlaWdodDoxOwp9CgovKiBFbmVyZ3kgcm93cyAqLwouZW5lcmd5LWxpc3R7CiAgZGlzcGxheTpmbGV4OwogIGZsZXgtZGlyZWN0aW9uOmNvbHVtbjsKICBnYXA6OHB4Owp9Ci5lbmVyZ3ktcm93ewogIGJhY2tncm91bmQ6I2ZmZjsKICBib3JkZXI6MXB4IHNvbGlkIHZhcigtLXJ1bGUpOwogIGJvcmRlci1yYWRpdXM6NHB4OwogIHBhZGRpbmc6NnB4IDlweDsKICBwb3NpdGlvbjpyZWxhdGl2ZTsKICBvdmVyZmxvdzpoaWRkZW47Cn0KLmVuZXJneS1yb3cgLmxhYmVsewogIGRpc3BsYXk6ZmxleDsKICBqdXN0aWZ5LWNvbnRlbnQ6c3BhY2UtYmV0d2VlbjsKICBhbGlnbi1pdGVtczpiYXNlbGluZTsKICBtYXJnaW4tYm90dG9tOjNweDsKICBmb250LXNpemU6MTBweDsKICBmb250LXdlaWdodDo3MDA7CiAgdGV4dC10cmFuc2Zvcm06dXBwZXJjYXNlOwogIGxldHRlci1zcGFjaW5nOjEuMnB4OwogIGNvbG9yOnZhcigtLWluayk7CiAgcG9zaXRpb246cmVsYXRpdmU7CiAgei1pbmRleDoxOwp9Ci5lbmVyZ3ktcm93IC5sYWJlbCAubmFtZXtkaXNwbGF5OmZsZXg7YWxpZ24taXRlbXM6Y2VudGVyO2dhcDo1cHh9Ci5lbmVyZ3ktcm93IC5sYWJlbCAuc3dhdGNoewogIHdpZHRoOjhweDsKICBoZWlnaHQ6OHB4OwogIGJvcmRlci1yYWRpdXM6MnB4OwogIGZsZXgtc2hyaW5rOjA7Cn0KLmVuZXJneS1yb3cgLmxhYmVsIC52YWx7CiAgZm9udC1mYW1pbHk6J0NvdXJpZXIgTmV3Jyxtb25vc3BhY2U7CiAgZm9udC1zaXplOjEycHg7CiAgZm9udC13ZWlnaHQ6NzAwOwogIGNvbG9yOnZhcigtLW5hdnkpOwp9Ci5lbmVyZ3ktcm93IC5iYXJ7CiAgaGVpZ2h0OjVweDsKICBiYWNrZ3JvdW5kOnZhcigtLXJ1bGUpOwogIGJvcmRlci1yYWRpdXM6M3B4OwogIG92ZXJmbG93OmhpZGRlbjsKICBwb3NpdGlvbjpyZWxhdGl2ZTsKICB6LWluZGV4OjE7Cn0KLmVuZXJneS1yb3cgLmJhci1maWxsewogIGhlaWdodDoxMDAlOwogIGJvcmRlci1yYWRpdXM6M3B4OwogIHRyYW5zaXRpb246d2lkdGggMC4xOHMgZWFzZSwgYmFja2dyb3VuZCAwLjE4cyBlYXNlOwp9Ci5lbmVyZ3ktcm93LmdwZSAuc3dhdGNoLC5lbmVyZ3ktcm93LmdwZSAuYmFyLWZpbGx7YmFja2dyb3VuZDp2YXIoLS1ncGUtY29sb3IpfQouZW5lcmd5LXJvdy5rZSAgLnN3YXRjaCwuZW5lcmd5LXJvdy5rZSAgLmJhci1maWxse2JhY2tncm91bmQ6dmFyKC0ta2UtY29sb3IpfQouZW5lcmd5LXJvdy50aGVybWFsIC5zd2F0Y2gsLmVuZXJneS1yb3cudGhlcm1hbCAuYmFyLWZpbGx7YmFja2dyb3VuZDp2YXIoLS10aGVybWFsLWNvbG9yKX0KLmVuZXJneS1yb3cgLmRlc2N7ZGlzcGxheTpub25lfQoKLyogVG90YWwgcmVhZG91dCAqLwoudG90YWwtY2FyZHsKICBiYWNrZ3JvdW5kOnZhcigtLW5hdnkpOwogIGNvbG9yOnZhcigtLXdhcm0pOwogIHBhZGRpbmc6MTJweCAxNHB4OwogIGJvcmRlci1yYWRpdXM6NHB4OwogIHRleHQtYWxpZ246Y2VudGVyOwp9Ci50b3RhbC1jYXJkIC5sYmx7CiAgZm9udC1zaXplOjlweDsKICBsZXR0ZXItc3BhY2luZzoyLjVweDsKICB0ZXh0LXRyYW5zZm9ybTp1cHBlcmNhc2U7CiAgY29sb3I6cmdiYSgyNDgsMjQ0LDIzNiwwLjY1KTsKICBmb250LXdlaWdodDo3MDA7CiAgbWFyZ2luLWJvdHRvbTo0cHg7Cn0KLnRvdGFsLWNhcmQgLm51bXsKICBmb250LWZhbWlseTonQ291cmllciBOZXcnLG1vbm9zcGFjZTsKICBmb250LXNpemU6MjRweDsKICBmb250LXdlaWdodDo3MDA7CiAgbGV0dGVyLXNwYWNpbmc6MC41cHg7Cn0KLnRvdGFsLWNhcmQgLm51bSBzbWFsbHsKICBmb250LXNpemU6MTNweDsKICBtYXJnaW4tbGVmdDo0cHg7CiAgb3BhY2l0eTowLjc1Owp9Ci50b3RhbC1jYXJkIC5jb25zZXJ2ewogIGZvbnQtc2l6ZToxMHB4OwogIGxldHRlci1zcGFjaW5nOjEuMnB4OwogIHRleHQtdHJhbnNmb3JtOnVwcGVyY2FzZTsKICBjb2xvcjp2YXIoLS1nb2xkKTsKICBtYXJnaW4tdG9wOjRweDsKICBmb250LXdlaWdodDo3MDA7Cn0KCi8qIENvbnRyb2xzIGJhciAqLwouY29udHJvbHN7CiAgYmFja2dyb3VuZDp2YXIoLS1zb2Z0LWJsdWUpOwogIGJvcmRlci10b3A6MXB4IHNvbGlkIHZhcigtLXJ1bGUpOwogIHBhZGRpbmc6MTJweCAxOHB4OwogIGRpc3BsYXk6ZmxleDsKICBmbGV4LXdyYXA6d3JhcDsKICBnYXA6MTBweCAxNnB4OwogIGFsaWduLWl0ZW1zOmNlbnRlcjsKICBmbGV4LXNocmluazowOwogIGZvbnQtc2l6ZToxMnB4Owp9Ci50b2dnbGV7CiAgZGlzcGxheTpmbGV4OwogIGFsaWduLWl0ZW1zOmNlbnRlcjsKICBnYXA6OHB4OwogIGN1cnNvcjpwb2ludGVyOwogIHVzZXItc2VsZWN0Om5vbmU7CiAgcGFkZGluZzo2cHggMTJweDsKICBiYWNrZ3JvdW5kOiNmZmY7CiAgYm9yZGVyOjFweCBzb2xpZCB2YXIoLS1ydWxlKTsKICBib3JkZXItcmFkaXVzOjEwMHB4OwogIGZvbnQtd2VpZ2h0OjcwMDsKICBmb250LXNpemU6MTFweDsKICBsZXR0ZXItc3BhY2luZzoxLjJweDsKICB0ZXh0LXRyYW5zZm9ybTp1cHBlcmNhc2U7CiAgY29sb3I6dmFyKC0tbXV0ZWQpOwogIHRyYW5zaXRpb246YWxsIDAuMThzOwp9Ci50b2dnbGU6aG92ZXJ7Ym9yZGVyLWNvbG9yOnZhcigtLW5hdnkpO2NvbG9yOnZhcigtLW5hdnkpfQoudG9nZ2xlIC5zd2l0Y2h7CiAgd2lkdGg6MzBweDsKICBoZWlnaHQ6MTZweDsKICBiYWNrZ3JvdW5kOnZhcigtLXJ1bGUpOwogIGJvcmRlci1yYWRpdXM6MTAwcHg7CiAgcG9zaXRpb246cmVsYXRpdmU7CiAgdHJhbnNpdGlvbjpiYWNrZ3JvdW5kIDAuMnM7CiAgZmxleC1zaHJpbms6MDsKfQoudG9nZ2xlIC5zd2l0Y2g6OmFmdGVyewogIGNvbnRlbnQ6Jyc7CiAgcG9zaXRpb246YWJzb2x1dGU7CiAgdG9wOjJweDsKICBsZWZ0OjJweDsKICB3aWR0aDoxMnB4OwogIGhlaWdodDoxMnB4OwogIGJhY2tncm91bmQ6I2ZmZjsKICBib3JkZXItcmFkaXVzOjUwJTsKICB0cmFuc2l0aW9uOnRyYW5zZm9ybSAwLjJzOwogIGJveC1zaGFkb3c6MCAxcHggMnB4IHJnYmEoMCwwLDAsMC4xNSk7Cn0KLnRvZ2dsZS5hY3RpdmV7Y29sb3I6dmFyKC0tbmF2eSk7YmFja2dyb3VuZDp2YXIoLS1zb2Z0LWJsdWUpO2JvcmRlci1jb2xvcjp2YXIoLS1uYXZ5KX0KLnRvZ2dsZS5hY3RpdmUgLnN3aXRjaHtiYWNrZ3JvdW5kOnZhcigtLWFjY2VudCl9Ci50b2dnbGUuYWN0aXZlIC5zd2l0Y2g6OmFmdGVye3RyYW5zZm9ybTp0cmFuc2xhdGVYKDE0cHgpfQoKLmJ0bnsKICBwYWRkaW5nOjdweCAxNHB4OwogIGJhY2tncm91bmQ6I2ZmZjsKICBib3JkZXI6MXB4IHNvbGlkIHZhcigtLW5hdnkpOwogIGNvbG9yOnZhcigtLW5hdnkpOwogIGZvbnQtZmFtaWx5OmluaGVyaXQ7CiAgZm9udC1zaXplOjExcHg7CiAgZm9udC13ZWlnaHQ6NzAwOwogIGxldHRlci1zcGFjaW5nOjEuNXB4OwogIHRleHQtdHJhbnNmb3JtOnVwcGVyY2FzZTsKICBjdXJzb3I6cG9pbnRlcjsKICBib3JkZXItcmFkaXVzOjEwMHB4OwogIHRyYW5zaXRpb246YWxsIDAuMTVzOwp9Ci5idG46aG92ZXJ7YmFja2dyb3VuZDp2YXIoLS1uYXZ5KTtjb2xvcjojZmZmfQouYnRuLXByaW1hcnl7CiAgYmFja2dyb3VuZDp2YXIoLS1hY2NlbnQpOwogIGNvbG9yOiNmZmY7CiAgYm9yZGVyLWNvbG9yOnZhcigtLWFjY2VudCk7Cn0KLmJ0bi1wcmltYXJ5OmhvdmVyewogIGJhY2tncm91bmQ6I2EwNDUzOTsKICBib3JkZXItY29sb3I6I2EwNDUzOTsKfQouc3BhY2Vye2ZsZXg6MTttaW4td2lkdGg6OHB4fQoKLyogUmV2ZWFsIGZsYXNoIGJ1dHRvbiAoZm9yIHByZWRpY3QgbW9kZSkgKi8KLnJldmVhbC1jdGF7CiAgYmFja2dyb3VuZDp2YXIoLS1hY2NlbnQpOwogIGNvbG9yOiNmZmY7CiAgYm9yZGVyOjA7CiAgcGFkZGluZzoxMHB4OwogIGJvcmRlci1yYWRpdXM6NHB4OwogIGN1cnNvcjpwb2ludGVyOwogIGZvbnQtZmFtaWx5OmluaGVyaXQ7CiAgZm9udC1zaXplOjExcHg7CiAgZm9udC13ZWlnaHQ6NzAwOwogIGxldHRlci1zcGFjaW5nOjEuNXB4OwogIHRleHQtdHJhbnNmb3JtOnVwcGVyY2FzZTsKICB3aWR0aDoxMDAlOwogIHRyYW5zaXRpb246YmFja2dyb3VuZCAwLjE1czsKfQoucmV2ZWFsLWN0YTpob3ZlcntiYWNrZ3JvdW5kOiNhMDQ1Mzl9Ci5yZXZlYWwtY3RhOmRpc2FibGVkewogIGJhY2tncm91bmQ6dmFyKC0tcnVsZSk7CiAgY29sb3I6dmFyKC0tbXV0ZWQpOwogIGN1cnNvcjpkZWZhdWx0Owp9CgovKiBQcmVkaWN0IG1vZGUgcGFuZWwgKi8KLnByZWRpY3QtaW5mb3sKICBiYWNrZ3JvdW5kOnZhcigtLWFjY2VudC1zb2Z0KTsKICBib3JkZXItbGVmdDozcHggc29saWQgdmFyKC0tYWNjZW50KTsKICBwYWRkaW5nOjEwcHggMTJweDsKICBmb250LXNpemU6MTJweDsKICBsaW5lLWhlaWdodDoxLjQ1OwogIGNvbG9yOnZhcigtLWluayk7CiAgYm9yZGVyLXJhZGl1czowIDRweCA0cHggMDsKfQoucHJlZGljdC1pbmZvIGJ7Y29sb3I6dmFyKC0tYWNjZW50KTt0ZXh0LXRyYW5zZm9ybTp1cHBlcmNhc2U7bGV0dGVyLXNwYWNpbmc6MXB4O2ZvbnQtc2l6ZToxMHB4O2Rpc3BsYXk6YmxvY2s7bWFyZ2luLWJvdHRvbTozcHg7Zm9udC13ZWlnaHQ6NzAwfQoKLyogQ2FydCBjdXJzb3IgKi8KI2NhcnR7Y3Vyc29yOmdyYWJ9CiNjYXJ0LmRyYWdnaW5ne2N1cnNvcjpncmFiYmluZ30KI2NhcnQ6aG92ZXIgY2lyY2xlLmNhcnQtZ2xvd3tvcGFjaXR5OjAuNn0KCi8qIE1hcmtlcnMgKi8KLm1hcmtlci1saW5le3N0cm9rZTpyZ2JhKDMwLDM5LDk3LDAuMyk7c3Ryb2tlLWRhc2hhcnJheTozIDQ7c3Ryb2tlLXdpZHRoOjF9Ci5tYXJrZXItdGV4dHsKICBmb250LWZhbWlseTonQ291cmllciBOZXcnLG1vbm9zcGFjZTsKICBmb250LXNpemU6MTBweDsKICBmaWxsOnZhcigtLW11dGVkKTsKICBmb250LXdlaWdodDo3MDA7CiAgbGV0dGVyLXNwYWNpbmc6MC41cHg7Cn0KCi8qIEZvb3RlciAqLwouZm9vdGVyewogIHBhZGRpbmc6OHB4IDE4cHg7CiAgYmFja2dyb3VuZDp2YXIoLS13YXJtLWRlZXApOwogIGZvbnQtc2l6ZTo5cHg7CiAgbGV0dGVyLXNwYWNpbmc6MS41cHg7CiAgdGV4dC10cmFuc2Zvcm06dXBwZXJjYXNlOwogIGNvbG9yOnZhcigtLW11dGVkKTsKICB0ZXh0LWFsaWduOnJpZ2h0OwogIGZsZXgtc2hyaW5rOjA7Cn0KPC9zdHlsZT4KPC9oZWFkPgo8Ym9keT4KCjxkaXYgY2xhc3M9ImhlYWRlciI+CiAgPGRpdj4KICAgIDxkaXYgY2xhc3M9ImxhYmVsIj5TcHJpbmdib2FyZCBLUzMgwrcgWTcgUGh5c2ljczwvZGl2PgogICAgPGgxPkVuZXJneSBTdG9yZXMg4oCUIFJvbGxlciBDb2FzdGVyPC9oMT4KICA8L2Rpdj4KICA8ZGl2IGNsYXNzPSJjb3JuZXIiPgogICAgUDEuMiDCtyBTdG9yZXMgJmFtcDsgVHJhbnNmZXJzPGJyPgogICAgRHJhZyDCtyBQcmVkaWN0IMK3IFJldmVhbAogIDwvZGl2Pgo8L2Rpdj4KCjxkaXYgY2xhc3M9Im1haW4iPgogIDwhLS0gTEVGVDogUm9sbGVyIGNvYXN0ZXIgY2FudmFzIC0tPgogIDxkaXYgY2xhc3M9ImNhbnZhcy1hcmVhIj4KICAgIDxkaXYgY2xhc3M9ImNhbnZhcy13cmFwIj4KICAgICAgPHN2ZyBpZD0ic3RhZ2UiIHZpZXdCb3g9IjAgMCA4MDAgNTAwIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWlkWU1pZCBtZWV0IgogICAgICAgICAgIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgICAgICAgPGRlZnM+CiAgICAgICAgICA8IS0tIFNreSBncmFkaWVudCAtLT4KICAgICAgICAgIDxsaW5lYXJHcmFkaWVudCBpZD0ic2t5R3JhZCIgeDE9IjAiIHkxPSIwIiB4Mj0iMCIgeTI9IjEiPgogICAgICAgICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjRTVFREY4Ii8+CiAgICAgICAgICAgIDxzdG9wIG9mZnNldD0iNjUlIiBzdG9wLWNvbG9yPSIjRjRGMEUyIi8+CiAgICAgICAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI0U1REVDOCIvPgogICAgICAgICAgPC9saW5lYXJHcmFkaWVudD4KICAgICAgICAgIDwhLS0gQ2FydCBzaGFkb3cgZmlsdGVyIC0tPgogICAgICAgICAgPGZpbHRlciBpZD0iY2FydFNoYWRvdyIgeD0iLTUwJSIgeT0iLTUwJSIgd2lkdGg9IjIwMCUiIGhlaWdodD0iMjAwJSI+CiAgICAgICAgICAgIDxmZUdhdXNzaWFuQmx1ciBpbj0iU291cmNlQWxwaGEiIHN0ZERldmlhdGlvbj0iMiIvPgogICAgICAgICAgICA8ZmVPZmZzZXQgZHg9IjAiIGR5PSIyIiByZXN1bHQ9Im9mZiIvPgogICAgICAgICAgICA8ZmVNZXJnZT48ZmVNZXJnZU5vZGUgaW49Im9mZiIvPjxmZU1lcmdlTm9kZSBpbj0iU291cmNlR3JhcGhpYyIvPjwvZmVNZXJnZT4KICAgICAgICAgIDwvZmlsdGVyPgogICAgICAgIDwvZGVmcz4KCiAgICAgICAgPCEtLSBCYWNrZ3JvdW5kIC0tPgogICAgICAgIDxyZWN0IHdpZHRoPSI4MDAiIGhlaWdodD0iNTAwIiBmaWxsPSJ1cmwoI3NreUdyYWQpIi8+CgogICAgICAgIDwhLS0gR3JvdW5kIGxpbmUgLS0+CiAgICAgICAgPGxpbmUgeDE9IjAiIHkxPSI0MzAiIHgyPSI4MDAiIHkyPSI0MzAiIHN0cm9rZT0iIzlDOEI1QSIgc3Ryb2tlLXdpZHRoPSIxLjUiIG9wYWNpdHk9IjAuNiIvPgogICAgICAgIDxyZWN0IHg9IjAiIHk9IjQzMCIgd2lkdGg9IjgwMCIgaGVpZ2h0PSI3MCIgZmlsbD0iIzdBNkE0NSIgb3BhY2l0eT0iMC4xOCIvPgoKICAgICAgICA8IS0tIEhlaWdodCBtYXJrZXJzIChob3Jpem9udGFsIGRhc2hlZCBsaW5lcykgLS0+CiAgICAgICAgPGcgaWQ9ImhlaWdodE1hcmtlcnMiPjwvZz4KCiAgICAgICAgPCEtLSBUcmFjayB0aWVzIChkZWNvcmF0aXZlKSAtLT4KICAgICAgICA8cGF0aCBpZD0idHJhY2tUaWVzIiBkPSIiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVDNjM3MCIgc3Ryb2tlLXdpZHRoPSIxLjUiIHN0cm9rZS1kYXNoYXJyYXk9IjIgNiIgb3BhY2l0eT0iMC41NSIvPgoKICAgICAgICA8IS0tIFRyYWNrIG1haW4gbGluZSAtLT4KICAgICAgICA8cGF0aCBpZD0idHJhY2tQYXRoIgogICAgICAgICAgICAgIGQ9Ik0gNjAgOTAgQyAyMDAgOTAsIDIzMCAzODAsIDM4MCAzODAgQyA0ODAgMzgwLCA1MDAgMjAwLCA1ODAgMjIwIEMgNjYwIDI0MCwgNjgwIDM4MCwgNzYwIDM5NSIKICAgICAgICAgICAgICBmaWxsPSJub25lIiBzdHJva2U9IiMxRTI3NjEiIHN0cm9rZS13aWR0aD0iNCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CgogICAgICAgIDwhLS0gSGlkZGVuOiBpbnZpc2libGUgd2lkZXIgdHJhY2sgZm9yIGVhc2llciBkcmFnZ2luZyAtLT4KICAgICAgICA8cGF0aCBpZD0idHJhY2tIaXQiCiAgICAgICAgICAgICAgZD0iTSA2MCA5MCBDIDIwMCA5MCwgMjMwIDM4MCwgMzgwIDM4MCBDIDQ4MCAzODAsIDUwMCAyMDAsIDU4MCAyMjAgQyA2NjAgMjQwLCA2ODAgMzgwLCA3NjAgMzk1IgogICAgICAgICAgICAgIGZpbGw9Im5vbmUiIHN0cm9rZT0idHJhbnNwYXJlbnQiIHN0cm9rZS13aWR0aD0iNDAiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIKICAgICAgICAgICAgICBzdHlsZT0iY3Vyc29yOmV3LXJlc2l6ZSIvPgoKICAgICAgICA8IS0tIFBvc2l0aW9uIGxhYmVscyBhbG9uZyB0cmFjayAtLT4KICAgICAgICA8ZyBpZD0idHJhY2tMYWJlbHMiPjwvZz4KCiAgICAgICAgPCEtLSBDYXJ0IC0tPgogICAgICAgIDxnIGlkPSJjYXJ0IiBmaWx0ZXI9InVybCgjY2FydFNoYWRvdykiPgogICAgICAgICAgPCEtLSBHbG93IG9uIGhvdmVyIC0tPgogICAgICAgICAgPGNpcmNsZSBjbGFzcz0iY2FydC1nbG93IiBjeD0iMCIgY3k9IjAiIHI9IjIyIiBmaWxsPSIjQjg1MDQyIiBvcGFjaXR5PSIwIiBzdHlsZT0idHJhbnNpdGlvbjpvcGFjaXR5IDAuMnMiLz4KICAgICAgICAgIDwhLS0gQm9keSAtLT4KICAgICAgICAgIDxyZWN0IHg9Ii0yMCIgeT0iLTE0IiB3aWR0aD0iNDAiIGhlaWdodD0iMTgiIHJ4PSIzIiBmaWxsPSIjQjg1MDQyIiBzdHJva2U9IiM3QTJFMjIiIHN0cm9rZS13aWR0aD0iMS41Ii8+CiAgICAgICAgICA8IS0tIFN0cmlwZSAtLT4KICAgICAgICAgIDxyZWN0IHg9Ii0yMCIgeT0iLTciIHdpZHRoPSI0MCIgaGVpZ2h0PSIzIiBmaWxsPSIjRkZFMERDIiBvcGFjaXR5PSIwLjUiLz4KICAgICAgICAgIDwhLS0gV2hlZWxzIC0tPgogICAgICAgICAgPGNpcmNsZSBjeD0iLTEyIiBjeT0iNiIgcj0iNSIgZmlsbD0iIzFBMUExQSIgc3Ryb2tlPSIjNDQ0IiBzdHJva2Utd2lkdGg9IjAuOCIvPgogICAgICAgICAgPGNpcmNsZSBjeD0iMTIiIGN5PSI2IiByPSI1IiBmaWxsPSIjMUExQTFBIiBzdHJva2U9IiM0NDQiIHN0cm9rZS13aWR0aD0iMC44Ii8+CiAgICAgICAgICA8Y2lyY2xlIGN4PSItMTIiIGN5PSI2IiByPSIyIiBmaWxsPSIjODg4Ii8+CiAgICAgICAgICA8Y2lyY2xlIGN4PSIxMiIgY3k9IjYiIHI9IjIiIGZpbGw9IiM4ODgiLz4KICAgICAgICAgIDwhLS0gRHJhZyBoaW50IGRvdHMgLS0+CiAgICAgICAgICA8Y2lyY2xlIGN4PSItNiIgY3k9Ii02IiByPSIxLjIiIGZpbGw9IiNGRkUwREMiIG9wYWNpdHk9IjAuNyIvPgogICAgICAgICAgPGNpcmNsZSBjeD0iMCIgY3k9Ii02IiByPSIxLjIiIGZpbGw9IiNGRkUwREMiIG9wYWNpdHk9IjAuNyIvPgogICAgICAgICAgPGNpcmNsZSBjeD0iNiIgY3k9Ii02IiByPSIxLjIiIGZpbGw9IiNGRkUwREMiIG9wYWNpdHk9IjAuNyIvPgogICAgICAgIDwvZz4KCiAgICAgICAgPCEtLSBEcmFnIGluc3RydWN0aW9uIGJhZGdlICh0b3AtbGVmdCkgLS0+CiAgICAgICAgPGcgaWQ9ImRyYWdIaW50IiBvcGFjaXR5PSIwLjg1Ij4KICAgICAgICAgIDxyZWN0IHg9IjIwIiB5PSIxOCIgd2lkdGg9IjE4MCIgaGVpZ2h0PSIyOCIgcng9IjE0IiBmaWxsPSIjMUUyNzYxIiBvcGFjaXR5PSIwLjg1Ii8+CiAgICAgICAgICA8dGV4dCB4PSIxMTAiIHk9IjM2IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQ2VudHVyeSBHb3RoaWMsIHNhbnMtc2VyaWYiCiAgICAgICAgICAgICAgICBmb250LXNpemU9IjExIiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjZmZmIiBsZXR0ZXItc3BhY2luZz0iMS41Ij5EUkFHIFRIRSBDQVJUIOKGkjwvdGV4dD4KICAgICAgICA8L2c+CiAgICAgIDwvc3ZnPgogICAgPC9kaXY+CiAgICA8cCBjbGFzcz0iaW5zdHIiPkRyYWcgdGhlIHJlZCBjYXJ0IGFsb25nIHRoZSB0cmFjayDCtyBXYXRjaCB0aGUgZW5lcmd5IHN0b3JlcyBjaGFuZ2U8L3A+CiAgPC9kaXY+CgogIDwhLS0gUklHSFQ6IFBpZSBjaGFydCArIHJlYWRvdXRzIC0tPgogIDxkaXYgY2xhc3M9InJlYWRvdXQiPgogICAgPGRpdiBjbGFzcz0icmVhZG91dC1oZWFkIj5FbmVyZ3kgU3RvcmVzPC9kaXY+CgogICAgPGRpdiBjbGFzcz0icGllLXdyYXAiPgogICAgICA8c3ZnIGlkPSJwaWUiIHZpZXdCb3g9IjAgMCAyMDAgMjAwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogICAgICAgIDwhLS0gQmFja2dyb3VuZCByaW5nIC0tPgogICAgICAgIDxjaXJjbGUgY3g9IjEwMCIgY3k9IjEwMCIgcj0iODIiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0U1REVDOCIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgICAgICAgPCEtLSBQaWUgd2VkZ2VzIChkcmF3biBpbiBKUykgLS0+CiAgICAgICAgPGcgaWQ9InBpZVdlZGdlcyI+PC9nPgogICAgICAgIDwhLS0gSW5uZXIgaG9sZSAtLT4KICAgICAgICA8Y2lyY2xlIGN4PSIxMDAiIGN5PSIxMDAiIHI9IjM2IiBmaWxsPSIjRkNGQUY0IiBzdHJva2U9IiNDRkQ4RTMiIHN0cm9rZS13aWR0aD0iMSIvPgogICAgICA8L3N2Zz4KICAgICAgPGRpdiBjbGFzcz0icGllLWNlbnRlci10ZXh0IiBpZD0icGllQ2VudGVyIj4KICAgICAgICA8c3BhbiBjbGFzcz0iYmlnIj5Ib3Zlcjwvc3Bhbj4KICAgICAgPC9kaXY+CiAgICA8L2Rpdj4KCiAgICA8ZGl2IGNsYXNzPSJlbmVyZ3ktbGlzdCIgaWQ9ImVuZXJneUxpc3QiPgogICAgICA8ZGl2IGNsYXNzPSJlbmVyZ3ktcm93IGdwZSI+CiAgICAgICAgPGRpdiBjbGFzcz0ibGFiZWwiPgogICAgICAgICAgPHNwYW4gY2xhc3M9Im5hbWUiPjxzcGFuIGNsYXNzPSJzd2F0Y2giPjwvc3Bhbj5HcmF2aXRhdGlvbmFsPC9zcGFuPgogICAgICAgICAgPHNwYW4gY2xhc3M9InZhbCIgaWQ9InZhbEdwZSI+4oCUIEo8L3NwYW4+CiAgICAgICAgPC9kaXY+CiAgICAgICAgPGRpdiBjbGFzcz0iYmFyIj48ZGl2IGNsYXNzPSJiYXItZmlsbCIgaWQ9ImJhckdwZSIgc3R5bGU9IndpZHRoOjAlIj48L2Rpdj48L2Rpdj4KICAgICAgICA8ZGl2IGNsYXNzPSJkZXNjIj5FbmVyZ3kgZnJvbSBiZWluZyBsaWZ0ZWQgdXA8L2Rpdj4KICAgICAgPC9kaXY+CiAgICAgIDxkaXYgY2xhc3M9ImVuZXJneS1yb3cga2UiPgogICAgICAgIDxkaXYgY2xhc3M9ImxhYmVsIj4KICAgICAgICAgIDxzcGFuIGNsYXNzPSJuYW1lIj48c3BhbiBjbGFzcz0ic3dhdGNoIj48L3NwYW4+S2luZXRpYzwvc3Bhbj4KICAgICAgICAgIDxzcGFuIGNsYXNzPSJ2YWwiIGlkPSJ2YWxLZSI+4oCUIEo8L3NwYW4+CiAgICAgICAgPC9kaXY+CiAgICAgICAgPGRpdiBjbGFzcz0iYmFyIj48ZGl2IGNsYXNzPSJiYXItZmlsbCIgaWQ9ImJhcktlIiBzdHlsZT0id2lkdGg6MCUiPjwvZGl2PjwvZGl2PgogICAgICAgIDxkaXYgY2xhc3M9ImRlc2MiPkVuZXJneSBmcm9tIG1vdmVtZW50PC9kaXY+CiAgICAgIDwvZGl2PgogICAgICA8ZGl2IGNsYXNzPSJlbmVyZ3ktcm93IHRoZXJtYWwiPgogICAgICAgIDxkaXYgY2xhc3M9ImxhYmVsIj4KICAgICAgICAgIDxzcGFuIGNsYXNzPSJuYW1lIj48c3BhbiBjbGFzcz0ic3dhdGNoIj48L3NwYW4+VGhlcm1hbDwvc3Bhbj4KICAgICAgICAgIDxzcGFuIGNsYXNzPSJ2YWwiIGlkPSJ2YWxUaCI+4oCUIEo8L3NwYW4+CiAgICAgICAgPC9kaXY+CiAgICAgICAgPGRpdiBjbGFzcz0iYmFyIj48ZGl2IGNsYXNzPSJiYXItZmlsbCIgaWQ9ImJhclRoIiBzdHlsZT0id2lkdGg6MCUiPjwvZGl2PjwvZGl2PgogICAgICAgIDxkaXYgY2xhc3M9ImRlc2MiPkhlYXQgbG9zdCB0byBzdXJyb3VuZGluZ3M8L2Rpdj4KICAgICAgPC9kaXY+CiAgICA8L2Rpdj4KCiAgICA8ZGl2IGlkPSJwcmVkaWN0Qm94Ij48L2Rpdj4KICA8L2Rpdj4KPC9kaXY+Cgo8ZGl2IGNsYXNzPSJjb250cm9scyI+CiAgPGRpdiBjbGFzcz0idG9nZ2xlIiBpZD0iZnJpY3Rpb25Ub2dnbGUiPgogICAgPGRpdiBjbGFzcz0ic3dpdGNoIj48L2Rpdj4KICAgIDxzcGFuPkZyaWN0aW9uPC9zcGFuPgogIDwvZGl2PgogIDxkaXYgY2xhc3M9InRvZ2dsZSIgaWQ9InByZWRpY3RUb2dnbGUiPgogICAgPGRpdiBjbGFzcz0ic3dpdGNoIj48L2Rpdj4KICAgIDxzcGFuPlByZWRpY3QgbW9kZTwvc3Bhbj4KICA8L2Rpdj4KICA8ZGl2IGNsYXNzPSJzcGFjZXIiPjwvZGl2PgogIDxidXR0b24gY2xhc3M9ImJ0biIgaWQ9InJlc2V0QnRuIj5SZXNldCB0byB0b3A8L2J1dHRvbj4KPC9kaXY+Cgo8ZGl2IGNsYXNzPSJmb290ZXIiPlNwcmluZ2JvYXJkIMK3IFAxLjIgRW5lcmd5IHN0b3JlcyAmYW1wOyB0cmFuc2ZlcnMgwrcgdjE8L2Rpdj4KCjxzY3JpcHQ+Cid1c2Ugc3RyaWN0JzsKCihmdW5jdGlvbigpewoKLyogPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgQ09ORklHCiAgID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09ICovCmNvbnN0IFRPVEFMX0VORVJHWSA9IDEwMDA7ICAgICAgICAvLyBqb3VsZXMg4oCUIGtlcHQgY29uc3RhbnQKY29uc3QgRlJJQ1RJT05fRlJBQ1RJT04gPSAwLjIwOyAgIC8vIDIwJSBvZiByZWxlYXNlZCBlbmVyZ3kg4oaSIHRoZXJtYWwgd2hlbiBvbgoKLyogPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgVFJBQ0sgU0FNUExJTkcKICAgQnVpbGQgYSBsb29rdXAgdGFibGUgYWxvbmcgdGhlIFNWRyBwYXRoIHNvIHdlIGNhbiBmaW5kIGEgcG9pbnQKICAgZm9yIGFueSBzY3JlZW4teCBhbmQgY29tcHV0ZSB0aGUgY2FydCdzIGhlaWdodCBmcmFjdGlvbi4KICAgPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0gKi8KY29uc3QgdHJhY2tQYXRoID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ3RyYWNrUGF0aCcpOwpjb25zdCB0cmFja0hpdCA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCd0cmFja0hpdCcpOwpjb25zdCB0b3RhbExlbmd0aCA9IHRyYWNrUGF0aC5nZXRUb3RhbExlbmd0aCgpOwoKY29uc3QgU0FNUExFUyA9IDQwMDsKY29uc3Qgc2FtcGxlcyA9IFtdOwpsZXQgbWluWSA9IEluZmluaXR5LCBtYXhZID0gLUluZmluaXR5Owpmb3IgKGxldCBpID0gMDsgaSA8PSBTQU1QTEVTOyBpKyspIHsKICBjb25zdCB0ID0gaSAvIFNBTVBMRVM7CiAgY29uc3QgbGVuID0gdCAqIHRvdGFsTGVuZ3RoOwogIGNvbnN0IHB0ID0gdHJhY2tQYXRoLmdldFBvaW50QXRMZW5ndGgobGVuKTsKICBzYW1wbGVzLnB1c2goeyB0LCB4OiBwdC54LCB5OiBwdC55IH0pOwogIGlmIChwdC55IDwgbWluWSkgbWluWSA9IHB0Lnk7CiAgaWYgKHB0LnkgPiBtYXhZKSBtYXhZID0gcHQueTsKfQpjb25zdCB0cmFja0hlaWdodFJhbmdlID0gbWF4WSAtIG1pblk7ICAvLyB0b3RhbCBkcm9wLCBpbiBTVkcgdW5pdHMKCi8vIERlY29yYXRpdmUgdGllcyBwYXRoIChldmVyeSAxMiBzYW1wbGVzLCBwZXJwZW5kaWN1bGFyIHRpY2spCmZ1bmN0aW9uIGJ1aWxkVGllcygpIHsKICBsZXQgZCA9ICcnOwogIGZvciAobGV0IGkgPSAwOyBpIDwgU0FNUExFUyAtIDE7IGkgKz0gOCkgewogICAgY29uc3QgYSA9IHNhbXBsZXNbaV07CiAgICBjb25zdCBiID0gc2FtcGxlc1tpKzFdOwogICAgY29uc3QgZHggPSBiLnggLSBhLngsIGR5ID0gYi55IC0gYS55OwogICAgY29uc3QgbGVuID0gTWF0aC5oeXBvdChkeCwgZHkpIHx8IDE7CiAgICAvLyBwZXJwZW5kaWN1bGFyIHVuaXQKICAgIGNvbnN0IHB4ID0gLWR5IC8gbGVuLCBweSA9IGR4IC8gbGVuOwogICAgY29uc3QgdGlja0xlbiA9IDY7CiAgICBjb25zdCB4MSA9IGEueCAtIHB4ICogdGlja0xlbjsKICAgIGNvbnN0IHkxID0gYS55IC0gcHkgKiB0aWNrTGVuOwogICAgY29uc3QgeDIgPSBhLnggKyBweCAqIHRpY2tMZW47CiAgICBjb25zdCB5MiA9IGEueSArIHB5ICogdGlja0xlbjsKICAgIGQgKz0gYE0gJHt4MS50b0ZpeGVkKDEpfSAke3kxLnRvRml4ZWQoMSl9IEwgJHt4Mi50b0ZpeGVkKDEpfSAke3kyLnRvRml4ZWQoMSl9IGA7CiAgfQogIGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCd0cmFja1RpZXMnKS5zZXRBdHRyaWJ1dGUoJ2QnLCBkKTsKfQpidWlsZFRpZXMoKTsKCi8qID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgIEhFSUdIVCBNQVJLRVJTIChob3Jpem9udGFsIHJlZmVyZW5jZSBsaW5lcyBvbiBjYW52YXMpCiAgID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09ICovCmZ1bmN0aW9uIGJ1aWxkSGVpZ2h0TWFya2VycygpIHsKICBjb25zdCBsYXllciA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdoZWlnaHRNYXJrZXJzJyk7CiAgY29uc3QgZ3JvdW5kWSA9IDQzMDsKICBjb25zdCB0b3BZID0gbWluWTsKICAvLyBUaHJlZSByZWZlcmVuY2UgbGluZXMgYXQgMjUlLCA1MCUsIDc1JSBoZWlnaHQKICBjb25zdCBmcmFjdGlvbnMgPSBbMC4yNSwgMC41LCAwLjc1XTsKICBmcmFjdGlvbnMuZm9yRWFjaChmID0+IHsKICAgIGNvbnN0IHkgPSBncm91bmRZIC0gZiAqIChncm91bmRZIC0gdG9wWSk7CiAgICBjb25zdCBsaW5lID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudE5TKCdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZycsICdsaW5lJyk7CiAgICBsaW5lLnNldEF0dHJpYnV0ZSgneDEnLCAwKTsKICAgIGxpbmUuc2V0QXR0cmlidXRlKCd4MicsIDgwMCk7CiAgICBsaW5lLnNldEF0dHJpYnV0ZSgneTEnLCB5KTsKICAgIGxpbmUuc2V0QXR0cmlidXRlKCd5MicsIHkpOwogICAgbGluZS5zZXRBdHRyaWJ1dGUoJ2NsYXNzJywgJ21hcmtlci1saW5lJyk7CiAgICBsYXllci5hcHBlbmRDaGlsZChsaW5lKTsKICB9KTsKfQpidWlsZEhlaWdodE1hcmtlcnMoKTsKCi8qID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgIFNUQVRFCiAgID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09ICovCmNvbnN0IHN0YXRlID0gewogIHRyYWNrVDogMCwgICAgICAgICAgICAvLyAwLi4xIGFsb25nIHRoZSB0cmFjawogIGZyaWN0aW9uOiBmYWxzZSwKICBwcmVkaWN0TW9kZTogZmFsc2UsCiAgcHJlZGljdFJldmVhbGVkOiBmYWxzZSwKICBpc0RyYWdnaW5nOiBmYWxzZSwKfTsKCi8qID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgIEVORVJHWSBNT0RFTAogICA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PSAqLwpmdW5jdGlvbiBjb21wdXRlRW5lcmd5QXQodCkgewogIC8vIEZpbmQgc2FtcGxlIGNsb3Nlc3QgdG8gdAogIGNvbnN0IGlkeCA9IE1hdGgubWF4KDAsIE1hdGgubWluKFNBTVBMRVMsIE1hdGgucm91bmQodCAqIFNBTVBMRVMpKSk7CiAgY29uc3QgcyA9IHNhbXBsZXNbaWR4XTsKICAvLyBIZWlnaHQgZnJhY3Rpb24gZnJvbSBncm91bmQgKDAgYXQgbG93ZXN0LCAxIGF0IGhpZ2hlc3QgcG9pbnQpCiAgY29uc3QgaGVpZ2h0RnJhYyA9IChtYXhZIC0gcy55KSAvIHRyYWNrSGVpZ2h0UmFuZ2U7CiAgLy8gR1BFIHByb3BvcnRpb25hbCB0byBoZWlnaHQKICBjb25zdCBncGUgPSBUT1RBTF9FTkVSR1kgKiBoZWlnaHRGcmFjOwogIGNvbnN0IHJlbGVhc2VkID0gVE9UQUxfRU5FUkdZIC0gZ3BlOwogIGxldCBrZSwgdGhlcm1hbDsKICBpZiAoc3RhdGUuZnJpY3Rpb24pIHsKICAgIHRoZXJtYWwgPSByZWxlYXNlZCAqIEZSSUNUSU9OX0ZSQUNUSU9OOwogICAga2UgPSByZWxlYXNlZCAqICgxIC0gRlJJQ1RJT05fRlJBQ1RJT04pOwogIH0gZWxzZSB7CiAgICB0aGVybWFsID0gMDsKICAgIGtlID0gcmVsZWFzZWQ7CiAgfQogIHJldHVybiB7IGdwZSwga2UsIHRoZXJtYWwsIHRvdGFsOiBncGUgKyBrZSArIHRoZXJtYWwsIHBvaW50OiBzIH07Cn0KCi8qID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgIFJFTkRFUklORwogICA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PSAqLwpjb25zdCBjYXJ0RWwgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnY2FydCcpOwpjb25zdCBwaWVXZWRnZXMgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgncGllV2VkZ2VzJyk7CmNvbnN0IHBpZUNlbnRlciA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdwaWVDZW50ZXInKTsKY29uc3QgZHJhZ0hpbnQgPSBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnZHJhZ0hpbnQnKTsKCmZ1bmN0aW9uIHNldENhcnQodCkgewogIHN0YXRlLnRyYWNrVCA9IE1hdGgubWF4KDAsIE1hdGgubWluKDEsIHQpKTsKICBjb25zdCBpZHggPSBNYXRoLm1heCgwLCBNYXRoLm1pbihTQU1QTEVTLCBNYXRoLnJvdW5kKHN0YXRlLnRyYWNrVCAqIFNBTVBMRVMpKSk7CiAgY29uc3QgcyA9IHNhbXBsZXNbaWR4XTsKICBjYXJ0RWwuc2V0QXR0cmlidXRlKCd0cmFuc2Zvcm0nLCBgdHJhbnNsYXRlKCR7cy54LnRvRml4ZWQoMSl9ICR7KHMueSAtIDgpLnRvRml4ZWQoMSl9KWApOwp9CgpmdW5jdGlvbiBhcmNXZWRnZShjeCwgY3ksIHJPdXRlciwgcklubmVyLCBzdGFydEFuZ2xlLCBlbmRBbmdsZSkgewogIC8vIEFuZ2xlcyBpbiByYWRpYW5zLCBjbG9ja3dpc2Ugc3RhcnRpbmcgZnJvbSB0b3AgKC3PgC8yKQogIGlmIChlbmRBbmdsZSAtIHN0YXJ0QW5nbGUgPCAwLjAwMDEpIHJldHVybiAnJzsKICBpZiAoZW5kQW5nbGUgLSBzdGFydEFuZ2xlID49IE1hdGguUEkgKiAyIC0gMC4wMDAxKSB7CiAgICAvLyBGdWxsIGNpcmNsZSDigJQgZHJhdyBhcyB0d28gaGFsZiBhcmNzCiAgICByZXR1cm4gYE0gJHtjeH0gJHtjeSAtIHJPdXRlcn0gQSAke3JPdXRlcn0gJHtyT3V0ZXJ9IDAgMSAxICR7Y3h9ICR7Y3kgKyByT3V0ZXJ9IEEgJHtyT3V0ZXJ9ICR7ck91dGVyfSAwIDEgMSAke2N4fSAke2N5IC0gck91dGVyfSBaYDsKICB9CiAgY29uc3QgeDEgPSBjeCArIHJPdXRlciAqIE1hdGguY29zKHN0YXJ0QW5nbGUpOwogIGNvbnN0IHkxID0gY3kgKyByT3V0ZXIgKiBNYXRoLnNpbihzdGFydEFuZ2xlKTsKICBjb25zdCB4MiA9IGN4ICsgck91dGVyICogTWF0aC5jb3MoZW5kQW5nbGUpOwogIGNvbnN0IHkyID0gY3kgKyByT3V0ZXIgKiBNYXRoLnNpbihlbmRBbmdsZSk7CiAgY29uc3QgbGFyZ2VBcmMgPSAoZW5kQW5nbGUgLSBzdGFydEFuZ2xlKSA+IE1hdGguUEkgPyAxIDogMDsKICByZXR1cm4gYE0gJHtjeH0gJHtjeX0gTCAke3gxLnRvRml4ZWQoMil9ICR7eTEudG9GaXhlZCgyKX0gQSAke3JPdXRlcn0gJHtyT3V0ZXJ9IDAgJHtsYXJnZUFyY30gMSAke3gyLnRvRml4ZWQoMil9ICR7eTIudG9GaXhlZCgyKX0gWmA7Cn0KCmZ1bmN0aW9uIHJlbmRlclBpZShlbmVyZ3ksIGhpZGRlbikgewogIHBpZVdlZGdlcy5pbm5lckhUTUwgPSAnJzsKICBpZiAoaGlkZGVuKSB7CiAgICAvLyBHcmV5IHJpbmcgd2hpbGUgaW4gcHJlZGljdCBtb2RlLCBiZWZvcmUgcmV2ZWFsCiAgICBjb25zdCByaW5nID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudE5TKCdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZycsICdjaXJjbGUnKTsKICAgIHJpbmcuc2V0QXR0cmlidXRlKCdjeCcsIDEwMCk7CiAgICByaW5nLnNldEF0dHJpYnV0ZSgnY3knLCAxMDApOwogICAgcmluZy5zZXRBdHRyaWJ1dGUoJ3InLCA2MCk7CiAgICByaW5nLnNldEF0dHJpYnV0ZSgnZmlsbCcsICcjRTVERUM4Jyk7CiAgICByaW5nLnNldEF0dHJpYnV0ZSgnb3BhY2l0eScsICcwLjUnKTsKICAgIHBpZVdlZGdlcy5hcHBlbmRDaGlsZChyaW5nKTsKICAgIHBpZUNlbnRlci5pbm5lckhUTUwgPSAnPHNwYW4gY2xhc3M9ImJpZyI+UHJlZGljdDwvc3Bhbj48c3BhbiBjbGFzcz0icSI+Pzwvc3Bhbj4nOwogICAgcmV0dXJuOwogIH0KCiAgY29uc3QgY3ggPSAxMDAsIGN5ID0gMTAwLCByT3V0ZXIgPSA4MDsKICBjb25zdCB0b3RhbCA9IFRPVEFMX0VORVJHWTsKICBjb25zdCBncGVBbmcgPSAoZW5lcmd5LmdwZSAvIHRvdGFsKSAqIE1hdGguUEkgKiAyOwogIGNvbnN0IGtlQW5nICA9IChlbmVyZ3kua2UgIC8gdG90YWwpICogTWF0aC5QSSAqIDI7CiAgY29uc3QgdGhBbmcgID0gKGVuZXJneS50aGVybWFsIC8gdG90YWwpICogTWF0aC5QSSAqIDI7CgogIC8vIFN0YXJ0IGF0IHRvcCAoLc+ALzIpLCBnb2luZyBjbG9ja3dpc2UKICBsZXQgY3VyID0gLU1hdGguUEkgLyAyOwogIGNvbnN0IHdlZGdlcyA9IFsKICAgIHsgbWFnOiBncGVBbmcsIGNvbG9yOiBnZXRDb21wdXRlZFN0eWxlKGRvY3VtZW50LmRvY3VtZW50RWxlbWVudCkuZ2V0UHJvcGVydHlWYWx1ZSgnLS1ncGUtY29sb3InKS50cmltKCkgfSwKICAgIHsgbWFnOiBrZUFuZywgIGNvbG9yOiBnZXRDb21wdXRlZFN0eWxlKGRvY3VtZW50LmRvY3VtZW50RWxlbWVudCkuZ2V0UHJvcGVydHlWYWx1ZSgnLS1rZS1jb2xvcicpLnRyaW0oKSB9LAogICAgeyBtYWc6IHRoQW5nLCAgY29sb3I6IGdldENvbXB1dGVkU3R5bGUoZG9jdW1lbnQuZG9jdW1lbnRFbGVtZW50KS5nZXRQcm9wZXJ0eVZhbHVlKCctLXRoZXJtYWwtY29sb3InKS50cmltKCkgfSwKICBdOwoKICB3ZWRnZXMuZm9yRWFjaCh3ID0+IHsKICAgIGlmICh3Lm1hZyA8IDAuMDAxKSByZXR1cm47CiAgICBjb25zdCBzdGFydCA9IGN1cjsKICAgIGNvbnN0IGVuZCA9IGN1ciArIHcubWFnOwogICAgY29uc3QgcGF0aCA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnROUygnaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnLCAncGF0aCcpOwogICAgcGF0aC5zZXRBdHRyaWJ1dGUoJ2QnLCBhcmNXZWRnZShjeCwgY3ksIHJPdXRlciwgMCwgc3RhcnQsIGVuZCkpOwogICAgcGF0aC5zZXRBdHRyaWJ1dGUoJ2ZpbGwnLCB3LmNvbG9yKTsKICAgIHBhdGguc2V0QXR0cmlidXRlKCdvcGFjaXR5JywgJzAuOTInKTsKICAgIHBpZVdlZGdlcy5hcHBlbmRDaGlsZChwYXRoKTsKICAgIGN1ciA9IGVuZDsKICB9KTsKCiAgLy8gQ2VudHJlIGxhYmVsCiAgcGllQ2VudGVyLmlubmVySFRNTCA9ICc8c3BhbiBjbGFzcz0iYmlnIj5Ub3RhbDwvc3Bhbj48c3BhbiBzdHlsZT0iZm9udC1mYW1pbHk6Q291cmllciBOZXcsbW9ub3NwYWNlO2ZvbnQtc2l6ZToxNHB4O2ZvbnQtd2VpZ2h0OjcwMDtjb2xvcjp2YXIoLS1uYXZ5KTsiPjEwMDAgSjwvc3Bhbj4nOwp9CgpmdW5jdGlvbiBzZXRSb3dWYWx1ZXMoZW5lcmd5LCBoaWRkZW4pIHsKICBjb25zdCBmbXQgPSB2ID0+IE1hdGgucm91bmQodikgKyAnIEonOwogIGNvbnN0IHBjdCA9IHYgPT4gTWF0aC5yb3VuZCgodiAvIFRPVEFMX0VORVJHWSkgKiAxMDApOwogIGlmIChoaWRkZW4pIHsKICAgIGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCd2YWxHcGUnKS50ZXh0Q29udGVudCA9ICfigJQgSic7CiAgICBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgndmFsS2UnKS50ZXh0Q29udGVudCAgPSAn4oCUIEonOwogICAgZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ3ZhbFRoJykudGV4dENvbnRlbnQgID0gJ+KAlCBKJzsKICAgIGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdiYXJHcGUnKS5zdHlsZS53aWR0aCA9ICcwJSc7CiAgICBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnYmFyS2UnKS5zdHlsZS53aWR0aCAgPSAnMCUnOwogICAgZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ2JhclRoJykuc3R5bGUud2lkdGggID0gJzAlJzsKICB9IGVsc2UgewogICAgZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ3ZhbEdwZScpLnRleHRDb250ZW50ID0gZm10KGVuZXJneS5ncGUpOwogICAgZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ3ZhbEtlJykudGV4dENvbnRlbnQgID0gZm10KGVuZXJneS5rZSk7CiAgICBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgndmFsVGgnKS50ZXh0Q29udGVudCAgPSBmbXQoZW5lcmd5LnRoZXJtYWwpOwogICAgZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ2JhckdwZScpLnN0eWxlLndpZHRoID0gcGN0KGVuZXJneS5ncGUpICsgJyUnOwogICAgZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ2JhcktlJykuc3R5bGUud2lkdGggID0gcGN0KGVuZXJneS5rZSkgICsgJyUnOwogICAgZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ2JhclRoJykuc3R5bGUud2lkdGggID0gcGN0KGVuZXJneS50aGVybWFsKSArICclJzsKICB9Cn0KCmZ1bmN0aW9uIHJlbmRlclByZWRpY3RCb3goKSB7CiAgY29uc3QgYm94ID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ3ByZWRpY3RCb3gnKTsKICBpZiAoIXN0YXRlLnByZWRpY3RNb2RlKSB7CiAgICBib3guaW5uZXJIVE1MID0gJyc7CiAgICByZXR1cm47CiAgfQogIGlmICghc3RhdGUucHJlZGljdFJldmVhbGVkKSB7CiAgICBib3guaW5uZXJIVE1MID0gYAogICAgICA8ZGl2IGNsYXNzPSJwcmVkaWN0LWluZm8iPgogICAgICAgIDxiPlByZWRpY3QgbW9kZTwvYj4KICAgICAgICBNb3ZlIHRoZSBjYXJ0IHRvIGEgbmV3IHBvc2l0aW9uLiBQaWN0dXJlIGluIHlvdXIgaGVhZCB3aGF0IHRoZSBlbmVyZ3kgc3RvcmVzIHdpbGwgbG9vayBsaWtlIOKAlCB0aGVuIHRhcCA8c3Ryb25nPnJldmVhbDwvc3Ryb25nPiB0byBjaGVjay4KICAgICAgPC9kaXY+CiAgICAgIDxidXR0b24gY2xhc3M9InJldmVhbC1jdGEiIGlkPSJyZXZlYWxCdG4iPlJldmVhbCB0aGUgYW5zd2VyPC9idXR0b24+CiAgICBgOwogICAgZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ3JldmVhbEJ0bicpLmFkZEV2ZW50TGlzdGVuZXIoJ2NsaWNrJywgcmV2ZWFsUHJlZGljdGlvbik7CiAgfSBlbHNlIHsKICAgIGJveC5pbm5lckhUTUwgPSBgCiAgICAgIDxkaXYgY2xhc3M9InByZWRpY3QtaW5mbyI+CiAgICAgICAgPGI+UmV2ZWFsZWQg4pyTPC9iPgogICAgICAgIERyYWcgdGhlIGNhcnQgYWdhaW4gdG8gbWFrZSBhIG5ldyBwcmVkaWN0aW9uLgogICAgICA8L2Rpdj4KICAgIGA7CiAgfQp9CgpmdW5jdGlvbiByZW5kZXIoKSB7CiAgY29uc3QgZW5lcmd5ID0gY29tcHV0ZUVuZXJneUF0KHN0YXRlLnRyYWNrVCk7CiAgY29uc3QgaGlkZGVuID0gc3RhdGUucHJlZGljdE1vZGUgJiYgIXN0YXRlLnByZWRpY3RSZXZlYWxlZDsKICByZW5kZXJQaWUoZW5lcmd5LCBoaWRkZW4pOwogIHNldFJvd1ZhbHVlcyhlbmVyZ3ksIGhpZGRlbik7CiAgcmVuZGVyUHJlZGljdEJveCgpOwp9CgovKiA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICBBQ1RJT05TCiAgID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09ICovCmZ1bmN0aW9uIHJldmVhbFByZWRpY3Rpb24oKSB7CiAgc3RhdGUucHJlZGljdFJldmVhbGVkID0gdHJ1ZTsKICByZW5kZXIoKTsKfQoKZnVuY3Rpb24gcmVzZXRDYXJ0KCkgewogIHNldENhcnQoMCk7CiAgc3RhdGUucHJlZGljdFJldmVhbGVkID0gZmFsc2U7CiAgcmVuZGVyKCk7Cn0KCmZ1bmN0aW9uIHRvZ2dsZUZyaWN0aW9uKCkgewogIHN0YXRlLmZyaWN0aW9uID0gIXN0YXRlLmZyaWN0aW9uOwogIGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdmcmljdGlvblRvZ2dsZScpLmNsYXNzTGlzdC50b2dnbGUoJ2FjdGl2ZScsIHN0YXRlLmZyaWN0aW9uKTsKICBzdGF0ZS5wcmVkaWN0UmV2ZWFsZWQgPSBmYWxzZTsKICByZW5kZXIoKTsKfQoKZnVuY3Rpb24gdG9nZ2xlUHJlZGljdCgpIHsKICBzdGF0ZS5wcmVkaWN0TW9kZSA9ICFzdGF0ZS5wcmVkaWN0TW9kZTsKICBzdGF0ZS5wcmVkaWN0UmV2ZWFsZWQgPSBmYWxzZTsKICBkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgncHJlZGljdFRvZ2dsZScpLmNsYXNzTGlzdC50b2dnbGUoJ2FjdGl2ZScsIHN0YXRlLnByZWRpY3RNb2RlKTsKICByZW5kZXIoKTsKfQoKLyogPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgRFJBRyBIQU5ETElORwogICBQb2ludGVyIGV2ZW50cyBvbiBjYXJ0IGFuZCBvbiB0aGUgd2lkZSBpbnZpc2libGUgdHJhY2sgc3RyaXAuCiAgID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09ICovCmNvbnN0IHN0YWdlID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ3N0YWdlJyk7CgpmdW5jdGlvbiBjbGllbnRUb1N2ZyhjbGllbnRYLCBjbGllbnRZKSB7CiAgY29uc3QgcHQgPSBzdGFnZS5jcmVhdGVTVkdQb2ludCgpOwogIHB0LnggPSBjbGllbnRYOwogIHB0LnkgPSBjbGllbnRZOwogIGNvbnN0IGN0bSA9IHN0YWdlLmdldFNjcmVlbkNUTSgpOwogIGlmICghY3RtKSByZXR1cm4geyB4OiAwLCB5OiAwIH07CiAgY29uc3QgaW52ID0gY3RtLmludmVyc2UoKTsKICBjb25zdCBsb2NhbCA9IHB0Lm1hdHJpeFRyYW5zZm9ybShpbnYpOwogIHJldHVybiB7IHg6IGxvY2FsLngsIHk6IGxvY2FsLnkgfTsKfQoKZnVuY3Rpb24gZmluZENsb3Nlc3RTYW1wbGUoc3ZnWCwgc3ZnWSkgewogIC8vIENsb3Nlc3Qgc2FtcGxlIGluIDJEIOKAlCBoYW5kbGVzIG92ZXJsYXAgb24gaGlsbHMvdmFsbGV5cyBjb3JyZWN0bHkKICBsZXQgYmVzdElkeCA9IDA7CiAgbGV0IGJlc3REaXN0ID0gSW5maW5pdHk7CiAgZm9yIChsZXQgaSA9IDA7IGkgPCBzYW1wbGVzLmxlbmd0aDsgaSsrKSB7CiAgICBjb25zdCBkeCA9IHNhbXBsZXNbaV0ueCAtIHN2Z1g7CiAgICBjb25zdCBkeSA9IHNhbXBsZXNbaV0ueSAtIHN2Z1k7CiAgICBjb25zdCBkID0gZHggKiBkeCArIGR5ICogZHk7CiAgICBpZiAoZCA8IGJlc3REaXN0KSB7IGJlc3REaXN0ID0gZDsgYmVzdElkeCA9IGk7IH0KICB9CiAgcmV0dXJuIHNhbXBsZXNbYmVzdElkeF07Cn0KCmZ1bmN0aW9uIG9uUG9pbnRlckRvd24oZSkgewogIHN0YXRlLmlzRHJhZ2dpbmcgPSB0cnVlOwogIGNhcnRFbC5jbGFzc0xpc3QuYWRkKCdkcmFnZ2luZycpOwogIC8vIEhpZGUgdGhlIGRyYWcgaGludCBhZnRlciBmaXJzdCBpbnRlcmFjdGlvbgogIGlmIChkcmFnSGludCkgZHJhZ0hpbnQuc3R5bGUudHJhbnNpdGlvbiA9ICdvcGFjaXR5IDAuNHMnOwogIGlmIChkcmFnSGludCkgZHJhZ0hpbnQuc3R5bGUub3BhY2l0eSA9ICcwJzsKICAvLyBJZiBkcmFnIHN0YXJ0cyBpbiBwcmVkaWN0LW1vZGUgYWZ0ZXIgcmV2ZWFsLCByZXNldCB0byBmcmVzaCBwcmVkaWN0aW9uCiAgaWYgKHN0YXRlLnByZWRpY3RNb2RlKSBzdGF0ZS5wcmVkaWN0UmV2ZWFsZWQgPSBmYWxzZTsKICAvLyBDYXB0dXJlIHBvaW50ZXIgZm9yIHNtb290aCBkcmFnZ2luZwogIHRyeSB7IGUudGFyZ2V0LnNldFBvaW50ZXJDYXB0dXJlKGUucG9pbnRlcklkKTsgfSBjYXRjaCAoZXJyKSB7fQogIG9uUG9pbnRlck1vdmUoZSk7CiAgZS5wcmV2ZW50RGVmYXVsdCgpOwp9CgpmdW5jdGlvbiBvblBvaW50ZXJNb3ZlKGUpIHsKICBpZiAoIXN0YXRlLmlzRHJhZ2dpbmcpIHJldHVybjsKICBjb25zdCB7IHgsIHkgfSA9IGNsaWVudFRvU3ZnKGUuY2xpZW50WCwgZS5jbGllbnRZKTsKICBjb25zdCBjbG9zZXN0ID0gZmluZENsb3Nlc3RTYW1wbGUoeCwgeSk7CiAgc2V0Q2FydChjbG9zZXN0LnQpOwogIHJlbmRlcigpOwogIGUucHJldmVudERlZmF1bHQoKTsKfQoKZnVuY3Rpb24gb25Qb2ludGVyVXAoZSkgewogIGlmICghc3RhdGUuaXNEcmFnZ2luZykgcmV0dXJuOwogIHN0YXRlLmlzRHJhZ2dpbmcgPSBmYWxzZTsKICBjYXJ0RWwuY2xhc3NMaXN0LnJlbW92ZSgnZHJhZ2dpbmcnKTsKICB0cnkgeyBlLnRhcmdldC5yZWxlYXNlUG9pbnRlckNhcHR1cmUoZS5wb2ludGVySWQpOyB9IGNhdGNoIChlcnIpIHt9Cn0KCltjYXJ0RWwsIHRyYWNrSGl0XS5mb3JFYWNoKGVsID0+IHsKICBlbC5hZGRFdmVudExpc3RlbmVyKCdwb2ludGVyZG93bicsIG9uUG9pbnRlckRvd24pOwogIGVsLmFkZEV2ZW50TGlzdGVuZXIoJ3BvaW50ZXJtb3ZlJywgb25Qb2ludGVyTW92ZSk7CiAgZWwuYWRkRXZlbnRMaXN0ZW5lcigncG9pbnRlcnVwJywgb25Qb2ludGVyVXApOwogIGVsLmFkZEV2ZW50TGlzdGVuZXIoJ3BvaW50ZXJjYW5jZWwnLCBvblBvaW50ZXJVcCk7Cn0pOwoKLy8gQWxzbyBzdXBwb3J0IGNsaWNraW5nIG9uIHRoZSB0cmFjayB0byB0ZWxlcG9ydCBjYXJ0IHRoZXJlCnN0YWdlLmFkZEV2ZW50TGlzdGVuZXIoJ3BvaW50ZXJkb3duJywgKGUpID0+IHsKICAvLyBJZiB0aGV5IGNsaWNrZWQgb24gY2FudmFzIGJhY2tncm91bmQgYnV0IG5vdCB0aGUgY2FydCBvciB0cmFjay1oaXQsIGlnbm9yZQogIGlmIChlLnRhcmdldCA9PT0gY2FydEVsIHx8IGUudGFyZ2V0LmNsb3Nlc3QoJyNjYXJ0JykpIHJldHVybjsKICBpZiAoZS50YXJnZXQgPT09IHRyYWNrSGl0KSByZXR1cm47CiAgLy8gQmFja2dyb3VuZCBjbGljayDihpIgaWdub3JlCn0pOwoKLyogPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgQ09OVFJPTFMgV0lSSU5HCiAgID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09ICovCmRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdmcmljdGlvblRvZ2dsZScpLmFkZEV2ZW50TGlzdGVuZXIoJ2NsaWNrJywgdG9nZ2xlRnJpY3Rpb24pOwpkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgncHJlZGljdFRvZ2dsZScpLmFkZEV2ZW50TGlzdGVuZXIoJ2NsaWNrJywgdG9nZ2xlUHJlZGljdCk7CmRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdyZXNldEJ0bicpLmFkZEV2ZW50TGlzdGVuZXIoJ2NsaWNrJywgcmVzZXRDYXJ0KTsKCi8vIEtleWJvYXJkIHN1cHBvcnQ6IGFycm93IGtleXMgbnVkZ2UgY2FydApkb2N1bWVudC5hZGRFdmVudExpc3RlbmVyKCdrZXlkb3duJywgKGUpID0+IHsKICBpZiAoZS50YXJnZXQudGFnTmFtZSA9PT0gJ0lOUFVUJyB8fCBlLnRhcmdldC50YWdOYW1lID09PSAnVEVYVEFSRUEnKSByZXR1cm47CiAgY29uc3Qgc3RlcCA9IDAuMDI7CiAgaWYgKGUua2V5ID09PSAnQXJyb3dSaWdodCcgfHwgZS5rZXkgPT09ICdBcnJvd0Rvd24nKSB7CiAgICBpZiAoc3RhdGUucHJlZGljdE1vZGUpIHN0YXRlLnByZWRpY3RSZXZlYWxlZCA9IGZhbHNlOwogICAgc2V0Q2FydChzdGF0ZS50cmFja1QgKyBzdGVwKTsKICAgIHJlbmRlcigpOwogICAgZS5wcmV2ZW50RGVmYXVsdCgpOwogIH0gZWxzZSBpZiAoZS5rZXkgPT09ICdBcnJvd0xlZnQnIHx8IGUua2V5ID09PSAnQXJyb3dVcCcpIHsKICAgIGlmIChzdGF0ZS5wcmVkaWN0TW9kZSkgc3RhdGUucHJlZGljdFJldmVhbGVkID0gZmFsc2U7CiAgICBzZXRDYXJ0KHN0YXRlLnRyYWNrVCAtIHN0ZXApOwogICAgcmVuZGVyKCk7CiAgICBlLnByZXZlbnREZWZhdWx0KCk7CiAgfSBlbHNlIGlmIChlLmtleSA9PT0gJ0VudGVyJyAmJiBzdGF0ZS5wcmVkaWN0TW9kZSAmJiAhc3RhdGUucHJlZGljdFJldmVhbGVkKSB7CiAgICByZXZlYWxQcmVkaWN0aW9uKCk7CiAgfSBlbHNlIGlmIChlLmtleSA9PT0gJ3InIHx8IGUua2V5ID09PSAnUicpIHsKICAgIHJlc2V0Q2FydCgpOwogIH0KfSk7CgovKiA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICBCT09UCiAgID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09ICovCnNldENhcnQoMCk7CnJlbmRlcigpOwoKfSkoKTsKPC9zY3JpcHQ+Cgo8L2JvZHk+CjwvaHRtbD4K" loading="lazy" title="Energy Stores — Roller Coaster"></iframe>
+    </div>
+    <div class="zoom-instr">Drag the cart up and down the track. Toggle friction on and off to see thermal energy appear.</div>
+
+    <div class="watch-out">
+      <h4>⚠ Watch out — energy isn't lost when something stops falling</h4>
+      <p>When a ball lands and stops, its kinetic energy doesn't disappear. It gets transferred to the thermal store of the ground (and the ball) — they get very slightly warmer. This is conservation of energy: total energy is always the same, even when it changes stores.</p>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">A ball is dropped from a window. As it falls, what happens to its energy stores?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>Both stores increase</span></li>
+        <li><span class="letter">B</span><span>Gravitational store increases, kinetic store decreases</span></li>
+        <li><span class="letter">C</span><span>Gravitational store decreases, kinetic store increases</span></li>
+        <li><span class="letter">D</span><span>Both stores stay the same</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>C — gravitational decreases, kinetic increases.</strong> The ball gets lower (loses gravitational energy) and faster (gains kinetic energy). Energy is being transferred from one store to the other.</div>
+      </details>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <h3 class="quiz-head">Test <em>yourself</em></h3>
+    <p class="quiz-sub">7 questions · click to reveal each answer</p>
+    <ol>
+      <li><details>
+        <summary>What store of energy does a moving object have?</summary>
+        <div class="ans">A <strong>kinetic energy store</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>What store of energy does a lifted object have?</summary>
+        <div class="ans">A <strong>gravitational energy store</strong>.</div>
+      </details></li>
+      <li><details>
+        <summary>How can we tell if an object has zero kinetic energy?</summary>
+        <div class="ans">It is <strong>stationary</strong> (not moving).</div>
+      </details></li>
+      <li><details>
+        <summary>A car drives north at 20 m/s. A second car drives south at 20 m/s. Which has more kinetic energy?</summary>
+        <div class="ans"><strong>They have the same.</strong> Direction doesn't matter — only speed and size of the object. <em>Trick question: kinetic energy depends on speed, not direction.</em></div>
+      </details></li>
+      <li><details>
+        <summary>A ball is dropped from a window. As it falls, which store decreases and which increases?</summary>
+        <div class="ans"><strong>Gravitational store decreases</strong> (it's getting lower), and <strong>kinetic store increases</strong> (it's getting faster).</div>
+      </details></li>
+      <li><details>
+        <summary>Where does the energy go when a ball lands on the ground and stops?</summary>
+        <div class="ans">Into the <strong>thermal store</strong> of the ground and the ball — they both get very slightly warmer. Energy is conserved.</div>
+      </details></li>
+      <li><details>
+        <summary>You lift a heavy box onto a high shelf. Where does the energy in its gravitational store come from?</summary>
+        <div class="ans">From your <strong>chemical energy store</strong>. The food you've eaten gives you the energy to lift things, and that energy is transferred to the box's gravitational store as you lift it.</div>
+      </details></li>
+    </ol>
+    <button class="done-btn" data-lesson-done="4">Mark this topic complete</button>
+  </div>
+</section>
+
+<!-- ===================================================================== -->
+<!-- TOPIC 5 — ELASTIC + TRANSFER BY A FORCE                                 -->
+<!-- ===================================================================== -->
+<section class="lesson" id="lesson-5">
+  <div class="lesson-head">
+    <div class="lesson-num">Topic 05 · Stores</div>
+    <h2 class="lesson-title">Stretches, squashes, and <em>pushes</em></h2>
+    <p class="lesson-promise">By the end of this topic you'll know the elastic store, and what we mean by "transfer by a force".</p>
+  </div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 1</span>The elastic energy store</h3>
+    <p>Stretch a rubber band. Squash a spring. Twist a ruler. Each one stores energy as it changes shape — that energy is in the <strong>elastic energy store</strong>. The more you stretch, squash, or twist it, the more energy in the store.</p>
+    <p>Let go, and the energy gets released — the rubber band fires across the room, the spring jumps back, the ruler springs straight. The elastic store decreases, and energy transfers to the kinetic store of whatever's moving.</p>
+
+    <div class="keywords">
+      <h4>Keywords for Part 1</h4>
+      <dl>
+        <dt>Elastic energy store</dt>
+        <dd>The energy stored in any object that has been stretched, squashed, or twisted.</dd>
+      </dl>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">A toy car is fired across the floor by a stretched rubber band. Which energy transfer is happening?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>Chemical store of band → kinetic store of car</span></li>
+        <li><span class="letter">B</span><span>Elastic store of band → kinetic store of car</span></li>
+        <li><span class="letter">C</span><span>Kinetic store of band → elastic store of car</span></li>
+        <li><span class="letter">D</span><span>Gravitational store of band → kinetic store of car</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>B — elastic to kinetic.</strong> The stretched band has energy in its elastic store. When it snaps back, the energy transfers to the moving car (kinetic store).</div>
+      </details>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 2</span>Transfer by a force</h3>
+    <p>When you <strong>push</strong> or <strong>pull</strong> something — or when one object pushes/pulls another — the way energy moves between them is called a <strong>transfer by a force</strong>. The simple test: <strong>is there a push or a pull involved?</strong> If yes, the transfer is "by a force".</p>
+    <p>Examples:</p>
+    <p>· You push a trolley to make it move. <strong>Chemical store of you → kinetic store of trolley.</strong> Transfer by a force.</p>
+    <p>· A bike's brakes slow it down. <strong>Kinetic store of bike → thermal store of brakes.</strong> Transfer by a force (the brakes push on the wheel).</p>
+    <p>· You stretch a rubber band. <strong>Chemical store of you → elastic store of band.</strong> Transfer by a force (you're pulling the band).</p>
+
+    <div class="energy-diagram">
+      <span class="store"><small>Chemical store</small>of you ↓</span>
+      <span class="arrow"><span class="label">by a force</span>→</span>
+      <span class="store kinetic"><small>Kinetic store</small>of trolley ↑</span>
+    </div>
+
+    <div class="watch-out">
+      <h4>⚠ Watch out — slowing down doesn't lose energy</h4>
+      <p>When a bike brakes, energy doesn't disappear. The kinetic store decreases, but the brake pads heat up — the energy moves to the thermal store. That's why brake discs on a fast car can <em>glow red</em>. Conservation of energy at work.</p>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">A footballer kicks a stationary ball into the air. Which transfer of energy is this?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>By heating</span></li>
+        <li><span class="letter">B</span><span>By a force</span></li>
+        <li><span class="letter">C</span><span>By electric current</span></li>
+        <li><span class="letter">D</span><span>By light</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>B — by a force.</strong> The footballer's foot pushes the ball. Push or pull = transfer by a force. The chemical store of the footballer decreases; the kinetic and gravitational stores of the ball increase.</div>
+      </details>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <h3 class="quiz-head">Test <em>yourself</em></h3>
+    <p class="quiz-sub">6 questions · click to reveal each answer</p>
+    <ol>
+      <li><details>
+        <summary>What three things can put energy into the elastic store?</summary>
+        <div class="ans"><strong>Stretching, squashing, and twisting.</strong></div>
+      </details></li>
+      <li><details>
+        <summary>You push a shopping trolley to make it move. Which store decreases and which increases?</summary>
+        <div class="ans"><strong>Chemical store of you</strong> decreases. <strong>Kinetic store of the trolley</strong> increases.</div>
+      </details></li>
+      <li><details>
+        <summary>What name do we give to this transfer of energy?</summary>
+        <div class="ans"><strong>Transfer by a force</strong> (because there's a push involved).</div>
+      </details></li>
+      <li><details>
+        <summary>A cyclist applies the brakes and slows to a stop. Where does the kinetic energy go?</summary>
+        <div class="ans">Into the <strong>thermal store of the brakes</strong> (and the wheels and surroundings). The brakes get hot.</div>
+      </details></li>
+      <li><details>
+        <summary>An archer pulls back the string of a bow, then releases it. Describe the energy transfers.</summary>
+        <div class="ans">Pulling: <strong>chemical store of archer → elastic store of bow</strong> (transfer by a force). Releasing: <strong>elastic store of bow → kinetic store of arrow</strong> (transfer by a force).</div>
+      </details></li>
+      <li><details>
+        <summary>If you ever forget what "transfer by a force" means, what's the simple test?</summary>
+        <div class="ans">Ask: <strong>"Is there a push or a pull involved?"</strong> If yes, it's a transfer by a force.</div>
+      </details></li>
+    </ol>
+    <button class="done-btn" data-lesson-done="5">Mark this topic complete</button>
+  </div>
+</section>
+
+<!-- ===================================================================== -->
+<!-- TOPIC 6 — TRANSFER BY CURRENT & WAVES                                   -->
+<!-- ===================================================================== -->
+<section class="lesson" id="lesson-6">
+  <div class="lesson-head">
+    <div class="lesson-num">Topic 06 · Transfers</div>
+    <h2 class="lesson-title">Wires, light, and <em>sound</em></h2>
+    <p class="lesson-promise">By the end of this topic you'll know two more ways energy can transfer — by electric current, and by waves.</p>
+  </div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 1</span>Transfer by electric current</h3>
+    <p>Whenever you see <strong>wires and a circuit</strong>, the energy is moving by <strong>electric current</strong>. A battery powers a torch: the chemical store of the battery decreases, energy travels through the wires by electric current, and ends up in the bulb.</p>
+    <p>Charging a phone works the other way: energy travels through the charging wire (by electric current) and ends up <em>increasing</em> the chemical store of the battery.</p>
+
+    <div class="energy-diagram">
+      <span class="store"><small>Chemical store</small>of battery ↓</span>
+      <span class="arrow"><span class="label">by current</span>→</span>
+      <span class="store kinetic"><small>Kinetic store</small>of toy car ↑</span>
+    </div>
+
+    <div class="keywords">
+      <h4>Keywords for Part 1</h4>
+      <dl>
+        <dt>Transfer by electric current</dt>
+        <dd>Energy moving along wires when a circuit is connected.</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="section-rule"></div>
+
+  <div class="section">
+    <h3 class="section-head"><span class="num">Part 2</span>Transfer by waves — light and sound</h3>
+    <p><strong>Light</strong> and <strong>sound</strong> are both types of <strong>wave</strong>. They radiate out from a source — light from a bulb, sound from a speaker — and carry energy with them. We call this a <strong>transfer by waves</strong>.</p>
+    <p>A torch in action: the battery's chemical store decreases, energy is transferred by electric current to the bulb, and from the bulb it transfers <em>by waves</em> (light) into the room.</p>
+
+    <div class="energy-diagram">
+      <span class="store"><small>Chemical</small>battery ↓</span>
+      <span class="arrow"><span class="label">by current</span>→</span>
+      <span class="store"><small>(in bulb)</small>↑↓</span>
+      <span class="arrow"><span class="label">by waves</span>→</span>
+      <span class="store thermal"><small>Thermal store</small>of room</span>
+    </div>
+
+    <div class="keywords">
+      <h4>Keywords for Part 2</h4>
+      <dl>
+        <dt>Transfer by waves</dt>
+        <dd>Energy carried by light or sound, radiating out from a source.</dd>
+      </dl>
+    </div>
+
+    <div class="watch-out">
+      <h4>⚠ Watch out — name the transfer, not the store</h4>
+      <p>Easy mistake: when asked "which transfer is this?", students sometimes write "the thermal energy store" or "the kinetic store". <strong>Stores</strong> are where energy <em>sits</em>; <strong>transfers</strong> are how it <em>moves</em>. The four transfers you need are: by heating, by a force, by electric current, and by waves. Don't mix them up.</p>
+    </div>
+
+    <div class="hinge">
+      <span class="hinge-tag">Quick check</span>
+      <p class="hinge-q">Match this scenario: a battery-powered speaker plays music. Which transfers happen?</p>
+      <ul class="choices">
+        <li><span class="letter">A</span><span>By heating only</span></li>
+        <li><span class="letter">B</span><span>By a force, then by waves</span></li>
+        <li><span class="letter">C</span><span>By electric current, then by waves</span></li>
+        <li><span class="letter">D</span><span>By waves only</span></li>
+      </ul>
+      <details class="reveal">
+        <summary>Show answer</summary>
+        <div class="reveal-body"><strong>C — by current, then by waves.</strong> Battery → speaker is by electric current (wires). Speaker → your ears is by waves (sound). Two transfers, in order.</div>
+      </details>
+    </div>
+  </div>
+
+  <div class="quiz">
+    <h3 class="quiz-head">Test <em>yourself</em></h3>
+    <p class="quiz-sub">7 questions · click to reveal each answer</p>
+    <ol>
+      <li><details>
+        <summary>Name the four transfers of energy you've learned.</summary>
+        <div class="ans"><strong>By heating, by a force, by electric current, and by waves.</strong></div>
+      </details></li>
+      <li><details>
+        <summary>When energy moves through wires in a circuit, what do we call the transfer?</summary>
+        <div class="ans"><strong>Transfer by electric current.</strong></div>
+      </details></li>
+      <li><details>
+        <summary>Light and sound are both examples of what?</summary>
+        <div class="ans"><strong>Waves.</strong> So energy carried by light or sound is a transfer by waves.</div>
+      </details></li>
+      <li><details>
+        <summary>Describe the transfers when a battery-powered torch is switched on.</summary>
+        <div class="ans">Chemical store of battery → (transfer by electric current) → bulb → (transfer by waves, as light) → surroundings, ending up in the thermal store of the room.</div>
+      </details></li>
+      <li><details>
+        <summary>What's a quick way to tell whether a transfer is "by a force" or "by an electric current"?</summary>
+        <div class="ans">If there's a <strong>push or pull</strong> involved, it's by a force. If there are <strong>wires and a circuit</strong>, it's by electric current.</div>
+      </details></li>
+      <li><details>
+        <summary>Name the transfer involved when a hot drink cools down on the table.</summary>
+        <div class="ans"><strong>Transfer by heating.</strong> Energy flows from the hot drink to the cold table.</div>
+      </details></li>
+      <li><details>
+        <summary>A friend says "the thermal energy store is the transfer". Why are they wrong?</summary>
+        <div class="ans">Because <strong>stores and transfers are different things</strong>. The thermal store is <em>where</em> energy sits when something is hot. A transfer is <em>how</em> energy moves between stores. The four transfers are: heating, a force, electric current, and waves.</div>
+      </details></li>
+    </ol>
+    <button class="done-btn" data-lesson-done="6">Mark this topic complete</button>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="sig">⁂</div>
+  <p>Year 7 Physics · Energy</p>
+  <p>Holiday revision booklet · James Hornsby School</p>
+</footer>
+
+<script>
+(function(){
+  var STORAGE_KEY = 'energy-holiday-done';
+  var done = {};
+  try {
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) done = JSON.parse(raw);
+  } catch(e) {}
+
+  function save(){
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(done)); } catch(e){}
+  }
+
+  function refresh(){
+    document.querySelectorAll('[data-lesson-done]').forEach(function(btn){
+      var n = btn.getAttribute('data-lesson-done');
+      if (done[n]){
+        btn.classList.add('is-done');
+        btn.textContent = '✓ Done — nice work';
+      }
+    });
+    document.querySelectorAll('.nav-pill').forEach(function(pill){
+      var n = pill.getAttribute('data-lesson');
+      if (done[n]) pill.classList.add('done');
+      else pill.classList.remove('done');
+    });
+  }
+
+  document.querySelectorAll('[data-lesson-done]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var n = btn.getAttribute('data-lesson-done');
+      if (done[n]) return;
+      done[n] = true;
+      save();
+      refresh();
+    });
+  });
+
+  refresh();
+})();
+</script>
+
+</body>
+</html>

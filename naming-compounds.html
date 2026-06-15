@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Naming Compounds — Interactive Practice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #1b2d4f;
+  --navy-deep: #0f1d36;
+  --red: #b7553e;
+  --green: #2d6a4f;
+  --green-bg: #e0ecde;
+  --red-bg: #f4dad3;
+  --metal: #c4814a;
+  --metal-bg: #faece0;
+  --nonmetal: #5680a0;
+  --nonmetal-bg: #e2ecf3;
+  --poly: #7b5fa8;
+  --poly-bg: #ece6f5;
+  --cream: #faf6ef;
+  --paper: #ffffff;
+  --ink: #1f2937;
+  --ink-soft: #6b6f78;
+  --line: #e8e3d8;
+  --shadow: 0 1px 3px rgba(15,29,54,.06), 0 8px 24px -8px rgba(15,29,54,.08);
+  --shadow-lift: 0 4px 14px rgba(15,29,54,.1), 0 16px 40px -12px rgba(15,29,54,.18);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+  line-height: 1.6;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.wrap {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 28px 24px 96px;
+}
+
+/* HEADER */
+header { margin-bottom: 24px; padding-bottom: 22px; border-bottom: 1px solid var(--line); }
+.top-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+h1 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 600;
+  font-size: clamp(28px, 5vw, 42px);
+  color: var(--navy);
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+}
+.sub { margin-top: 12px; color: var(--ink-soft); max-width: 580px; font-size: 15px; }
+
+.guide-btn {
+  padding: 10px 14px;
+  background: var(--paper);
+  border: 1.5px solid var(--line);
+  border-radius: 8px;
+  color: var(--navy);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.guide-btn:hover { border-color: var(--navy); background: var(--paper); }
+.guide-btn .dot-m, .guide-btn .dot-n {
+  width: 8px; height: 8px; border-radius: 50%; display: inline-block;
+}
+.guide-btn .dot-m { background: var(--metal); }
+.guide-btn .dot-n { background: var(--nonmetal); }
+
+/* PROGRESS */
+.progress { display: flex; gap: 6px; margin-top: 26px; align-items: center; }
+.dot {
+  width: 28px; height: 28px; border-radius: 50%;
+  border: 1.5px solid var(--line); background: var(--paper);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: var(--ink-soft);
+  transition: all 0.3s;
+}
+.dot.done { background: var(--green); border-color: var(--green); color: white; }
+.dot.current { border-color: var(--navy); color: var(--navy); }
+.bar { flex: 1; height: 2px; background: var(--line); transition: background 0.3s; }
+.bar.done { background: var(--green); }
+
+/* SECTION */
+section.unit { margin-top: 56px; }
+.unit-label {
+  font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--red); font-weight: 700; margin-bottom: 10px;
+}
+.unit h2 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 600; font-size: clamp(24px, 4vw, 32px);
+  color: var(--navy); line-height: 1.15;
+  margin-bottom: 22px; letter-spacing: -0.015em;
+}
+
+/* CARDS */
+.card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 26px;
+  box-shadow: var(--shadow);
+  margin-bottom: 18px;
+  animation: rise 0.4s ease;
+}
+@keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.card-label {
+  font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+  font-weight: 700; margin-bottom: 12px;
+}
+.card-label.try { color: var(--red); }
+.card-label.rule { color: var(--navy); }
+.card-label.worked { color: var(--red); }
+.card-label.practice { color: var(--navy); }
+
+.card h3 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 600; font-size: 19px;
+  color: var(--navy); margin-bottom: 10px;
+  letter-spacing: -0.005em;
+}
+
+/* TRY-FIRST */
+.try-prompt { font-size: 16px; margin-bottom: 18px; line-height: 1.5; }
+.try-prompt strong { color: var(--navy); }
+.try-options { display: grid; gap: 8px; }
+.try-option {
+  padding: 13px 16px;
+  background: var(--paper);
+  border: 1.5px solid var(--line);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  color: var(--ink);
+  font-family: inherit;
+  text-align: left;
+  transition: all 0.15s;
+}
+.try-option:hover:not(:disabled) {
+  border-color: var(--navy);
+  background: #f7f4ec;
+  transform: translateX(2px);
+}
+.try-option:disabled { cursor: default; }
+.try-option.chosen-correct {
+  border-color: var(--green);
+  background: var(--green-bg);
+  color: var(--navy);
+  font-weight: 600;
+}
+.try-option.chosen-wrong {
+  border-color: var(--red);
+  background: var(--red-bg);
+}
+.try-option.dim { opacity: 0.4; }
+
+.try-feedback {
+  margin-top: 14px;
+  padding: 14px 16px;
+  border-radius: 8px;
+  background: var(--cream);
+  font-size: 14.5px;
+  line-height: 1.5;
+}
+.try-feedback strong { color: var(--navy); }
+.try-feedback .verdict {
+  display: block;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  margin-bottom: 4px;
+}
+.try-feedback.correct { background: var(--green-bg); }
+.try-feedback.correct .verdict { color: var(--green); }
+.try-feedback.wrong { background: var(--red-bg); }
+.try-feedback.wrong .verdict { color: var(--red); }
+
+/* RULE CARD */
+.rule-summary { font-size: 15.5px; line-height: 1.6; margin-bottom: 8px; }
+.rule-summary strong { color: var(--navy); font-weight: 700; }
+
+.ending-list, .prefix-list, .group-list {
+  background: var(--cream);
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin-top: 14px;
+  font-size: 15px;
+}
+.ending-list div, .prefix-list div, .group-list div { padding: 5px 0; }
+.arrow { color: var(--ink-soft); margin: 0 6px; }
+.ide-end { color: var(--green); font-weight: 700; }
+.prefix-name { color: var(--red); font-weight: 700; }
+.group-name { color: var(--poly); font-weight: 700; }
+
+/* WORKED EXAMPLE */
+.worked-card { background: linear-gradient(135deg, #fef9f6 0%, #fdf3ed 100%); border-left: 3px solid var(--red); }
+.worked-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 14px;
+  letter-spacing: -0.01em;
+}
+.worked-steps { display: flex; flex-direction: column; gap: 12px; min-height: 80px; }
+.worked-step {
+  display: flex; gap: 14px; align-items: flex-start;
+  padding: 12px 14px;
+  background: rgba(255,255,255,0.6);
+  border-radius: 8px;
+  border-left: 2px solid var(--red);
+  animation: stepIn 0.4s ease;
+}
+@keyframes stepIn { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: translateX(0); } }
+.worked-step .step-num {
+  font-weight: 700; color: var(--red);
+  min-width: 55px; font-size: 13px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.worked-step .step-text { flex: 1; font-size: 15px; line-height: 1.5; }
+.worked-step .step-text strong { color: var(--navy); }
+.worked-step.final { border-left-color: var(--green); background: var(--green-bg); }
+.worked-step.final .step-num { color: var(--green); }
+.worked-controls { margin-top: 16px; display: flex; gap: 10px; flex-wrap: wrap; }
+
+/* BUTTONS */
+.btn {
+  padding: 11px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 14px;
+  transition: all 0.15s;
+}
+.btn-primary { background: var(--navy); color: white; }
+.btn-primary:hover { background: var(--navy-deep); }
+.btn-secondary {
+  background: transparent;
+  border: 1.5px solid var(--navy);
+  color: var(--navy);
+}
+.btn-secondary:hover { background: var(--navy); color: white; }
+.btn-ghost {
+  background: transparent;
+  color: var(--ink-soft);
+  font-size: 13px;
+  padding: 8px 12px;
+}
+.btn-ghost:hover { color: var(--navy); }
+
+/* QUESTION */
+.q-card { animation: rise 0.4s ease; }
+.q-meta {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 14px; font-size: 11px;
+}
+.q-meta .num {
+  font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--ink-soft);
+}
+.q-meta .badge {
+  background: var(--cream);
+  border: 1px solid var(--line);
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-weight: 700; font-size: 10px;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--navy);
+}
+.q-meta .badge.building { color: var(--red); border-color: #e8c9bc; background: #fbf2ec; }
+.q-meta .badge.stretch { color: white; background: var(--navy); border-color: var(--navy); }
+
+.q-prompt { font-size: 17px; margin-bottom: 18px; line-height: 1.5; }
+.q-prompt em { color: var(--red); font-style: italic; }
+
+/* FORMULA */
+.formula {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 600; font-size: 1.15em;
+  color: var(--navy);
+  background: var(--cream);
+  padding: 2px 8px;
+  border-radius: 4px;
+  display: inline-block;
+}
+sub { font-size: 0.72em; vertical-align: sub; }
+
+/* BUILDER */
+.build-label {
+  font-size: 11px; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--ink-soft);
+  font-weight: 600; margin-bottom: 8px;
+}
+.slots {
+  display: flex; gap: 10px; flex-wrap: wrap;
+  padding: 16px; background: var(--cream);
+  border-radius: 10px; border: 1.5px dashed var(--line);
+  min-height: 62px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.slot {
+  flex: 1;
+  min-width: 110px;
+  min-height: 42px;
+  border: 1.5px dashed #c8c2b3;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; color: var(--ink-soft);
+  font-style: italic;
+  transition: all 0.2s;
+}
+.slot.filled {
+  border: none;
+  font-style: normal;
+}
+.slot .placed-chunk {
+  width: 100%;
+  padding: 10px 14px;
+  background: var(--navy);
+  color: white;
+  border-radius: 8px;
+  border: none;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.15s;
+}
+.slot .placed-chunk:hover:not(:disabled) {
+  background: var(--red);
+}
+.slot .placed-chunk::after {
+  content: ' ✕';
+  opacity: 0;
+  margin-left: 4px;
+  transition: opacity 0.15s;
+  font-size: 0.85em;
+}
+.slot .placed-chunk:hover:not(:disabled)::after { opacity: 0.85; }
+
+.pool {
+  display: flex; gap: 8px; flex-wrap: wrap;
+}
+.chunk {
+  padding: 9px 14px;
+  background: var(--paper);
+  border: 1.5px solid var(--navy);
+  color: var(--navy);
+  border-radius: 100px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.chunk:hover:not(:disabled) {
+  background: var(--navy);
+  color: white;
+  transform: translateY(-1px);
+}
+.chunk:disabled { cursor: not-allowed; opacity: 0.3; }
+.chunk.used { opacity: 0.3; pointer-events: none; }
+
+.builder-actions { margin-top: 16px; display: flex; gap: 10px; flex-wrap: wrap; }
+
+/* FEEDBACK */
+.feedback {
+  margin-top: 16px;
+  padding: 14px 16px;
+  border-radius: 8px;
+  font-size: 14.5px;
+  line-height: 1.55;
+  animation: rise 0.3s ease;
+}
+.feedback strong { color: var(--navy); }
+.feedback .verdict {
+  font-weight: 700;
+  margin-bottom: 4px;
+  display: block;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+}
+.feedback.correct { background: var(--green-bg); border-left: 3px solid var(--green); }
+.feedback.correct .verdict { color: var(--green); }
+.feedback.wrong { background: var(--red-bg); border-left: 3px solid var(--red); }
+.feedback.wrong .verdict { color: var(--red); }
+.feedback .rule-tag {
+  display: inline-block;
+  background: var(--paper);
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 700;
+  margin-top: 8px;
+  color: var(--navy);
+}
+
+/* MIXED INTRO */
+.mixed-intro {
+  background: var(--navy);
+  color: white;
+  padding: 22px 26px;
+  border-radius: 14px;
+  margin-bottom: 22px;
+}
+.mixed-intro h3 {
+  font-family: 'Fraunces', Georgia, serif;
+  color: white; font-size: 18px;
+  margin-bottom: 10px; font-weight: 600;
+}
+.mixed-intro p { color: rgba(255,255,255,0.85); font-size: 15px; margin-bottom: 12px; }
+.mixed-intro .decision-tree { font-size: 14.5px; line-height: 1.8; color: rgba(255,255,255,0.9); }
+.mixed-intro .decision-tree div { padding: 2px 0; }
+.mixed-intro strong { color: white; }
+
+/* FINISH */
+.finished {
+  background: var(--navy); color: white;
+  border-radius: 16px; padding: 40px 32px;
+  text-align: center; margin-top: 56px;
+}
+.finished h2 {
+  font-family: 'Fraunces', Georgia, serif;
+  color: white; font-size: 26px;
+  margin-bottom: 14px; letter-spacing: -0.01em; font-weight: 600;
+}
+.finished p {
+  color: rgba(255,255,255,0.78);
+  margin-bottom: 24px;
+  max-width: 480px; margin-left: auto; margin-right: auto;
+}
+.reset {
+  display: inline-block;
+  padding: 12px 26px;
+  background: white;
+  color: var(--navy);
+  border: none; border-radius: 8px;
+  font-weight: 600; cursor: pointer;
+  font-family: inherit; font-size: 15px;
+}
+
+/* SECTION COMPLETE */
+.section-complete {
+  background: linear-gradient(135deg, #e0ecde 0%, #ebf2e6 100%);
+  border-radius: 12px; padding: 22px;
+  margin: 16px 0 0; text-align: center;
+  border: 1px solid #c8dbc4;
+  animation: rise 0.4s ease;
+}
+.section-complete h4 {
+  font-family: 'Fraunces', Georgia, serif;
+  color: var(--navy); font-size: 18px;
+  margin-bottom: 4px; font-weight: 600;
+}
+.section-complete p { color: var(--ink-soft); font-size: 14px; }
+
+/* ELEMENT GUIDE MODAL */
+.modal-bg {
+  position: fixed; inset: 0;
+  background: rgba(15,29,54,0.4);
+  backdrop-filter: blur(4px);
+  display: none;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 60px 20px 20px;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease;
+  overflow-y: auto;
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.modal-bg.open { display: flex; }
+.modal {
+  background: var(--paper);
+  border-radius: 16px;
+  max-width: 560px;
+  width: 100%;
+  padding: 28px;
+  box-shadow: var(--shadow-lift);
+  max-height: 85vh;
+  overflow-y: auto;
+}
+.modal-head {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  margin-bottom: 18px;
+}
+.modal-head h3 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 22px; color: var(--navy); font-weight: 600;
+}
+.modal-close {
+  background: var(--cream);
+  border: none;
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  font-size: 18px;
+  cursor: pointer;
+  color: var(--ink-soft);
+}
+.modal-close:hover { background: var(--line); }
+.modal p { color: var(--ink-soft); font-size: 14px; margin-bottom: 16px; }
+
+.elem-group {
+  margin-bottom: 20px;
+}
+.elem-group-title {
+  font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase;
+  font-weight: 700; margin-bottom: 10px;
+  display: flex; align-items: center; gap: 8px;
+}
+.elem-group-title.metals { color: var(--metal); }
+.elem-group-title.nonmetals { color: var(--nonmetal); }
+.elem-group-title .swatch {
+  width: 14px; height: 14px; border-radius: 4px;
+}
+.elem-group-title.metals .swatch { background: var(--metal); }
+.elem-group-title.nonmetals .swatch { background: var(--nonmetal); }
+
+.elem-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+  gap: 6px;
+}
+.elem {
+  padding: 10px 6px;
+  text-align: center;
+  border-radius: 8px;
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+.elem.metal { background: var(--metal-bg); color: var(--metal); }
+.elem.nonmetal { background: var(--nonmetal-bg); color: var(--nonmetal); }
+.elem:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+.elem .sym {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 700;
+  font-size: 20px;
+  display: block;
+}
+.elem .nm {
+  font-size: 11px;
+  margin-top: 2px;
+  font-weight: 500;
+  opacity: 0.85;
+}
+
+/* TOOLTIP */
+.tip {
+  position: fixed;
+  background: var(--navy);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+  z-index: 2000;
+  box-shadow: var(--shadow-lift);
+}
+.tip.show { opacity: 1; }
+.tip::after {
+  content: '';
+  position: absolute;
+  top: 100%; left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: var(--navy);
+}
+
+/* MOBILE */
+@media (max-width: 540px) {
+  .wrap { padding: 20px 16px 80px; }
+  .card { padding: 20px; }
+  .top-row { flex-direction: column; align-items: stretch; }
+  .guide-btn { align-self: flex-start; }
+  .slots { padding: 12px; }
+  .slot { min-width: 100%; }
+  .worked-step { flex-direction: column; gap: 4px; }
+  .worked-step .step-num { min-width: auto; }
+}
+</style>
+</head>
+<body>
+
+<!-- Element Guide Modal -->
+<div class="modal-bg" id="modal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>Element guide</h3>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <p>Knowing which elements are <strong style="color:var(--metal)">metals</strong> and which are <strong style="color:var(--nonmetal)">non-metals</strong> is the first step in naming any compound. Tap any element to hear it spoken aloud.</p>
+
+    <div class="elem-group">
+      <div class="elem-group-title metals"><span class="swatch"></span>Metals (write the name as it is)</div>
+      <div class="elem-grid" id="metals-grid"></div>
+    </div>
+
+    <div class="elem-group">
+      <div class="elem-group-title nonmetals"><span class="swatch"></span>Non-metals (change the ending to –ide, or use a prefix)</div>
+      <div class="elem-grid" id="nonmetals-grid"></div>
+    </div>
+  </div>
+</div>
+
+<div class="tip" id="tip"></div>
+
+<div class="wrap">
+
+<header>
+  <div class="top-row">
+    <div>
+      <div class="eyebrow">Year 7–8 · Chemistry · Interactive</div>
+      <h1>Naming compounds</h1>
+      <p class="sub">Three rules, then a mixed challenge. Each rule starts with a prediction, an animated walkthrough, then four hands-on practice questions. Tap chunks to build each name.</p>
+    </div>
+    <button class="guide-btn" onclick="openModal()">
+      <span class="dot-m"></span><span class="dot-n"></span> Element guide
+    </button>
+  </div>
+  <div class="progress" id="progress">
+    <div class="dot current">1</div>
+    <div class="bar"></div>
+    <div class="dot">2</div>
+    <div class="bar"></div>
+    <div class="dot">3</div>
+    <div class="bar"></div>
+    <div class="dot">4</div>
+  </div>
+</header>
+
+<!-- Sections rendered dynamically -->
+<div id="section-0" class="unit"></div>
+<div id="section-1" class="unit" style="display:none"></div>
+<div id="section-2" class="unit" style="display:none"></div>
+<div id="section-3" class="unit" style="display:none"></div>
+
+<div id="finish-area"></div>
+
+</div>
+
+<script>
+// ====== DATA ======
+const ELEMENTS = {
+  metals: [
+    { sym: 'Li', name: 'Lithium' },
+    { sym: 'Na', name: 'Sodium' },
+    { sym: 'K',  name: 'Potassium' },
+    { sym: 'Mg', name: 'Magnesium' },
+    { sym: 'Ca', name: 'Calcium' },
+    { sym: 'Al', name: 'Aluminium' },
+    { sym: 'Fe', name: 'Iron' },
+    { sym: 'Cu', name: 'Copper' },
+    { sym: 'Zn', name: 'Zinc' }
+  ],
+  nonmetals: [
+    { sym: 'H',  name: 'Hydrogen' },
+    { sym: 'C',  name: 'Carbon' },
+    { sym: 'N',  name: 'Nitrogen' },
+    { sym: 'O',  name: 'Oxygen' },
+    { sym: 'F',  name: 'Fluorine' },
+    { sym: 'P',  name: 'Phosphorus' },
+    { sym: 'S',  name: 'Sulfur' },
+    { sym: 'Cl', name: 'Chlorine' },
+    { sym: 'Br', name: 'Bromine' },
+    { sym: 'I',  name: 'Iodine' }
+  ]
+};
+
+const SECTIONS = [
+  {
+    label: 'Rule 1',
+    title: "Metal + non-metal → ends in '–ide'",
+    tryFirst: {
+      prompt: 'Sodium and chlorine combine to make a compound. <strong>Before you learn the rule, have a guess</strong> — what might we call it?',
+      options: [
+        { text: 'chlorine sodium', why: 'Close — but there\'s an order to chemical names, and one of the names needs to change too.' },
+        { text: 'sodium chloride', correct: true, why: 'Spot on. You\'ve already worked out the pattern. Let\'s make it official.' },
+        { text: 'sodium chlorate', why: 'Reasonable guess — but "–ate" is a special ending we\'ll meet in Rule 3. Try a different ending.' },
+        { text: 'sodine chloride', why: 'Tricky — but it\'s actually the non-metal\'s name that changes, not the metal\'s.' }
+      ]
+    },
+    rule: {
+      summary: 'When a <strong>metal</strong> bonds with a <strong>non-metal</strong>, write the <strong>metal\'s name first</strong>, then change the non-metal\'s ending to <strong>–ide</strong>.',
+      type: 'endings',
+      data: [
+        ['chlorine', 'chloride'],
+        ['oxygen', 'oxide'],
+        ['fluorine', 'fluoride'],
+        ['bromine', 'bromide'],
+        ['sulfur', 'sulfide']
+      ]
+    },
+    worked: {
+      title: 'sodium + chlorine',
+      steps: [
+        { num: 'Step 1', text: 'Identify the metal: <strong>sodium</strong>. Metals come first in the name.' },
+        { num: 'Step 2', text: 'Identify the non-metal: <strong>chlorine</strong>. Its ending will change.' },
+        { num: 'Step 3', text: 'Swap "–ine" for "–ide": chlorine → <strong>chloride</strong>.' },
+        { num: 'Answer', text: '<strong>sodium chloride</strong>', final: true }
+      ]
+    },
+    questions: [
+      {
+        prompt: 'Lithium and bromine combine. Build the name.',
+        target: ['lithium', 'bromide'],
+        pool: ['lithium', 'sodium', 'calcium', 'bromine', 'bromide', 'chloride', 'oxide', 'fluoride'],
+        why: 'Lithium is the metal — it goes first and stays unchanged. Bromine → bromide.'
+      },
+      {
+        prompt: 'Potassium and fluorine combine. Build the name.',
+        target: ['potassium', 'fluoride'],
+        pool: ['potassium', 'magnesium', 'lithium', 'fluorine', 'fluoride', 'chloride', 'oxide', 'sulfide'],
+        why: 'Potassium stays. Fluorine → fluoride.'
+      },
+      {
+        prompt: 'Calcium and sulfur combine. Build the name. <em>Beware the distractors.</em>',
+        target: ['calcium', 'sulfide'],
+        pool: ['calcium', 'sulfur', 'sulfide', 'sulfate', 'sulfite', 'sodium', 'oxide', 'chloride'],
+        why: 'Calcium is the metal. Sulfur → sulfide. Sulfate and sulfite look similar but they\'re different things — sulfate is a polyatomic group (Rule 3), and sulfite isn\'t in your syllabus yet.'
+      },
+      {
+        prompt: 'Magnesium and oxygen combine. Build the name.',
+        target: ['magnesium', 'oxide'],
+        pool: ['magnesium', 'oxygen', 'oxide', 'oxine', 'oxinide', 'sodium', 'chloride', 'sulfide'],
+        why: 'Magnesium goes first (metal). Oxygen → oxide.'
+      }
+    ]
+  },
+
+  {
+    label: 'Rule 2',
+    title: 'Two non-metals → use prefixes',
+    tryFirst: {
+      prompt: '<span class="formula">CO<sub>2</sub></span> has 1 carbon and 2 oxygens — both non-metals. <strong>Have a guess</strong>: what might we call it?',
+      options: [
+        { text: 'carbon oxide', why: 'You\'ve got the right idea about –ide, but with two non-metals we need to say HOW MANY of each.' },
+        { text: 'carbon dioxide', correct: true, why: 'You already know this from breathing it out and fizzy drinks. Now let\'s learn the rule behind it.' },
+        { text: 'two-carbon oxide', why: 'Good thinking that we should count — but actually we count the second atom (oxygen), and we use a prefix instead of a number.' },
+        { text: 'carbon trioxide', why: 'Tri– means 3, but there are only 2 oxygens. Try again.' }
+      ]
+    },
+    rule: {
+      summary: 'When <strong>two non-metals</strong> join, use <strong>prefixes</strong> to say how many of each atom. The second name still ends in <strong>–ide</strong>. The first usually drops <em>mono–</em>.',
+      type: 'prefixes',
+      data: [
+        ['mono–', '1'],
+        ['di–', '2'],
+        ['tri–', '3'],
+        ['tetra–', '4']
+      ]
+    },
+    worked: {
+      title: 'CO₂',
+      steps: [
+        { num: 'Step 1', text: 'Both atoms are non-metals: <strong>carbon</strong> and <strong>oxygen</strong>. So we need prefixes.' },
+        { num: 'Step 2', text: 'Count the atoms: <strong>1 carbon</strong>, <strong>2 oxygens</strong>.' },
+        { num: 'Step 3', text: '1 carbon → drop "mono–", just say "carbon". 2 oxygens → "di–" + "oxide".' },
+        { num: 'Answer', text: '<strong>carbon dioxide</strong>', final: true }
+      ]
+    },
+    questions: [
+      {
+        prompt: 'Name <span class="formula">SO<sub>3</sub></span>.',
+        target: ['sulfur', 'trioxide'],
+        pool: ['sulfur', 'sulfide', 'trioxide', 'dioxide', 'monoxide', 'tetraoxide', 'nitrogen', 'carbon'],
+        why: '1 sulfur (no prefix) + 3 oxygens (tri–) + oxide. Sulfur trioxide.'
+      },
+      {
+        prompt: 'Name <span class="formula">NF<sub>3</sub></span>.',
+        target: ['nitrogen', 'trifluoride'],
+        pool: ['nitrogen', 'nitride', 'trifluoride', 'tetrafluoride', 'difluoride', 'monofluoride', 'sulfur', 'carbon'],
+        why: '1 nitrogen + 3 fluorines (tri–) + fluoride. Nitrogen trifluoride.'
+      },
+      {
+        prompt: 'Name <span class="formula">CCl<sub>4</sub></span>.',
+        target: ['carbon', 'tetrachloride'],
+        pool: ['carbon', 'carbide', 'tetrachloride', 'trichloride', 'dichloride', 'monochloride', 'sulfur', 'nitrogen'],
+        why: '1 carbon + 4 chlorines (tetra–) + chloride. Carbon tetrachloride.'
+      },
+      {
+        prompt: 'Name <span class="formula">SO<sub>2</sub></span>.',
+        target: ['sulfur', 'dioxide'],
+        pool: ['sulfur', 'sulfide', 'sulfate', 'dioxide', 'trioxide', 'monoxide', 'tetraoxide', 'carbon'],
+        why: '1 sulfur + 2 oxygens (di–) + oxide. Sulfur dioxide.'
+      }
+    ]
+  },
+
+  {
+    label: 'Rule 3',
+    title: "'–ate' groups that stick together",
+    tryFirst: {
+      prompt: '<span class="formula">CaCO<sub>3</sub></span> is the chemical name of chalk and limestone. It has calcium, carbon, and 3 oxygens. <strong>Tricky one — have a guess</strong>.',
+      options: [
+        { text: 'calcium oxide', why: 'Calcium oxide is a real compound (CaO) — but you\'ve ignored the carbon. Try again.' },
+        { text: 'calcium carbon trioxide', why: 'Sensible guess using Rule 2! But it\'s a clue that there\'s actually a shortcut — some atoms travel together and have their own name.' },
+        { text: 'calcium carbonate', correct: true, why: 'Yes! CO₃ is a special group called "carbonate". There are a few of these to learn.' },
+        { text: 'carbonate calcium', why: 'Right name pieces, wrong order. The metal always goes first.' }
+      ]
+    },
+    rule: {
+      summary: 'Some groups of atoms <strong>always travel together</strong> as one unit. Each has a name ending in <strong>–ate</strong>. Learn them as a chunk — don\'t try to name each atom separately.',
+      type: 'groups',
+      data: [
+        ['CO₃', 'carbonate'],
+        ['NO₃', 'nitrate'],
+        ['SO₄', 'sulfate'],
+        ['PO₄', 'phosphate']
+      ]
+    },
+    worked: {
+      title: 'CaCO₃',
+      steps: [
+        { num: 'Step 1', text: 'Spot the special group: <strong>CO<sub>3</sub></strong>. It travels as one unit.' },
+        { num: 'Step 2', text: 'Name the group: CO<sub>3</sub> = <strong>carbonate</strong>.' },
+        { num: 'Step 3', text: 'Name the metal: Ca = <strong>calcium</strong>.' },
+        { num: 'Answer', text: '<strong>calcium carbonate</strong>', final: true }
+      ]
+    },
+    questions: [
+      {
+        prompt: 'Name <span class="formula">K<sub>2</sub>SO<sub>4</sub></span>.',
+        target: ['potassium', 'sulfate'],
+        pool: ['potassium', 'sodium', 'sulfate', 'sulfide', 'sulfite', 'carbonate', 'nitrate', 'phosphate'],
+        why: 'K = potassium. SO₄ = sulfate. (Sulfide is the trap — that\'d be just S with no oxygens.)'
+      },
+      {
+        prompt: 'Name <span class="formula">Mg(NO<sub>3</sub>)<sub>2</sub></span>. <em>(The brackets mean there are 2 nitrate groups.)</em>',
+        target: ['magnesium', 'nitrate'],
+        pool: ['magnesium', 'sodium', 'calcium', 'nitrate', 'nitride', 'carbonate', 'sulfate', 'phosphate'],
+        why: 'Mg = magnesium. NO₃ = nitrate. We don\'t use prefixes with the –ate rule, even though there are two nitrate groups.'
+      },
+      {
+        prompt: 'Name <span class="formula">Li<sub>3</sub>PO<sub>4</sub></span>.',
+        target: ['lithium', 'phosphate'],
+        pool: ['lithium', 'sodium', 'potassium', 'phosphate', 'phosphide', 'sulfate', 'carbonate', 'nitrate'],
+        why: 'Li = lithium. PO₄ = phosphate. No prefixes — just metal + group name.'
+      },
+      {
+        prompt: 'Name <span class="formula">CuSO<sub>4</sub></span>. <em>(The blue crystals you\'ve seen in lessons.)</em>',
+        target: ['copper', 'sulfate'],
+        pool: ['copper', 'calcium', 'sodium', 'sulfate', 'sulfide', 'carbonate', 'phosphate', 'nitrate'],
+        why: 'Cu = copper. SO₄ = sulfate. Copper sulfate — bright blue, used in school experiments.'
+      }
+    ]
+  },
+
+  {
+    label: 'Mixed Challenge',
+    title: 'Choose the right rule',
+    mixed: true,
+    questions: [
+      {
+        prompt: 'Name <span class="formula">MgO</span>.',
+        target: ['magnesium', 'oxide'],
+        pool: ['magnesium', 'sodium', 'oxide', 'dioxide', 'monoxide', 'oxine', 'sulfide', 'chloride'],
+        why: 'Metal + non-metal → Rule 1. Magnesium oxide.',
+        rule: 'Rule 1 (–ide)'
+      },
+      {
+        prompt: 'Name <span class="formula">SO<sub>2</sub></span>.',
+        target: ['sulfur', 'dioxide'],
+        pool: ['sulfur', 'sulfide', 'sulfate', 'dioxide', 'trioxide', 'monoxide', 'carbon', 'oxide'],
+        why: 'Two non-metals → Rule 2. Sulfur dioxide.',
+        rule: 'Rule 2 (prefixes)'
+      },
+      {
+        prompt: 'Name <span class="formula">K<sub>2</sub>CO<sub>3</sub></span>.',
+        target: ['potassium', 'carbonate'],
+        pool: ['potassium', 'sodium', 'carbonate', 'carbon', 'monoxide', 'trioxide', 'sulfate', 'nitrate'],
+        why: 'Spot CO₃ → Rule 3. Potassium carbonate.',
+        rule: 'Rule 3 (–ate)'
+      },
+      {
+        prompt: 'Name <span class="formula">MgSO<sub>4</sub></span>.',
+        target: ['magnesium', 'sulfate'],
+        pool: ['magnesium', 'calcium', 'sulfate', 'sulfide', 'sulfite', 'sulfur', 'dioxide', 'trioxide'],
+        why: 'Spot SO₄ → Rule 3. Magnesium sulfate (Epsom salts).',
+        rule: 'Rule 3 (–ate)'
+      },
+      {
+        prompt: 'Name <span class="formula">AlCl<sub>3</sub></span>. <em>Watch out — which rule is this?</em>',
+        target: ['aluminium', 'chloride'],
+        pool: ['aluminium', 'sodium', 'chloride', 'trichloride', 'dichloride', 'monochloride', 'tetrachloride', 'sulfide'],
+        why: '⚠ The trap. Aluminium is a METAL → Rule 1. Even though there are 3 chlorines, we DON\'T use prefixes for metal + non-metal compounds. Just "aluminium chloride".',
+        rule: 'Rule 1 (the trap)'
+      }
+    ]
+  }
+];
+
+// ====== STATE ======
+const state = {
+  // 'try' → 'rule-revealed' → 'worked-in-progress' → 'practice' → 'done'
+  stage: ['try', 'try', 'try', 'practice'],
+  workedStep: [0, 0, 0, 0],
+  qIndex: [0, 0, 0, 0],
+  // per question builder state: { sectionIdx_qIdx: { placed: [chunkOrNull, chunkOrNull], answered: bool, correct: bool } }
+  builders: {},
+  done: [false, false, false, false]
+};
+
+// ====== HELPERS ======
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function updateProgress() {
+  const dots = document.querySelectorAll('.dot');
+  const bars = document.querySelectorAll('.bar');
+  let currentIdx = state.done.findIndex(d => !d);
+  if (currentIdx === -1) currentIdx = SECTIONS.length;
+  dots.forEach((dot, i) => {
+    dot.classList.remove('done', 'current');
+    if (state.done[i]) dot.classList.add('done');
+    else if (i === currentIdx) dot.classList.add('current');
+  });
+  bars.forEach((bar, i) => {
+    bar.classList.remove('done');
+    if (state.done[i]) bar.classList.add('done');
+  });
+}
+
+// ====== ELEMENT GUIDE ======
+function renderElementGuide() {
+  const metalsGrid = document.getElementById('metals-grid');
+  const nmGrid = document.getElementById('nonmetals-grid');
+  metalsGrid.innerHTML = ELEMENTS.metals.map(e =>
+    `<button class="elem metal" onclick="speakElement('${e.name}')"><span class="sym">${e.sym}</span><span class="nm">${e.name}</span></button>`
+  ).join('');
+  nmGrid.innerHTML = ELEMENTS.nonmetals.map(e =>
+    `<button class="elem nonmetal" onclick="speakElement('${e.name}')"><span class="sym">${e.sym}</span><span class="nm">${e.name}</span></button>`
+  ).join('');
+}
+function openModal() { document.getElementById('modal').classList.add('open'); }
+function closeModal() { document.getElementById('modal').classList.remove('open'); }
+function speakElement(name) {
+  if ('speechSynthesis' in window) {
+    const u = new SpeechSynthesisUtterance(name);
+    u.rate = 0.95;
+    speechSynthesis.cancel();
+    speechSynthesis.speak(u);
+  }
+}
+document.getElementById('modal').addEventListener('click', (e) => {
+  if (e.target.id === 'modal') closeModal();
+});
+
+// ====== SECTION RENDERING ======
+function renderSection(idx) {
+  const el = document.getElementById(`section-${idx}`);
+  el.style.display = 'block';
+  el.innerHTML = '';
+
+  const section = SECTIONS[idx];
+
+  // Header
+  el.innerHTML = `
+    <div class="unit-label">${section.label}</div>
+    <h2>${section.title}</h2>
+    <div id="stage-${idx}"></div>
+  `;
+
+  if (section.mixed) {
+    renderMixedIntro(idx);
+    renderQuestion(idx, 0);
+  } else {
+    renderTryFirst(idx);
+  }
+}
+
+function renderTryFirst(idx) {
+  const stage = document.getElementById(`stage-${idx}`);
+  const section = SECTIONS[idx];
+  const tf = section.tryFirst;
+
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.id = `try-${idx}`;
+  card.innerHTML = `
+    <div class="card-label try">★ Try first — predict before you learn</div>
+    <div class="try-prompt">${tf.prompt}</div>
+    <div class="try-options">
+      ${tf.options.map((opt, i) => `
+        <button class="try-option" data-i="${i}" onclick="onTryAnswer(${idx}, ${i})">${opt.text}</button>
+      `).join('')}
+    </div>
+    <div id="try-feedback-${idx}"></div>
+  `;
+  stage.appendChild(card);
+}
+
+function onTryAnswer(idx, optIdx) {
+  const section = SECTIONS[idx];
+  const tf = section.tryFirst;
+  const opt = tf.options[optIdx];
+  const correct = !!opt.correct;
+  const correctIdx = tf.options.findIndex(o => o.correct);
+
+  // Disable buttons
+  document.querySelectorAll(`#try-${idx} .try-option`).forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === correctIdx) btn.classList.add('chosen-correct');
+    else if (i === optIdx) btn.classList.add('chosen-wrong');
+    else btn.classList.add('dim');
+  });
+
+  // Feedback
+  const fb = document.getElementById(`try-feedback-${idx}`);
+  fb.innerHTML = `
+    <div class="try-feedback ${correct ? 'correct' : 'wrong'}">
+      <span class="verdict">${correct ? '✓ Good prediction' : '✗ Not quite — but predictions are how we learn'}</span>
+      ${opt.why}
+    </div>
+    <div style="margin-top: 14px;">
+      <button class="btn btn-primary" onclick="revealRule(${idx})">Reveal the rule →</button>
+    </div>
+  `;
+}
+
+function revealRule(idx) {
+  const stage = document.getElementById(`stage-${idx}`);
+  const section = SECTIONS[idx];
+  const r = section.rule;
+
+  // Lock the try card
+  const tryCard = document.getElementById(`try-${idx}`);
+  tryCard.querySelector('.btn-primary').remove();
+
+  // Rule card
+  const ruleCard = document.createElement('div');
+  ruleCard.className = 'card';
+  let dataHtml = '';
+  if (r.type === 'endings') {
+    dataHtml = `<div class="ending-list">${r.data.map(([a,b]) => `<div>${a} <span class="arrow">→</span> <span class="ide-end">${b}</span></div>`).join('')}</div>`;
+  } else if (r.type === 'prefixes') {
+    dataHtml = `<div class="prefix-list">${r.data.map(([a,b]) => `<div><span class="prefix-name">${a}</span> = ${b}</div>`).join('')}</div>`;
+  } else if (r.type === 'groups') {
+    dataHtml = `<div class="group-list">${r.data.map(([a,b]) => `<div><strong>${a}</strong> <span class="arrow">→</span> <span class="group-name">${b}</span></div>`).join('')}</div>`;
+  }
+  ruleCard.innerHTML = `
+    <div class="card-label rule">▸ The rule</div>
+    <div class="rule-summary">${r.summary}</div>
+    ${dataHtml}
+  `;
+  stage.appendChild(ruleCard);
+
+  // Worked example card
+  renderWorkedExample(idx);
+}
+
+function renderWorkedExample(idx) {
+  const stage = document.getElementById(`stage-${idx}`);
+  const section = SECTIONS[idx];
+  const w = section.worked;
+
+  const card = document.createElement('div');
+  card.className = 'card worked-card';
+  card.id = `worked-${idx}`;
+  card.innerHTML = `
+    <div class="card-label worked">▸ Walkthrough — click through each step</div>
+    <div class="worked-title">${w.title}</div>
+    <div class="worked-steps" id="worked-steps-${idx}"></div>
+    <div class="worked-controls" id="worked-controls-${idx}">
+      <button class="btn btn-primary" onclick="advanceWorkedStep(${idx})">Start walkthrough →</button>
+    </div>
+  `;
+  stage.appendChild(card);
+  state.workedStep[idx] = 0;
+}
+
+function advanceWorkedStep(idx) {
+  const section = SECTIONS[idx];
+  const w = section.worked;
+  const stepIdx = state.workedStep[idx];
+  if (stepIdx >= w.steps.length) return;
+
+  const stepsContainer = document.getElementById(`worked-steps-${idx}`);
+  const step = w.steps[stepIdx];
+  const stepEl = document.createElement('div');
+  stepEl.className = 'worked-step' + (step.final ? ' final' : '');
+  stepEl.innerHTML = `
+    <div class="step-num">${step.num}</div>
+    <div class="step-text">${step.text}</div>
+  `;
+  stepsContainer.appendChild(stepEl);
+
+  state.workedStep[idx] = stepIdx + 1;
+
+  const controls = document.getElementById(`worked-controls-${idx}`);
+  if (state.workedStep[idx] < w.steps.length) {
+    controls.innerHTML = `<button class="btn btn-primary" onclick="advanceWorkedStep(${idx})">Next step →</button>`;
+  } else {
+    controls.innerHTML = `
+      <button class="btn btn-secondary" onclick="replayWorked(${idx})">↻ Replay</button>
+      <button class="btn btn-primary" onclick="startPractice(${idx})">Try the questions →</button>
+    `;
+  }
+}
+
+function replayWorked(idx) {
+  state.workedStep[idx] = 0;
+  document.getElementById(`worked-steps-${idx}`).innerHTML = '';
+  document.getElementById(`worked-controls-${idx}`).innerHTML =
+    `<button class="btn btn-primary" onclick="advanceWorkedStep(${idx})">Start walkthrough →</button>`;
+}
+
+function startPractice(idx) {
+  const stage = document.getElementById(`stage-${idx}`);
+  const practiceWrap = document.createElement('div');
+  practiceWrap.id = `practice-${idx}`;
+  practiceWrap.innerHTML = `<div class="card-label practice" style="margin-top: 24px; margin-bottom: 12px;">▸ Now you try — build each name</div>`;
+  stage.appendChild(practiceWrap);
+  renderQuestion(idx, 0);
+}
+
+function renderMixedIntro(idx) {
+  const stage = document.getElementById(`stage-${idx}`);
+  stage.innerHTML = `
+    <div class="mixed-intro">
+      <h3>This is the test. Choose the rule yourself.</h3>
+      <p>Real exam questions don't tell you which rule to use. You have to spot it from the formula. Use this decision tree:</p>
+      <div class="decision-tree">
+        <div>• <strong>Metal + non-metal?</strong> → Rule 1 (–ide, no prefixes)</div>
+        <div>• <strong>Two non-metals?</strong> → Rule 2 (use prefixes)</div>
+        <div>• <strong>See CO₃, NO₃, SO₄ or PO₄?</strong> → Rule 3 (–ate name)</div>
+      </div>
+    </div>
+    <div id="practice-${idx}"></div>
+  `;
+}
+
+// ====== QUESTION (BUILDER) ======
+function renderQuestion(sectionIdx, qIdx) {
+  const section = SECTIONS[sectionIdx];
+  const container = section.mixed
+    ? document.getElementById(`practice-${sectionIdx}`)
+    : document.getElementById(`practice-${sectionIdx}`);
+  const q = section.questions[qIdx];
+  const total = section.questions.length;
+
+  // Init builder state
+  const key = `${sectionIdx}_${qIdx}`;
+  state.builders[key] = {
+    placed: Array(q.target.length).fill(null),
+    shuffledPool: shuffle(q.pool),
+    answered: false
+  };
+
+  const difficulty = qIdx < 2 ? 'Starter' : qIdx < 3 ? 'Building' : 'Stretch';
+  const badgeClass = difficulty === 'Building' ? 'building' : difficulty === 'Stretch' ? 'stretch' : '';
+
+  const qEl = document.createElement('div');
+  qEl.className = 'card q-card';
+  qEl.id = `q-${sectionIdx}-${qIdx}`;
+  qEl.innerHTML = `
+    <div class="q-meta">
+      <span class="num">Question ${qIdx + 1} of ${total}</span>
+      <span class="badge ${badgeClass}">${difficulty}</span>
+    </div>
+    <div class="q-prompt">${q.prompt}</div>
+
+    <div class="build-label">Your answer (tap a chunk in the slot to remove it):</div>
+    <div class="slots" id="slots-${sectionIdx}-${qIdx}"></div>
+
+    <div class="build-label">Tap to add (the order matters):</div>
+    <div class="pool" id="pool-${sectionIdx}-${qIdx}"></div>
+
+    <div class="builder-actions" id="actions-${sectionIdx}-${qIdx}">
+      <button class="btn btn-primary" onclick="checkAnswer(${sectionIdx}, ${qIdx})">Check answer</button>
+      <button class="btn btn-ghost" onclick="resetBuilder(${sectionIdx}, ${qIdx})">↻ Reset</button>
+    </div>
+
+    <div id="feedback-${sectionIdx}-${qIdx}"></div>
+  `;
+  container.appendChild(qEl);
+
+  renderBuilder(sectionIdx, qIdx);
+
+  // Scroll into view
+  setTimeout(() => {
+    qEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 100);
+}
+
+function renderBuilder(sectionIdx, qIdx) {
+  const key = `${sectionIdx}_${qIdx}`;
+  const b = state.builders[key];
+  const q = SECTIONS[sectionIdx].questions[qIdx];
+
+  // Slots
+  const slotsEl = document.getElementById(`slots-${sectionIdx}-${qIdx}`);
+  slotsEl.innerHTML = b.placed.map((chunk, i) => {
+    if (chunk) {
+      return `<div class="slot filled"><button class="placed-chunk" onclick="removeFromSlot(${sectionIdx}, ${qIdx}, ${i})" ${b.answered ? 'disabled' : ''}>${chunk}</button></div>`;
+    } else {
+      return `<div class="slot">slot ${i + 1}</div>`;
+    }
+  }).join('');
+
+  // Pool
+  const poolEl = document.getElementById(`pool-${sectionIdx}-${qIdx}`);
+  poolEl.innerHTML = b.shuffledPool.map(chunk => {
+    const used = b.placed.includes(chunk);
+    return `<button class="chunk ${used ? 'used' : ''}" onclick="addToSlot(${sectionIdx}, ${qIdx}, '${chunk}')" ${used || b.answered ? 'disabled' : ''}>${chunk}</button>`;
+  }).join('');
+}
+
+function addToSlot(sectionIdx, qIdx, chunk) {
+  const key = `${sectionIdx}_${qIdx}`;
+  const b = state.builders[key];
+  if (b.answered) return;
+  // Find first empty slot
+  const emptyIdx = b.placed.findIndex(s => s === null);
+  if (emptyIdx === -1) return;
+  b.placed[emptyIdx] = chunk;
+  renderBuilder(sectionIdx, qIdx);
+}
+
+function removeFromSlot(sectionIdx, qIdx, slotIdx) {
+  const key = `${sectionIdx}_${qIdx}`;
+  const b = state.builders[key];
+  if (b.answered) return;
+  b.placed[slotIdx] = null;
+  renderBuilder(sectionIdx, qIdx);
+}
+
+function resetBuilder(sectionIdx, qIdx) {
+  const key = `${sectionIdx}_${qIdx}`;
+  const b = state.builders[key];
+  if (b.answered) return;
+  b.placed = b.placed.map(() => null);
+  renderBuilder(sectionIdx, qIdx);
+}
+
+function checkAnswer(sectionIdx, qIdx) {
+  const key = `${sectionIdx}_${qIdx}`;
+  const b = state.builders[key];
+  const q = SECTIONS[sectionIdx].questions[qIdx];
+  // Make sure all slots filled
+  if (b.placed.some(s => s === null)) {
+    const fbEl = document.getElementById(`feedback-${sectionIdx}-${qIdx}`);
+    fbEl.innerHTML = `<div class="feedback wrong"><span class="verdict">Hold on</span>Fill both slots before checking.</div>`;
+    return;
+  }
+  const isCorrect = b.placed.every((c, i) => c === q.target[i]);
+  b.answered = true;
+  b.correct = isCorrect;
+
+  // Disable actions
+  const actions = document.getElementById(`actions-${sectionIdx}-${qIdx}`);
+  actions.innerHTML = '';
+
+  // Re-render to disable interactions
+  renderBuilder(sectionIdx, qIdx);
+
+  // Feedback
+  const fbEl = document.getElementById(`feedback-${sectionIdx}-${qIdx}`);
+  const correctAnswer = q.target.join(' ');
+  let body = q.why;
+  if (!isCorrect) {
+    body = `The answer is <strong>${correctAnswer}</strong>. ${q.why}`;
+  }
+  const ruleTag = q.rule ? `<div><span class="rule-tag">${q.rule}</span></div>` : '';
+  fbEl.innerHTML = `
+    <div class="feedback ${isCorrect ? 'correct' : 'wrong'}">
+      <span class="verdict">${isCorrect ? '✓ Correct' : '✗ Not quite'}</span>
+      ${body}
+      ${ruleTag}
+    </div>
+  `;
+
+  // Next button
+  const section = SECTIONS[sectionIdx];
+  const isLastInSection = qIdx === section.questions.length - 1;
+  const isLastSection = sectionIdx === SECTIONS.length - 1;
+  const nextLabel = isLastInSection
+    ? (isLastSection ? 'Finish' : 'Next section →')
+    : 'Next question →';
+  const nextBtn = document.createElement('button');
+  nextBtn.className = 'btn btn-secondary';
+  nextBtn.style.marginTop = '14px';
+  nextBtn.textContent = nextLabel;
+  nextBtn.onclick = () => onNext(sectionIdx, qIdx);
+  fbEl.appendChild(nextBtn);
+}
+
+function onNext(sectionIdx, qIdx) {
+  const section = SECTIONS[sectionIdx];
+  if (qIdx + 1 < section.questions.length) {
+    renderQuestion(sectionIdx, qIdx + 1);
+  } else {
+    // Section done
+    state.done[sectionIdx] = true;
+    updateProgress();
+    const isLast = sectionIdx === SECTIONS.length - 1;
+    if (isLast) {
+      renderFinish();
+    } else {
+      // Section complete message
+      const container = section.mixed
+        ? document.getElementById(`practice-${sectionIdx}`)
+        : document.getElementById(`practice-${sectionIdx}`);
+      const msg = document.createElement('div');
+      msg.className = 'section-complete';
+      msg.innerHTML = `<h4>Section complete ✓</h4><p>Moving on…</p>`;
+      container.appendChild(msg);
+      setTimeout(() => {
+        renderSection(sectionIdx + 1);
+        document.getElementById(`section-${sectionIdx + 1}`).scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 600);
+    }
+  }
+}
+
+function renderFinish() {
+  const area = document.getElementById('finish-area');
+  area.innerHTML = `
+    <div class="finished">
+      <h2>All three rules — done.</h2>
+      <p>You can now name binary ionic compounds, covalent compounds with prefixes, and compounds with polyatomic ions. The big skill is spotting which rule to use — that's what the exam tests.</p>
+      <button class="reset" onclick="location.reload()">Start again</button>
+    </div>
+  `;
+}
+
+// ====== INIT ======
+renderElementGuide();
+renderSection(0);
+updateProgress();
+</script>
+</body>
+</html>
