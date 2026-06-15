@@ -773,6 +773,7 @@
       "id": "retrieval",
       "title": "Retrieval practice",
       "blurb": "Spaced daily quizzing",
+      "kind": "companion",
       "items": [
         {
           "href": "https://retrieval-app.com",
@@ -799,6 +800,7 @@
       "id": "teacher",
       "title": "For teachers",
       "blurb": "A shared, copyable lesson base",
+      "kind": "companion",
       "items": [
         {
           "href": "https://science-kit.vercel.app/",

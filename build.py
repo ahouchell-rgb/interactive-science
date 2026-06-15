@@ -113,16 +113,105 @@ def render_section(sec):
     )
 
 
+def domain_of(href):
+    """Bare domain for display, e.g. retrieval-app.com."""
+    return re.sub(r"^https?://", "", href).rstrip("/")
+
+
+def render_companion_tile(item):
+    accent = item["accent"]
+    href = item["href"]
+    name = item.get("name", "")
+    tag = item.get("tag", "")
+    desc = item.get("desc", "")
+    domain = domain_of(href)
+    return (
+        '<a class="comp-tile" href="%s" target="_blank" rel="noopener noreferrer" '
+        'style="--accent:%s">'
+        '<div class="comp-icon"><i class="ti ti-world" aria-hidden="true"></i></div>'
+        '<div class="comp-body">'
+        '<span class="comp-domain mono">%s</span>'
+        '<h3 class="comp-name">%s</h3>'
+        '<p class="comp-tag">%s</p>'
+        '<p class="comp-desc">%s</p>'
+        '</div>'
+        '<span class="comp-visit mono">Visit site <i class="ti ti-arrow-up-right" aria-hidden="true"></i></span>'
+        '</a>'
+        % (href, accent, domain, name, tag, desc)
+    )
+
+
+def render_companion_region(comp_secs):
+    tiles = "".join(
+        render_companion_tile(it) for s in comp_secs for it in s["items"]
+    )
+    return (
+        '<section class="companion" aria-label="Companion sites">'
+        '<div class="comp-head">'
+        '<div class="eyebrow mono">Companion sites</div>'
+        '<p class="comp-blurb">Separate web apps that pair with the tools — '
+        'they open in a new tab.</p>'
+        '</div>'
+        '<div class="comp-grid">%s</div>'
+        '</section>'
+        % tiles
+    )
+
+
 # ---------------------------------------------------------------------------
-# 1. Replace the grid region between the markers
+# 1. Split sections: companion vs grid
 # ---------------------------------------------------------------------------
-grid_html = "\n".join(render_section(s) for s in sections)
+grid_secs = [s for s in sections if s.get("kind") != "companion"]
+comp_secs = [s for s in sections if s.get("kind") == "companion"]
+
+# 1a. Replace the grid region between the markers
+grid_html = "\n".join(render_section(s) for s in grid_secs)
 new_region = "<!--GRID:START-->\n%s\n  <!--GRID:END-->" % grid_html
 
 grid_re = re.compile(r"<!--GRID:START-->.*?<!--GRID:END-->", re.S)
 if not grid_re.search(html):
     raise SystemExit("GRID markers not found in index.html")
 html = grid_re.sub(lambda m: new_region, html, count=1)
+
+# 1b. Replace the companion region between its markers
+comp_html = render_companion_region(comp_secs)
+new_comp_region = "<!--COMPANION:START-->\n%s\n  <!--COMPANION:END-->" % comp_html
+
+comp_re = re.compile(r"<!--COMPANION:START-->.*?<!--COMPANION:END-->", re.S)
+if not comp_re.search(html):
+    raise SystemExit("COMPANION markers not found in index.html")
+html = comp_re.sub(lambda m: new_comp_region, html, count=1)
+
+# ---------------------------------------------------------------------------
+# 1c. Inject hero stats (tools / booklets) computed from the manifest
+# ---------------------------------------------------------------------------
+TOOL_SECTIONS = {"biology", "physics", "chemistry"}
+
+
+def live_items(sec):
+    return [it for it in sec["items"] if not it.get("coming")]
+
+
+tools_count = sum(
+    len(live_items(s)) for s in sections if s["id"] in TOOL_SECTIONS
+)
+booklets_count = sum(
+    len(live_items(s)) for s in sections if s["id"] == "revision"
+)
+
+
+def set_stat(stat, value):
+    global html
+    pat = re.compile(
+        r'(<b data-stat="%s">)\d+(</b>)' % re.escape(stat)
+    )
+    if not pat.search(html):
+        raise SystemExit('hero data-stat="%s" hook not found' % stat)
+    html = pat.sub(lambda m: m.group(1) + str(value) + m.group(2), html, count=1)
+
+
+set_stat("tools", tools_count)
+set_stat("booklets", booklets_count)
 
 
 # ---------------------------------------------------------------------------
@@ -183,5 +272,7 @@ with open(INDEX, "w", encoding="utf-8") as f:
 
 n_internal_ext = pos
 print("Rebuilt index.html")
-print("  sections:", [(s["id"], len(s["items"])) for s in sections])
+print("  grid sections:", [(s["id"], len(s["items"])) for s in grid_secs])
+print("  companion sections:", [(s["id"], len(s["items"])) for s in comp_secs])
+print("  hero stats: tools=%d booklets=%d" % (tools_count, booklets_count))
 print("  JSON-LD numberOfItems:", n_internal_ext)
