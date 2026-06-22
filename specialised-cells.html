@@ -1212,5 +1212,17 @@ buildGrid();
   <a href="https://retrieval-app.com?ref=interactive-science&from=specialised-cells" style="display:inline-block;background:#2E7D4F;color:#fff;text-decoration:none;font-size:14px;font-weight:600;padding:11px 20px;border-radius:8px;">Practise this in the retrieval app &rarr;</a>
 </aside>
 <!--ISCI-RETRIEVAL-CTA:END-->
+<!--ISCI-FUNNEL-ANALYTICS:START (auto-injected by add_funnel_analytics.py; do not edit)-->
+<script>
+(function(){
+  try{
+    var EP="https://uvzukwoxqhcxaxtzrziy.supabase.co/functions/v1/emit-funnel-event",KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV2enVrd294cWhjeGF4dHpyeml5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzNDUyNTIsImV4cCI6MjA4OTkyMTI1Mn0.PtT24EfMfTckYaq9jXBPRuCsG6utWMLcHs9H8buM70c",FROM="specialised-cells";
+    var sid=null;
+    try{sid=localStorage.getItem("isci_sid");if(!sid){sid=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():String(Date.now())+Math.random().toString(16).slice(2);localStorage.setItem("isci_sid",sid);}}catch(e){}
+    fetch(EP,{method:"POST",headers:{"Content-Type":"application/json","apikey":KEY},body:JSON.stringify({event:"booklet_viewed",session_id:sid,ref:"interactive-science",from_source:FROM}),keepalive:true}).catch(function(){});
+  }catch(e){}
+})();
+</script>
+<!--ISCI-FUNNEL-ANALYTICS:END-->
 </body>
 </html>
